@@ -471,7 +471,7 @@
       background: var(--paper);
       max-height: 76vh;
     }
-    table { border-collapse: collapse; width: 100%; min-width: 1580px; }
+    table { border-collapse: collapse; width: 100%; min-width: 1960px; }
     th, td { border-bottom: 1px solid var(--line); padding: 11px 12px; text-align: left; vertical-align: top; }
     th {
       position: sticky;
@@ -483,7 +483,7 @@
       color: #42536a;
     }
     td { font-size: 13px; }
-    td:nth-child(11), td:nth-child(13) { max-width: 330px; }
+    td:nth-child(14), td:nth-child(16) { max-width: 330px; }
     .school-name { font-weight: 800; font-size: 14px; }
     .sub { color: var(--soft); font-size: 12px; margin-top: 3px; }
     .tag {
@@ -583,7 +583,7 @@
       </div>
       <aside class="scoreboard" aria-label="数据摘要">
         <div class="score-row"><span>公办招生主体</span><strong>42</strong></div>
-        <div class="score-row"><span>全部园区/点位</span><strong>124</strong></div>
+        <div class="score-row"><span>全部园区/点位</span><strong>127</strong></div>
         <div class="score-row"><span>小班计划合计</span><strong>149</strong></div>
         <div class="score-row"><span>明确托班计划</span><strong>0</strong></div>
       </aside>
@@ -837,7 +837,7 @@
           </label>
         </div>
         <div class="result-bar">
-          <div class="result-count"><strong id="resultCount">124</strong> 个园区匹配</div>
+          <div class="result-count"><strong id="resultCount">127</strong> 个园区匹配</div>
           <div class="chips">
             <span class="chip">先搜居委</span>
             <span class="chip">再看园区地址</span>
@@ -852,10 +852,13 @@
             <tr>
               <th>幼儿园/园区</th>
               <th>性质</th>
-              <th>级别</th>
+              <th>办园类型</th>
+              <th>办园等级</th>
               <th>片区</th>
               <th>招生类型</th>
               <th>地址</th>
+              <th>高德POI</th>
+              <th>距公司</th>
               <th>联系电话</th>
               <th>托班</th>
               <th>小班</th>
@@ -873,14 +876,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="1 公办 公办 襄阳南路第一幼儿园 衡复/湖南 复中园 复兴中路1260弄2号 3 4 慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中 A  固定对口 明确托班">
+                data-text="1 公办 一级 襄阳南路第一幼儿园 衡复/湖南 复中园 复兴中路1260弄2号 021-64335881 待高德MCP查询 3 4 慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中 A  固定对口 明确托班">
                 <td><div class="school-name">襄阳南路第一幼儿园</div><div class="sub">复中园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>复兴中路1260弄2号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>021-64335881</td>
                 <td><span class="tag blue">3</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -895,14 +901,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="1 公办 公办 襄阳南路第一幼儿园 衡复/湖南 南园 襄阳南路317号 3 4 慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中 A  固定对口 明确托班">
+                data-text="1 公办 一级 襄阳南路第一幼儿园 衡复/湖南 南园 襄阳南路317号 021-64335881 待高德MCP查询 3 4 慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中 A  固定对口 明确托班">
                 <td><div class="school-name">襄阳南路第一幼儿园</div><div class="sub">南园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>襄阳南路317号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>021-64335881</td>
                 <td><span class="tag blue">3</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -917,14 +926,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="1 公办 公办 襄阳南路第一幼儿园 衡复/湖南 陕南园 陕西南路540号 3 4 慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中 A  固定对口 明确托班">
+                data-text="1 公办 一级 襄阳南路第一幼儿园 衡复/湖南 陕南园 陕西南路540号 021-64335881 待高德MCP查询 3 4 慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中 A  固定对口 明确托班">
                 <td><div class="school-name">襄阳南路第一幼儿园</div><div class="sub">陕南园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>陕西南路540号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>021-64335881</td>
                 <td><span class="tag blue">3</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -939,14 +951,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="1 公办 公办 襄阳南路第一幼儿园 衡复/湖南 北园 襄阳南路207号 3 4 慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中 A  固定对口 明确托班">
+                data-text="1 公办 一级 襄阳南路第一幼儿园 衡复/湖南 北园 襄阳南路207号 64335881 待高德MCP查询 3 4 慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中 A  固定对口 明确托班">
                 <td><div class="school-name">襄阳南路第一幼儿园</div><div class="sub">北园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>襄阳南路207号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64335881</td>
                 <td><span class="tag blue">3</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -961,14 +976,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="2 公办 公办 五原路幼儿园 衡复/湖南 永嘉园 永嘉路420号 3 4 上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康 A  固定对口 明确托班">
+                data-text="2 公办 示范园 五原路幼儿园 衡复/湖南 永嘉园 永嘉路420号 64759122 待高德MCP查询 3 4 上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康 A  固定对口 明确托班">
                 <td><div class="school-name">五原路幼儿园</div><div class="sub">永嘉园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>永嘉路420号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64759122</td>
                 <td><span class="tag blue">3</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -983,14 +1001,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="2 公办 公办 五原路幼儿园 衡复/湖南 武康园 五原路400号 3 4 上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康 A  固定对口 明确托班">
+                data-text="2 公办 示范园 五原路幼儿园 衡复/湖南 武康园 五原路400号 54035366 待高德MCP查询 3 4 上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康 A  固定对口 明确托班">
                 <td><div class="school-name">五原路幼儿园</div><div class="sub">武康园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>五原路400号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>54035366</td>
                 <td><span class="tag blue">3</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1005,14 +1026,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="2 公办 公办 五原路幼儿园 衡复/湖南 兴国园 武康路280弄24号 3 4 上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康 A  固定对口 明确托班">
+                data-text="2 公办 示范园 五原路幼儿园 衡复/湖南 兴国园 武康路280弄24号 64360627 待高德MCP查询 3 4 上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康 A  固定对口 明确托班">
                 <td><div class="school-name">五原路幼儿园</div><div class="sub">兴国园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>武康路280弄24号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64360627</td>
                 <td><span class="tag blue">3</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1027,14 +1051,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="3 公办 公办 汇星幼儿园 徐家汇/天平 南园 宛平南路19弄3号 1 3 天平、高安、康平、吴兴、宛平、余庆、广元、安亭、徐汇新村、张家浜肇谨、零陵、科汇、启明、沈马、王家堂、南赵巷、殷家角、汇翠、名园、德昌 A  固定对口 明确托班">
+                data-text="3 公办 一级 汇星幼儿园 徐家汇/天平 南园 宛平南路19弄3号 021-64689142 待高德MCP查询 1 3 天平、高安、康平、吴兴、宛平、余庆、广元、安亭、徐汇新村、张家浜肇谨、零陵、科汇、启明、沈马、王家堂、南赵巷、殷家角、汇翠、名园、德昌 A  固定对口 明确托班">
                 <td><div class="school-name">汇星幼儿园</div><div class="sub">南园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>徐家汇/天平</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>宛平南路19弄3号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>021-64689142</td>
                 <td><span class="tag blue">1</span></td>
                 <td>3 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1049,14 +1076,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="3 公办 公办 汇星幼儿园 徐家汇/天平 北园 康平路200号 1 3 天平、高安、康平、吴兴、宛平、余庆、广元、安亭、徐汇新村、张家浜肇谨、零陵、科汇、启明、沈马、王家堂、南赵巷、殷家角、汇翠、名园、德昌 B 2024公办名单写康平路200号；2024招生简章/部分旧资料写华山路1815号，建议电话确认当前小班实际园区。 固定对口 明确托班">
+                data-text="3 公办 一级 汇星幼儿园 徐家汇/天平 北园 康平路200号 021-64689142 待高德MCP查询 1 3 天平、高安、康平、吴兴、宛平、余庆、广元、安亭、徐汇新村、张家浜肇谨、零陵、科汇、启明、沈马、王家堂、南赵巷、殷家角、汇翠、名园、德昌 B 2024公办名单写康平路200号；2024招生简章/部分旧资料写华山路1815号，建议电话确认当前小班实际园区。 固定对口 明确托班">
                 <td><div class="school-name">汇星幼儿园</div><div class="sub">北园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>徐家汇/天平</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>康平路200号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>021-64689142</td>
                 <td><span class="tag blue">1</span></td>
                 <td>3 班</td>
                 <td><span class="tag red">B</span></td>
@@ -1071,14 +1101,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="4 公办 公办 乐山幼儿园 徐家汇/交大 本部 乐山路18号 1 3 乐山一村、乐山二三村、乐山四五村、乐山六七村、乐山八九村、文定、汇站、交大、豪庭 A  固定对口 明确托班">
+                data-text="4 公办 二级 乐山幼儿园 徐家汇/交大 本部 乐山路18号 64072867 待高德MCP查询 1 3 乐山一村、乐山二三村、乐山四五村、乐山六七村、乐山八九村、文定、汇站、交大、豪庭 A  固定对口 明确托班">
                 <td><div class="school-name">乐山幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>二级</td>
                 <td>徐家汇/交大</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>乐山路18号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64072867</td>
                 <td><span class="tag blue">1</span></td>
                 <td>3 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1093,14 +1126,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="5 公办 公办 汇家幼儿园 徐家汇/虹桥路 北园 番禺路800弄24号 1 3 番禺、南丹、柿子湾、潘家宅、陈家宅、虹二、虹交、西塘、东塘 A  固定对口 明确托班">
+                data-text="5 公办 二级 汇家幼儿园 徐家汇/虹桥路 北园 番禺路800弄24号 62837361 待高德MCP查询 1 3 番禺、南丹、柿子湾、潘家宅、陈家宅、虹二、虹交、西塘、东塘 A  固定对口 明确托班">
                 <td><div class="school-name">汇家幼儿园</div><div class="sub">北园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>二级</td>
                 <td>徐家汇/虹桥路</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>番禺路800弄24号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>62837361</td>
                 <td><span class="tag blue">1</span></td>
                 <td>3 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1115,14 +1151,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="5 公办 公办 汇家幼儿园 徐家汇/虹桥路 南园 番禺路1188号 1 3 番禺、南丹、柿子湾、潘家宅、陈家宅、虹二、虹交、西塘、东塘 A  固定对口 明确托班">
+                data-text="5 公办 二级 汇家幼儿园 徐家汇/虹桥路 南园 番禺路1188号 64860098 待高德MCP查询 1 3 番禺、南丹、柿子湾、潘家宅、陈家宅、虹二、虹交、西塘、东塘 A  固定对口 明确托班">
                 <td><div class="school-name">汇家幼儿园</div><div class="sub">南园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>二级</td>
                 <td>徐家汇/虹桥路</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>番禺路1188号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64860098</td>
                 <td><span class="tag blue">1</span></td>
                 <td>3 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1137,14 +1176,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="6 公办 公办 枫林幼儿园 枫林/斜土 本部 小木桥路440弄30号 1 2 日新、日二、日五、日六第一、日六第二、大三、大四、康巨、茶陵、景泰、恒益、西木南、西木北、江南 A  固定对口 明确托班">
+                data-text="6 公办 二级 枫林幼儿园 枫林/斜土 本部 小木桥路440弄30号 64035845 待高德MCP查询 1 2 日新、日二、日五、日六第一、日六第二、大三、大四、康巨、茶陵、景泰、恒益、西木南、西木北、江南 A  固定对口 明确托班">
                 <td><div class="school-name">枫林幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>二级</td>
                 <td>枫林/斜土</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>小木桥路440弄30号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64035845</td>
                 <td><span class="tag blue">1</span></td>
                 <td>2 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1159,14 +1201,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="7 公办 公办 复旦大学附属徐汇实验幼儿园 枫林/斜土 托小班部 平江路17号 1 4 平江、肇一、上影、日七、大五、医清、四季园、肇清、医学院 B 2024年7月由原平江路幼儿园与原复旦大学医学院幼儿园合并组建；2025/公开资料显示新小班启用平江路32号，需确认2026实际安排。 固定对口 明确托班">
+                data-text="7 公办 二级 复旦大学附属徐汇实验幼儿园 枫林/斜土 托小班部 平江路17号 64034223 待高德MCP查询 1 4 平江、肇一、上影、日七、大五、医清、四季园、肇清、医学院 B 2024年7月由原平江路幼儿园与原复旦大学医学院幼儿园合并组建；2025/公开资料显示新小班启用平江路32号，需确认2026实际安排。 固定对口 明确托班">
                 <td><div class="school-name">复旦大学附属徐汇实验幼儿园</div><div class="sub">托小班部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>二级</td>
                 <td>枫林/斜土</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>平江路17号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64034223</td>
                 <td><span class="tag blue">1</span></td>
                 <td>4 班</td>
                 <td><span class="tag red">B</span></td>
@@ -1181,14 +1226,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="7 公办 公办 复旦大学附属徐汇实验幼儿园 枫林/斜土 中大班部/新小班候选 平江路32号 1 4 平江、肇一、上影、日七、大五、医清、四季园、肇清、医学院 B 公开资料显示办学地址为平江路32号、17号；原复旦医学院幼儿园东安路50弄10号为历史/合并相关地址。 固定对口 明确托班">
+                data-text="7 公办 二级 复旦大学附属徐汇实验幼儿园 枫林/斜土 中大班部/新小班候选 平江路32号 64034223 待高德MCP查询 1 4 平江、肇一、上影、日七、大五、医清、四季园、肇清、医学院 B 公开资料显示办学地址为平江路32号、17号；原复旦医学院幼儿园东安路50弄10号为历史/合并相关地址。 固定对口 明确托班">
                 <td><div class="school-name">复旦大学附属徐汇实验幼儿园</div><div class="sub">中大班部/新小班候选</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>二级</td>
                 <td>枫林/斜土</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>平江路32号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64034223</td>
                 <td><span class="tag blue">1</span></td>
                 <td>4 班</td>
                 <td><span class="tag red">B</span></td>
@@ -1203,14 +1251,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="8 公办 公办 东安一村幼儿园 枫林/斜土 零陵园 零陵路250弄33号 1 2 东安一村北、东安一村南、安康、振兴、张东、爱华、汇园、东安二村、沈家里、东安四村、谨斜、东安苑、枫林新村、南康 A  固定对口 明确托班">
+                data-text="8 公办 二级 东安一村幼儿园 枫林/斜土 零陵园 零陵路250弄33号 64041758 待高德MCP查询 1 2 东安一村北、东安一村南、安康、振兴、张东、爱华、汇园、东安二村、沈家里、东安四村、谨斜、东安苑、枫林新村、南康 A  固定对口 明确托班">
                 <td><div class="school-name">东安一村幼儿园</div><div class="sub">零陵园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>二级</td>
                 <td>枫林/斜土</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>零陵路250弄33号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64041758</td>
                 <td><span class="tag blue">1</span></td>
                 <td>2 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1225,14 +1276,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="8 公办 公办 东安一村幼儿园 枫林/斜土 东安园 东安一村39号 1 2 东安一村北、东安一村南、安康、振兴、张东、爱华、汇园、东安二村、沈家里、东安四村、谨斜、东安苑、枫林新村、南康 A 公办名单列出东安一村39号及零陵路250弄33号。 固定对口 明确托班">
+                data-text="8 公办 二级 东安一村幼儿园 枫林/斜土 东安园 东安一村39号 64175625 待高德MCP查询 1 2 东安一村北、东安一村南、安康、振兴、张东、爱华、汇园、东安二村、沈家里、东安四村、谨斜、东安苑、枫林新村、南康 A 公办名单列出东安一村39号及零陵路250弄33号。 固定对口 明确托班">
                 <td><div class="school-name">东安一村幼儿园</div><div class="sub">东安园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>二级</td>
                 <td>枫林/斜土</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>东安一村39号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64175625</td>
                 <td><span class="tag blue">1</span></td>
                 <td>2 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1247,14 +1301,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="9 公办 公办 龙山幼儿园 枫林/宛南 一分园 宛南四村16号 1 4 天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑 A  固定对口 明确托班">
+                data-text="9 公办 一级 龙山幼儿园 枫林/宛南 一分园 宛南四村16号 64383244 待高德MCP查询 1 4 天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑 A  固定对口 明确托班">
                 <td><div class="school-name">龙山幼儿园</div><div class="sub">一分园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>枫林/宛南</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>宛南四村16号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64383244</td>
                 <td><span class="tag blue">1</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1269,14 +1326,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="9 公办 公办 龙山幼儿园 枫林/宛南 二分园 中山南二路999弄5号 1 4 天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑 A  固定对口 明确托班">
+                data-text="9 公办 一级 龙山幼儿园 枫林/宛南 二分园 中山南二路999弄5号 64869504 待高德MCP查询 1 4 天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑 A  固定对口 明确托班">
                 <td><div class="school-name">龙山幼儿园</div><div class="sub">二分园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>枫林/宛南</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>中山南二路999弄5号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64869504</td>
                 <td><span class="tag blue">1</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1291,14 +1351,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="9 公办 公办 龙山幼儿园 枫林/宛南 本部 天钥新村90号 1 4 天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑 A  固定对口 明确托班">
+                data-text="9 公办 一级 龙山幼儿园 枫林/宛南 本部 天钥新村90号 64383295 待高德MCP查询 1 4 天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑 A  固定对口 明确托班">
                 <td><div class="school-name">龙山幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>枫林/宛南</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>天钥新村90号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64383295</td>
                 <td><span class="tag blue">1</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1313,14 +1376,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="10 公办 公办 龙华幼儿园 龙华/西岸 丰谷园 丰谷路205弄34号 2 5 上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园 A  固定对口 明确托班">
+                data-text="10 公办 一级 龙华幼儿园 龙华/西岸 丰谷园 丰谷路205弄34号 64280780 待高德MCP查询 2 5 上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园 A  固定对口 明确托班">
                 <td><div class="school-name">龙华幼儿园</div><div class="sub">丰谷园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>龙华/西岸</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>丰谷路205弄34号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64280780</td>
                 <td><span class="tag blue">2</span></td>
                 <td>5 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1335,14 +1401,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="10 公办 公办 龙华幼儿园 龙华/西岸 龙恒园 龙华西路31弄15号 2 5 上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园 A  固定对口 明确托班">
+                data-text="10 公办 一级 龙华幼儿园 龙华/西岸 龙恒园 龙华西路31弄15号 64576761 待高德MCP查询 2 5 上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园 A  固定对口 明确托班">
                 <td><div class="school-name">龙华幼儿园</div><div class="sub">龙恒园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>龙华/西岸</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>龙华西路31弄15号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64576761</td>
                 <td><span class="tag blue">2</span></td>
                 <td>5 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1357,14 +1426,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="10 公办 公办 龙华幼儿园 龙华/西岸 龙华园 龙华西路285弄14号 2 5 上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园 A  固定对口 明确托班">
+                data-text="10 公办 一级 龙华幼儿园 龙华/西岸 龙华园 龙华西路285弄14号 64571589 待高德MCP查询 2 5 上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园 A  固定对口 明确托班">
                 <td><div class="school-name">龙华幼儿园</div><div class="sub">龙华园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>龙华/西岸</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>龙华西路285弄14号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64571589</td>
                 <td><span class="tag blue">2</span></td>
                 <td>5 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1379,14 +1451,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="11 公办 公办 汇霖幼儿园 田林/虹桥 吴中园 吴中东路500弄67号 1 4 古宜、长春、吴中、桂林苑、虹南、虹星、怡桂苑、钦北、华悦家园、鑫耀 A  固定对口 明确托班">
+                data-text="11 公办 一级 汇霖幼儿园 田林/虹桥 吴中园 吴中东路500弄67号 62196848 待高德MCP查询 1 4 古宜、长春、吴中、桂林苑、虹南、虹星、怡桂苑、钦北、华悦家园、鑫耀 A  固定对口 明确托班">
                 <td><div class="school-name">汇霖幼儿园</div><div class="sub">吴中园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>田林/虹桥</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>吴中东路500弄67号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>62196848</td>
                 <td><span class="tag blue">1</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1401,14 +1476,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="11 公办 公办 汇霖幼儿园 田林/虹桥 钦州园 钦州北路898号 1 4 古宜、长春、吴中、桂林苑、虹南、虹星、怡桂苑、钦北、华悦家园、鑫耀 A  固定对口 明确托班">
+                data-text="11 公办 一级 汇霖幼儿园 田林/虹桥 钦州园 钦州北路898号 64668657 待高德MCP查询 1 4 古宜、长春、吴中、桂林苑、虹南、虹星、怡桂苑、钦北、华悦家园、鑫耀 A  固定对口 明确托班">
                 <td><div class="school-name">汇霖幼儿园</div><div class="sub">钦州园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>田林/虹桥</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>钦州北路898号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64668657</td>
                 <td><span class="tag blue">1</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1423,14 +1501,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="12 公办 公办 阳光幼儿园 龙华/滨江 中大班部 天钥桥南路1249弄11号 1 3 龙南三四、龙南五、龙南六、龙南七、滨江、樟树苑、东泉、张家园 A  固定对口 明确托班">
+                data-text="12 公办 二级 阳光幼儿园 龙华/滨江 中大班部 天钥桥南路1249弄11号 54095768 待高德MCP查询 1 3 龙南三四、龙南五、龙南六、龙南七、滨江、樟树苑、东泉、张家园 A  固定对口 明确托班">
                 <td><div class="school-name">阳光幼儿园</div><div class="sub">中大班部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>二级</td>
                 <td>龙华/滨江</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>天钥桥南路1249弄11号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>54095768</td>
                 <td><span class="tag blue">1</span></td>
                 <td>3 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1445,14 +1526,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="12 公办 公办 阳光幼儿园 龙华/滨江 小班部 龙水南路龙南三村7号 1 3 龙南三四、龙南五、龙南六、龙南七、滨江、樟树苑、东泉、张家园 A  固定对口 明确托班">
+                data-text="12 公办 二级 阳光幼儿园 龙华/滨江 小班部 龙水南路龙南三村7号 021-34604160 待高德MCP查询 1 3 龙南三四、龙南五、龙南六、龙南七、滨江、樟树苑、东泉、张家园 A  固定对口 明确托班">
                 <td><div class="school-name">阳光幼儿园</div><div class="sub">小班部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>二级</td>
                 <td>龙华/滨江</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>龙水南路龙南三村7号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>021-34604160</td>
                 <td><span class="tag blue">1</span></td>
                 <td>3 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1467,14 +1551,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="13 公办 公办 漕溪新村幼儿园 漕溪/龙漕 中大班部 龙漕路139号 1 3 金谷园、南一村一、南一村二、漕溪四村双号、凯翔、龙漕、嘉萱苑、漕东 A  固定对口 明确托班">
+                data-text="13 公办 二级 漕溪新村幼儿园 漕溪/龙漕 中大班部 龙漕路139号 64823976 待高德MCP查询 1 3 金谷园、南一村一、南一村二、漕溪四村双号、凯翔、龙漕、嘉萱苑、漕东 A  固定对口 明确托班">
                 <td><div class="school-name">漕溪新村幼儿园</div><div class="sub">中大班部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>二级</td>
                 <td>漕溪/龙漕</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>龙漕路139号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64823976</td>
                 <td><span class="tag blue">1</span></td>
                 <td>3 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1489,14 +1576,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="13 公办 公办 漕溪新村幼儿园 漕溪/龙漕 小班部 漕东路193号 1 3 金谷园、南一村一、南一村二、漕溪四村双号、凯翔、龙漕、嘉萱苑、漕东 A  固定对口 明确托班">
+                data-text="13 公办 二级 漕溪新村幼儿园 漕溪/龙漕 小班部 漕东路193号 34616320 待高德MCP查询 1 3 金谷园、南一村一、南一村二、漕溪四村双号、凯翔、龙漕、嘉萱苑、漕东 A  固定对口 明确托班">
                 <td><div class="school-name">漕溪新村幼儿园</div><div class="sub">小班部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>二级</td>
                 <td>漕溪/龙漕</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>漕东路193号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>34616320</td>
                 <td><span class="tag blue">1</span></td>
                 <td>3 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1511,14 +1601,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="14 公办 公办 望德幼儿园 康健/南站 冠生园 冠生园路28号 4 8 康健路、习勤、薛家宅、科苑、九弄、中海、梓树园、月河、宾阳、馨汇南苑、公园道 A  固定对口 明确托班">
+                data-text="14 公办 示范园 望德幼儿园 康健/南站 冠生园 冠生园路28号 64751426 待高德MCP查询 4 8 康健路、习勤、薛家宅、科苑、九弄、中海、梓树园、月河、宾阳、馨汇南苑、公园道 A  固定对口 明确托班">
                 <td><div class="school-name">望德幼儿园</div><div class="sub">冠生园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>康健/南站</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>冠生园路28号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64751426</td>
                 <td><span class="tag blue">4</span></td>
                 <td>8 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1533,14 +1626,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="14 公办 公办 望德幼儿园 康健/南站 南宁园 南宁路636号 4 8 康健路、习勤、薛家宅、科苑、九弄、中海、梓树园、月河、宾阳、馨汇南苑、公园道 A  固定对口 明确托班">
+                data-text="14 公办 示范园 望德幼儿园 康健/南站 南宁园 南宁路636号 64751426 待高德MCP查询 4 8 康健路、习勤、薛家宅、科苑、九弄、中海、梓树园、月河、宾阳、馨汇南苑、公园道 A  固定对口 明确托班">
                 <td><div class="school-name">望德幼儿园</div><div class="sub">南宁园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>康健/南站</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>南宁路636号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64751426</td>
                 <td><span class="tag blue">4</span></td>
                 <td>8 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1555,14 +1651,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="15 公办 公办 瑞德幼儿园 长桥/汇成 楼园园 老沪闵路706弄37号 2 3 汇成一村、汇成二村、汇成三村、汇成四村、华东二、楼园、金牛、挹翠苑、罗城、光华、汇澜苑、金塘 A  固定对口 明确托班">
+                data-text="15 公办 一级 瑞德幼儿园 长桥/汇成 楼园园 老沪闵路706弄37号 021-64234155 待高德MCP查询 2 3 汇成一村、汇成二村、汇成三村、汇成四村、华东二、楼园、金牛、挹翠苑、罗城、光华、汇澜苑、金塘 A  固定对口 明确托班">
                 <td><div class="school-name">瑞德幼儿园</div><div class="sub">楼园园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>长桥/汇成</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>老沪闵路706弄37号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>021-64234155</td>
                 <td><span class="tag blue">2</span></td>
                 <td>3 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1577,14 +1676,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="15 公办 公办 瑞德幼儿园 长桥/汇成 金塘园 老沪闵路333弄70号 2 3 汇成一村、汇成二村、汇成三村、汇成四村、华东二、楼园、金牛、挹翠苑、罗城、光华、汇澜苑、金塘 A  固定对口 明确托班">
+                data-text="15 公办 一级 瑞德幼儿园 长桥/汇成 金塘园 老沪闵路333弄70号 54963078 待高德MCP查询 2 3 汇成一村、汇成二村、汇成三村、汇成四村、华东二、楼园、金牛、挹翠苑、罗城、光华、汇澜苑、金塘 A  固定对口 明确托班">
                 <td><div class="school-name">瑞德幼儿园</div><div class="sub">金塘园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>长桥/汇成</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>老沪闵路333弄70号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>54963078</td>
                 <td><span class="tag blue">2</span></td>
                 <td>3 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1599,14 +1701,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="16 公办 公办 益思幼儿园 田林/漕河泾 东园 田林九村6号 1 2 田林一二村、田林五六七村、田林八九十村、田林十三村、田林十一村、千鹤三、爱建园、万科华尔兹、新苑一二、新苑三四、新苑五六七、田林十四村第一、田林十四村第二 A  固定对口 明确托班">
+                data-text="16 公办 一级 益思幼儿园 田林/漕河泾 东园 田林九村6号 64361935 待高德MCP查询 1 2 田林一二村、田林五六七村、田林八九十村、田林十三村、田林十一村、千鹤三、爱建园、万科华尔兹、新苑一二、新苑三四、新苑五六七、田林十四村第一、田林十四村第二 A  固定对口 明确托班">
                 <td><div class="school-name">益思幼儿园</div><div class="sub">东园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>田林/漕河泾</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>田林九村6号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64361935</td>
                 <td><span class="tag blue">1</span></td>
                 <td>2 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1621,14 +1726,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="16 公办 公办 益思幼儿园 田林/漕河泾 西园 宜山路701弄53号 1 2 田林一二村、田林五六七村、田林八九十村、田林十三村、田林十一村、千鹤三、爱建园、万科华尔兹、新苑一二、新苑三四、新苑五六七、田林十四村第一、田林十四村第二 A  固定对口 明确托班">
+                data-text="16 公办 一级 益思幼儿园 田林/漕河泾 西园 宜山路701弄53号 64361935 待高德MCP查询 1 2 田林一二村、田林五六七村、田林八九十村、田林十三村、田林十一村、千鹤三、爱建园、万科华尔兹、新苑一二、新苑三四、新苑五六七、田林十四村第一、田林十四村第二 A  固定对口 明确托班">
                 <td><div class="school-name">益思幼儿园</div><div class="sub">西园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>田林/漕河泾</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>宜山路701弄53号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64361935</td>
                 <td><span class="tag blue">1</span></td>
                 <td>2 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1643,14 +1751,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="17 公办 公办 樱花园幼儿园 康健/桂林 南园 百花街398号 2 3 月季百藤、樱花园、茶花桂花、丁香迎春、玉兰园、寿益坊（海上华庭）、紫鹃园、紫薇园（牡丹园、玫瑰园）、金桂苑、紫荆党校 A  固定对口 明确托班">
+                data-text="17 公办 一级 樱花园幼儿园 康健/桂林 南园 百花街398号 021-54181491 待高德MCP查询 2 3 月季百藤、樱花园、茶花桂花、丁香迎春、玉兰园、寿益坊（海上华庭）、紫鹃园、紫薇园（牡丹园、玫瑰园）、金桂苑、紫荆党校 A  固定对口 明确托班">
                 <td><div class="school-name">樱花园幼儿园</div><div class="sub">南园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>康健/桂林</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>百花街398号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>021-54181491</td>
                 <td><span class="tag blue">2</span></td>
                 <td>3 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1665,14 +1776,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="17 公办 公办 樱花园幼儿园 康健/桂林 北园 虹漕南路杨家桥88号 2 3 月季百藤、樱花园、茶花桂花、丁香迎春、玉兰园、寿益坊（海上华庭）、紫鹃园、紫薇园（牡丹园、玫瑰园）、金桂苑、紫荆党校 A  固定对口 明确托班">
+                data-text="17 公办 一级 樱花园幼儿园 康健/桂林 北园 虹漕南路杨家桥88号 54362050 待高德MCP查询 2 3 月季百藤、樱花园、茶花桂花、丁香迎春、玉兰园、寿益坊（海上华庭）、紫鹃园、紫薇园（牡丹园、玫瑰园）、金桂苑、紫荆党校 A  固定对口 明确托班">
                 <td><div class="school-name">樱花园幼儿园</div><div class="sub">北园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>康健/桂林</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>虹漕南路杨家桥88号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>54362050</td>
                 <td><span class="tag blue">2</span></td>
                 <td>3 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1687,14 +1801,17 @@
                 data-admission="固定对口"
                 data-toddler="混龄式招生"
                 data-confirm="no"
-                data-text="18 公办 公办 长海幼儿园 康健/桂林 本部 桂林西街15弄2号 混龄式招生 2 长顺海、长虹坊、长青坊、长丰坊、长兴坊、师大新村、桂康 A  固定对口 混龄式招生">
+                data-text="18 公办 二级 长海幼儿园 康健/桂林 本部 桂林西街15弄2号 54208285 待高德MCP查询 混龄式招生 2 长顺海、长虹坊、长青坊、长丰坊、长兴坊、师大新村、桂康 A  固定对口 混龄式招生">
                 <td><div class="school-name">长海幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>二级</td>
                 <td>康健/桂林</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>桂林西街15弄2号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>54208285</td>
                 <td><span class="tag amber">混龄式招生</span></td>
                 <td>2 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1709,14 +1826,17 @@
                 data-admission="固定对口"
                 data-toddler="混龄式招生"
                 data-confirm="no"
-                data-text="19 公办 公办 康沁幼儿园 康健/桂林 本部 桂林西街151弄20号甲 混龄式招生 2 寿昌山、寿祥坊、寿益坊（寿益坊、桂林西街101弄）、康乐、桂二、冠生园、康宁馨、康强海（康强坊） A  固定对口 混龄式招生">
+                data-text="19 公办 二级 康沁幼儿园 康健/桂林 本部 桂林西街151弄20号甲 54363105 待高德MCP查询 混龄式招生 2 寿昌山、寿祥坊、寿益坊（寿益坊、桂林西街101弄）、康乐、桂二、冠生园、康宁馨、康强海（康强坊） A  固定对口 混龄式招生">
                 <td><div class="school-name">康沁幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>二级</td>
                 <td>康健/桂林</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>桂林西街151弄20号甲</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>54363105</td>
                 <td><span class="tag amber">混龄式招生</span></td>
                 <td>2 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1731,14 +1851,17 @@
                 data-admission="固定对口"
                 data-toddler="混龄式招生"
                 data-confirm="no"
-                data-text="20 公办 公办 长桥第一幼儿园 长桥 本部 长桥一村56号 混龄式招生 2 长桥一村、长桥五村（书香逸居、长桥五村）、闵朱、舒城 A  固定对口 混龄式招生">
+                data-text="20 公办 一级 长桥第一幼儿园 长桥 本部 长桥一村56号 64100149 待高德MCP查询 混龄式招生 2 长桥一村、长桥五村（书香逸居、长桥五村）、闵朱、舒城 A  固定对口 混龄式招生">
                 <td><div class="school-name">长桥第一幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>长桥</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>长桥一村56号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64100149</td>
                 <td><span class="tag amber">混龄式招生</span></td>
                 <td>2 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1753,14 +1876,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="21 公办 公办 长桥第二幼儿园 长桥/凌云 凌云园 梅陇十一村97号 2 4 长桥新村一、长桥新二村、长桥七村、兴荣苑、和平、龙州、梅陇十一第一、梅陇十一第二、陇南、闵秀 A  固定对口 明确托班">
+                data-text="21 公办 一级 长桥第二幼儿园 长桥/凌云 凌云园 梅陇十一村97号 34318987 待高德MCP查询 2 4 长桥新村一、长桥新二村、长桥七村、兴荣苑、和平、龙州、梅陇十一第一、梅陇十一第二、陇南、闵秀 A  固定对口 明确托班">
                 <td><div class="school-name">长桥第二幼儿园</div><div class="sub">凌云园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>长桥/凌云</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>梅陇十一村97号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>34318987</td>
                 <td><span class="tag blue">2</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1775,14 +1901,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="21 公办 公办 长桥第二幼儿园 长桥/凌云 长桥园 长桥二村34号 2 4 长桥新村一、长桥新二村、长桥七村、兴荣苑、和平、龙州、梅陇十一第一、梅陇十一第二、陇南、闵秀 A  固定对口 明确托班">
+                data-text="21 公办 一级 长桥第二幼儿园 长桥/凌云 长桥园 长桥二村34号 64102557 待高德MCP查询 2 4 长桥新村一、长桥新二村、长桥七村、兴荣苑、和平、龙州、梅陇十一第一、梅陇十一第二、陇南、闵秀 A  固定对口 明确托班">
                 <td><div class="school-name">长桥第二幼儿园</div><div class="sub">长桥园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>长桥/凌云</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>长桥二村34号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64102557</td>
                 <td><span class="tag blue">2</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1797,14 +1926,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="22 公办 公办 长桥第三幼儿园 长桥 长桥园 长桥三村124号 2 5 长桥三村一、长桥三村二（长桥三村东区）、长桥八村、平福、长桥四村 A  固定对口 明确托班">
+                data-text="22 公办 一级 长桥第三幼儿园 长桥 长桥园 长桥三村124号 64102397 待高德MCP查询 2 5 长桥三村一、长桥三村二（长桥三村东区）、长桥八村、平福、长桥四村 A  固定对口 明确托班">
                 <td><div class="school-name">长桥第三幼儿园</div><div class="sub">长桥园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>长桥</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>长桥三村124号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64102397</td>
                 <td><span class="tag blue">2</span></td>
                 <td>5 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1819,14 +1951,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="22 公办 公办 长桥第三幼儿园 长桥 平福园 上中路483弄32号 2 5 长桥三村一、长桥三村二（长桥三村东区）、长桥八村、平福、长桥四村 A  固定对口 明确托班">
+                data-text="22 公办 一级 长桥第三幼儿园 长桥 平福园 上中路483弄32号 64102397 待高德MCP查询 2 5 长桥三村一、长桥三村二（长桥三村东区）、长桥八村、平福、长桥四村 A  固定对口 明确托班">
                 <td><div class="school-name">长桥第三幼儿园</div><div class="sub">平福园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>长桥</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>上中路483弄32号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64102397</td>
                 <td><span class="tag blue">2</span></td>
                 <td>5 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1841,14 +1976,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="23 公办 公办 园南幼儿园 长桥/园南 本部 龙川北路园南一村27号 1 3 园南一村、园南二村、园南三村、汇成五村、华东一 A  固定对口 明确托班">
+                data-text="23 公办 一级 园南幼儿园 长桥/园南 本部 龙川北路园南一村27号 64763190 待高德MCP查询 1 3 园南一村、园南二村、园南三村、汇成五村、华东一 A  固定对口 明确托班">
                 <td><div class="school-name">园南幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>长桥/园南</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>龙川北路园南一村27号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64763190</td>
                 <td><span class="tag blue">1</span></td>
                 <td>3 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1863,14 +2001,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="24 公办 公办 梅陇幼儿园 凌云/梅陇 嘉川园 梅陇四村56号甲 2 5 梅三、梅六、梅苑一、梅苑二、凌云、梅四、理工一、理工二、华理苑、书香苑、家乐苑、阳光（阳光新景） A  固定对口 明确托班">
+                data-text="24 公办 示范园 梅陇幼儿园 凌云/梅陇 嘉川园 梅陇四村56号甲 64100015 待高德MCP查询 2 5 梅三、梅六、梅苑一、梅苑二、凌云、梅四、理工一、理工二、华理苑、书香苑、家乐苑、阳光（阳光新景） A  固定对口 明确托班">
                 <td><div class="school-name">梅陇幼儿园</div><div class="sub">嘉川园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>凌云/梅陇</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>梅陇四村56号甲</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64100015</td>
                 <td><span class="tag blue">2</span></td>
                 <td>5 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1885,14 +2026,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="24 公办 公办 梅陇幼儿园 凌云/梅陇 梅陇园 梅陇六村65号 2 5 梅三、梅六、梅苑一、梅苑二、凌云、梅四、理工一、理工二、华理苑、书香苑、家乐苑、阳光（阳光新景） A  固定对口 明确托班">
+                data-text="24 公办 示范园 梅陇幼儿园 凌云/梅陇 梅陇园 梅陇六村65号 64100015 待高德MCP查询 2 5 梅三、梅六、梅苑一、梅苑二、凌云、梅四、理工一、理工二、华理苑、书香苑、家乐苑、阳光（阳光新景） A  固定对口 明确托班">
                 <td><div class="school-name">梅陇幼儿园</div><div class="sub">梅陇园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>凌云/梅陇</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>梅陇六村65号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64100015</td>
                 <td><span class="tag blue">2</span></td>
                 <td>5 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1907,14 +2051,17 @@
                 data-admission="固定对口"
                 data-toddler="混龄式招生"
                 data-confirm="no"
-                data-text="25 公办 公办 梅陇第二幼儿园 凌云/梅陇 本部 梅陇五村54号 混龄式招生 2 梅陇五村、梅陇七村、梅陇八村、梅陇十村、梅陇九村、阳光（阳光绿园）、长陇苑 A  固定对口 混龄式招生">
+                data-text="25 公办 二级 梅陇第二幼儿园 凌云/梅陇 本部 梅陇五村54号 64775092 待高德MCP查询 混龄式招生 2 梅陇五村、梅陇七村、梅陇八村、梅陇十村、梅陇九村、阳光（阳光绿园）、长陇苑 A  固定对口 混龄式招生">
                 <td><div class="school-name">梅陇第二幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>二级</td>
                 <td>凌云/梅陇</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>梅陇五村54号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64775092</td>
                 <td><span class="tag amber">混龄式招生</span></td>
                 <td>2 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1929,14 +2076,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="26 公办 公办 华建幼儿园 华泾 本部 老沪闵路1300号 1 3 华建、建华村、北杨村 A  固定对口 明确托班">
+                data-text="26 公办 一级 华建幼儿园 华泾 本部 老沪闵路1300号 2164548743 待高德MCP查询 1 3 华建、建华村、北杨村 A  固定对口 明确托班">
                 <td><div class="school-name">华建幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>华泾</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>老沪闵路1300号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>2164548743</td>
                 <td><span class="tag blue">1</span></td>
                 <td>3 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1951,14 +2101,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="27 公办 公办 位育幼儿园 华泾 本部 建华路102号 2 2 华泾四村、华泾五村、漓江山水、联合居委 A  固定对口 明确托班">
+                data-text="27 公办 一级 位育幼儿园 华泾 本部 建华路102号 64960505 待高德MCP查询 2 2 华泾四村、华泾五村、漓江山水、联合居委 A  固定对口 明确托班">
                 <td><div class="school-name">位育幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>华泾</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>建华路102号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64960505</td>
                 <td><span class="tag blue">2</span></td>
                 <td>2 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1973,14 +2126,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="28 公办 公办 果果幼儿园 华泾 华欣园 龙吴路2422号 1 4 华欣家园、华发、馨宁、大桥、明丰新纪苑、名苑、华臻 A  固定对口 明确托班">
+                data-text="28 公办 示范园 果果幼儿园 华泾 华欣园 龙吴路2422号 54829893 待高德MCP查询 1 4 华欣家园、华发、馨宁、大桥、明丰新纪苑、名苑、华臻 A  固定对口 明确托班">
                 <td><div class="school-name">果果幼儿园</div><div class="sub">华欣园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>华泾</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>龙吴路2422号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>54829893</td>
                 <td><span class="tag blue">1</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -1995,14 +2151,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="28 公办 公办 果果幼儿园 华泾 华发园 华发路100弄22号 1 4 华欣家园、华发、馨宁、大桥、明丰新纪苑、名苑、华臻 A  固定对口 明确托班">
+                data-text="28 公办 示范园 果果幼儿园 华泾 华发园 华发路100弄22号 54829893 待高德MCP查询 1 4 华欣家园、华发、馨宁、大桥、明丰新纪苑、名苑、华臻 A  固定对口 明确托班">
                 <td><div class="school-name">果果幼儿园</div><div class="sub">华发园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>华泾</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>华发路100弄22号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>54829893</td>
                 <td><span class="tag blue">1</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2017,14 +2176,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="29 公办 公办 星辰幼儿园 华泾/罗秀 本部 罗秀路11号 1 2 徐汇新城、罗秀三村、华滨家园、华沁家园、罗秀、罗秀二村 A  固定对口 明确托班">
+                data-text="29 公办 一级 星辰幼儿园 华泾/罗秀 本部 罗秀路11号 54010448 待高德MCP查询 1 2 徐汇新城、罗秀三村、华滨家园、华沁家园、罗秀、罗秀二村 A  固定对口 明确托班">
                 <td><div class="school-name">星辰幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>华泾/罗秀</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>罗秀路11号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>54010448</td>
                 <td><span class="tag blue">1</span></td>
                 <td>2 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2039,14 +2201,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="30 公办 公办 徐汇实验幼儿园 华泾/罗秀 本部 龙瑞路135号 1 2 中海瀛台、百龙、港口 A  固定对口 明确托班">
+                data-text="30 公办 一级 徐汇实验幼儿园 华泾/罗秀 本部 龙瑞路135号 54045192 待高德MCP查询 1 2 中海瀛台、百龙、港口 A  固定对口 明确托班">
                 <td><div class="school-name">徐汇实验幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>华泾/罗秀</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>龙瑞路135号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>54045192</td>
                 <td><span class="tag blue">1</span></td>
                 <td>2 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2061,14 +2226,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="31 公办 公办 印象幼儿园 华泾 本部 望月路882号 1 2 印象、华阳、沙家浜 A  固定对口 明确托班">
+                data-text="31 公办 一级 印象幼儿园 华泾 本部 望月路882号 64960096 待高德MCP查询 1 2 印象、华阳、沙家浜 A  固定对口 明确托班">
                 <td><div class="school-name">印象幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>华泾</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>望月路882号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64960096</td>
                 <td><span class="tag blue">1</span></td>
                 <td>2 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2083,14 +2251,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="32 公办 公办 科技逸夫幼儿园 南站/石龙 本部 石龙路818弄8号 1 1 正南、东荡、南站居委（临） A  固定对口 明确托班">
+                data-text="32 公办 一级 科技逸夫幼儿园 南站/石龙 本部 石龙路818弄8号 64400295 待高德MCP查询 1 1 正南、东荡、南站居委（临） A  固定对口 明确托班">
                 <td><div class="school-name">科技逸夫幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>南站/石龙</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>石龙路818弄8号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64400295</td>
                 <td><span class="tag blue">1</span></td>
                 <td>1 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2105,14 +2276,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="33 公办 公办 盛华幼儿园 华泾 本部 望月路401号 1 3 盛华、华泾绿苑、光华绿苑 A  固定对口 明确托班">
+                data-text="33 公办 一级 盛华幼儿园 华泾 本部 望月路401号 021-54852338 待高德MCP查询 1 3 盛华、华泾绿苑、光华绿苑 A  固定对口 明确托班">
                 <td><div class="school-name">盛华幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>华泾</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>望月路401号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>021-54852338</td>
                 <td><span class="tag blue">1</span></td>
                 <td>3 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2127,14 +2301,17 @@
                 data-admission="扩招"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="34 公办 公办 艺树幼儿园 徐家汇/田林 本部 古井路160号 2 3 锦馨苑、千鹤第六、小安桥、华鼎广场、千鹤五、尚汇豪庭、千鹤一、千鹤二；另向徐家汇街道、田林街道扩招 A  扩招 明确托班">
+                data-text="34 公办 一级 艺树幼儿园 徐家汇/田林 本部 古井路160号 64388770 待高德MCP查询 2 3 锦馨苑、千鹤第六、小安桥、华鼎广场、千鹤五、尚汇豪庭、千鹤一、千鹤二；另向徐家汇街道、田林街道扩招 A  扩招 明确托班">
                 <td><div class="school-name">艺树幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>徐家汇/田林</td>
                 <td><span class="tag amber">扩招</span></td>
                 <td>古井路160号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64388770</td>
                 <td><span class="tag blue">2</span></td>
                 <td>3 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2149,14 +2326,17 @@
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="35 公办 公办 桂平幼儿园 漕河泾/虹梅 本部 桂平路260弄14号 2 1 联莘、欣园 A  固定对口 明确托班">
+                data-text="35 公办 一级 桂平幼儿园 漕河泾/虹梅 本部 桂平路260弄14号 64031921 待高德MCP查询 2 1 联莘、欣园 A  固定对口 明确托班">
                 <td><div class="school-name">桂平幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>漕河泾/虹梅</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>桂平路260弄14号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64031921</td>
                 <td><span class="tag blue">2</span></td>
                 <td>1 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2171,14 +2351,17 @@
                 data-admission="扩招"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="36 公办 公办 田林第六幼儿园 田林/虹梅 本部 田林十二村40号 3 5 田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招 A  扩招 明确托班">
+                data-text="36 公办 一级 田林第六幼儿园 田林/虹梅 本部 田林十二村40号 64366380 待高德MCP查询 3 5 田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招 A  扩招 明确托班">
                 <td><div class="school-name">田林第六幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>田林/虹梅</td>
                 <td><span class="tag amber">扩招</span></td>
                 <td>田林十二村40号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64366380</td>
                 <td><span class="tag blue">3</span></td>
                 <td>5 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2193,14 +2376,17 @@
                 data-admission="扩招"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="36 公办 公办 田林第六幼儿园 田林/虹梅 贝贝分园 田林四村18号 3 5 田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招 A  扩招 明确托班">
+                data-text="36 公办 一级 田林第六幼儿园 田林/虹梅 贝贝分园 田林四村18号 64367248 待高德MCP查询 3 5 田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招 A  扩招 明确托班">
                 <td><div class="school-name">田林第六幼儿园</div><div class="sub">贝贝分园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>田林/虹梅</td>
                 <td><span class="tag amber">扩招</span></td>
                 <td>田林四村18号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64367248</td>
                 <td><span class="tag blue">3</span></td>
                 <td>5 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2215,14 +2401,17 @@
                 data-admission="扩招"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="36 公办 公办 田林第六幼儿园 田林/虹梅 东兰分园 古美路1107弄65号 3 5 田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招 A  扩招 明确托班">
+                data-text="36 公办 一级 田林第六幼儿园 田林/虹梅 东兰分园 古美路1107弄65号 64707260 待高德MCP查询 3 5 田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招 A  扩招 明确托班">
                 <td><div class="school-name">田林第六幼儿园</div><div class="sub">东兰分园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>一级</td>
                 <td>田林/虹梅</td>
                 <td><span class="tag amber">扩招</span></td>
                 <td>古美路1107弄65号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64707260</td>
                 <td><span class="tag blue">3</span></td>
                 <td>5 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2237,14 +2426,17 @@
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="37 公办 公办 紫薇实验幼儿园 康健/漕河泾 桂平园 桂平路123弄23号 5 6 紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生 A  区域自主 明确托班">
+                data-text="37 公办 示范园 紫薇实验幼儿园 康健/漕河泾 桂平园 桂平路123弄23号 54217515 待高德MCP查询 5 6 紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">紫薇实验幼儿园</div><div class="sub">桂平园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>康健/漕河泾</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>桂平路123弄23号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>54217515</td>
                 <td><span class="tag blue">5</span></td>
                 <td>6 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2259,14 +2451,17 @@
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="37 公办 公办 紫薇实验幼儿园 康健/漕河泾 浦北园 浦北路173号 5 6 紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生 A  区域自主 明确托班">
+                data-text="37 公办 示范园 紫薇实验幼儿园 康健/漕河泾 浦北园 浦北路173号 64830788 待高德MCP查询 5 6 紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">紫薇实验幼儿园</div><div class="sub">浦北园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>康健/漕河泾</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>浦北路173号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64830788</td>
                 <td><span class="tag blue">5</span></td>
                 <td>6 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2281,14 +2476,17 @@
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="37 公办 公办 紫薇实验幼儿园 康健/漕河泾 全州园 宜州路26号 5 6 紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生 A  区域自主 明确托班">
+                data-text="37 公办 示范园 紫薇实验幼儿园 康健/漕河泾 全州园 宜州路26号 54500996 待高德MCP查询 5 6 紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">紫薇实验幼儿园</div><div class="sub">全州园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>康健/漕河泾</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>宜州路26号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>54500996</td>
                 <td><span class="tag blue">5</span></td>
                 <td>6 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2303,14 +2501,17 @@
                 data-admission="扩招"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="38 公办 公办 上海幼儿园 长桥/凌云 凌云园 上中西路378号 2 5 体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招 A  扩招 明确托班">
+                data-text="38 公办 示范园 上海幼儿园 长桥/凌云 凌云园 上中西路378号 64106663 / 64100564 / 64250961 待高德MCP查询 2 5 体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招 A  扩招 明确托班">
                 <td><div class="school-name">上海幼儿园</div><div class="sub">凌云园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>长桥/凌云</td>
                 <td><span class="tag amber">扩招</span></td>
                 <td>上中西路378号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64106663 / 64100564 / 64250961</td>
                 <td><span class="tag blue">2</span></td>
                 <td>5 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2325,14 +2526,17 @@
                 data-admission="扩招"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="38 公办 公办 上海幼儿园 长桥/凌云 冠军园 老沪闵路729弄41号乙 2 5 体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招 A  扩招 明确托班">
+                data-text="38 公办 示范园 上海幼儿园 长桥/凌云 冠军园 老沪闵路729弄41号乙 64250961 待高德MCP查询 2 5 体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招 A  扩招 明确托班">
                 <td><div class="school-name">上海幼儿园</div><div class="sub">冠军园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>长桥/凌云</td>
                 <td><span class="tag amber">扩招</span></td>
                 <td>老沪闵路729弄41号乙</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64250961</td>
                 <td><span class="tag blue">2</span></td>
                 <td>5 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2347,14 +2551,17 @@
                 data-admission="扩招"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="38 公办 公办 上海幼儿园 长桥/凌云 上中园 上中路402号 2 5 体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招 A  扩招 明确托班">
+                data-text="38 公办 示范园 上海幼儿园 长桥/凌云 上中园 上中路402号 64106663 / 64100564 / 64250961 待高德MCP查询 2 5 体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招 A  扩招 明确托班">
                 <td><div class="school-name">上海幼儿园</div><div class="sub">上中园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>长桥/凌云</td>
                 <td><span class="tag amber">扩招</span></td>
                 <td>上中路402号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64106663 / 64100564 / 64250961</td>
                 <td><span class="tag blue">2</span></td>
                 <td>5 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2369,14 +2576,17 @@
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="39 公办 公办 乌鲁木齐南路幼儿园 衡复/湖南 本部 乌鲁木齐南路14号 3 4 区域内自主招生 A  区域自主 明确托班">
+                data-text="39 公办 示范园 乌鲁木齐南路幼儿园 衡复/湖南 本部 乌鲁木齐南路14号 64319939 待高德MCP查询 3 4 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">乌鲁木齐南路幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>乌鲁木齐南路14号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64319939</td>
                 <td><span class="tag blue">3</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2391,14 +2601,17 @@
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="39 公办 公办 乌鲁木齐南路幼儿园 衡复/湖南 境内部 淮海路1788号 3 4 区域内自主招生 A  区域自主 明确托班">
+                data-text="39 公办 示范园 乌鲁木齐南路幼儿园 衡复/湖南 境内部 淮海路1788号 64319939 待高德MCP查询 3 4 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">乌鲁木齐南路幼儿园</div><div class="sub">境内部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>淮海路1788号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64319939</td>
                 <td><span class="tag blue">3</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2413,14 +2626,17 @@
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="39 公办 公办 乌鲁木齐南路幼儿园 衡复/湖南 境外部 淮海中路1480号 3 4 区域内自主招生 A  区域自主 明确托班">
+                data-text="39 公办 示范园 乌鲁木齐南路幼儿园 衡复/湖南 境外部 淮海中路1480号 64330160 待高德MCP查询 3 4 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">乌鲁木齐南路幼儿园</div><div class="sub">境外部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>淮海中路1480号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64330160</td>
                 <td><span class="tag blue">3</span></td>
                 <td>4 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2435,14 +2651,17 @@
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="40 公办 公办 科技幼儿园 徐家汇/田林 宜山园1部 宜山路655弄1号 3 9 区域内自主招生 A  区域自主 明确托班">
+                data-text="40 公办 示范园 科技幼儿园 徐家汇/田林 宜山园1部 宜山路655弄1号 64854450 / 64362975 待高德MCP查询 3 9 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">科技幼儿园</div><div class="sub">宜山园1部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>徐家汇/田林</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>宜山路655弄1号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64854450 / 64362975</td>
                 <td><span class="tag blue">3</span></td>
                 <td>9 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2457,14 +2676,17 @@
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="40 公办 公办 科技幼儿园 徐家汇/田林 嘉陵园 嘉陵路28号 3 9 区域内自主招生 A  区域自主 明确托班">
+                data-text="40 公办 示范园 科技幼儿园 徐家汇/田林 嘉陵园 嘉陵路28号 54363003 待高德MCP查询 3 9 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">科技幼儿园</div><div class="sub">嘉陵园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>徐家汇/田林</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>嘉陵路28号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>54363003</td>
                 <td><span class="tag blue">3</span></td>
                 <td>9 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2479,14 +2701,17 @@
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="40 公办 公办 科技幼儿园 徐家汇/田林 文定园 文定路476号 3 9 区域内自主招生 A  区域自主 明确托班">
+                data-text="40 公办 示范园 科技幼儿园 徐家汇/田林 文定园 文定路476号 64221181 待高德MCP查询 3 9 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">科技幼儿园</div><div class="sub">文定园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>徐家汇/田林</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>文定路476号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64221181</td>
                 <td><span class="tag blue">3</span></td>
                 <td>9 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2501,14 +2726,17 @@
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="40 公办 公办 科技幼儿园 徐家汇/田林 宜山园10部 宜山路655弄10号 3 9 区域内自主招生 A  区域自主 明确托班">
+                data-text="40 公办 示范园 科技幼儿园 徐家汇/田林 宜山园10部 宜山路655弄10号 64854450 / 64362975 待高德MCP查询 3 9 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">科技幼儿园</div><div class="sub">宜山园10部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>徐家汇/田林</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>宜山路655弄10号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64854450 / 64362975</td>
                 <td><span class="tag blue">3</span></td>
                 <td>9 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2523,14 +2751,17 @@
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="41 公办 公办 宛南实验幼儿园 龙华/滨江 瑞宁部 瑞宁路816号 6 6 区域内自主招生 A  区域自主 明确托班">
+                data-text="41 公办 示范园 宛南实验幼儿园 龙华/滨江 瑞宁部 瑞宁路816号 64363606 待高德MCP查询 6 6 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">宛南实验幼儿园</div><div class="sub">瑞宁部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>龙华/滨江</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>瑞宁路816号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64363606</td>
                 <td><span class="tag blue">6</span></td>
                 <td>6 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2545,14 +2776,17 @@
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="41 公办 公办 宛南实验幼儿园 龙华/滨江 滨江部 瑞宁路851号 6 6 区域内自主招生 A  区域自主 明确托班">
+                data-text="41 公办 示范园 宛南实验幼儿园 龙华/滨江 滨江部 瑞宁路851号 64161261 待高德MCP查询 6 6 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">宛南实验幼儿园</div><div class="sub">滨江部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>龙华/滨江</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>瑞宁路851号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64161261</td>
                 <td><span class="tag blue">6</span></td>
                 <td>6 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2567,14 +2801,17 @@
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="41 公办 公办 宛南实验幼儿园 龙华/滨江 大木桥部 大木桥路323号 6 6 区域内自主招生 A  区域自主 明确托班">
+                data-text="41 公办 示范园 宛南实验幼儿园 龙华/滨江 大木桥部 大木桥路323号 64168714 待高德MCP查询 6 6 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">宛南实验幼儿园</div><div class="sub">大木桥部</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>龙华/滨江</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>大木桥路323号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64168714</td>
                 <td><span class="tag blue">6</span></td>
                 <td>6 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2589,14 +2826,17 @@
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="42 公办 公办 机关建国幼儿园 衡复/湖南/滨江 建国园 建国西路570号 2 6 区域内自主招生 A  区域自主 明确托班">
+                data-text="42 公办 示范园 机关建国幼儿园 衡复/湖南/滨江 建国园 建国西路570号 64372841 待高德MCP查询 2 6 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">机关建国幼儿园</div><div class="sub">建国园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>衡复/湖南/滨江</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>建国西路570号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64372841</td>
                 <td><span class="tag blue">2</span></td>
                 <td>6 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2611,14 +2851,17 @@
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="42 公办 公办 机关建国幼儿园 衡复/湖南/滨江 安亭园 安亭路112号 2 6 区域内自主招生 A  区域自主 明确托班">
+                data-text="42 公办 示范园 机关建国幼儿园 衡复/湖南/滨江 安亭园 安亭路112号 64333332 待高德MCP查询 2 6 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">机关建国幼儿园</div><div class="sub">安亭园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>衡复/湖南/滨江</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>安亭路112号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64333332</td>
                 <td><span class="tag blue">2</span></td>
                 <td>6 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2633,14 +2876,17 @@
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="42 公办 公办 机关建国幼儿园 衡复/湖南/滨江 滨江园 云锦路183弄30号 2 6 区域内自主招生 A  区域自主 明确托班">
+                data-text="42 公办 示范园 机关建国幼儿园 衡复/湖南/滨江 滨江园 云锦路183弄30号 54252106 待高德MCP查询 2 6 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">机关建国幼儿园</div><div class="sub">滨江园</div></td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
+                <td>示范园</td>
                 <td>衡复/湖南/滨江</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>云锦路183弄30号</td>
-                <td>待电话确认</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>54252106</td>
                 <td><span class="tag blue">2</span></td>
                 <td>6 班</td>
                 <td><span class="tag green">A</span></td>
@@ -2650,18 +2896,96 @@
               </tr>
             
               <tr
+                data-area="田林/康健"
+                data-confidence="A"
+                data-admission="民办招生"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="M1 民办 民办（类型待核验） 一级 杜鹃园幼稚园 田林/康健 本部 桂林西街9弄57号 021-54202188 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                <td><div class="school-name">杜鹃园幼稚园</div><div class="sub">本部</div></td>
+                <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
+                <td>一级</td>
+                <td>田林/康健</td>
+                <td><span class="tag amber">民办招生</span></td>
+                <td>桂林西街9弄57号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>021-54202188</td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag green">A</span></td>
+                <td>民办招生范围、托班、小班名额、收费和材料要求需电话确认。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%9D%9C%E9%B9%83%E5%9B%AD%E5%B9%BC%E7%A8%9A%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E6%A1%82%E6%9E%97%E8%A5%BF%E8%A1%979%E5%BC%8457%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>民办/私立招生条件、收费、名额每年可能变化，报名前必须电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="龙华/滨江"
+                data-confidence="A"
+                data-admission="民办招生"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="M2 民办 民办（类型待核验） 一级 胡姬港湾幼儿园 龙华/滨江 本部 丰谷路205弄35号 64560614 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                <td><div class="school-name">胡姬港湾幼儿园</div><div class="sub">本部</div></td>
+                <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
+                <td>一级</td>
+                <td>龙华/滨江</td>
+                <td><span class="tag amber">民办招生</span></td>
+                <td>丰谷路205弄35号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64560614</td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag green">A</span></td>
+                <td>民办招生范围、托班、小班名额、收费和材料要求需电话确认。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E8%83%A1%E5%A7%AC%E6%B8%AF%E6%B9%BE%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E4%B8%B0%E8%B0%B7%E8%B7%AF205%E5%BC%8435%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>民办/私立招生条件、收费、名额每年可能变化，报名前必须电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="长桥/梅陇"
+                data-confidence="A"
+                data-admission="民办招生"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="M3 民办 普惠民办 一级 汇城苑幼稚园 长桥/梅陇 本部 百色路汇城五村75号 64235119 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                <td><div class="school-name">汇城苑幼稚园</div><div class="sub">本部</div></td>
+                <td><span class="tag amber">民办</span></td>
+                <td>普惠民办</td>
+                <td>一级</td>
+                <td>长桥/梅陇</td>
+                <td><span class="tag amber">民办招生</span></td>
+                <td>百色路汇城五村75号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
+                <td>64235119</td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag green">A</span></td>
+                <td>民办招生范围、托班、小班名额、收费和材料要求需电话确认。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%B1%87%E5%9F%8E%E8%8B%91%E5%B9%BC%E7%A8%9A%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E7%99%BE%E8%89%B2%E8%B7%AF%E6%B1%87%E5%9F%8E%E4%BA%94%E6%9D%9175%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>民办/私立招生条件、收费、名额每年可能变化，报名前必须电话核验。</td>
+              </tr>
+            
+              <tr
                 data-area="衡复/湖南"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M1 民办 二级 维亚幼儿园 衡复/湖南 本部 华亭路71弄1号 54036901 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M4 民办 民办（类型待核验） 二级 维亚幼儿园 衡复/湖南 本部 华亭路71弄1号 54036901 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">维亚幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>华亭路71弄1号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>54036901</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -2677,13 +3001,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M2 民办 二级 四季方馨幼儿园 衡复/湖南 本部 五原路112号 021-54036603 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M5 民办 民办（类型待核验） 二级 四季方馨幼儿园 衡复/湖南 本部 五原路112号 021-54036603 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">四季方馨幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>五原路112号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>021-54036603</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -2699,13 +3026,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M3 民办 二级 滨江幼儿园 龙华/滨江 本部 云锦路80弄10号 64380700 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M6 民办 民办（类型待核验） 二级 滨江幼儿园 龙华/滨江 本部 云锦路80弄10号 64380700 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">滨江幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>龙华/滨江</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>云锦路80弄10号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64380700</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -2721,13 +3051,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M4 民办 二级 汇宝幼儿园 徐家汇/枫林 本部 宛平南路592号 64690445 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M7 民办 民办（类型待核验） 二级 汇宝幼儿园 徐家汇/枫林 本部 宛平南路592号 64690445 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">汇宝幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>徐家汇/枫林</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>宛平南路592号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64690445</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -2743,13 +3076,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M5 民办 二级 蒙世学堂幼儿园 徐家汇/枫林 本部 斜土路2421号 021-64686261*8103 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M8 民办 民办（类型待核验） 二级 蒙世学堂幼儿园 徐家汇/枫林 本部 斜土路2421号 021-64686261*8103 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">蒙世学堂幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>徐家汇/枫林</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>斜土路2421号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>021-64686261*8103</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -2765,13 +3101,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M6 民办 二级 樱花园幼稚园 田林/康健 本部 百花街380号 54185106 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M9 民办 民办（类型待核验） 二级 樱花园幼稚园 田林/康健 本部 百花街380号 54185106 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">樱花园幼稚园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>田林/康健</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>百花街380号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>54185106</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -2787,13 +3126,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M7 民办 二级 新宜幼稚园 田林/康健 本部 古宜路170弄7号 64684874 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M10 民办 民办（类型待核验） 二级 新宜幼稚园 田林/康健 本部 古宜路170弄7号 64684874 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">新宜幼稚园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>田林/康健</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>古宜路170弄7号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64684874</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -2809,13 +3151,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M8 民办 二级 蓓蕾幼稚园 徐家汇/枫林 本部 蒲江塘路50号玉兰花苑6幢 64647491 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M11 民办 民办（类型待核验） 二级 蓓蕾幼稚园 徐家汇/枫林 本部 蒲江塘路50号玉兰花苑6幢 64647491 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">蓓蕾幼稚园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>徐家汇/枫林</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>蒲江塘路50号玉兰花苑6幢</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64647491</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -2831,13 +3176,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M9 民办 二级 蓓蕾幼稚园 徐家汇/枫林 分园 天钥桥路380弄11号 64647491 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M12 民办 民办（类型待核验） 二级 蓓蕾幼稚园 徐家汇/枫林 分园 天钥桥路380弄11号 64647491 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">蓓蕾幼稚园</div><div class="sub">分园</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>徐家汇/枫林</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>天钥桥路380弄11号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64647491</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -2853,13 +3201,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M10 民办 二级 淇莲幼儿园 田林/康健 本部 浦北路50号 54669909 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M13 民办 民办（类型待核验） 二级 淇莲幼儿园 田林/康健 本部 浦北路50号 54669909 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">淇莲幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>田林/康健</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>浦北路50号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>54669909</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -2875,13 +3226,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M11 民办 二级 田林街道中心幼儿园 田林/康健 本部 田林六村10号 64705223 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M14 民办 民办（类型待核验） 二级 田林街道中心幼儿园 田林/康健 本部 田林六村10号 64705223 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">田林街道中心幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>田林/康健</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>田林六村10号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64705223</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -2897,13 +3251,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M12 民办 二级 胡姬港湾新汇幼儿园 田林/康健 本部 浦北路21弄42号 54669810 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M15 民办 民办（类型待核验） 二级 胡姬港湾新汇幼儿园 田林/康健 本部 浦北路21弄42号 54669810 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">胡姬港湾新汇幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>田林/康健</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>浦北路21弄42号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>54669810</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -2919,13 +3276,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M13 民办 二级 小神童幼儿园 华泾/龙吴 本部 龙吴路988弄25号 021-54360296 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M16 民办 普惠民办 二级 小神童幼儿园 华泾/龙吴 本部 龙吴路988弄25号 021-54360296 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">小神童幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>普惠民办</td>
                 <td>二级</td>
                 <td>华泾/龙吴</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>龙吴路988弄25号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>021-54360296</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -2941,13 +3301,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M14 民办 二级 安琪曈幼稚园 衡复/湖南 本部 衡山路9弄2号 64665309 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M17 民办 民办（类型待核验） 二级 安琪曈幼稚园 衡复/湖南 本部 衡山路9弄2号 64665309 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">安琪曈幼稚园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>衡山路9弄2号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64665309</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -2963,13 +3326,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M15 民办 二级 鲁浦幼儿园 龙华/滨江 本部 宛南一村23号 64384206 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M18 民办 民办（类型待核验） 二级 鲁浦幼儿园 龙华/滨江 本部 宛南一村23号 64384206 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">鲁浦幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>龙华/滨江</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>宛南一村23号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64384206</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -2985,13 +3351,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M16 民办 二级 鲁浦幼儿园 龙华/滨江 分园 宛南五村1号 64384206 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M19 民办 民办（类型待核验） 二级 鲁浦幼儿园 龙华/滨江 分园 宛南五村1号 64384206 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">鲁浦幼儿园</div><div class="sub">分园</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>龙华/滨江</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>宛南五村1号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64384206</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3007,13 +3376,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M17 民办 二级 康文云锦幼儿园 龙华/滨江 本部 龙兰路398号 64282682 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M20 民办 民办（类型待核验） 二级 康文云锦幼儿园 龙华/滨江 本部 龙兰路398号 64282682 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">康文云锦幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>龙华/滨江</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>龙兰路398号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64282682</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3029,13 +3401,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M18 民办 二级 爱文幼儿园 徐家汇/虹桥 本部 古羊路160号1幢 021-62090135 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M21 民办 民办（类型待核验） 二级 爱文幼儿园 徐家汇/虹桥 本部 古羊路160号1幢 021-62090135 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">爱文幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>徐家汇/虹桥</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>古羊路160号1幢</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>021-62090135</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3051,13 +3426,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M19 民办 二级 童稻幼儿园 徐家汇/虹桥 本部 淮海西路365弄2号楼、3号楼 52668270 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M22 民办 民办（类型待核验） 二级 童稻幼儿园 徐家汇/虹桥 本部 淮海西路365弄2号楼、3号楼 52668270 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">童稻幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>徐家汇/虹桥</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>淮海西路365弄2号楼、3号楼</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>52668270</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3073,13 +3451,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M20 民办 二级 嘉宝幼儿园 徐家汇/枫林 本部 吴兴路75号 64373773 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M23 民办 民办（类型待核验） 二级 嘉宝幼儿园 徐家汇/枫林 本部 吴兴路75号 64373773 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">嘉宝幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>徐家汇/枫林</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>吴兴路75号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64373773</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3095,13 +3476,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M21 民办 二级 金贝贝幼儿园 华泾/龙吴 本部 龙吟路300号 54820000 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M24 民办 民办（类型待核验） 二级 金贝贝幼儿园 华泾/龙吴 本部 龙吟路300号 54820000 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">金贝贝幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>华泾/龙吴</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>龙吟路300号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>54820000</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3117,13 +3501,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M22 民办 二级 世纪昂立幼儿园 徐家汇/枫林 本部 龙山新村115号（近零陵路） 54890979 / 64382277 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M25 民办 民办（类型待核验） 二级 世纪昂立幼儿园 徐家汇/枫林 本部 龙山新村115号（近零陵路） 54890979 / 64382277 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">世纪昂立幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>徐家汇/枫林</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>龙山新村115号（近零陵路）</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>54890979 / 64382277</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3139,13 +3526,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M23 民办 二级 爱菊幼儿园 衡复/湖南 本部 复兴西路70号 64043162 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M26 民办 民办（类型待核验） 二级 爱菊幼儿园 衡复/湖南 本部 复兴西路70号 64043162 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">爱菊幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>复兴西路70号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64043162</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3161,13 +3551,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M24 民办 二级 培蕾幼稚园 长桥/梅陇 本部 梅陇三村49号 64768480 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M27 民办 民办（类型待核验） 二级 培蕾幼稚园 长桥/梅陇 本部 梅陇三村49号 64768480 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">培蕾幼稚园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>长桥/梅陇</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>梅陇三村49号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64768480</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3183,13 +3576,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M25 民办 二级 培蕾幼稚园 长桥/梅陇 分园 梅陇六村41号 64767077 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M28 民办 民办（类型待核验） 二级 培蕾幼稚园 长桥/梅陇 分园 梅陇六村41号 64767077 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">培蕾幼稚园</div><div class="sub">分园</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>长桥/梅陇</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>梅陇六村41号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64767077</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3205,13 +3601,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M26 民办 二级 枫叶交响幼儿园 衡复/湖南 本部 太原路87号 64730053 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M29 民办 民办（类型待核验） 二级 枫叶交响幼儿园 衡复/湖南 本部 太原路87号 64730053 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">枫叶交响幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>太原路87号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64730053</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3227,13 +3626,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M27 民办 二级 泰宁田林幼儿园 田林/康健 本部 田林十一村36号 64755118-804 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M30 民办 民办（类型待核验） 二级 泰宁田林幼儿园 田林/康健 本部 田林十一村36号 64755118-804 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">泰宁田林幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>田林/康健</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>田林十一村36号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64755118-804</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3249,13 +3651,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M28 民办 二级 田林东方幼儿园 田林/康健 本部 宜山路田林十四村27号 021-64085912 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M31 民办 民办（类型待核验） 二级 田林东方幼儿园 田林/康健 本部 宜山路田林十四村27号 021-64085912 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">田林东方幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>田林/康健</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>宜山路田林十四村27号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>021-64085912</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3271,13 +3676,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M29 民办 二级 澳宝幼儿园 衡复/湖南 本部 永嘉路356弄31号 64720200 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M32 民办 民办（类型待核验） 二级 澳宝幼儿园 衡复/湖南 本部 永嘉路356弄31号 64720200 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">澳宝幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>永嘉路356弄31号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64720200</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3293,13 +3701,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M30 民办 二级 吉的堡小蜻蜓幼儿园 田林/康健 本部 虹梅路1035弄30号 64368108 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M33 民办 民办（类型待核验） 二级 吉的堡小蜻蜓幼儿园 田林/康健 本部 虹梅路1035弄30号 64368108 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">吉的堡小蜻蜓幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>田林/康健</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>虹梅路1035弄30号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64368108</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3315,13 +3726,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M31 民办 二级 东泉大地幼儿园 龙华/滨江 本部 东泉路65弄9号 54084130 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M34 民办 民办（类型待核验） 二级 东泉大地幼儿园 龙华/滨江 本部 东泉路65弄9号 54084130 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">东泉大地幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>龙华/滨江</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>东泉路65弄9号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>54084130</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3337,13 +3751,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M32 民办 二级 吉的堡新徐汇幼儿园 徐家汇/枫林 本部 小木桥路101弄20号 021-54245100 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M35 民办 民办（类型待核验） 二级 吉的堡新徐汇幼儿园 徐家汇/枫林 本部 小木桥路101弄20号 021-54245100 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">吉的堡新徐汇幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>徐家汇/枫林</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>小木桥路101弄20号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>021-54245100</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3359,13 +3776,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M33 民办 二级 爱悠小红花幼儿园 长桥/梅陇 本部 梅陇路130号1幢、2幢 021-54333289 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M36 民办 民办（类型待核验） 二级 爱悠小红花幼儿园 长桥/梅陇 本部 梅陇路130号1幢、2幢 021-54333289 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">爱悠小红花幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>长桥/梅陇</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>梅陇路130号1幢、2幢</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>021-54333289</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3381,13 +3801,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M34 民办 二级 中山幼儿园 衡复/湖南 本部 桃江路42号 021-33565515 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M37 民办 民办（类型待核验） 二级 中山幼儿园 衡复/湖南 本部 桃江路42号 021-33565515 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">中山幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>桃江路42号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>021-33565515</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3403,13 +3826,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M35 民办 二级 创意幼儿园 田林/康健 本部 柳州路田林十村6号 64828813 / 64820881 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M38 民办 民办（类型待核验） 二级 创意幼儿园 田林/康健 本部 柳州路田林十村6号 64828813 / 64820881 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">创意幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>田林/康健</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>柳州路田林十村6号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64828813 / 64820881</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3425,13 +3851,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M36 民办 二级 牛牛幼稚园 长桥/梅陇 本部 罗城路700弄95号 54115988 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M39 民办 民办（类型待核验） 二级 牛牛幼稚园 长桥/梅陇 本部 罗城路700弄95号 54115988 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">牛牛幼稚园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>长桥/梅陇</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>罗城路700弄95号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>54115988</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3447,13 +3876,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M37 民办 二级 领幼幼儿园 徐家汇/枫林 本部 天钥桥路1057弄3号 64458520 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M40 民办 民办（类型待核验） 二级 领幼幼儿园 徐家汇/枫林 本部 天钥桥路1057弄3号 64458520 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">领幼幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>徐家汇/枫林</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>天钥桥路1057弄3号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64458520</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3469,13 +3901,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M38 民办 二级 漕河泾新汇幼儿园 漕溪/龙漕 本部 漕泾一村30号 64364348 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M41 民办 民办（类型待核验） 二级 漕河泾新汇幼儿园 漕溪/龙漕 本部 漕泾一村30号 64364348 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">漕河泾新汇幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>漕溪/龙漕</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>漕泾一村30号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64364348</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3491,13 +3926,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M39 民办 二级 凯琴数码幼儿园 华泾/龙吴 本部 华泾路995号 54822626 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M42 民办 普惠民办 二级 凯琴数码幼儿园 华泾/龙吴 本部 华泾路995号 54822626 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">凯琴数码幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>普惠民办</td>
                 <td>二级</td>
                 <td>华泾/龙吴</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>华泾路995号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>54822626</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3513,13 +3951,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M40 民办 二级 陇龙幼稚园 长桥/梅陇 本部 梅陇十一村96号 64549910 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M43 民办 民办（类型待核验） 二级 陇龙幼稚园 长桥/梅陇 本部 梅陇十一村96号 64549910 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">陇龙幼稚园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>长桥/梅陇</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>梅陇十一村96号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64549910</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3535,13 +3976,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M41 民办 二级 世蒙幼儿园 衡复/湖南 本部 东湖路21号 021-54038979 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M44 民办 民办（类型待核验） 二级 世蒙幼儿园 衡复/湖南 本部 东湖路21号 021-54038979 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">世蒙幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>东湖路21号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>021-54038979</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3557,13 +4001,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M42 民办 二级 蒂伊幼稚园 衡复/湖南 本部 永嘉路383号 64749388 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M45 民办 民办（类型待核验） 二级 蒂伊幼稚园 衡复/湖南 本部 永嘉路383号 64749388 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">蒂伊幼稚园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>永嘉路383号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>64749388</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3579,13 +4026,16 @@
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M43 民办 二级 吉的堡新汇幼儿园 田林/康健 本部 康健小区虹漕南路百花街18号、6号 54183331 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M46 民办 民办（类型待核验） 二级 吉的堡新汇幼儿园 田林/康健 本部 康健小区虹漕南路百花街18号、6号 54183331 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">吉的堡新汇幼儿园</div><div class="sub">本部</div></td>
                 <td><span class="tag amber">民办</span></td>
+                <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>田林/康健</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>康健小区虹漕南路百花街18号、6号</td>
+                <td>待高德MCP查询</td>
+                <td>待高德MCP查询</td>
                 <td>54183331</td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
