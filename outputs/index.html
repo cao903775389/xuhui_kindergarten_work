@@ -271,6 +271,68 @@
       color: #7c3e06;
     }
     .summary-card.urgent span { color: #7c3e06; }
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .profile-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .profile-card strong { display: block; margin-bottom: 8px; font-size: 16px; }
+    .profile-card span { color: var(--soft); }
+    .recommendation-table {
+      overflow: auto;
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    .recommendation-table table { min-width: 1180px; }
+    .recommendation-table td:nth-child(1),
+    .recommendation-table td:nth-child(2),
+    .recommendation-table td:nth-child(3) { max-width: 260px; }
+    .distance-list {
+      display: grid;
+      gap: 5px;
+      color: var(--soft);
+      font-size: 12px;
+    }
+    .distance-list b { color: var(--ink); }
+    .todo-board {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .todo-column {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .todo-column h3 { margin: 0 0 10px; font-size: 17px; }
+    .todo-item {
+      display: grid;
+      grid-template-columns: 20px 1fr;
+      gap: 10px;
+      padding: 9px 0;
+      border-top: 1px solid var(--line);
+    }
+    .todo-item input {
+      width: 18px;
+      min-height: 18px;
+      margin-top: 2px;
+      accent-color: var(--blue);
+    }
+    .todo-item span { color: var(--ink); }
+    .todo-item small { display: block; color: var(--soft); margin-top: 2px; }
+    .todo-item input:checked + span {
+      color: var(--soft);
+      text-decoration: line-through;
+    }
     .judgement-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -475,7 +537,7 @@
     }
     @media (max-width: 1100px) {
       .hero-grid, .workflow, .notice, .personal-grid { grid-template-columns: 1fr; }
-      .principles, .areas, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .principles, .areas, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .source-list { grid-template-columns: 1fr; }
     }
@@ -485,7 +547,7 @@
       .nav { overflow: auto; width: 100%; padding-bottom: 2px; }
       .hero-grid { padding: 38px 14px 34px; min-height: auto; }
       .scoreboard { padding: 14px; }
-      .principles, .areas, .matrix, .toolbar, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip { grid-template-columns: 1fr; }
+      .principles, .areas, .matrix, .toolbar, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board { grid-template-columns: 1fr; }
       .rank-item { grid-template-columns: 34px 1fr; }
       .rank-item .tag { grid-column: 2; justify-self: start; }
       .section-title { display: block; }
@@ -498,9 +560,10 @@
     <div class="shell">
       <div class="brand">徐汇区幼儿园筛选方案</div>
       <nav class="nav" aria-label="页面导航">
+        <a href="#profile">基本情况</a>
         <a href="#decision">结论</a>
         <a href="#priority">推荐板块</a>
-        <a href="#actions">行动清单</a>
+        <a href="#todos">待办</a>
         <a href="#query">园区查询</a>
         <a href="#sources">来源</a>
       </nav>
@@ -528,10 +591,23 @@
   </section>
 
   <main class="shell">
+    <section id="profile">
+      <div class="section-title">
+        <h2>基本情况</h2>
+        <p>这些条件是后续所有推荐的前提，尤其是居住证和租房材料链会直接影响公办报名顺位。</p>
+      </div>
+      <div class="profile-grid">
+        <article class="profile-card"><strong>户籍/材料</strong><span>刚来上海，暂无居住证；需要先补居住登记、租赁合同/备案和居住证材料。</span></article>
+        <article class="profile-card"><strong>办公位置</strong><span>上海市徐汇区西岸网易研发中心，按龙耀路/云锦路/龙水南路附近估算通勤。</span></article>
+        <article class="profile-card"><strong>租房需求</strong><span>至少 3 房、100 平以上、预算 10000 以内，优先电梯、小区环境好、遛娃方便。</span></article>
+        <article class="profile-card"><strong>决策目标</strong><span>先选能办材料且通勤可接受的居住板块，再反查居委和可报名幼儿园。</span></article>
+      </div>
+    </section>
+
     <section id="decision">
       <div class="section-title">
         <h2>首页结论</h2>
-        <p>先把选择压缩成可执行判断：住哪里、为什么、马上做什么。</p>
+        <p>这里直接给到“幼儿园/分园 + 租房小区 + 当前价格参考 + 到园/到公司距离”的组合建议。</p>
       </div>
       <div class="summary-strip">
         <article class="summary-card urgent">
@@ -550,6 +626,46 @@
           <strong>第一行动</strong>
           <span>看房前先问房东是否配合居住登记、租赁合同/备案和居住证材料。</span>
         </article>
+      </div>
+      <div class="recommendation-table">
+        <table>
+          <thead>
+            <tr>
+              <th>优先级</th>
+              <th>推荐幼儿园/分园</th>
+              <th>推荐租房小区/板块</th>
+              <th>贝壳租房链接与价格</th>
+              <th>距离估算</th>
+              <th>判断</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag green">首选</span></td>
+              <td><strong>园南幼儿园 本部</strong><br><span class="sub">龙川北路园南一村27号</span></td>
+              <td><strong>园南 / 长桥 / 植物园</strong><br><span class="sub">园南一村、长桥三村、上中路周边</span></td>
+              <td><a href="https://sh.zu.ke.com/zufang/rs%E5%9B%AD%E5%8D%97%20%E9%95%BF%E6%A1%A5%203%E5%AE%A4%20100%E5%B9%B3/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">公开样本：长桥三房约 9000 元/月、115.61㎡；需以贝壳打开结果复核</span></td>
+              <td><span class="distance-list"><span><b>小区到园：</b>约 0.3-1.2 km</span><span><b>小区到公司：</b>约 5-7 km</span></span></td>
+              <td>最贴近预算和居住需求，适合作为主看房区域。</td>
+            </tr>
+            <tr>
+              <td><span class="tag blue">备选</span></td>
+              <td><strong>徐汇实验幼儿园 本部</strong><br><span class="sub">龙瑞路135号</span></td>
+              <td><strong>华沁家园 / 华滨家园 / 华泾北</strong><br><span class="sub">龙吴路、龙瑞路、华发路周边</span></td>
+              <td><a href="https://sh.zu.ke.com/zufang/rs%E5%8D%8E%E6%B2%81%E5%AE%B6%E5%9B%AD%203%E5%AE%A4%20100%E5%B9%B3/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">公开小区资料显示华沁家园有 3 房户型；价格需打开贝壳实时确认</span></td>
+              <td><span class="distance-list"><span><b>小区到园：</b>约 1-2 km</span><span><b>小区到公司：</b>约 4-6 km</span></span></td>
+              <td>面积更容易做大，通勤还可控，适合做第二主线。</td>
+            </tr>
+            <tr>
+              <td><span class="tag amber">捡漏</span></td>
+              <td><strong>阳光幼儿园 小班部</strong><br><span class="sub">龙水南路龙南三村7号</span></td>
+              <td><strong>龙南三四村 / 龙南五村 / 樟树苑</strong><br><span class="sub">龙水南路、龙南片区</span></td>
+              <td><a href="https://sh.zu.ke.com/zufang/rs%E9%BE%99%E5%8D%97%203%E5%AE%A4%20100%E5%B9%B3/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">离公司近，但 100㎡以上三房、1 万内、电梯房源不稳定</span></td>
+              <td><span class="distance-list"><span><b>小区到园：</b>约 0.5-1.5 km</span><span><b>小区到公司：</b>约 1.5-3 km</span></span></td>
+              <td>通勤最好，但预算和面积条件容易卡住，只适合作为捡漏。</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
@@ -601,16 +717,33 @@
       </div>
     </section>
 
-    <section id="actions">
+    <section id="todos">
       <div class="section-title">
-        <h2>行动清单</h2>
-        <p>按这个顺序推进，避免看了很多房，最后发现报名材料用不上。</p>
+        <h2>入园待办清单</h2>
+        <p>按不同入园时间点拆成可勾选任务，勾选状态会保存在当前浏览器本地，方便持续同步进度。</p>
       </div>
-      <div class="action-steps">
-        <article class="action-card"><strong>先问材料</strong><p>看房第一句问：房东是否配合居住登记、租赁合同/备案、居住证地址一致。</p></article>
-        <article class="action-card"><strong>锁定板块</strong><p>优先筛“长桥/植物园/华泾/罗秀 + 3室 + 100㎡以上 + 10000以内”。</p></article>
-        <article class="action-card"><strong>反查居委</strong><p>拿到小区名后确认所属居委，再用园区查询工具匹配公办招生范围。</p></article>
-        <article class="action-card"><strong>准备兜底</strong><p>公办主线保留，同时联系民办/普惠民办，不把希望压在单一园所。</p></article>
+      <div class="todo-board">
+        <article class="todo-column">
+          <h3>立即处理</h3>
+          <label class="todo-item"><input type="checkbox" data-todo="confirm-year"><span>确认目标入园年份和年龄段<small>2026 插班/小班、2027 小班、或更晚入园。</small></span></label>
+          <label class="todo-item"><input type="checkbox" data-todo="rental-material"><span>看房前确认房东是否配合材料<small>居住登记、租赁合同/备案、地址一致。</small></span></label>
+          <label class="todo-item"><input type="checkbox" data-todo="beike-shortlist"><span>建立贝壳房源候选表<small>记录小区、价格、面积、是否电梯、是否可办材料。</small></span></label>
+          <label class="todo-item"><input type="checkbox" data-todo="private-backup"><span>同步联系民办/普惠民办兜底<small>不要等公办结果出来后再临时找。</small></span></label>
+        </article>
+        <article class="todo-column">
+          <h3>租房后 1-6 个月</h3>
+          <label class="todo-item"><input type="checkbox" data-todo="residence-register"><span>办理居住登记/居住证相关手续<small>确认办理周期和所需材料。</small></span></label>
+          <label class="todo-item"><input type="checkbox" data-todo="committee-check"><span>确认小区所属居委<small>用居委名称反查公办园招生范围。</small></span></label>
+          <label class="todo-item"><input type="checkbox" data-todo="commute-test"><span>实测到公司和幼儿园路线<small>早高峰、雨天、老人接送都要测一次。</small></span></label>
+          <label class="todo-item"><input type="checkbox" data-todo="school-call"><span>电话确认目标幼儿园材料口径<small>尤其是区域自主、扩招、多园区和 B 级地址。</small></span></label>
+        </article>
+        <article class="todo-column">
+          <h3>招生季 3-5 月</h3>
+          <label class="todo-item"><input type="checkbox" data-todo="policy-read"><span>核对当年徐汇招生政策<small>报名条件、验证时间、录取批次每年可能调整。</small></span></label>
+          <label class="todo-item"><input type="checkbox" data-todo="online-register"><span>完成信息登记和报名<small>按官方平台要求提交材料。</small></span></label>
+          <label class="todo-item"><input type="checkbox" data-todo="verification"><span>准备现场/线上验证材料<small>居住证、租赁材料、户口本、出生证等。</small></span></label>
+          <label class="todo-item"><input type="checkbox" data-todo="after-admission"><span>录取后办理体检和入园材料<small>同步安排老人接送路线和备用方案。</small></span></label>
+        </article>
       </div>
     </section>
 
@@ -2406,6 +2539,7 @@
     const confirmSelect = document.querySelector("#confirm");
     const resultCount = document.querySelector("#resultCount");
     const rows = Array.from(document.querySelectorAll("#rows tr"));
+    const todoInputs = Array.from(document.querySelectorAll("[data-todo]"));
 
     function applyFilters() {
       const q = search.value.trim().toLowerCase();
@@ -2427,6 +2561,14 @@
     for (const control of [search, area, admission, toddler, confidence, confirmSelect]) {
       control.addEventListener("input", applyFilters);
       control.addEventListener("change", applyFilters);
+    }
+
+    for (const input of todoInputs) {
+      const key = "xuhui-kindergarten-todo-" + input.dataset.todo;
+      input.checked = localStorage.getItem(key) === "1";
+      input.addEventListener("change", () => {
+        localStorage.setItem(key, input.checked ? "1" : "0");
+      });
     }
   </script>
 </body>
