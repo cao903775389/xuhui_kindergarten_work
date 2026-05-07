@@ -472,6 +472,9 @@ const privateCampusItems = privateCampusRows.map((item, index) => {
 });
 
 const campusItems = [...publicCampusItems, ...privateCampusItems];
+const amapMatchedCount = campusItems.filter((item) => item.officeDistance !== pendingAmapValue).length;
+const amapUnmatchedItems = campusItems.filter((item) => item.officeDistance === pendingAmapValue);
+const amapMatchRate = `${Math.round((amapMatchedCount / campusItems.length) * 100)}%`;
 
 const campusHeader = ["编号", "性质", "办园类型", "办园等级", "幼儿园", "片区", "园区/分园", "地址", "高德POI名称", "高德POI地址", "高德经纬度", `距${officeLocation.name}`, "高德搜索链接", "联系电话", "托班计划", "小班计划", "对口居委/招生范围", "招生类型", "置信度", "备注", "主要来源"];
 const campusData = campusItems.map((item) => [
@@ -530,7 +533,7 @@ const summaryRows = [
   ["公办园区/分园点位数", publicCampusItems.length, "按公开园部地址拆分；少数历史变更项标B级。"],
   ["民办/私立点位数", privateCampusItems.length, "来自徐汇区民办幼儿园名单公开资料；招生条件、收费和名额需电话确认。"],
   ["全部园区/点位数", campusData.length, "公办园区点位 + 民办/私立点位。"],
-  ["高德增强字段", "已接入", "已批量补POI名称、经纬度和到网易上海西岸研发中心的高德直线距离；低置信匹配保留为待核验。"],
+  ["高德增强字段", `${amapMatchedCount}/${campusItems.length}`, "已批量补POI名称、经纬度和到网易上海西岸研发中心的高德直线距离；低置信匹配保留为待核验。"],
   ["小班计划合计", schools.reduce((sum, s) => sum + s.small, 0), "PDF计划班级数合计。"],
   ["托班明确班级数合计", schools.reduce((sum, s) => sum + (/^\d+$/.test(s.toddler) ? Number(s.toddler) : 0), 0), "不含混龄式招生。"],
   ["混龄式招生主体数", schools.filter((s) => `${s.toddler}`.includes("混龄")).length, "混龄式招生不直接等同托班班级数。"],
@@ -711,6 +714,10 @@ const renderDecisionRows = () => decisionRecommendations.map((row) => `
               <td>${escapeHtml(row.judgement)}</td>
             </tr>
 `).join("");
+
+const unmatchedPreview = amapUnmatchedItems.slice(0, 12)
+  .map((item) => `${item.nature}-${item.name}${item.campus === "本部" ? "" : ` ${item.campus}`}`)
+  .join("、");
 
 const html = `<!doctype html>
 <html lang="zh-CN">
@@ -1232,7 +1239,7 @@ const html = `<!doctype html>
     .area-metrics b { display: block; color: var(--ink); font-size: 18px; }
     .notice {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
     }
     .notice-card {
@@ -1298,6 +1305,7 @@ const html = `<!doctype html>
       <aside class="scoreboard" aria-label="数据摘要">
         <div class="score-row"><span>公办招生主体</span><strong>${schools.length}</strong></div>
         <div class="score-row"><span>全部园区/点位</span><strong>${campusItems.length}</strong></div>
+        <div class="score-row"><span>高德可靠匹配</span><strong>${amapMatchedCount}</strong></div>
         <div class="score-row"><span>小班计划合计</span><strong>${schools.reduce((sum, s) => sum + s.small, 0)}</strong></div>
         <div class="score-row"><span>明确托班计划</span><strong>${schools.reduce((sum, s) => sum + (/^\\d+$/.test(s.toddler) ? Number(s.toddler) : 0), 0)}</strong></div>
       </aside>
@@ -1339,6 +1347,16 @@ const html = `<!doctype html>
         <article class="summary-card">
           <strong>第一行动</strong>
           <span>看房前先问房东是否配合居住登记、租赁合同/备案和居住证材料。</span>
+        </article>
+      </div>
+      <div class="notice">
+        <article class="notice-card">
+          <h3>最终建议</h3>
+          <p>先按“长桥/园南 + 汇城苑兜底”看房；如果更看重通勤，切到“华泾北/龙瑞路 + 凯琴兜底”；龙华/龙南只在出现 100㎡以上、1 万内、房东配合材料的房源时捡漏。</p>
+        </article>
+        <article class="notice-card">
+          <h3>高德数据口径</h3>
+          <p>本页 ${amapMatchedCount}/${campusItems.length} 个点位已可靠匹配高德 POI，匹配率 ${amapMatchRate}；距离均为到网易上海西岸研发中心的直线距离，实际通勤仍需按步行/骑行/驾车路线复核。</p>
         </article>
       </div>
       <div class="recommendation-table">
@@ -1587,6 +1605,10 @@ ${renderDecisionRows()}
         <article class="notice-card">
           <h3>自主招生与扩招</h3>
           <p>“区域内自主招生”和“另向某街道扩招”不等于普通固定居委一一对应，应结合当年简章、报名条件和录取顺位理解。</p>
+        </article>
+        <article class="notice-card">
+          <h3>高德匹配质量</h3>
+          <p>高德已可靠匹配 ${amapMatchedCount} 个点位；${amapUnmatchedItems.length} 个点位未写入 POI，主要是老地址、同名/近名园所或地图返回跨区结果。待核验示例：${escapeHtml(unmatchedPreview)}。</p>
         </article>
       </div>
       <div class="source-list">

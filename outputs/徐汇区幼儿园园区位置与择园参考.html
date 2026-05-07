@@ -518,7 +518,7 @@
     .area-metrics b { display: block; color: var(--ink); font-size: 18px; }
     .notice {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
     }
     .notice-card {
@@ -584,6 +584,7 @@
       <aside class="scoreboard" aria-label="数据摘要">
         <div class="score-row"><span>公办招生主体</span><strong>42</strong></div>
         <div class="score-row"><span>全部园区/点位</span><strong>127</strong></div>
+        <div class="score-row"><span>高德可靠匹配</span><strong>101</strong></div>
         <div class="score-row"><span>小班计划合计</span><strong>149</strong></div>
         <div class="score-row"><span>明确托班计划</span><strong>0</strong></div>
       </aside>
@@ -625,6 +626,16 @@
         <article class="summary-card">
           <strong>第一行动</strong>
           <span>看房前先问房东是否配合居住登记、租赁合同/备案和居住证材料。</span>
+        </article>
+      </div>
+      <div class="notice">
+        <article class="notice-card">
+          <h3>最终建议</h3>
+          <p>先按“长桥/园南 + 汇城苑兜底”看房；如果更看重通勤，切到“华泾北/龙瑞路 + 凯琴兜底”；龙华/龙南只在出现 100㎡以上、1 万内、房东配合材料的房源时捡漏。</p>
+        </article>
+        <article class="notice-card">
+          <h3>高德数据口径</h3>
+          <p>本页 101/127 个点位已可靠匹配高德 POI，匹配率 80%；距离均为到网易上海西岸研发中心的直线距离，实际通勤仍需按步行/骑行/驾车路线复核。</p>
         </article>
       </div>
       <div class="recommendation-table">
@@ -4232,6 +4243,10 @@
         <article class="notice-card">
           <h3>自主招生与扩招</h3>
           <p>“区域内自主招生”和“另向某街道扩招”不等于普通固定居委一一对应，应结合当年简章、报名条件和录取顺位理解。</p>
+        </article>
+        <article class="notice-card">
+          <h3>高德匹配质量</h3>
+          <p>高德已可靠匹配 101 个点位；26 个点位未写入 POI，主要是老地址、同名/近名园所或地图返回跨区结果。待核验示例：公办-龙华幼儿园 丰谷园、公办-望德幼儿园 南宁园、公办-樱花园幼儿园 南园、公办-乌鲁木齐南路幼儿园 境外部、民办-维亚幼儿园、民办-滨江幼儿园、民办-蒙世学堂幼儿园、民办-樱花园幼稚园、民办-新宜幼稚园、民办-蓓蕾幼稚园、民办-田林街道中心幼儿园、民办-小神童幼儿园。</p>
         </article>
       </div>
       <div class="source-list">
