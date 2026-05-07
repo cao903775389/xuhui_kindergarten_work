@@ -467,6 +467,75 @@ const html = `<!doctype html>
     }
     .matrix-card h3 { margin: 0 0 10px; font-size: 17px; }
     .matrix-card p { margin: 0; color: var(--soft); }
+    .personal-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 16px;
+      align-items: stretch;
+    }
+    .decision-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+    .decision-card h3 { margin: 0 0 12px; font-size: 20px; }
+    .decision-card p { margin: 0 0 14px; color: var(--soft); }
+    .decision-card ul { margin: 0; padding-left: 18px; }
+    .decision-card li { margin: 7px 0; }
+    .verdict {
+      display: grid;
+      gap: 12px;
+      background: #fff8ed;
+      border: 1px solid #fed7aa;
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .verdict strong { font-size: 18px; color: #7c3e06; }
+    .verdict span { color: #7c3e06; }
+    .rank-list {
+      display: grid;
+      gap: 10px;
+    }
+    .rank-item {
+      display: grid;
+      grid-template-columns: 38px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    .rank-number {
+      width: 38px;
+      height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 900;
+    }
+    .rank-item strong { display: block; font-size: 16px; }
+    .rank-item span { color: var(--soft); font-size: 13px; }
+    .logic-table { margin-top: 14px; max-height: none; }
+    .logic-table table { min-width: 980px; }
+    .source-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .source-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .source-card strong { display: block; margin-bottom: 6px; }
+    .source-card span { color: var(--soft); font-size: 13px; }
     .filter-panel {
       background: var(--paper);
       border: 1px solid var(--line);
@@ -587,9 +656,10 @@ const html = `<!doctype html>
       padding: 24px 0 36px;
     }
     @media (max-width: 1100px) {
-      .hero-grid, .workflow, .notice { grid-template-columns: 1fr; }
+      .hero-grid, .workflow, .notice, .personal-grid { grid-template-columns: 1fr; }
       .principles, .areas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .source-list { grid-template-columns: 1fr; }
     }
     @media (max-width: 720px) {
       .shell { padding: 0 14px; }
@@ -598,6 +668,8 @@ const html = `<!doctype html>
       .hero-grid { padding: 38px 14px 34px; min-height: auto; }
       .scoreboard { padding: 14px; }
       .principles, .areas, .matrix, .toolbar { grid-template-columns: 1fr; }
+      .rank-item { grid-template-columns: 34px 1fr; }
+      .rank-item .tag { grid-column: 2; justify-self: start; }
       .section-title { display: block; }
       .section-title p { margin-top: 8px; }
     }
@@ -608,11 +680,13 @@ const html = `<!doctype html>
     <div class="shell">
       <div class="brand">徐汇区幼儿园筛选方案</div>
       <nav class="nav" aria-label="页面导航">
+        <a href="#personal">个人方案</a>
         <a href="#framework">筛选框架</a>
         <a href="#workflow">决策路径</a>
         <a href="#filter">园区筛选</a>
         <a href="#areas">片区统计</a>
         <a href="#risks">核验重点</a>
+        <a href="#sources">参考来源</a>
       </nav>
     </div>
   </header>
@@ -621,8 +695,9 @@ const html = `<!doctype html>
     <div class="shell hero-grid">
       <div>
         <h1>先判断资格，再比较便利性。</h1>
-        <p class="lead">这个页面把徐汇区 2026 公办幼儿园资料整理成一套可执行的筛选方案：先用居委和招生类型缩小范围，再看园区位置、托班/小班容量、置信度和电话核验风险。</p>
+        <p class="lead">这个页面把徐汇区 2026 公办幼儿园资料整理成一套可执行的筛选方案，并补充了“刚来上海、暂无居住证、在西岸网易研发中心上班、需要 3 房 100 平以上租房”的个人决策建议。</p>
         <div class="hero-actions">
+          <a class="button primary" href="#personal">查看个人建议</a>
           <a class="button primary" href="#filter">开始筛选园区</a>
           <a class="button" href="徐汇区幼儿园园区位置与择园参考.xlsx">打开 Excel 表</a>
         </div>
@@ -637,6 +712,99 @@ const html = `<!doctype html>
   </section>
 
   <main class="shell">
+    <section id="personal">
+      <div class="section-title">
+        <h2>个人推荐方案</h2>
+        <p>基于你的实际条件：刚来上海、暂无居住证、办公点在徐汇区西岸网易研发中心，需要先租房再匹配幼儿园。</p>
+      </div>
+      <div class="personal-grid">
+        <article class="decision-card">
+          <h3>明确结论</h3>
+          <p>当前不建议把“住在徐汇滨江核心区并冲热门公办园”作为主方案。更稳妥的路径是：先解决居住证材料链，再在长桥/植物园/华泾北/罗秀一带找房，并同步准备民办或普惠民办兜底。</p>
+          <ul>
+            <li><strong>公办录取判断：</strong>暂无居住证时，公办小班录取概率偏低；即便有居住登记凭证，外省市户籍仍是在本区户籍之后按居住证年限、社保年限、居住情况等排序统筹。</li>
+            <li><strong>通勤判断：</strong>西岸网易研发中心靠近龙耀路/徐汇滨江，龙华最近，但 3 房 100 平以上且 1 万内很难稳定满足。</li>
+            <li><strong>租房判断：</strong>长桥、植物园、华泾北、罗秀更容易找到面积和预算匹配的三房，也更适合老人接送和遛娃。</li>
+          </ul>
+        </article>
+        <aside class="verdict">
+          <strong>推荐排序</strong>
+          <span>长桥/植物园优先，华泾北/罗秀备选，龙华/徐汇滨江只作为捡漏；徐家汇、衡复、湖南路不建议当前阶段优先。</span>
+          <span class="tag red">公办概率：当前偏低</span>
+          <span class="tag amber">关键动作：先办居住登记</span>
+          <span class="tag green">租房策略：可办居住证优先</span>
+        </aside>
+      </div>
+
+      <div class="section-title">
+        <h2>居住板块排序</h2>
+        <p>排序同时考虑公办机会、租房预算、面积可得性、老人接送、遛娃和到西岸网易研发中心的通勤。</p>
+      </div>
+      <div class="rank-list">
+        <div class="rank-item">
+          <span class="rank-number">1</span>
+          <div><strong>长桥 / 植物园 / 园南 / 上中路</strong><span>预算最匹配，生活成熟，靠近上海植物园；可重点反查长桥第二、长桥第三、园南、上海幼儿园等招生范围。</span></div>
+          <span class="tag green">首选</span>
+        </div>
+        <div class="rank-item">
+          <span class="rank-number">2</span>
+          <div><strong>华泾北 / 罗秀 / 龙瑞路</strong><span>面积更容易做大，租金压力相对可控，到西岸通勤仍可接受；可关注徐汇实验、星辰、果果、盛华、印象等方向。</span></div>
+          <span class="tag blue">备选首选</span>
+        </div>
+        <div class="rank-item">
+          <span class="rank-number">3</span>
+          <div><strong>龙华 / 龙南 / 龙水南路</strong><span>通勤最好，离西岸网易更近；但 3 房 100 平以上、带电梯、小区好、1 万以内的房源不稳定。</span></div>
+          <span class="tag amber">捡漏</span>
+        </div>
+        <div class="rank-item">
+          <span class="rank-number">4</span>
+          <div><strong>徐家汇 / 衡复 / 湖南路</strong><span>关注度高、租金高、公办竞争强，不适合在暂无居住证和预算受限时作为主方案。</span></div>
+          <span class="tag red">谨慎</span>
+        </div>
+      </div>
+
+      <div class="table-box logic-table">
+        <table>
+          <thead>
+            <tr><th>目标</th><th>当前判断</th><th>应该怎么做</th><th>风险</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>公办报名资格</td><td>暂无居住证会明显拉低顺位，材料链可能不完整。</td><td>租房第一优先确认房东是否配合居住登记、租赁合同/备案、居住证地址一致。</td><td>只看房子不看材料，后面可能无法用于报名。</td></tr>
+            <tr><td>录取概率</td><td>公办主线可保留，但不能当唯一方案。</td><td>同步联系民办/普惠民办，尤其是徐汇南部和闵行古美/梅陇边界。</td><td>热门公办通常优先本区户籍和材料更完整家庭。</td></tr>
+            <tr><td>上班通勤</td><td>龙华最近，长桥/华泾北仍可接受。</td><td>用高德实测早高峰路线，优先考虑开车/打车/骑行接送链路。</td><td>仅看直线距离会低估跨路、停车、雨天接送成本。</td></tr>
+            <tr><td>租房筛选</td><td>西岸核心 1 万内三房 100 平以上难度高。</td><td>贝壳筛选“徐汇 + 长桥/植物园/华泾/罗秀 + 3室 + 100㎡以上 + 10000以内”。</td><td>徐汇滨江同类房源常见租金高于预算。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section-title">
+        <h2>租房搜索清单</h2>
+        <p>看房时不要只问价格和面积，第一句就问“能不能办居住登记/居住证材料”。</p>
+      </div>
+      <div class="principles">
+        <article class="principle">
+          <strong>必选条件</strong>
+          <p>3 个房间以上、100 平以上、整租、预算 10000 以内。</p>
+          <ul><li>优先电梯房</li><li>可长期租</li><li>房东配合材料</li></ul>
+        </article>
+        <article class="principle">
+          <strong>优先关键词</strong>
+          <p>长桥、植物园、园南、汇成、华泾、罗秀、龙瑞路。</p>
+          <ul><li>近公园</li><li>近地铁/公交</li><li>小区环境好</li></ul>
+        </article>
+        <article class="principle">
+          <strong>看房必问</strong>
+          <p>居住登记、租赁合同、地址一致、是否可用于幼儿园报名。</p>
+          <ul><li>房东是否配合</li><li>是否可备案</li><li>合同周期</li></ul>
+        </article>
+        <article class="principle">
+          <strong>兜底动作</strong>
+          <p>公办报名同时准备民办/普惠民办，不把希望压在单一园所。</p>
+          <ul><li>先问招生范围</li><li>再看学费</li><li>最后比较接送</li></ul>
+        </article>
+      </div>
+    </section>
+
     <section id="framework">
       <div class="section-title">
         <h2>四层筛选框架</h2>
@@ -819,10 +987,43 @@ const html = `<!doctype html>
         </article>
       </div>
     </section>
+
+    <section id="sources">
+      <div class="section-title">
+        <h2>政策与租房参考</h2>
+        <p>外部页面会随时间变化，租房信息尤其需要以实际看房和中介/房东确认为准。</p>
+      </div>
+      <div class="source-list">
+        <article class="source-card">
+          <strong><a href="https://sh.bendibao.com/news/2026415/305294.shtm" target="_blank" rel="noopener">2026 徐汇区幼儿园招生工作方案</a></strong>
+          <span>用于判断户籍优先、外省市户籍排序、录取批次和报名验证要求。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://m.sh.bendibao.com/edu/305384.html" target="_blank" rel="noopener">2026 徐汇幼儿园报名材料</a></strong>
+          <span>用于核对非本市户籍幼儿、父母居住证、租赁合同和地址一致要求。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://m.sh.bendibao.com/zffw/285087.html" target="_blank" rel="noopener">上海居住证办理条件</a></strong>
+          <span>用于确认居住登记、合法稳定住所、租赁合同/备案等材料链。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://sh.zu.ke.com/" target="_blank" rel="noopener">贝壳上海租房</a></strong>
+          <span>用于实时搜索 3 室、100 平以上、10000 元以内的整租房源。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://sh.zu.ke.com/wzdt/" target="_blank" rel="noopener">贝壳徐汇租房板块</a></strong>
+          <span>用于快速进入徐汇滨江、华泾、龙华、植物园、长桥等板块。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://www.chooffice.com/1357.html" target="_blank" rel="noopener">西岸网易研发中心办公点参考</a></strong>
+          <span>用于确认西岸网易研发中心靠近龙耀路、徐汇滨江一带的通勤判断。</span>
+        </article>
+      </div>
+    </section>
   </main>
 
   <footer>
-    <div class="shell">主要来源：${escapeHtml(planSource)}；${escapeHtml(publicListSource)}；${escapeHtml(pdfSource)}</div>
+    <div class="shell">主要来源：${escapeHtml(planSource)}；${escapeHtml(publicListSource)}；${escapeHtml(pdfSource)}；2026 徐汇招生政策、上海居住证办理指南、贝壳/58 等公开租房信息。</div>
   </footer>
 
   <script>
