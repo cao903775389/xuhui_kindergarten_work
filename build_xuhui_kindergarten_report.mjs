@@ -1,0 +1,944 @@
+import fs from "node:fs/promises";
+import path from "node:path";
+import { SpreadsheetFile, Workbook } from "@oai/artifact-tool";
+
+const outputDir = path.join(process.cwd(), "outputs");
+
+const pdfSource = "本地PDF：/Users/caofengyang/Downloads/徐汇区幼儿园对口地区.pdf（2026年徐汇区公办幼儿园对口居委一览表及计划班级数）";
+const publicListSource = "上海本地宝《上海市徐汇区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://m.sh.bendibao.com/edu/284155.html";
+const planSource = "上海本地宝《2026徐汇区幼儿园招生对口地段及招生计划班级数》，2026-04-15：https://m.sh.bendibao.com/edu/305291.html";
+
+const schools = [
+  { id: 1, name: "襄阳南路第一幼儿园", area: "衡复/湖南", toddler: "3", small: 4, committee: "慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中" },
+  { id: 2, name: "五原路幼儿园", area: "衡复/湖南", toddler: "3", small: 4, committee: "上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康" },
+  { id: 3, name: "汇星幼儿园", area: "徐家汇/天平", toddler: "1", small: 3, committee: "天平、高安、康平、吴兴、宛平、余庆、广元、安亭、徐汇新村、张家浜肇谨、零陵、科汇、启明、沈马、王家堂、南赵巷、殷家角、汇翠、名园、德昌" },
+  { id: 4, name: "乐山幼儿园", area: "徐家汇/交大", toddler: "1", small: 3, committee: "乐山一村、乐山二三村、乐山四五村、乐山六七村、乐山八九村、文定、汇站、交大、豪庭" },
+  { id: 5, name: "汇家幼儿园", area: "徐家汇/虹桥路", toddler: "1", small: 3, committee: "番禺、南丹、柿子湾、潘家宅、陈家宅、虹二、虹交、西塘、东塘" },
+  { id: 6, name: "枫林幼儿园", area: "枫林/斜土", toddler: "1", small: 2, committee: "日新、日二、日五、日六第一、日六第二、大三、大四、康巨、茶陵、景泰、恒益、西木南、西木北、江南" },
+  { id: 7, name: "复旦大学附属徐汇实验幼儿园", area: "枫林/斜土", toddler: "1", small: 4, committee: "平江、肇一、上影、日七、大五、医清、四季园、肇清、医学院" },
+  { id: 8, name: "东安一村幼儿园", area: "枫林/斜土", toddler: "1", small: 2, committee: "东安一村北、东安一村南、安康、振兴、张东、爱华、汇园、东安二村、沈家里、东安四村、谨斜、东安苑、枫林新村、南康" },
+  { id: 9, name: "龙山幼儿园", area: "枫林/宛南", toddler: "1", small: 4, committee: "天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑" },
+  { id: 10, name: "龙华幼儿园", area: "龙华/西岸", toddler: "2", small: 5, committee: "上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园" },
+  { id: 11, name: "汇霖幼儿园", area: "田林/虹桥", toddler: "1", small: 4, committee: "古宜、长春、吴中、桂林苑、虹南、虹星、怡桂苑、钦北、华悦家园、鑫耀" },
+  { id: 12, name: "阳光幼儿园", area: "龙华/滨江", toddler: "1", small: 3, committee: "龙南三四、龙南五、龙南六、龙南七、滨江、樟树苑、东泉、张家园" },
+  { id: 13, name: "漕溪新村幼儿园", area: "漕溪/龙漕", toddler: "1", small: 3, committee: "金谷园、南一村一、南一村二、漕溪四村双号、凯翔、龙漕、嘉萱苑、漕东" },
+  { id: 14, name: "望德幼儿园", area: "康健/南站", toddler: "4", small: 8, committee: "康健路、习勤、薛家宅、科苑、九弄、中海、梓树园、月河、宾阳、馨汇南苑、公园道" },
+  { id: 15, name: "瑞德幼儿园", area: "长桥/汇成", toddler: "2", small: 3, committee: "汇成一村、汇成二村、汇成三村、汇成四村、华东二、楼园、金牛、挹翠苑、罗城、光华、汇澜苑、金塘" },
+  { id: 16, name: "益思幼儿园", area: "田林/漕河泾", toddler: "1", small: 2, committee: "田林一二村、田林五六七村、田林八九十村、田林十三村、田林十一村、千鹤三、爱建园、万科华尔兹、新苑一二、新苑三四、新苑五六七、田林十四村第一、田林十四村第二" },
+  { id: 17, name: "樱花园幼儿园", area: "康健/桂林", toddler: "2", small: 3, committee: "月季百藤、樱花园、茶花桂花、丁香迎春、玉兰园、寿益坊（海上华庭）、紫鹃园、紫薇园（牡丹园、玫瑰园）、金桂苑、紫荆党校" },
+  { id: 18, name: "长海幼儿园", area: "康健/桂林", toddler: "混龄式招生", small: 2, committee: "长顺海、长虹坊、长青坊、长丰坊、长兴坊、师大新村、桂康" },
+  { id: 19, name: "康沁幼儿园", area: "康健/桂林", toddler: "混龄式招生", small: 2, committee: "寿昌山、寿祥坊、寿益坊（寿益坊、桂林西街101弄）、康乐、桂二、冠生园、康宁馨、康强海（康强坊）" },
+  { id: 20, name: "长桥第一幼儿园", area: "长桥", toddler: "混龄式招生", small: 2, committee: "长桥一村、长桥五村（书香逸居、长桥五村）、闵朱、舒城" },
+  { id: 21, name: "长桥第二幼儿园", area: "长桥/凌云", toddler: "2", small: 4, committee: "长桥新村一、长桥新二村、长桥七村、兴荣苑、和平、龙州、梅陇十一第一、梅陇十一第二、陇南、闵秀" },
+  { id: 22, name: "长桥第三幼儿园", area: "长桥", toddler: "2", small: 5, committee: "长桥三村一、长桥三村二（长桥三村东区）、长桥八村、平福、长桥四村" },
+  { id: 23, name: "园南幼儿园", area: "长桥/园南", toddler: "1", small: 3, committee: "园南一村、园南二村、园南三村、汇成五村、华东一" },
+  { id: 24, name: "梅陇幼儿园", area: "凌云/梅陇", toddler: "2", small: 5, committee: "梅三、梅六、梅苑一、梅苑二、凌云、梅四、理工一、理工二、华理苑、书香苑、家乐苑、阳光（阳光新景）" },
+  { id: 25, name: "梅陇第二幼儿园", area: "凌云/梅陇", toddler: "混龄式招生", small: 2, committee: "梅陇五村、梅陇七村、梅陇八村、梅陇十村、梅陇九村、阳光（阳光绿园）、长陇苑" },
+  { id: 26, name: "华建幼儿园", area: "华泾", toddler: "1", small: 3, committee: "华建、建华村、北杨村" },
+  { id: 27, name: "位育幼儿园", area: "华泾", toddler: "2", small: 2, committee: "华泾四村、华泾五村、漓江山水、联合居委" },
+  { id: 28, name: "果果幼儿园", area: "华泾", toddler: "1", small: 4, committee: "华欣家园、华发、馨宁、大桥、明丰新纪苑、名苑、华臻" },
+  { id: 29, name: "星辰幼儿园", area: "华泾/罗秀", toddler: "1", small: 2, committee: "徐汇新城、罗秀三村、华滨家园、华沁家园、罗秀、罗秀二村" },
+  { id: 30, name: "徐汇实验幼儿园", area: "华泾/罗秀", toddler: "1", small: 2, committee: "中海瀛台、百龙、港口" },
+  { id: 31, name: "印象幼儿园", area: "华泾", toddler: "1", small: 2, committee: "印象、华阳、沙家浜" },
+  { id: 32, name: "科技逸夫幼儿园", area: "南站/石龙", toddler: "1", small: 1, committee: "正南、东荡、南站居委（临）" },
+  { id: 33, name: "盛华幼儿园", area: "华泾", toddler: "1", small: 3, committee: "盛华、华泾绿苑、光华绿苑" },
+  { id: 34, name: "艺树幼儿园", area: "徐家汇/田林", toddler: "2", small: 3, committee: "锦馨苑、千鹤第六、小安桥、华鼎广场、千鹤五、尚汇豪庭、千鹤一、千鹤二；另向徐家汇街道、田林街道扩招" },
+  { id: 35, name: "桂平幼儿园", area: "漕河泾/虹梅", toddler: "2", small: 1, committee: "联莘、欣园" },
+  { id: 36, name: "田林第六幼儿园", area: "田林/虹梅", toddler: "3", small: 5, committee: "田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招" },
+  { id: 37, name: "紫薇实验幼儿园", area: "康健/漕河泾", toddler: "5", small: 6, committee: "紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生" },
+  { id: 38, name: "上海幼儿园", area: "长桥/凌云", toddler: "2", small: 5, committee: "体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招" },
+  { id: 39, name: "乌鲁木齐南路幼儿园", area: "衡复/湖南", toddler: "3", small: 4, committee: "区域内自主招生" },
+  { id: 40, name: "科技幼儿园", area: "徐家汇/田林", toddler: "3", small: 9, committee: "区域内自主招生" },
+  { id: 41, name: "宛南实验幼儿园", area: "龙华/滨江", toddler: "6", small: 6, committee: "区域内自主招生" },
+  { id: 42, name: "机关建国幼儿园", area: "衡复/湖南/滨江", toddler: "2", small: 6, committee: "区域内自主招生" },
+];
+
+const campusRows = [
+  [1, "复中园", "复兴中路1260弄2号", "A", ""],
+  [1, "南园", "襄阳南路317号", "A", ""],
+  [1, "陕南园", "陕西南路540号", "A", ""],
+  [1, "北园", "襄阳南路207号", "A", ""],
+  [2, "永嘉园", "永嘉路420号", "A", ""],
+  [2, "武康园", "五原路400号", "A", ""],
+  [2, "兴国园", "武康路280弄24号", "A", ""],
+  [3, "南园", "宛平南路19弄3号", "A", ""],
+  [3, "北园", "康平路200号", "B", "2024公办名单写康平路200号；2024招生简章/部分旧资料写华山路1815号，建议电话确认当前小班实际园区。"],
+  [4, "本部", "乐山路18号", "A", ""],
+  [5, "北园", "番禺路800弄24号", "A", ""],
+  [5, "南园", "番禺路1188号", "A", ""],
+  [6, "本部", "小木桥路440弄30号", "A", ""],
+  [7, "托小班部", "平江路17号", "B", "2024年7月由原平江路幼儿园与原复旦大学医学院幼儿园合并组建；2025/公开资料显示新小班启用平江路32号，需确认2026实际安排。"],
+  [7, "中大班部/新小班候选", "平江路32号", "B", "公开资料显示办学地址为平江路32号、17号；原复旦医学院幼儿园东安路50弄10号为历史/合并相关地址。"],
+  [8, "零陵园", "零陵路250弄33号", "A", ""],
+  [8, "东安园", "东安一村39号", "A", "公办名单列出东安一村39号及零陵路250弄33号。"],
+  [9, "一分园", "宛南四村16号", "A", ""],
+  [9, "二分园", "中山南二路999弄5号", "A", ""],
+  [9, "本部", "天钥新村90号", "A", ""],
+  [10, "丰谷园", "丰谷路205弄34号", "A", ""],
+  [10, "龙恒园", "龙华西路31弄15号", "A", ""],
+  [10, "龙华园", "龙华西路285弄14号", "A", ""],
+  [11, "吴中园", "吴中东路500弄67号", "A", ""],
+  [11, "钦州园", "钦州北路898号", "A", ""],
+  [12, "中大班部", "天钥桥南路1249弄11号", "A", ""],
+  [12, "小班部", "龙水南路龙南三村7号", "A", ""],
+  [13, "中大班部", "龙漕路139号", "A", ""],
+  [13, "小班部", "漕东路193号", "A", ""],
+  [14, "冠生园", "冠生园路28号", "A", ""],
+  [14, "南宁园", "南宁路636号", "A", ""],
+  [15, "楼园园", "老沪闵路706弄37号", "A", ""],
+  [15, "金塘园", "老沪闵路333弄70号", "A", ""],
+  [16, "东园", "田林九村6号", "A", ""],
+  [16, "西园", "宜山路701弄53号", "A", ""],
+  [17, "南园", "百花街398号", "A", ""],
+  [17, "北园", "虹漕南路杨家桥88号", "A", ""],
+  [18, "本部", "桂林西街15弄2号", "A", ""],
+  [19, "本部", "桂林西街151弄20号甲", "A", ""],
+  [20, "本部", "长桥一村56号", "A", ""],
+  [21, "凌云园", "梅陇十一村97号", "A", ""],
+  [21, "长桥园", "长桥二村34号", "A", ""],
+  [22, "长桥园", "长桥三村124号", "A", ""],
+  [22, "平福园", "上中路483弄32号", "A", ""],
+  [23, "本部", "龙川北路园南一村27号", "A", ""],
+  [24, "嘉川园", "梅陇四村56号甲", "A", ""],
+  [24, "梅陇园", "梅陇六村65号", "A", ""],
+  [25, "本部", "梅陇五村54号", "A", ""],
+  [26, "本部", "老沪闵路1300号", "A", ""],
+  [27, "本部", "建华路102号", "A", ""],
+  [28, "华欣园", "龙吴路2422号", "A", ""],
+  [28, "华发园", "华发路100弄22号", "A", ""],
+  [29, "本部", "罗秀路11号", "A", ""],
+  [30, "本部", "龙瑞路135号", "A", ""],
+  [31, "本部", "望月路882号", "A", ""],
+  [32, "本部", "石龙路818弄8号", "A", ""],
+  [33, "本部", "望月路401号", "A", ""],
+  [34, "本部", "古井路160号", "A", ""],
+  [35, "本部", "桂平路260弄14号", "A", ""],
+  [36, "本部", "田林十二村40号", "A", ""],
+  [36, "贝贝分园", "田林四村18号", "A", ""],
+  [36, "东兰分园", "古美路1107弄65号", "A", ""],
+  [37, "桂平园", "桂平路123弄23号", "A", ""],
+  [37, "浦北园", "浦北路173号", "A", ""],
+  [37, "全州园", "宜州路26号", "A", ""],
+  [38, "凌云园", "上中西路378号", "A", ""],
+  [38, "冠军园", "老沪闵路729弄41号乙", "A", ""],
+  [38, "上中园", "上中路402号", "A", ""],
+  [39, "本部", "乌鲁木齐南路14号", "A", ""],
+  [39, "境内部", "淮海路1788号", "A", ""],
+  [39, "境外部", "淮海中路1480号", "A", ""],
+  [40, "宜山园1部", "宜山路655弄1号", "A", ""],
+  [40, "嘉陵园", "嘉陵路28号", "A", ""],
+  [40, "文定园", "文定路476号", "A", ""],
+  [40, "宜山园10部", "宜山路655弄10号", "A", ""],
+  [41, "瑞宁部", "瑞宁路816号", "A", ""],
+  [41, "滨江部", "瑞宁路851号", "A", ""],
+  [41, "大木桥部", "大木桥路323号", "A", ""],
+  [42, "建国园", "建国西路570号", "A", ""],
+  [42, "安亭园", "安亭路112号", "A", ""],
+  [42, "滨江园", "云锦路183弄30号", "A", ""],
+];
+
+const byId = new Map(schools.map((school) => [school.id, school]));
+const mapSearch = (name, campus, address) => {
+  const query = `上海市徐汇区 ${name} ${campus} ${address}`;
+  return `https://ditu.amap.com/search?query=${encodeURIComponent(query)}`;
+};
+
+const getAdmissionType = (committee) => {
+  if (committee.includes("区域内自主招生")) return "区域自主";
+  if (committee.includes("扩招")) return "扩招";
+  return "固定对口";
+};
+
+const getToddlerMode = (toddler) => {
+  if (`${toddler}`.includes("混龄")) return "混龄式招生";
+  if (/^\d+$/.test(`${toddler}`)) return "明确托班";
+  return "未列明";
+};
+
+const campusItems = campusRows.map(([id, campus, address, confidence, note]) => {
+  const school = byId.get(id);
+  const admissionType = getAdmissionType(school.committee);
+  const toddlerMode = getToddlerMode(school.toddler);
+  const needsConfirm = confidence === "B" || admissionType !== "固定对口" || note;
+  const searchText = [
+    id,
+    school.name,
+    school.area,
+    campus,
+    address,
+    school.toddler,
+    school.small,
+    school.committee,
+    confidence,
+    note,
+    admissionType,
+    toddlerMode,
+  ].join(" ");
+
+  return {
+    id,
+    name: school.name,
+    area: school.area,
+    campus,
+    address,
+    mapUrl: mapSearch(school.name, campus, address),
+    toddler: school.toddler,
+    small: school.small,
+    committee: school.committee,
+    confidence,
+    note,
+    source: id === 7 ? `${planSource}；复旦附属徐汇实验幼儿园公开资料/上哪学/021school；${publicListSource}` : `${planSource}；${publicListSource}`,
+    admissionType,
+    toddlerMode,
+    needsConfirm,
+    searchText,
+  };
+});
+
+const campusHeader = ["编号", "幼儿园", "片区", "园区/分园", "地址", "高德搜索链接", "托班计划", "小班计划", "对口居委/招生范围", "置信度", "备注", "主要来源"];
+const campusData = campusItems.map((item) => [
+  item.id,
+  item.name,
+  item.area,
+  item.campus,
+  item.address,
+  item.mapUrl,
+  item.toddler,
+  item.small,
+  item.committee,
+  item.confidence,
+  item.note,
+  item.source,
+]);
+
+const schoolHeader = ["编号", "幼儿园", "片区", "托班计划", "小班计划", "园区数", "对口居委/招生范围", "高德检索方式", "备注"];
+const schoolData = schools.map((school) => [
+  school.id,
+  school.name,
+  school.area,
+  school.toddler,
+  school.small,
+  campusRows.filter(([id]) => id === school.id).length,
+  school.committee,
+  "优先用“上海市徐汇区 + 园区地址”，再用“幼儿园名 + 园区名”核验。",
+  ["区域内自主招生", "扩招"].some((word) => school.committee.includes(word)) ? "招生不是普通固定居委一一对应，需结合当年简章和电话确认。" : "",
+]);
+
+const areaStats = [...schools.reduce((map, school) => {
+  const item = map.get(school.area) || { area: school.area, schools: 0, campuses: 0, small: 0, toddlerNumeric: 0, mixed: 0 };
+  item.schools += 1;
+  item.campuses += campusRows.filter(([id]) => id === school.id).length;
+  item.small += Number(school.small) || 0;
+  if (/^\d+$/.test(school.toddler)) item.toddlerNumeric += Number(school.toddler);
+  if (`${school.toddler}`.includes("混龄")) item.mixed += 1;
+  map.set(school.area, item);
+  return map;
+}, new Map()).values()]
+  .sort((a, b) => b.small - a.small || b.campuses - a.campuses)
+  .map((item) => [item.area, item.schools, item.campuses, item.small, item.toddlerNumeric, item.mixed]);
+
+const summaryRows = [
+  ["指标", "值", "说明"],
+  ["招生主体数", schools.length, "来自2026 PDF。"],
+  ["拆分园区/分园数", campusData.length, "按公开园部地址拆分；少数历史变更项标B级。"],
+  ["小班计划合计", schools.reduce((sum, s) => sum + s.small, 0), "PDF计划班级数合计。"],
+  ["托班明确班级数合计", schools.reduce((sum, s) => sum + (/^\d+$/.test(s.toddler) ? Number(s.toddler) : 0), 0), "不含混龄式招生。"],
+  ["混龄式招生主体数", schools.filter((s) => `${s.toddler}`.includes("混龄")).length, "混龄式招生不直接等同托班班级数。"],
+  ["重点核验", "汇星北园、复旦大学附属徐汇实验幼儿园", "公开资料出现地址/合并后的园部安排差异，择园前应电话确认。"],
+];
+
+const markdown = `# 徐汇区公办幼儿园园区位置与择园参考
+
+## 结论摘要
+
+- 2026 PDF 共列出 ${schools.length} 个公办招生主体，拆分为 ${campusData.length} 个实际园区/分园点位。
+- 小班计划合计 ${schools.reduce((sum, s) => sum + s.small, 0)} 个班；托班明确计划合计 ${schools.reduce((sum, s) => sum + (/^\d+$/.test(s.toddler) ? Number(s.toddler) : 0), 0)} 个班，另有 ${schools.filter((s) => `${s.toddler}`.includes("混龄")).length} 所为“混龄式招生”。
+- 园区数量与小班容量最集中的区域在田林/虹梅/康健/漕河泾、长桥/凌云/梅陇、龙华/滨江与衡复/湖南几条带状居住区。
+- 多园区幼儿园不能只搜园名，必须按“园区/分园 + 地址”在高德地图核验；表格中已为每个园区生成高德搜索链接。
+- 需要重点电话确认：汇星幼儿园北园公开资料出现“康平路200号”和“华山路1815号”两种说法；复旦大学附属徐汇实验幼儿园为2024年合并组建，平江路17号/32号及原东安路50弄10号关系需要确认2026实际入读园区。
+
+## 片区观察
+
+| 片区 | 招生主体 | 园区点位 | 小班计划 | 明确托班 | 混龄主体 |
+|---|---:|---:|---:|---:|---:|
+${areaStats.map((row) => `| ${row[0]} | ${row[1]} | ${row[2]} | ${row[3]} | ${row[4]} | ${row[5]} |`).join("\n")}
+
+## 使用建议
+
+1. 先定位你家的居委，再反查对口幼儿园。公办园录取规则里，对口关系和人户一致通常比地图直线距离更关键。
+2. 对多园区幼儿园，优先问清楚“2026年小班在哪个园区”，不要只用总园名判断距离。
+3. 高德搜索时优先搜园区地址，例如“上海市徐汇区 五原路幼儿园 五原路400号”，再核验POI名称。
+4. 托班需求要单独看，“混龄式招生”和普通托班班级数不可直接比较。
+5. 接送便利性建议按步行/骑行实际路线判断，尤其关注雨天、老人接送、门口停车和跨主干道情况。
+
+## 主要来源
+
+- ${pdfSource}
+- ${planSource}
+- ${publicListSource}
+- 复旦大学附属徐汇实验幼儿园、汇星幼儿园等少数变更项参考了园所公开资料、上哪学/021school收录的招生简章信息，并在表中标注为需核验。
+`;
+
+const escapeHtml = (value) => String(value ?? "")
+  .replaceAll("&", "&amp;")
+  .replaceAll("<", "&lt;")
+  .replaceAll(">", "&gt;")
+  .replaceAll('"', "&quot;");
+
+const html = `<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>徐汇区幼儿园筛选方案</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23235c9f'/%3E%3Cpath d='M16 42h32M20 42V24l12-8 12 8v18M28 42V30h8v12' stroke='white' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f9;
+      --paper: #ffffff;
+      --ink: #172033;
+      --soft: #5f6f85;
+      --line: #dce3ec;
+      --blue: #235c9f;
+      --green: #1f7a5c;
+      --amber: #a16207;
+      --red: #b42318;
+      --rail: #edf2f7;
+      --shadow: 0 18px 50px rgba(23, 32, 51, 0.08);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 14px/1.58 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .shell { max-width: 1480px; margin: 0 auto; padding: 0 24px; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(220, 227, 236, 0.9);
+      background: rgba(246, 247, 249, 0.94);
+      backdrop-filter: blur(12px);
+    }
+    .topbar .shell {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 64px;
+    }
+    .brand { font-weight: 800; font-size: 16px; letter-spacing: 0; }
+    .nav { display: flex; gap: 16px; color: var(--soft); font-size: 13px; white-space: nowrap; }
+    .nav a { color: inherit; }
+    .hero {
+      background:
+        linear-gradient(135deg, rgba(35, 92, 159, 0.12), transparent 34%),
+        linear-gradient(180deg, #ffffff 0%, #f6f7f9 100%);
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 420px;
+      gap: 44px;
+      align-items: center;
+      min-height: 470px;
+      padding: 56px 24px 48px;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 1.06;
+      letter-spacing: 0;
+    }
+    .lead {
+      max-width: 760px;
+      margin: 22px 0 0;
+      color: var(--soft);
+      font-size: 18px;
+      line-height: 1.72;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 14px;
+      box-shadow: 0 4px 14px rgba(23, 32, 51, 0.05);
+    }
+    .button.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .scoreboard {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+    .score-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .score-row:last-child { border-bottom: 0; }
+    .score-row span { color: var(--soft); }
+    .score-row strong { font-size: 28px; line-height: 1; }
+    main { padding: 28px 0 56px; }
+    section { scroll-margin-top: 82px; }
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin: 34px 0 16px;
+    }
+    h2 { margin: 0; font-size: 26px; line-height: 1.2; letter-spacing: 0; }
+    .section-title p { max-width: 660px; margin: 0; color: var(--soft); }
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .principle {
+      min-height: 190px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .principle strong { display: block; font-size: 18px; margin-bottom: 8px; }
+    .principle p { margin: 0; color: var(--soft); }
+    .principle ul { margin: 14px 0 0; padding-left: 18px; color: var(--ink); }
+    .workflow {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 16px;
+    }
+    .steps {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .step:last-child { border-bottom: 0; }
+    .step-number {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--rail);
+      font-weight: 800;
+      color: var(--blue);
+    }
+    .step strong { display: block; }
+    .step span { color: var(--soft); font-size: 13px; }
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .matrix-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .matrix-card h3 { margin: 0 0 10px; font-size: 17px; }
+    .matrix-card p { margin: 0; color: var(--soft); }
+    .filter-panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(240px, 1.3fr) repeat(5, minmax(130px, 1fr));
+      gap: 10px;
+      align-items: end;
+    }
+    label { display: grid; gap: 6px; color: var(--soft); font-size: 12px; font-weight: 700; }
+    input, select {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      padding: 8px 10px;
+      font: inherit;
+    }
+    .result-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+    .result-count strong { font-size: 22px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: var(--rail);
+      color: var(--soft);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .table-box {
+      overflow: auto;
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      max-height: 76vh;
+    }
+    table { border-collapse: collapse; width: 100%; min-width: 1320px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 11px 12px; text-align: left; vertical-align: top; }
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      background: #eef4f8;
+      white-space: nowrap;
+      font-size: 12px;
+      color: #42536a;
+    }
+    td { font-size: 13px; }
+    td:nth-child(8), td:nth-child(10) { max-width: 330px; }
+    .school-name { font-weight: 800; font-size: 14px; }
+    .sub { color: var(--soft); font-size: 12px; margin-top: 3px; }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: var(--rail);
+      color: #42536a;
+      white-space: nowrap;
+    }
+    .tag.green { background: #e8f5ef; color: var(--green); }
+    .tag.blue { background: #eaf2fb; color: var(--blue); }
+    .tag.amber { background: #fff5d7; color: var(--amber); }
+    .tag.red { background: #fff0ee; color: var(--red); }
+    .areas {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .area-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .area-card strong { display: block; margin-bottom: 10px; }
+    .area-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; color: var(--soft); font-size: 12px; }
+    .area-metrics b { display: block; color: var(--ink); font-size: 18px; }
+    .notice {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .notice-card {
+      border: 1px solid #fed7aa;
+      border-radius: 8px;
+      background: #fff8ed;
+      color: #7c3e06;
+      padding: 16px;
+    }
+    .notice-card h3 { margin: 0 0 8px; font-size: 16px; }
+    .notice-card p { margin: 0; }
+    footer {
+      border-top: 1px solid var(--line);
+      color: var(--soft);
+      padding: 24px 0 36px;
+    }
+    @media (max-width: 1100px) {
+      .hero-grid, .workflow, .notice { grid-template-columns: 1fr; }
+      .principles, .areas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 720px) {
+      .shell { padding: 0 14px; }
+      .topbar .shell { align-items: flex-start; flex-direction: column; padding-top: 12px; padding-bottom: 12px; }
+      .nav { overflow: auto; width: 100%; padding-bottom: 2px; }
+      .hero-grid { padding: 38px 14px 34px; min-height: auto; }
+      .scoreboard { padding: 14px; }
+      .principles, .areas, .matrix, .toolbar { grid-template-columns: 1fr; }
+      .section-title { display: block; }
+      .section-title p { margin-top: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell">
+      <div class="brand">徐汇区幼儿园筛选方案</div>
+      <nav class="nav" aria-label="页面导航">
+        <a href="#framework">筛选框架</a>
+        <a href="#workflow">决策路径</a>
+        <a href="#filter">园区筛选</a>
+        <a href="#areas">片区统计</a>
+        <a href="#risks">核验重点</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <h1>先判断资格，再比较便利性。</h1>
+        <p class="lead">这个页面把徐汇区 2026 公办幼儿园资料整理成一套可执行的筛选方案：先用居委和招生类型缩小范围，再看园区位置、托班/小班容量、置信度和电话核验风险。</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#filter">开始筛选园区</a>
+          <a class="button" href="徐汇区幼儿园园区位置与择园参考.xlsx">打开 Excel 表</a>
+        </div>
+      </div>
+      <aside class="scoreboard" aria-label="数据摘要">
+        <div class="score-row"><span>公办招生主体</span><strong>${schools.length}</strong></div>
+        <div class="score-row"><span>实际园区/分园点位</span><strong>${campusItems.length}</strong></div>
+        <div class="score-row"><span>小班计划合计</span><strong>${schools.reduce((sum, s) => sum + s.small, 0)}</strong></div>
+        <div class="score-row"><span>明确托班计划</span><strong>${schools.reduce((sum, s) => sum + (/^\\d+$/.test(s.toddler) ? Number(s.toddler) : 0), 0)}</strong></div>
+      </aside>
+    </div>
+  </section>
+
+  <main class="shell">
+    <section id="framework">
+      <div class="section-title">
+        <h2>四层筛选框架</h2>
+        <p>这套方案的重点不是先看“名气”或直线距离，而是把影响录取和日常接送的因素分层处理。</p>
+      </div>
+      <div class="principles">
+        <article class="principle">
+          <strong>1. 资格层</strong>
+          <p>先用居委、招生范围和人户一致情况判断是否值得进入候选。</p>
+          <ul><li>固定对口优先</li><li>区域自主单独标记</li><li>扩招不等同兜底</li></ul>
+        </article>
+        <article class="principle">
+          <strong>2. 风险层</strong>
+          <p>把地址冲突、合并调整、多园区分流和自主招生都作为电话确认项。</p>
+          <ul><li>A/B 置信度</li><li>需确认园区</li><li>招生简章复核</li></ul>
+        </article>
+        <article class="principle">
+          <strong>3. 便利层</strong>
+          <p>看实际入读园区，而不是幼儿园总名；高德链接用于逐点核验。</p>
+          <ul><li>园区地址</li><li>步行/骑行路线</li><li>跨主干道成本</li></ul>
+        </article>
+        <article class="principle">
+          <strong>4. 偏好层</strong>
+          <p>最后再看托班、小班容量、多园区、接送人安排等家庭偏好。</p>
+          <ul><li>托班模式</li><li>小班计划</li><li>家人接送便利</li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="workflow">
+      <div class="section-title">
+        <h2>推荐决策路径</h2>
+        <p>实际使用时建议按顺序推进，先排除明显不合适的，再把剩余园区拿去地图和电话核验。</p>
+      </div>
+      <div class="workflow">
+        <div class="steps">
+          <div class="step"><span class="step-number">1</span><div><strong>定位家庭所属居委</strong><span>用居委名称搜索，先找固定对口和招生范围。</span></div></div>
+          <div class="step"><span class="step-number">2</span><div><strong>识别招生类型</strong><span>固定对口、区域自主、扩招分别看待。</span></div></div>
+          <div class="step"><span class="step-number">3</span><div><strong>核验实际园区</strong><span>多园区幼儿园必须确认小班在哪个园区。</span></div></div>
+          <div class="step"><span class="step-number">4</span><div><strong>比较家庭偏好</strong><span>托班、小班容量、路线、接送人安排一起比较。</span></div></div>
+        </div>
+        <div class="matrix">
+          <article class="matrix-card"><h3>优先候选</h3><p>居委明确对口、置信度 A、园区地址清楚、路线可接受。</p></article>
+          <article class="matrix-card"><h3>备选候选</h3><p>区域自主或扩招，但距离、容量、家庭偏好有优势。</p></article>
+          <article class="matrix-card"><h3>电话确认</h3><p>B 级地址、合并调整、多园区分流、实际小班园区不确定。</p></article>
+          <article class="matrix-card"><h3>谨慎投入</h3><p>只看到总园名、没有明确入读园区，或招生口径不是固定对口。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="filter">
+      <div class="section-title">
+        <h2>园区筛选器</h2>
+        <p>输入居委、小区、幼儿园或地址关键词，再叠加片区、招生类型、托班和置信度条件。</p>
+      </div>
+      <div class="filter-panel">
+        <div class="toolbar">
+          <label>关键词
+            <input id="search" placeholder="例：康平、龙南、五原路、托班">
+          </label>
+          <label>片区
+            <select id="area">
+              <option value="">全部片区</option>
+              ${[...new Set(schools.map((school) => school.area))].sort().map((area) => `<option>${escapeHtml(area)}</option>`).join("")}
+            </select>
+          </label>
+          <label>招生类型
+            <select id="admission">
+              <option value="">全部类型</option>
+              <option value="固定对口">固定对口</option>
+              <option value="区域自主">区域自主</option>
+              <option value="扩招">扩招</option>
+            </select>
+          </label>
+          <label>托班模式
+            <select id="toddler">
+              <option value="">全部托班</option>
+              <option value="明确托班">明确托班</option>
+              <option value="混龄式招生">混龄式招生</option>
+            </select>
+          </label>
+          <label>置信度
+            <select id="confidence">
+              <option value="">全部置信度</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+            </select>
+          </label>
+          <label>电话确认
+            <select id="confirm">
+              <option value="">全部</option>
+              <option value="yes">需要确认</option>
+              <option value="no">暂不突出</option>
+            </select>
+          </label>
+        </div>
+        <div class="result-bar">
+          <div class="result-count"><strong id="resultCount">${campusItems.length}</strong> 个园区匹配</div>
+          <div class="chips">
+            <span class="chip">先搜居委</span>
+            <span class="chip">再看园区地址</span>
+            <span class="chip">B 级务必电话确认</span>
+          </div>
+        </div>
+      </div>
+      <div class="table-box">
+        <table>
+          <thead>
+            <tr>
+              <th>幼儿园/园区</th>
+              <th>片区</th>
+              <th>招生类型</th>
+              <th>地址</th>
+              <th>托班</th>
+              <th>小班</th>
+              <th>置信度</th>
+              <th>对口居委/招生范围</th>
+              <th>地图</th>
+              <th>备注</th>
+            </tr>
+          </thead>
+          <tbody id="rows">
+            ${campusItems.map((item) => `
+              <tr
+                data-area="${escapeHtml(item.area)}"
+                data-confidence="${escapeHtml(item.confidence)}"
+                data-admission="${escapeHtml(item.admissionType)}"
+                data-toddler="${escapeHtml(item.toddlerMode)}"
+                data-confirm="${item.needsConfirm ? "yes" : "no"}"
+                data-text="${escapeHtml(item.searchText)}">
+                <td><div class="school-name">${escapeHtml(item.name)}</div><div class="sub">${escapeHtml(item.campus)}</div></td>
+                <td>${escapeHtml(item.area)}</td>
+                <td><span class="tag ${item.admissionType === "固定对口" ? "green" : item.admissionType === "扩招" ? "amber" : "blue"}">${escapeHtml(item.admissionType)}</span></td>
+                <td>${escapeHtml(item.address)}</td>
+                <td><span class="tag ${item.toddlerMode === "混龄式招生" ? "amber" : "blue"}">${escapeHtml(item.toddler)}</span></td>
+                <td>${escapeHtml(item.small)} 班</td>
+                <td><span class="tag ${item.confidence === "B" ? "red" : "green"}">${escapeHtml(item.confidence)}</span></td>
+                <td>${escapeHtml(item.committee)}</td>
+                <td><a href="${escapeHtml(item.mapUrl)}" target="_blank" rel="noopener">打开高德</a></td>
+                <td>${escapeHtml(item.note) || (item.needsConfirm ? "建议结合当年简章或电话确认。" : '<span class="sub">-</span>')}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="areas">
+      <div class="section-title">
+        <h2>片区容量观察</h2>
+        <p>片区统计用于判断供给密度，不直接代表个人录取概率；实际仍以居委、户籍和当年招生口径为准。</p>
+      </div>
+      <div class="areas">
+        ${areaStats.slice(0, 12).map((row) => `
+          <article class="area-card">
+            <strong>${escapeHtml(row[0])}</strong>
+            <div class="area-metrics">
+              <span><b>${row[1]}</b>主体</span>
+              <span><b>${row[2]}</b>点位</span>
+              <span><b>${row[3]}</b>小班</span>
+            </div>
+          </article>
+        `).join("")}
+      </div>
+    </section>
+
+    <section id="risks">
+      <div class="section-title">
+        <h2>核验重点</h2>
+        <p>这些不是错误，而是择园前最容易造成误判的地方。</p>
+      </div>
+      <div class="notice">
+        <article class="notice-card">
+          <h3>地址与园区分流</h3>
+          <p>汇星幼儿园北园、复旦大学附属徐汇实验幼儿园存在公开资料差异或合并后的园部安排变化，建议直接电话确认 2026 年小班实际入读园区。</p>
+        </article>
+        <article class="notice-card">
+          <h3>自主招生与扩招</h3>
+          <p>“区域内自主招生”和“另向某街道扩招”不等于普通固定居委一一对应，应结合当年简章、报名条件和录取顺位理解。</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">主要来源：${escapeHtml(planSource)}；${escapeHtml(publicListSource)}；${escapeHtml(pdfSource)}</div>
+  </footer>
+
+  <script>
+    const search = document.querySelector("#search");
+    const area = document.querySelector("#area");
+    const admission = document.querySelector("#admission");
+    const toddler = document.querySelector("#toddler");
+    const confidence = document.querySelector("#confidence");
+    const confirmSelect = document.querySelector("#confirm");
+    const resultCount = document.querySelector("#resultCount");
+    const rows = Array.from(document.querySelectorAll("#rows tr"));
+
+    function applyFilters() {
+      const q = search.value.trim().toLowerCase();
+      let visible = 0;
+      for (const row of rows) {
+        const okText = !q || row.dataset.text.toLowerCase().includes(q);
+        const okArea = !area.value || row.dataset.area === area.value;
+        const okAdmission = !admission.value || row.dataset.admission === admission.value;
+        const okToddler = !toddler.value || row.dataset.toddler === toddler.value;
+        const okConfidence = !confidence.value || row.dataset.confidence === confidence.value;
+        const okConfirm = !confirmSelect.value || row.dataset.confirm === confirmSelect.value;
+        const show = okText && okArea && okAdmission && okToddler && okConfidence && okConfirm;
+        row.hidden = !show;
+        if (show) visible += 1;
+      }
+      resultCount.textContent = visible;
+    }
+
+    for (const control of [search, area, admission, toddler, confidence, confirmSelect]) {
+      control.addEventListener("input", applyFilters);
+      control.addEventListener("change", applyFilters);
+    }
+  </script>
+</body>
+</html>`;
+
+const csvEscape = (value) => `"${String(value ?? "").replaceAll('"', '""')}"`;
+const toCsv = (rows) => rows.map((row) => row.map(csvEscape).join(",")).join("\n");
+
+await fs.mkdir(outputDir, { recursive: true });
+await fs.writeFile(path.join(outputDir, "徐汇区幼儿园园区位置表.csv"), toCsv([campusHeader, ...campusData]), "utf8");
+await fs.writeFile(path.join(outputDir, "徐汇区幼儿园择园参考.md"), markdown, "utf8");
+await fs.writeFile(path.join(outputDir, "徐汇区幼儿园园区位置与择园参考.html"), html, "utf8");
+await fs.writeFile(path.join(outputDir, "index.html"), html, "utf8");
+
+const workbook = Workbook.create();
+const summary = workbook.worksheets.add("摘要");
+const schoolSheet = workbook.worksheets.add("招生主体");
+const campusSheet = workbook.worksheets.add("园区点位");
+const areaSheet = workbook.worksheets.add("片区统计");
+const sourceSheet = workbook.worksheets.add("来源与核验规则");
+
+summary.getRange(`A1:C${summaryRows.length}`).values = summaryRows;
+schoolSheet.getRange(`A1:I${schoolData.length + 1}`).values = [schoolHeader, ...schoolData];
+campusSheet.getRange(`A1:L${campusData.length + 1}`).values = [campusHeader, ...campusData];
+areaSheet.getRange(`A1:F${areaStats.length + 1}`).values = [["片区", "招生主体数", "园区点位数", "小班计划数", "明确托班班级数", "混龄招生主体数"], ...areaStats];
+sourceSheet.getRange("A1:B9").values = [
+  ["项目", "说明"],
+  ["PDF主表", pdfSource],
+  ["2026线上主表", planSource],
+  ["园部地址主来源", publicListSource],
+  ["高德检索口径", "表格中的高德链接使用“上海市徐汇区 + 幼儿园名 + 园区名 + 地址”生成，用于逐点打开核验。"],
+  ["A级", "园部地址在公办园地址清单中明确列出，且无明显冲突。"],
+  ["B级", "公开资料有变更、合并或地址冲突，位置大体可定位，但实际入读园区需电话确认。"],
+  ["C级", "仅有第三方或地图信息，缺少官方交叉验证。本表目前未使用C级作为主确认。"],
+  ["电话确认重点", "汇星幼儿园北园；复旦大学附属徐汇实验幼儿园；区域内自主招生及扩招园。"],
+];
+
+for (const sheet of [summary, schoolSheet, campusSheet, areaSheet, sourceSheet]) {
+  sheet.getRange("A1:Z1").format = { fontWeight: "bold", fill: "#E8F2FF", wrapText: true };
+  sheet.freezePanes.freezeRows(1);
+}
+
+summary.getRange("A:A").format.columnWidthPx = 150;
+summary.getRange("B:B").format.columnWidthPx = 150;
+summary.getRange("C:C").format.columnWidthPx = 560;
+summary.getRange("A1:C7").format.wrapText = true;
+
+schoolSheet.getRange("A:A").format.columnWidthPx = 54;
+schoolSheet.getRange("B:B").format.columnWidthPx = 190;
+schoolSheet.getRange("C:C").format.columnWidthPx = 120;
+schoolSheet.getRange("D:F").format.columnWidthPx = 88;
+schoolSheet.getRange("G:G").format.columnWidthPx = 520;
+schoolSheet.getRange("H:I").format.columnWidthPx = 280;
+schoolSheet.getRange(`A1:I${schoolData.length + 1}`).format.wrapText = true;
+
+campusSheet.getRange("A:A").format.columnWidthPx = 54;
+campusSheet.getRange("B:B").format.columnWidthPx = 190;
+campusSheet.getRange("C:C").format.columnWidthPx = 120;
+campusSheet.getRange("D:E").format.columnWidthPx = 150;
+campusSheet.getRange("F:F").format.columnWidthPx = 360;
+campusSheet.getRange("G:H").format.columnWidthPx = 88;
+campusSheet.getRange("I:I").format.columnWidthPx = 520;
+campusSheet.getRange("J:J").format.columnWidthPx = 70;
+campusSheet.getRange("K:L").format.columnWidthPx = 360;
+campusSheet.getRange(`A1:L${campusData.length + 1}`).format.wrapText = true;
+campusSheet.freezePanes.freezeColumns(2);
+
+areaSheet.getRange("A:A").format.columnWidthPx = 160;
+areaSheet.getRange("B:F").format.columnWidthPx = 110;
+
+sourceSheet.getRange("A:A").format.columnWidthPx = 150;
+sourceSheet.getRange("B:B").format.columnWidthPx = 760;
+sourceSheet.getRange("A1:B9").format.wrapText = true;
+
+const output = await SpreadsheetFile.exportXlsx(workbook);
+await output.save(path.join(outputDir, "徐汇区幼儿园园区位置与择园参考.xlsx"));
+
+console.log(JSON.stringify({
+  outputDir,
+  campuses: campusData.length,
+  schools: schools.length,
+  xlsx: path.join(outputDir, "徐汇区幼儿园园区位置与择园参考.xlsx"),
+  csv: path.join(outputDir, "徐汇区幼儿园园区位置表.csv"),
+  md: path.join(outputDir, "徐汇区幼儿园择园参考.md"),
+  html: path.join(outputDir, "徐汇区幼儿园园区位置与择园参考.html"),
+  index: path.join(outputDir, "index.html"),
+}, null, 2));

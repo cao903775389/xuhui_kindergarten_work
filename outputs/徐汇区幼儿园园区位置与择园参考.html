@@ -1,0 +1,2193 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>徐汇区幼儿园筛选方案</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23235c9f'/%3E%3Cpath d='M16 42h32M20 42V24l12-8 12 8v18M28 42V30h8v12' stroke='white' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f9;
+      --paper: #ffffff;
+      --ink: #172033;
+      --soft: #5f6f85;
+      --line: #dce3ec;
+      --blue: #235c9f;
+      --green: #1f7a5c;
+      --amber: #a16207;
+      --red: #b42318;
+      --rail: #edf2f7;
+      --shadow: 0 18px 50px rgba(23, 32, 51, 0.08);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 14px/1.58 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .shell { max-width: 1480px; margin: 0 auto; padding: 0 24px; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(220, 227, 236, 0.9);
+      background: rgba(246, 247, 249, 0.94);
+      backdrop-filter: blur(12px);
+    }
+    .topbar .shell {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 64px;
+    }
+    .brand { font-weight: 800; font-size: 16px; letter-spacing: 0; }
+    .nav { display: flex; gap: 16px; color: var(--soft); font-size: 13px; white-space: nowrap; }
+    .nav a { color: inherit; }
+    .hero {
+      background:
+        linear-gradient(135deg, rgba(35, 92, 159, 0.12), transparent 34%),
+        linear-gradient(180deg, #ffffff 0%, #f6f7f9 100%);
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 420px;
+      gap: 44px;
+      align-items: center;
+      min-height: 470px;
+      padding: 56px 24px 48px;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 1.06;
+      letter-spacing: 0;
+    }
+    .lead {
+      max-width: 760px;
+      margin: 22px 0 0;
+      color: var(--soft);
+      font-size: 18px;
+      line-height: 1.72;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 14px;
+      box-shadow: 0 4px 14px rgba(23, 32, 51, 0.05);
+    }
+    .button.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .scoreboard {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+    .score-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .score-row:last-child { border-bottom: 0; }
+    .score-row span { color: var(--soft); }
+    .score-row strong { font-size: 28px; line-height: 1; }
+    main { padding: 28px 0 56px; }
+    section { scroll-margin-top: 82px; }
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin: 34px 0 16px;
+    }
+    h2 { margin: 0; font-size: 26px; line-height: 1.2; letter-spacing: 0; }
+    .section-title p { max-width: 660px; margin: 0; color: var(--soft); }
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .principle {
+      min-height: 190px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .principle strong { display: block; font-size: 18px; margin-bottom: 8px; }
+    .principle p { margin: 0; color: var(--soft); }
+    .principle ul { margin: 14px 0 0; padding-left: 18px; color: var(--ink); }
+    .workflow {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 16px;
+    }
+    .steps {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .step:last-child { border-bottom: 0; }
+    .step-number {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--rail);
+      font-weight: 800;
+      color: var(--blue);
+    }
+    .step strong { display: block; }
+    .step span { color: var(--soft); font-size: 13px; }
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .matrix-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .matrix-card h3 { margin: 0 0 10px; font-size: 17px; }
+    .matrix-card p { margin: 0; color: var(--soft); }
+    .filter-panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(240px, 1.3fr) repeat(5, minmax(130px, 1fr));
+      gap: 10px;
+      align-items: end;
+    }
+    label { display: grid; gap: 6px; color: var(--soft); font-size: 12px; font-weight: 700; }
+    input, select {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      padding: 8px 10px;
+      font: inherit;
+    }
+    .result-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+    .result-count strong { font-size: 22px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: var(--rail);
+      color: var(--soft);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .table-box {
+      overflow: auto;
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      max-height: 76vh;
+    }
+    table { border-collapse: collapse; width: 100%; min-width: 1320px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 11px 12px; text-align: left; vertical-align: top; }
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      background: #eef4f8;
+      white-space: nowrap;
+      font-size: 12px;
+      color: #42536a;
+    }
+    td { font-size: 13px; }
+    td:nth-child(8), td:nth-child(10) { max-width: 330px; }
+    .school-name { font-weight: 800; font-size: 14px; }
+    .sub { color: var(--soft); font-size: 12px; margin-top: 3px; }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: var(--rail);
+      color: #42536a;
+      white-space: nowrap;
+    }
+    .tag.green { background: #e8f5ef; color: var(--green); }
+    .tag.blue { background: #eaf2fb; color: var(--blue); }
+    .tag.amber { background: #fff5d7; color: var(--amber); }
+    .tag.red { background: #fff0ee; color: var(--red); }
+    .areas {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .area-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .area-card strong { display: block; margin-bottom: 10px; }
+    .area-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; color: var(--soft); font-size: 12px; }
+    .area-metrics b { display: block; color: var(--ink); font-size: 18px; }
+    .notice {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .notice-card {
+      border: 1px solid #fed7aa;
+      border-radius: 8px;
+      background: #fff8ed;
+      color: #7c3e06;
+      padding: 16px;
+    }
+    .notice-card h3 { margin: 0 0 8px; font-size: 16px; }
+    .notice-card p { margin: 0; }
+    footer {
+      border-top: 1px solid var(--line);
+      color: var(--soft);
+      padding: 24px 0 36px;
+    }
+    @media (max-width: 1100px) {
+      .hero-grid, .workflow, .notice { grid-template-columns: 1fr; }
+      .principles, .areas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 720px) {
+      .shell { padding: 0 14px; }
+      .topbar .shell { align-items: flex-start; flex-direction: column; padding-top: 12px; padding-bottom: 12px; }
+      .nav { overflow: auto; width: 100%; padding-bottom: 2px; }
+      .hero-grid { padding: 38px 14px 34px; min-height: auto; }
+      .scoreboard { padding: 14px; }
+      .principles, .areas, .matrix, .toolbar { grid-template-columns: 1fr; }
+      .section-title { display: block; }
+      .section-title p { margin-top: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell">
+      <div class="brand">徐汇区幼儿园筛选方案</div>
+      <nav class="nav" aria-label="页面导航">
+        <a href="#framework">筛选框架</a>
+        <a href="#workflow">决策路径</a>
+        <a href="#filter">园区筛选</a>
+        <a href="#areas">片区统计</a>
+        <a href="#risks">核验重点</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <h1>先判断资格，再比较便利性。</h1>
+        <p class="lead">这个页面把徐汇区 2026 公办幼儿园资料整理成一套可执行的筛选方案：先用居委和招生类型缩小范围，再看园区位置、托班/小班容量、置信度和电话核验风险。</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#filter">开始筛选园区</a>
+          <a class="button" href="徐汇区幼儿园园区位置与择园参考.xlsx">打开 Excel 表</a>
+        </div>
+      </div>
+      <aside class="scoreboard" aria-label="数据摘要">
+        <div class="score-row"><span>公办招生主体</span><strong>42</strong></div>
+        <div class="score-row"><span>实际园区/分园点位</span><strong>81</strong></div>
+        <div class="score-row"><span>小班计划合计</span><strong>149</strong></div>
+        <div class="score-row"><span>明确托班计划</span><strong>0</strong></div>
+      </aside>
+    </div>
+  </section>
+
+  <main class="shell">
+    <section id="framework">
+      <div class="section-title">
+        <h2>四层筛选框架</h2>
+        <p>这套方案的重点不是先看“名气”或直线距离，而是把影响录取和日常接送的因素分层处理。</p>
+      </div>
+      <div class="principles">
+        <article class="principle">
+          <strong>1. 资格层</strong>
+          <p>先用居委、招生范围和人户一致情况判断是否值得进入候选。</p>
+          <ul><li>固定对口优先</li><li>区域自主单独标记</li><li>扩招不等同兜底</li></ul>
+        </article>
+        <article class="principle">
+          <strong>2. 风险层</strong>
+          <p>把地址冲突、合并调整、多园区分流和自主招生都作为电话确认项。</p>
+          <ul><li>A/B 置信度</li><li>需确认园区</li><li>招生简章复核</li></ul>
+        </article>
+        <article class="principle">
+          <strong>3. 便利层</strong>
+          <p>看实际入读园区，而不是幼儿园总名；高德链接用于逐点核验。</p>
+          <ul><li>园区地址</li><li>步行/骑行路线</li><li>跨主干道成本</li></ul>
+        </article>
+        <article class="principle">
+          <strong>4. 偏好层</strong>
+          <p>最后再看托班、小班容量、多园区、接送人安排等家庭偏好。</p>
+          <ul><li>托班模式</li><li>小班计划</li><li>家人接送便利</li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="workflow">
+      <div class="section-title">
+        <h2>推荐决策路径</h2>
+        <p>实际使用时建议按顺序推进，先排除明显不合适的，再把剩余园区拿去地图和电话核验。</p>
+      </div>
+      <div class="workflow">
+        <div class="steps">
+          <div class="step"><span class="step-number">1</span><div><strong>定位家庭所属居委</strong><span>用居委名称搜索，先找固定对口和招生范围。</span></div></div>
+          <div class="step"><span class="step-number">2</span><div><strong>识别招生类型</strong><span>固定对口、区域自主、扩招分别看待。</span></div></div>
+          <div class="step"><span class="step-number">3</span><div><strong>核验实际园区</strong><span>多园区幼儿园必须确认小班在哪个园区。</span></div></div>
+          <div class="step"><span class="step-number">4</span><div><strong>比较家庭偏好</strong><span>托班、小班容量、路线、接送人安排一起比较。</span></div></div>
+        </div>
+        <div class="matrix">
+          <article class="matrix-card"><h3>优先候选</h3><p>居委明确对口、置信度 A、园区地址清楚、路线可接受。</p></article>
+          <article class="matrix-card"><h3>备选候选</h3><p>区域自主或扩招，但距离、容量、家庭偏好有优势。</p></article>
+          <article class="matrix-card"><h3>电话确认</h3><p>B 级地址、合并调整、多园区分流、实际小班园区不确定。</p></article>
+          <article class="matrix-card"><h3>谨慎投入</h3><p>只看到总园名、没有明确入读园区，或招生口径不是固定对口。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="filter">
+      <div class="section-title">
+        <h2>园区筛选器</h2>
+        <p>输入居委、小区、幼儿园或地址关键词，再叠加片区、招生类型、托班和置信度条件。</p>
+      </div>
+      <div class="filter-panel">
+        <div class="toolbar">
+          <label>关键词
+            <input id="search" placeholder="例：康平、龙南、五原路、托班">
+          </label>
+          <label>片区
+            <select id="area">
+              <option value="">全部片区</option>
+              <option>凌云/梅陇</option><option>华泾</option><option>华泾/罗秀</option><option>南站/石龙</option><option>康健/南站</option><option>康健/桂林</option><option>康健/漕河泾</option><option>徐家汇/交大</option><option>徐家汇/天平</option><option>徐家汇/田林</option><option>徐家汇/虹桥路</option><option>枫林/宛南</option><option>枫林/斜土</option><option>漕河泾/虹梅</option><option>漕溪/龙漕</option><option>田林/漕河泾</option><option>田林/虹桥</option><option>田林/虹梅</option><option>衡复/湖南</option><option>衡复/湖南/滨江</option><option>长桥</option><option>长桥/凌云</option><option>长桥/园南</option><option>长桥/汇成</option><option>龙华/滨江</option><option>龙华/西岸</option>
+            </select>
+          </label>
+          <label>招生类型
+            <select id="admission">
+              <option value="">全部类型</option>
+              <option value="固定对口">固定对口</option>
+              <option value="区域自主">区域自主</option>
+              <option value="扩招">扩招</option>
+            </select>
+          </label>
+          <label>托班模式
+            <select id="toddler">
+              <option value="">全部托班</option>
+              <option value="明确托班">明确托班</option>
+              <option value="混龄式招生">混龄式招生</option>
+            </select>
+          </label>
+          <label>置信度
+            <select id="confidence">
+              <option value="">全部置信度</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+            </select>
+          </label>
+          <label>电话确认
+            <select id="confirm">
+              <option value="">全部</option>
+              <option value="yes">需要确认</option>
+              <option value="no">暂不突出</option>
+            </select>
+          </label>
+        </div>
+        <div class="result-bar">
+          <div class="result-count"><strong id="resultCount">81</strong> 个园区匹配</div>
+          <div class="chips">
+            <span class="chip">先搜居委</span>
+            <span class="chip">再看园区地址</span>
+            <span class="chip">B 级务必电话确认</span>
+          </div>
+        </div>
+      </div>
+      <div class="table-box">
+        <table>
+          <thead>
+            <tr>
+              <th>幼儿园/园区</th>
+              <th>片区</th>
+              <th>招生类型</th>
+              <th>地址</th>
+              <th>托班</th>
+              <th>小班</th>
+              <th>置信度</th>
+              <th>对口居委/招生范围</th>
+              <th>地图</th>
+              <th>备注</th>
+            </tr>
+          </thead>
+          <tbody id="rows">
+            
+              <tr
+                data-area="衡复/湖南"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="1 襄阳南路第一幼儿园 衡复/湖南 复中园 复兴中路1260弄2号 3 4 慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中 A  固定对口 明确托班">
+                <td><div class="school-name">襄阳南路第一幼儿园</div><div class="sub">复中园</div></td>
+                <td>衡复/湖南</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>复兴中路1260弄2号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E8%A5%84%E9%98%B3%E5%8D%97%E8%B7%AF%E7%AC%AC%E4%B8%80%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%A4%8D%E4%B8%AD%E5%9B%AD%20%E5%A4%8D%E5%85%B4%E4%B8%AD%E8%B7%AF1260%E5%BC%842%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="衡复/湖南"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="1 襄阳南路第一幼儿园 衡复/湖南 南园 襄阳南路317号 3 4 慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中 A  固定对口 明确托班">
+                <td><div class="school-name">襄阳南路第一幼儿园</div><div class="sub">南园</div></td>
+                <td>衡复/湖南</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>襄阳南路317号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E8%A5%84%E9%98%B3%E5%8D%97%E8%B7%AF%E7%AC%AC%E4%B8%80%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%8D%97%E5%9B%AD%20%E8%A5%84%E9%98%B3%E5%8D%97%E8%B7%AF317%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="衡复/湖南"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="1 襄阳南路第一幼儿园 衡复/湖南 陕南园 陕西南路540号 3 4 慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中 A  固定对口 明确托班">
+                <td><div class="school-name">襄阳南路第一幼儿园</div><div class="sub">陕南园</div></td>
+                <td>衡复/湖南</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>陕西南路540号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E8%A5%84%E9%98%B3%E5%8D%97%E8%B7%AF%E7%AC%AC%E4%B8%80%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E9%99%95%E5%8D%97%E5%9B%AD%20%E9%99%95%E8%A5%BF%E5%8D%97%E8%B7%AF540%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="衡复/湖南"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="1 襄阳南路第一幼儿园 衡复/湖南 北园 襄阳南路207号 3 4 慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中 A  固定对口 明确托班">
+                <td><div class="school-name">襄阳南路第一幼儿园</div><div class="sub">北园</div></td>
+                <td>衡复/湖南</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>襄阳南路207号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E8%A5%84%E9%98%B3%E5%8D%97%E8%B7%AF%E7%AC%AC%E4%B8%80%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%8C%97%E5%9B%AD%20%E8%A5%84%E9%98%B3%E5%8D%97%E8%B7%AF207%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="衡复/湖南"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="2 五原路幼儿园 衡复/湖南 永嘉园 永嘉路420号 3 4 上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康 A  固定对口 明确托班">
+                <td><div class="school-name">五原路幼儿园</div><div class="sub">永嘉园</div></td>
+                <td>衡复/湖南</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>永嘉路420号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E4%BA%94%E5%8E%9F%E8%B7%AF%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%B0%B8%E5%98%89%E5%9B%AD%20%E6%B0%B8%E5%98%89%E8%B7%AF420%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="衡复/湖南"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="2 五原路幼儿园 衡复/湖南 武康园 五原路400号 3 4 上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康 A  固定对口 明确托班">
+                <td><div class="school-name">五原路幼儿园</div><div class="sub">武康园</div></td>
+                <td>衡复/湖南</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>五原路400号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E4%BA%94%E5%8E%9F%E8%B7%AF%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%AD%A6%E5%BA%B7%E5%9B%AD%20%E4%BA%94%E5%8E%9F%E8%B7%AF400%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="衡复/湖南"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="2 五原路幼儿园 衡复/湖南 兴国园 武康路280弄24号 3 4 上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康 A  固定对口 明确托班">
+                <td><div class="school-name">五原路幼儿园</div><div class="sub">兴国园</div></td>
+                <td>衡复/湖南</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>武康路280弄24号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E4%BA%94%E5%8E%9F%E8%B7%AF%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%85%B4%E5%9B%BD%E5%9B%AD%20%E6%AD%A6%E5%BA%B7%E8%B7%AF280%E5%BC%8424%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="徐家汇/天平"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="3 汇星幼儿园 徐家汇/天平 南园 宛平南路19弄3号 1 3 天平、高安、康平、吴兴、宛平、余庆、广元、安亭、徐汇新村、张家浜肇谨、零陵、科汇、启明、沈马、王家堂、南赵巷、殷家角、汇翠、名园、德昌 A  固定对口 明确托班">
+                <td><div class="school-name">汇星幼儿园</div><div class="sub">南园</div></td>
+                <td>徐家汇/天平</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>宛平南路19弄3号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>3 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>天平、高安、康平、吴兴、宛平、余庆、广元、安亭、徐汇新村、张家浜肇谨、零陵、科汇、启明、沈马、王家堂、南赵巷、殷家角、汇翠、名园、德昌</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%B1%87%E6%98%9F%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%8D%97%E5%9B%AD%20%E5%AE%9B%E5%B9%B3%E5%8D%97%E8%B7%AF19%E5%BC%843%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="徐家汇/天平"
+                data-confidence="B"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="3 汇星幼儿园 徐家汇/天平 北园 康平路200号 1 3 天平、高安、康平、吴兴、宛平、余庆、广元、安亭、徐汇新村、张家浜肇谨、零陵、科汇、启明、沈马、王家堂、南赵巷、殷家角、汇翠、名园、德昌 B 2024公办名单写康平路200号；2024招生简章/部分旧资料写华山路1815号，建议电话确认当前小班实际园区。 固定对口 明确托班">
+                <td><div class="school-name">汇星幼儿园</div><div class="sub">北园</div></td>
+                <td>徐家汇/天平</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>康平路200号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>3 班</td>
+                <td><span class="tag red">B</span></td>
+                <td>天平、高安、康平、吴兴、宛平、余庆、广元、安亭、徐汇新村、张家浜肇谨、零陵、科汇、启明、沈马、王家堂、南赵巷、殷家角、汇翠、名园、德昌</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%B1%87%E6%98%9F%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%8C%97%E5%9B%AD%20%E5%BA%B7%E5%B9%B3%E8%B7%AF200%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>2024公办名单写康平路200号；2024招生简章/部分旧资料写华山路1815号，建议电话确认当前小班实际园区。</td>
+              </tr>
+            
+              <tr
+                data-area="徐家汇/交大"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="4 乐山幼儿园 徐家汇/交大 本部 乐山路18号 1 3 乐山一村、乐山二三村、乐山四五村、乐山六七村、乐山八九村、文定、汇站、交大、豪庭 A  固定对口 明确托班">
+                <td><div class="school-name">乐山幼儿园</div><div class="sub">本部</div></td>
+                <td>徐家汇/交大</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>乐山路18号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>3 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>乐山一村、乐山二三村、乐山四五村、乐山六七村、乐山八九村、文定、汇站、交大、豪庭</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E4%B9%90%E5%B1%B1%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E4%B9%90%E5%B1%B1%E8%B7%AF18%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="徐家汇/虹桥路"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="5 汇家幼儿园 徐家汇/虹桥路 北园 番禺路800弄24号 1 3 番禺、南丹、柿子湾、潘家宅、陈家宅、虹二、虹交、西塘、东塘 A  固定对口 明确托班">
+                <td><div class="school-name">汇家幼儿园</div><div class="sub">北园</div></td>
+                <td>徐家汇/虹桥路</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>番禺路800弄24号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>3 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>番禺、南丹、柿子湾、潘家宅、陈家宅、虹二、虹交、西塘、东塘</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%B1%87%E5%AE%B6%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%8C%97%E5%9B%AD%20%E7%95%AA%E7%A6%BA%E8%B7%AF800%E5%BC%8424%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="徐家汇/虹桥路"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="5 汇家幼儿园 徐家汇/虹桥路 南园 番禺路1188号 1 3 番禺、南丹、柿子湾、潘家宅、陈家宅、虹二、虹交、西塘、东塘 A  固定对口 明确托班">
+                <td><div class="school-name">汇家幼儿园</div><div class="sub">南园</div></td>
+                <td>徐家汇/虹桥路</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>番禺路1188号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>3 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>番禺、南丹、柿子湾、潘家宅、陈家宅、虹二、虹交、西塘、东塘</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%B1%87%E5%AE%B6%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%8D%97%E5%9B%AD%20%E7%95%AA%E7%A6%BA%E8%B7%AF1188%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="枫林/斜土"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="6 枫林幼儿园 枫林/斜土 本部 小木桥路440弄30号 1 2 日新、日二、日五、日六第一、日六第二、大三、大四、康巨、茶陵、景泰、恒益、西木南、西木北、江南 A  固定对口 明确托班">
+                <td><div class="school-name">枫林幼儿园</div><div class="sub">本部</div></td>
+                <td>枫林/斜土</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>小木桥路440弄30号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>2 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>日新、日二、日五、日六第一、日六第二、大三、大四、康巨、茶陵、景泰、恒益、西木南、西木北、江南</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%9E%AB%E6%9E%97%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E5%B0%8F%E6%9C%A8%E6%A1%A5%E8%B7%AF440%E5%BC%8430%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="枫林/斜土"
+                data-confidence="B"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="7 复旦大学附属徐汇实验幼儿园 枫林/斜土 托小班部 平江路17号 1 4 平江、肇一、上影、日七、大五、医清、四季园、肇清、医学院 B 2024年7月由原平江路幼儿园与原复旦大学医学院幼儿园合并组建；2025/公开资料显示新小班启用平江路32号，需确认2026实际安排。 固定对口 明确托班">
+                <td><div class="school-name">复旦大学附属徐汇实验幼儿园</div><div class="sub">托小班部</div></td>
+                <td>枫林/斜土</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>平江路17号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>4 班</td>
+                <td><span class="tag red">B</span></td>
+                <td>平江、肇一、上影、日七、大五、医清、四季园、肇清、医学院</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E5%A4%8D%E6%97%A6%E5%A4%A7%E5%AD%A6%E9%99%84%E5%B1%9E%E5%BE%90%E6%B1%87%E5%AE%9E%E9%AA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%89%98%E5%B0%8F%E7%8F%AD%E9%83%A8%20%E5%B9%B3%E6%B1%9F%E8%B7%AF17%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>2024年7月由原平江路幼儿园与原复旦大学医学院幼儿园合并组建；2025/公开资料显示新小班启用平江路32号，需确认2026实际安排。</td>
+              </tr>
+            
+              <tr
+                data-area="枫林/斜土"
+                data-confidence="B"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="7 复旦大学附属徐汇实验幼儿园 枫林/斜土 中大班部/新小班候选 平江路32号 1 4 平江、肇一、上影、日七、大五、医清、四季园、肇清、医学院 B 公开资料显示办学地址为平江路32号、17号；原复旦医学院幼儿园东安路50弄10号为历史/合并相关地址。 固定对口 明确托班">
+                <td><div class="school-name">复旦大学附属徐汇实验幼儿园</div><div class="sub">中大班部/新小班候选</div></td>
+                <td>枫林/斜土</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>平江路32号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>4 班</td>
+                <td><span class="tag red">B</span></td>
+                <td>平江、肇一、上影、日七、大五、医清、四季园、肇清、医学院</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E5%A4%8D%E6%97%A6%E5%A4%A7%E5%AD%A6%E9%99%84%E5%B1%9E%E5%BE%90%E6%B1%87%E5%AE%9E%E9%AA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E4%B8%AD%E5%A4%A7%E7%8F%AD%E9%83%A8%2F%E6%96%B0%E5%B0%8F%E7%8F%AD%E5%80%99%E9%80%89%20%E5%B9%B3%E6%B1%9F%E8%B7%AF32%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>公开资料显示办学地址为平江路32号、17号；原复旦医学院幼儿园东安路50弄10号为历史/合并相关地址。</td>
+              </tr>
+            
+              <tr
+                data-area="枫林/斜土"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="8 东安一村幼儿园 枫林/斜土 零陵园 零陵路250弄33号 1 2 东安一村北、东安一村南、安康、振兴、张东、爱华、汇园、东安二村、沈家里、东安四村、谨斜、东安苑、枫林新村、南康 A  固定对口 明确托班">
+                <td><div class="school-name">东安一村幼儿园</div><div class="sub">零陵园</div></td>
+                <td>枫林/斜土</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>零陵路250弄33号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>2 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>东安一村北、东安一村南、安康、振兴、张东、爱华、汇园、东安二村、沈家里、东安四村、谨斜、东安苑、枫林新村、南康</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E4%B8%9C%E5%AE%89%E4%B8%80%E6%9D%91%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E9%9B%B6%E9%99%B5%E5%9B%AD%20%E9%9B%B6%E9%99%B5%E8%B7%AF250%E5%BC%8433%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="枫林/斜土"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="8 东安一村幼儿园 枫林/斜土 东安园 东安一村39号 1 2 东安一村北、东安一村南、安康、振兴、张东、爱华、汇园、东安二村、沈家里、东安四村、谨斜、东安苑、枫林新村、南康 A 公办名单列出东安一村39号及零陵路250弄33号。 固定对口 明确托班">
+                <td><div class="school-name">东安一村幼儿园</div><div class="sub">东安园</div></td>
+                <td>枫林/斜土</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>东安一村39号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>2 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>东安一村北、东安一村南、安康、振兴、张东、爱华、汇园、东安二村、沈家里、东安四村、谨斜、东安苑、枫林新村、南康</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E4%B8%9C%E5%AE%89%E4%B8%80%E6%9D%91%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E4%B8%9C%E5%AE%89%E5%9B%AD%20%E4%B8%9C%E5%AE%89%E4%B8%80%E6%9D%9139%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>公办名单列出东安一村39号及零陵路250弄33号。</td>
+              </tr>
+            
+              <tr
+                data-area="枫林/宛南"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="9 龙山幼儿园 枫林/宛南 一分园 宛南四村16号 1 4 天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑 A  固定对口 明确托班">
+                <td><div class="school-name">龙山幼儿园</div><div class="sub">一分园</div></td>
+                <td>枫林/宛南</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>宛南四村16号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E9%BE%99%E5%B1%B1%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E4%B8%80%E5%88%86%E5%9B%AD%20%E5%AE%9B%E5%8D%97%E5%9B%9B%E6%9D%9116%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="枫林/宛南"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="9 龙山幼儿园 枫林/宛南 二分园 中山南二路999弄5号 1 4 天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑 A  固定对口 明确托班">
+                <td><div class="school-name">龙山幼儿园</div><div class="sub">二分园</div></td>
+                <td>枫林/宛南</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>中山南二路999弄5号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E9%BE%99%E5%B1%B1%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E4%BA%8C%E5%88%86%E5%9B%AD%20%E4%B8%AD%E5%B1%B1%E5%8D%97%E4%BA%8C%E8%B7%AF999%E5%BC%845%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="枫林/宛南"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="9 龙山幼儿园 枫林/宛南 本部 天钥新村90号 1 4 天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑 A  固定对口 明确托班">
+                <td><div class="school-name">龙山幼儿园</div><div class="sub">本部</div></td>
+                <td>枫林/宛南</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>天钥新村90号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E9%BE%99%E5%B1%B1%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E5%A4%A9%E9%92%A5%E6%96%B0%E6%9D%9190%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="龙华/西岸"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="10 龙华幼儿园 龙华/西岸 丰谷园 丰谷路205弄34号 2 5 上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园 A  固定对口 明确托班">
+                <td><div class="school-name">龙华幼儿园</div><div class="sub">丰谷园</div></td>
+                <td>龙华/西岸</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>丰谷路205弄34号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>5 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E9%BE%99%E5%8D%8E%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E4%B8%B0%E8%B0%B7%E5%9B%AD%20%E4%B8%B0%E8%B0%B7%E8%B7%AF205%E5%BC%8434%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="龙华/西岸"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="10 龙华幼儿园 龙华/西岸 龙恒园 龙华西路31弄15号 2 5 上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园 A  固定对口 明确托班">
+                <td><div class="school-name">龙华幼儿园</div><div class="sub">龙恒园</div></td>
+                <td>龙华/西岸</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>龙华西路31弄15号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>5 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E9%BE%99%E5%8D%8E%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E9%BE%99%E6%81%92%E5%9B%AD%20%E9%BE%99%E5%8D%8E%E8%A5%BF%E8%B7%AF31%E5%BC%8415%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="龙华/西岸"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="10 龙华幼儿园 龙华/西岸 龙华园 龙华西路285弄14号 2 5 上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园 A  固定对口 明确托班">
+                <td><div class="school-name">龙华幼儿园</div><div class="sub">龙华园</div></td>
+                <td>龙华/西岸</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>龙华西路285弄14号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>5 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E9%BE%99%E5%8D%8E%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E9%BE%99%E5%8D%8E%E5%9B%AD%20%E9%BE%99%E5%8D%8E%E8%A5%BF%E8%B7%AF285%E5%BC%8414%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="田林/虹桥"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="11 汇霖幼儿园 田林/虹桥 吴中园 吴中东路500弄67号 1 4 古宜、长春、吴中、桂林苑、虹南、虹星、怡桂苑、钦北、华悦家园、鑫耀 A  固定对口 明确托班">
+                <td><div class="school-name">汇霖幼儿园</div><div class="sub">吴中园</div></td>
+                <td>田林/虹桥</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>吴中东路500弄67号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>古宜、长春、吴中、桂林苑、虹南、虹星、怡桂苑、钦北、华悦家园、鑫耀</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%B1%87%E9%9C%96%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%90%B4%E4%B8%AD%E5%9B%AD%20%E5%90%B4%E4%B8%AD%E4%B8%9C%E8%B7%AF500%E5%BC%8467%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="田林/虹桥"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="11 汇霖幼儿园 田林/虹桥 钦州园 钦州北路898号 1 4 古宜、长春、吴中、桂林苑、虹南、虹星、怡桂苑、钦北、华悦家园、鑫耀 A  固定对口 明确托班">
+                <td><div class="school-name">汇霖幼儿园</div><div class="sub">钦州园</div></td>
+                <td>田林/虹桥</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>钦州北路898号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>古宜、长春、吴中、桂林苑、虹南、虹星、怡桂苑、钦北、华悦家园、鑫耀</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%B1%87%E9%9C%96%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E9%92%A6%E5%B7%9E%E5%9B%AD%20%E9%92%A6%E5%B7%9E%E5%8C%97%E8%B7%AF898%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="龙华/滨江"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="12 阳光幼儿园 龙华/滨江 中大班部 天钥桥南路1249弄11号 1 3 龙南三四、龙南五、龙南六、龙南七、滨江、樟树苑、东泉、张家园 A  固定对口 明确托班">
+                <td><div class="school-name">阳光幼儿园</div><div class="sub">中大班部</div></td>
+                <td>龙华/滨江</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>天钥桥南路1249弄11号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>3 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>龙南三四、龙南五、龙南六、龙南七、滨江、樟树苑、东泉、张家园</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E9%98%B3%E5%85%89%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E4%B8%AD%E5%A4%A7%E7%8F%AD%E9%83%A8%20%E5%A4%A9%E9%92%A5%E6%A1%A5%E5%8D%97%E8%B7%AF1249%E5%BC%8411%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="龙华/滨江"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="12 阳光幼儿园 龙华/滨江 小班部 龙水南路龙南三村7号 1 3 龙南三四、龙南五、龙南六、龙南七、滨江、樟树苑、东泉、张家园 A  固定对口 明确托班">
+                <td><div class="school-name">阳光幼儿园</div><div class="sub">小班部</div></td>
+                <td>龙华/滨江</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>龙水南路龙南三村7号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>3 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>龙南三四、龙南五、龙南六、龙南七、滨江、樟树苑、东泉、张家园</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E9%98%B3%E5%85%89%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%B0%8F%E7%8F%AD%E9%83%A8%20%E9%BE%99%E6%B0%B4%E5%8D%97%E8%B7%AF%E9%BE%99%E5%8D%97%E4%B8%89%E6%9D%917%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="漕溪/龙漕"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="13 漕溪新村幼儿园 漕溪/龙漕 中大班部 龙漕路139号 1 3 金谷园、南一村一、南一村二、漕溪四村双号、凯翔、龙漕、嘉萱苑、漕东 A  固定对口 明确托班">
+                <td><div class="school-name">漕溪新村幼儿园</div><div class="sub">中大班部</div></td>
+                <td>漕溪/龙漕</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>龙漕路139号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>3 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>金谷园、南一村一、南一村二、漕溪四村双号、凯翔、龙漕、嘉萱苑、漕东</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%BC%95%E6%BA%AA%E6%96%B0%E6%9D%91%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E4%B8%AD%E5%A4%A7%E7%8F%AD%E9%83%A8%20%E9%BE%99%E6%BC%95%E8%B7%AF139%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="漕溪/龙漕"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="13 漕溪新村幼儿园 漕溪/龙漕 小班部 漕东路193号 1 3 金谷园、南一村一、南一村二、漕溪四村双号、凯翔、龙漕、嘉萱苑、漕东 A  固定对口 明确托班">
+                <td><div class="school-name">漕溪新村幼儿园</div><div class="sub">小班部</div></td>
+                <td>漕溪/龙漕</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>漕东路193号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>3 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>金谷园、南一村一、南一村二、漕溪四村双号、凯翔、龙漕、嘉萱苑、漕东</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%BC%95%E6%BA%AA%E6%96%B0%E6%9D%91%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%B0%8F%E7%8F%AD%E9%83%A8%20%E6%BC%95%E4%B8%9C%E8%B7%AF193%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="康健/南站"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="14 望德幼儿园 康健/南站 冠生园 冠生园路28号 4 8 康健路、习勤、薛家宅、科苑、九弄、中海、梓树园、月河、宾阳、馨汇南苑、公园道 A  固定对口 明确托班">
+                <td><div class="school-name">望德幼儿园</div><div class="sub">冠生园</div></td>
+                <td>康健/南站</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>冠生园路28号</td>
+                <td><span class="tag blue">4</span></td>
+                <td>8 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>康健路、习勤、薛家宅、科苑、九弄、中海、梓树园、月河、宾阳、馨汇南苑、公园道</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%9C%9B%E5%BE%B7%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%86%A0%E7%94%9F%E5%9B%AD%20%E5%86%A0%E7%94%9F%E5%9B%AD%E8%B7%AF28%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="康健/南站"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="14 望德幼儿园 康健/南站 南宁园 南宁路636号 4 8 康健路、习勤、薛家宅、科苑、九弄、中海、梓树园、月河、宾阳、馨汇南苑、公园道 A  固定对口 明确托班">
+                <td><div class="school-name">望德幼儿园</div><div class="sub">南宁园</div></td>
+                <td>康健/南站</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>南宁路636号</td>
+                <td><span class="tag blue">4</span></td>
+                <td>8 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>康健路、习勤、薛家宅、科苑、九弄、中海、梓树园、月河、宾阳、馨汇南苑、公园道</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%9C%9B%E5%BE%B7%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%8D%97%E5%AE%81%E5%9B%AD%20%E5%8D%97%E5%AE%81%E8%B7%AF636%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="长桥/汇成"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="15 瑞德幼儿园 长桥/汇成 楼园园 老沪闵路706弄37号 2 3 汇成一村、汇成二村、汇成三村、汇成四村、华东二、楼园、金牛、挹翠苑、罗城、光华、汇澜苑、金塘 A  固定对口 明确托班">
+                <td><div class="school-name">瑞德幼儿园</div><div class="sub">楼园园</div></td>
+                <td>长桥/汇成</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>老沪闵路706弄37号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>3 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>汇成一村、汇成二村、汇成三村、汇成四村、华东二、楼园、金牛、挹翠苑、罗城、光华、汇澜苑、金塘</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E7%91%9E%E5%BE%B7%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%A5%BC%E5%9B%AD%E5%9B%AD%20%E8%80%81%E6%B2%AA%E9%97%B5%E8%B7%AF706%E5%BC%8437%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="长桥/汇成"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="15 瑞德幼儿园 长桥/汇成 金塘园 老沪闵路333弄70号 2 3 汇成一村、汇成二村、汇成三村、汇成四村、华东二、楼园、金牛、挹翠苑、罗城、光华、汇澜苑、金塘 A  固定对口 明确托班">
+                <td><div class="school-name">瑞德幼儿园</div><div class="sub">金塘园</div></td>
+                <td>长桥/汇成</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>老沪闵路333弄70号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>3 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>汇成一村、汇成二村、汇成三村、汇成四村、华东二、楼园、金牛、挹翠苑、罗城、光华、汇澜苑、金塘</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E7%91%9E%E5%BE%B7%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E9%87%91%E5%A1%98%E5%9B%AD%20%E8%80%81%E6%B2%AA%E9%97%B5%E8%B7%AF333%E5%BC%8470%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="田林/漕河泾"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="16 益思幼儿园 田林/漕河泾 东园 田林九村6号 1 2 田林一二村、田林五六七村、田林八九十村、田林十三村、田林十一村、千鹤三、爱建园、万科华尔兹、新苑一二、新苑三四、新苑五六七、田林十四村第一、田林十四村第二 A  固定对口 明确托班">
+                <td><div class="school-name">益思幼儿园</div><div class="sub">东园</div></td>
+                <td>田林/漕河泾</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>田林九村6号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>2 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>田林一二村、田林五六七村、田林八九十村、田林十三村、田林十一村、千鹤三、爱建园、万科华尔兹、新苑一二、新苑三四、新苑五六七、田林十四村第一、田林十四村第二</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E7%9B%8A%E6%80%9D%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E4%B8%9C%E5%9B%AD%20%E7%94%B0%E6%9E%97%E4%B9%9D%E6%9D%916%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="田林/漕河泾"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="16 益思幼儿园 田林/漕河泾 西园 宜山路701弄53号 1 2 田林一二村、田林五六七村、田林八九十村、田林十三村、田林十一村、千鹤三、爱建园、万科华尔兹、新苑一二、新苑三四、新苑五六七、田林十四村第一、田林十四村第二 A  固定对口 明确托班">
+                <td><div class="school-name">益思幼儿园</div><div class="sub">西园</div></td>
+                <td>田林/漕河泾</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>宜山路701弄53号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>2 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>田林一二村、田林五六七村、田林八九十村、田林十三村、田林十一村、千鹤三、爱建园、万科华尔兹、新苑一二、新苑三四、新苑五六七、田林十四村第一、田林十四村第二</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E7%9B%8A%E6%80%9D%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E8%A5%BF%E5%9B%AD%20%E5%AE%9C%E5%B1%B1%E8%B7%AF701%E5%BC%8453%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="康健/桂林"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="17 樱花园幼儿园 康健/桂林 南园 百花街398号 2 3 月季百藤、樱花园、茶花桂花、丁香迎春、玉兰园、寿益坊（海上华庭）、紫鹃园、紫薇园（牡丹园、玫瑰园）、金桂苑、紫荆党校 A  固定对口 明确托班">
+                <td><div class="school-name">樱花园幼儿园</div><div class="sub">南园</div></td>
+                <td>康健/桂林</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>百花街398号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>3 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>月季百藤、樱花园、茶花桂花、丁香迎春、玉兰园、寿益坊（海上华庭）、紫鹃园、紫薇园（牡丹园、玫瑰园）、金桂苑、紫荆党校</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%A8%B1%E8%8A%B1%E5%9B%AD%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%8D%97%E5%9B%AD%20%E7%99%BE%E8%8A%B1%E8%A1%97398%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="康健/桂林"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="17 樱花园幼儿园 康健/桂林 北园 虹漕南路杨家桥88号 2 3 月季百藤、樱花园、茶花桂花、丁香迎春、玉兰园、寿益坊（海上华庭）、紫鹃园、紫薇园（牡丹园、玫瑰园）、金桂苑、紫荆党校 A  固定对口 明确托班">
+                <td><div class="school-name">樱花园幼儿园</div><div class="sub">北园</div></td>
+                <td>康健/桂林</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>虹漕南路杨家桥88号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>3 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>月季百藤、樱花园、茶花桂花、丁香迎春、玉兰园、寿益坊（海上华庭）、紫鹃园、紫薇园（牡丹园、玫瑰园）、金桂苑、紫荆党校</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%A8%B1%E8%8A%B1%E5%9B%AD%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%8C%97%E5%9B%AD%20%E8%99%B9%E6%BC%95%E5%8D%97%E8%B7%AF%E6%9D%A8%E5%AE%B6%E6%A1%A588%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="康健/桂林"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="混龄式招生"
+                data-confirm="no"
+                data-text="18 长海幼儿园 康健/桂林 本部 桂林西街15弄2号 混龄式招生 2 长顺海、长虹坊、长青坊、长丰坊、长兴坊、师大新村、桂康 A  固定对口 混龄式招生">
+                <td><div class="school-name">长海幼儿园</div><div class="sub">本部</div></td>
+                <td>康健/桂林</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>桂林西街15弄2号</td>
+                <td><span class="tag amber">混龄式招生</span></td>
+                <td>2 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>长顺海、长虹坊、长青坊、长丰坊、长兴坊、师大新村、桂康</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E9%95%BF%E6%B5%B7%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E6%A1%82%E6%9E%97%E8%A5%BF%E8%A1%9715%E5%BC%842%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="康健/桂林"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="混龄式招生"
+                data-confirm="no"
+                data-text="19 康沁幼儿园 康健/桂林 本部 桂林西街151弄20号甲 混龄式招生 2 寿昌山、寿祥坊、寿益坊（寿益坊、桂林西街101弄）、康乐、桂二、冠生园、康宁馨、康强海（康强坊） A  固定对口 混龄式招生">
+                <td><div class="school-name">康沁幼儿园</div><div class="sub">本部</div></td>
+                <td>康健/桂林</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>桂林西街151弄20号甲</td>
+                <td><span class="tag amber">混龄式招生</span></td>
+                <td>2 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>寿昌山、寿祥坊、寿益坊（寿益坊、桂林西街101弄）、康乐、桂二、冠生园、康宁馨、康强海（康强坊）</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E5%BA%B7%E6%B2%81%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E6%A1%82%E6%9E%97%E8%A5%BF%E8%A1%97151%E5%BC%8420%E5%8F%B7%E7%94%B2" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="长桥"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="混龄式招生"
+                data-confirm="no"
+                data-text="20 长桥第一幼儿园 长桥 本部 长桥一村56号 混龄式招生 2 长桥一村、长桥五村（书香逸居、长桥五村）、闵朱、舒城 A  固定对口 混龄式招生">
+                <td><div class="school-name">长桥第一幼儿园</div><div class="sub">本部</div></td>
+                <td>长桥</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>长桥一村56号</td>
+                <td><span class="tag amber">混龄式招生</span></td>
+                <td>2 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>长桥一村、长桥五村（书香逸居、长桥五村）、闵朱、舒城</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E9%95%BF%E6%A1%A5%E7%AC%AC%E4%B8%80%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E9%95%BF%E6%A1%A5%E4%B8%80%E6%9D%9156%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="长桥/凌云"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="21 长桥第二幼儿园 长桥/凌云 凌云园 梅陇十一村97号 2 4 长桥新村一、长桥新二村、长桥七村、兴荣苑、和平、龙州、梅陇十一第一、梅陇十一第二、陇南、闵秀 A  固定对口 明确托班">
+                <td><div class="school-name">长桥第二幼儿园</div><div class="sub">凌云园</div></td>
+                <td>长桥/凌云</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>梅陇十一村97号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>长桥新村一、长桥新二村、长桥七村、兴荣苑、和平、龙州、梅陇十一第一、梅陇十一第二、陇南、闵秀</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E9%95%BF%E6%A1%A5%E7%AC%AC%E4%BA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%87%8C%E4%BA%91%E5%9B%AD%20%E6%A2%85%E9%99%87%E5%8D%81%E4%B8%80%E6%9D%9197%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="长桥/凌云"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="21 长桥第二幼儿园 长桥/凌云 长桥园 长桥二村34号 2 4 长桥新村一、长桥新二村、长桥七村、兴荣苑、和平、龙州、梅陇十一第一、梅陇十一第二、陇南、闵秀 A  固定对口 明确托班">
+                <td><div class="school-name">长桥第二幼儿园</div><div class="sub">长桥园</div></td>
+                <td>长桥/凌云</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>长桥二村34号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>长桥新村一、长桥新二村、长桥七村、兴荣苑、和平、龙州、梅陇十一第一、梅陇十一第二、陇南、闵秀</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E9%95%BF%E6%A1%A5%E7%AC%AC%E4%BA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E9%95%BF%E6%A1%A5%E5%9B%AD%20%E9%95%BF%E6%A1%A5%E4%BA%8C%E6%9D%9134%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="长桥"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="22 长桥第三幼儿园 长桥 长桥园 长桥三村124号 2 5 长桥三村一、长桥三村二（长桥三村东区）、长桥八村、平福、长桥四村 A  固定对口 明确托班">
+                <td><div class="school-name">长桥第三幼儿园</div><div class="sub">长桥园</div></td>
+                <td>长桥</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>长桥三村124号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>5 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>长桥三村一、长桥三村二（长桥三村东区）、长桥八村、平福、长桥四村</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E9%95%BF%E6%A1%A5%E7%AC%AC%E4%B8%89%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E9%95%BF%E6%A1%A5%E5%9B%AD%20%E9%95%BF%E6%A1%A5%E4%B8%89%E6%9D%91124%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="长桥"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="22 长桥第三幼儿园 长桥 平福园 上中路483弄32号 2 5 长桥三村一、长桥三村二（长桥三村东区）、长桥八村、平福、长桥四村 A  固定对口 明确托班">
+                <td><div class="school-name">长桥第三幼儿园</div><div class="sub">平福园</div></td>
+                <td>长桥</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>上中路483弄32号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>5 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>长桥三村一、长桥三村二（长桥三村东区）、长桥八村、平福、长桥四村</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E9%95%BF%E6%A1%A5%E7%AC%AC%E4%B8%89%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%B9%B3%E7%A6%8F%E5%9B%AD%20%E4%B8%8A%E4%B8%AD%E8%B7%AF483%E5%BC%8432%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="长桥/园南"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="23 园南幼儿园 长桥/园南 本部 龙川北路园南一村27号 1 3 园南一村、园南二村、园南三村、汇成五村、华东一 A  固定对口 明确托班">
+                <td><div class="school-name">园南幼儿园</div><div class="sub">本部</div></td>
+                <td>长桥/园南</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>龙川北路园南一村27号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>3 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>园南一村、园南二村、园南三村、汇成五村、华东一</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E5%9B%AD%E5%8D%97%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E9%BE%99%E5%B7%9D%E5%8C%97%E8%B7%AF%E5%9B%AD%E5%8D%97%E4%B8%80%E6%9D%9127%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="凌云/梅陇"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="24 梅陇幼儿园 凌云/梅陇 嘉川园 梅陇四村56号甲 2 5 梅三、梅六、梅苑一、梅苑二、凌云、梅四、理工一、理工二、华理苑、书香苑、家乐苑、阳光（阳光新景） A  固定对口 明确托班">
+                <td><div class="school-name">梅陇幼儿园</div><div class="sub">嘉川园</div></td>
+                <td>凌云/梅陇</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>梅陇四村56号甲</td>
+                <td><span class="tag blue">2</span></td>
+                <td>5 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>梅三、梅六、梅苑一、梅苑二、凌云、梅四、理工一、理工二、华理苑、书香苑、家乐苑、阳光（阳光新景）</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%A2%85%E9%99%87%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%98%89%E5%B7%9D%E5%9B%AD%20%E6%A2%85%E9%99%87%E5%9B%9B%E6%9D%9156%E5%8F%B7%E7%94%B2" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="凌云/梅陇"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="24 梅陇幼儿园 凌云/梅陇 梅陇园 梅陇六村65号 2 5 梅三、梅六、梅苑一、梅苑二、凌云、梅四、理工一、理工二、华理苑、书香苑、家乐苑、阳光（阳光新景） A  固定对口 明确托班">
+                <td><div class="school-name">梅陇幼儿园</div><div class="sub">梅陇园</div></td>
+                <td>凌云/梅陇</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>梅陇六村65号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>5 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>梅三、梅六、梅苑一、梅苑二、凌云、梅四、理工一、理工二、华理苑、书香苑、家乐苑、阳光（阳光新景）</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%A2%85%E9%99%87%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%A2%85%E9%99%87%E5%9B%AD%20%E6%A2%85%E9%99%87%E5%85%AD%E6%9D%9165%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="凌云/梅陇"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="混龄式招生"
+                data-confirm="no"
+                data-text="25 梅陇第二幼儿园 凌云/梅陇 本部 梅陇五村54号 混龄式招生 2 梅陇五村、梅陇七村、梅陇八村、梅陇十村、梅陇九村、阳光（阳光绿园）、长陇苑 A  固定对口 混龄式招生">
+                <td><div class="school-name">梅陇第二幼儿园</div><div class="sub">本部</div></td>
+                <td>凌云/梅陇</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>梅陇五村54号</td>
+                <td><span class="tag amber">混龄式招生</span></td>
+                <td>2 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>梅陇五村、梅陇七村、梅陇八村、梅陇十村、梅陇九村、阳光（阳光绿园）、长陇苑</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%A2%85%E9%99%87%E7%AC%AC%E4%BA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E6%A2%85%E9%99%87%E4%BA%94%E6%9D%9154%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="华泾"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="26 华建幼儿园 华泾 本部 老沪闵路1300号 1 3 华建、建华村、北杨村 A  固定对口 明确托班">
+                <td><div class="school-name">华建幼儿园</div><div class="sub">本部</div></td>
+                <td>华泾</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>老沪闵路1300号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>3 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>华建、建华村、北杨村</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E5%8D%8E%E5%BB%BA%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E8%80%81%E6%B2%AA%E9%97%B5%E8%B7%AF1300%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="华泾"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="27 位育幼儿园 华泾 本部 建华路102号 2 2 华泾四村、华泾五村、漓江山水、联合居委 A  固定对口 明确托班">
+                <td><div class="school-name">位育幼儿园</div><div class="sub">本部</div></td>
+                <td>华泾</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>建华路102号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>2 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>华泾四村、华泾五村、漓江山水、联合居委</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E4%BD%8D%E8%82%B2%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E5%BB%BA%E5%8D%8E%E8%B7%AF102%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="华泾"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="28 果果幼儿园 华泾 华欣园 龙吴路2422号 1 4 华欣家园、华发、馨宁、大桥、明丰新纪苑、名苑、华臻 A  固定对口 明确托班">
+                <td><div class="school-name">果果幼儿园</div><div class="sub">华欣园</div></td>
+                <td>华泾</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>龙吴路2422号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>华欣家园、华发、馨宁、大桥、明丰新纪苑、名苑、华臻</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%9E%9C%E6%9E%9C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%8D%8E%E6%AC%A3%E5%9B%AD%20%E9%BE%99%E5%90%B4%E8%B7%AF2422%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="华泾"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="28 果果幼儿园 华泾 华发园 华发路100弄22号 1 4 华欣家园、华发、馨宁、大桥、明丰新纪苑、名苑、华臻 A  固定对口 明确托班">
+                <td><div class="school-name">果果幼儿园</div><div class="sub">华发园</div></td>
+                <td>华泾</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>华发路100弄22号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>华欣家园、华发、馨宁、大桥、明丰新纪苑、名苑、华臻</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%9E%9C%E6%9E%9C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%8D%8E%E5%8F%91%E5%9B%AD%20%E5%8D%8E%E5%8F%91%E8%B7%AF100%E5%BC%8422%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="华泾/罗秀"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="29 星辰幼儿园 华泾/罗秀 本部 罗秀路11号 1 2 徐汇新城、罗秀三村、华滨家园、华沁家园、罗秀、罗秀二村 A  固定对口 明确托班">
+                <td><div class="school-name">星辰幼儿园</div><div class="sub">本部</div></td>
+                <td>华泾/罗秀</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>罗秀路11号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>2 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>徐汇新城、罗秀三村、华滨家园、华沁家园、罗秀、罗秀二村</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%98%9F%E8%BE%B0%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E7%BD%97%E7%A7%80%E8%B7%AF11%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="华泾/罗秀"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="30 徐汇实验幼儿园 华泾/罗秀 本部 龙瑞路135号 1 2 中海瀛台、百龙、港口 A  固定对口 明确托班">
+                <td><div class="school-name">徐汇实验幼儿园</div><div class="sub">本部</div></td>
+                <td>华泾/罗秀</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>龙瑞路135号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>2 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>中海瀛台、百龙、港口</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E5%BE%90%E6%B1%87%E5%AE%9E%E9%AA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E9%BE%99%E7%91%9E%E8%B7%AF135%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="华泾"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="31 印象幼儿园 华泾 本部 望月路882号 1 2 印象、华阳、沙家浜 A  固定对口 明确托班">
+                <td><div class="school-name">印象幼儿园</div><div class="sub">本部</div></td>
+                <td>华泾</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>望月路882号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>2 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>印象、华阳、沙家浜</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E5%8D%B0%E8%B1%A1%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E6%9C%9B%E6%9C%88%E8%B7%AF882%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="南站/石龙"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="32 科技逸夫幼儿园 南站/石龙 本部 石龙路818弄8号 1 1 正南、东荡、南站居委（临） A  固定对口 明确托班">
+                <td><div class="school-name">科技逸夫幼儿园</div><div class="sub">本部</div></td>
+                <td>南站/石龙</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>石龙路818弄8号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>1 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>正南、东荡、南站居委（临）</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E7%A7%91%E6%8A%80%E9%80%B8%E5%A4%AB%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E7%9F%B3%E9%BE%99%E8%B7%AF818%E5%BC%848%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="华泾"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="33 盛华幼儿园 华泾 本部 望月路401号 1 3 盛华、华泾绿苑、光华绿苑 A  固定对口 明确托班">
+                <td><div class="school-name">盛华幼儿园</div><div class="sub">本部</div></td>
+                <td>华泾</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>望月路401号</td>
+                <td><span class="tag blue">1</span></td>
+                <td>3 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>盛华、华泾绿苑、光华绿苑</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E7%9B%9B%E5%8D%8E%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E6%9C%9B%E6%9C%88%E8%B7%AF401%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="徐家汇/田林"
+                data-confidence="A"
+                data-admission="扩招"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="34 艺树幼儿园 徐家汇/田林 本部 古井路160号 2 3 锦馨苑、千鹤第六、小安桥、华鼎广场、千鹤五、尚汇豪庭、千鹤一、千鹤二；另向徐家汇街道、田林街道扩招 A  扩招 明确托班">
+                <td><div class="school-name">艺树幼儿园</div><div class="sub">本部</div></td>
+                <td>徐家汇/田林</td>
+                <td><span class="tag amber">扩招</span></td>
+                <td>古井路160号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>3 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>锦馨苑、千鹤第六、小安桥、华鼎广场、千鹤五、尚汇豪庭、千鹤一、千鹤二；另向徐家汇街道、田林街道扩招</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E8%89%BA%E6%A0%91%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E5%8F%A4%E4%BA%95%E8%B7%AF160%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="漕河泾/虹梅"
+                data-confidence="A"
+                data-admission="固定对口"
+                data-toddler="明确托班"
+                data-confirm="no"
+                data-text="35 桂平幼儿园 漕河泾/虹梅 本部 桂平路260弄14号 2 1 联莘、欣园 A  固定对口 明确托班">
+                <td><div class="school-name">桂平幼儿园</div><div class="sub">本部</div></td>
+                <td>漕河泾/虹梅</td>
+                <td><span class="tag green">固定对口</span></td>
+                <td>桂平路260弄14号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>1 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>联莘、欣园</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%A1%82%E5%B9%B3%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E6%A1%82%E5%B9%B3%E8%B7%AF260%E5%BC%8414%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td><span class="sub">-</span></td>
+              </tr>
+            
+              <tr
+                data-area="田林/虹梅"
+                data-confidence="A"
+                data-admission="扩招"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="36 田林第六幼儿园 田林/虹梅 本部 田林十二村40号 3 5 田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招 A  扩招 明确托班">
+                <td><div class="school-name">田林第六幼儿园</div><div class="sub">本部</div></td>
+                <td>田林/虹梅</td>
+                <td><span class="tag amber">扩招</span></td>
+                <td>田林十二村40号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>5 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E7%94%B0%E6%9E%97%E7%AC%AC%E5%85%AD%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E7%94%B0%E6%9E%97%E5%8D%81%E4%BA%8C%E6%9D%9140%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="田林/虹梅"
+                data-confidence="A"
+                data-admission="扩招"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="36 田林第六幼儿园 田林/虹梅 贝贝分园 田林四村18号 3 5 田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招 A  扩招 明确托班">
+                <td><div class="school-name">田林第六幼儿园</div><div class="sub">贝贝分园</div></td>
+                <td>田林/虹梅</td>
+                <td><span class="tag amber">扩招</span></td>
+                <td>田林四村18号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>5 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E7%94%B0%E6%9E%97%E7%AC%AC%E5%85%AD%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E8%B4%9D%E8%B4%9D%E5%88%86%E5%9B%AD%20%E7%94%B0%E6%9E%97%E5%9B%9B%E6%9D%9118%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="田林/虹梅"
+                data-confidence="A"
+                data-admission="扩招"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="36 田林第六幼儿园 田林/虹梅 东兰分园 古美路1107弄65号 3 5 田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招 A  扩招 明确托班">
+                <td><div class="school-name">田林第六幼儿园</div><div class="sub">东兰分园</div></td>
+                <td>田林/虹梅</td>
+                <td><span class="tag amber">扩招</span></td>
+                <td>古美路1107弄65号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>5 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E7%94%B0%E6%9E%97%E7%AC%AC%E5%85%AD%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E4%B8%9C%E5%85%B0%E5%88%86%E5%9B%AD%20%E5%8F%A4%E7%BE%8E%E8%B7%AF1107%E5%BC%8465%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="康健/漕河泾"
+                data-confidence="A"
+                data-admission="区域自主"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="37 紫薇实验幼儿园 康健/漕河泾 桂平园 桂平路123弄23号 5 6 紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生 A  区域自主 明确托班">
+                <td><div class="school-name">紫薇实验幼儿园</div><div class="sub">桂平园</div></td>
+                <td>康健/漕河泾</td>
+                <td><span class="tag blue">区域自主</span></td>
+                <td>桂平路123弄23号</td>
+                <td><span class="tag blue">5</span></td>
+                <td>6 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E7%B4%AB%E8%96%87%E5%AE%9E%E9%AA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%A1%82%E5%B9%B3%E5%9B%AD%20%E6%A1%82%E5%B9%B3%E8%B7%AF123%E5%BC%8423%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="康健/漕河泾"
+                data-confidence="A"
+                data-admission="区域自主"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="37 紫薇实验幼儿园 康健/漕河泾 浦北园 浦北路173号 5 6 紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生 A  区域自主 明确托班">
+                <td><div class="school-name">紫薇实验幼儿园</div><div class="sub">浦北园</div></td>
+                <td>康健/漕河泾</td>
+                <td><span class="tag blue">区域自主</span></td>
+                <td>浦北路173号</td>
+                <td><span class="tag blue">5</span></td>
+                <td>6 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E7%B4%AB%E8%96%87%E5%AE%9E%E9%AA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%B5%A6%E5%8C%97%E5%9B%AD%20%E6%B5%A6%E5%8C%97%E8%B7%AF173%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="康健/漕河泾"
+                data-confidence="A"
+                data-admission="区域自主"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="37 紫薇实验幼儿园 康健/漕河泾 全州园 宜州路26号 5 6 紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生 A  区域自主 明确托班">
+                <td><div class="school-name">紫薇实验幼儿园</div><div class="sub">全州园</div></td>
+                <td>康健/漕河泾</td>
+                <td><span class="tag blue">区域自主</span></td>
+                <td>宜州路26号</td>
+                <td><span class="tag blue">5</span></td>
+                <td>6 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E7%B4%AB%E8%96%87%E5%AE%9E%E9%AA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%85%A8%E5%B7%9E%E5%9B%AD%20%E5%AE%9C%E5%B7%9E%E8%B7%AF26%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="长桥/凌云"
+                data-confidence="A"
+                data-admission="扩招"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="38 上海幼儿园 长桥/凌云 凌云园 上中西路378号 2 5 体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招 A  扩招 明确托班">
+                <td><div class="school-name">上海幼儿园</div><div class="sub">凌云园</div></td>
+                <td>长桥/凌云</td>
+                <td><span class="tag amber">扩招</span></td>
+                <td>上中西路378号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>5 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%87%8C%E4%BA%91%E5%9B%AD%20%E4%B8%8A%E4%B8%AD%E8%A5%BF%E8%B7%AF378%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="长桥/凌云"
+                data-confidence="A"
+                data-admission="扩招"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="38 上海幼儿园 长桥/凌云 冠军园 老沪闵路729弄41号乙 2 5 体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招 A  扩招 明确托班">
+                <td><div class="school-name">上海幼儿园</div><div class="sub">冠军园</div></td>
+                <td>长桥/凌云</td>
+                <td><span class="tag amber">扩招</span></td>
+                <td>老沪闵路729弄41号乙</td>
+                <td><span class="tag blue">2</span></td>
+                <td>5 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%86%A0%E5%86%9B%E5%9B%AD%20%E8%80%81%E6%B2%AA%E9%97%B5%E8%B7%AF729%E5%BC%8441%E5%8F%B7%E4%B9%99" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="长桥/凌云"
+                data-confidence="A"
+                data-admission="扩招"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="38 上海幼儿园 长桥/凌云 上中园 上中路402号 2 5 体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招 A  扩招 明确托班">
+                <td><div class="school-name">上海幼儿园</div><div class="sub">上中园</div></td>
+                <td>长桥/凌云</td>
+                <td><span class="tag amber">扩招</span></td>
+                <td>上中路402号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>5 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E4%B8%8A%E4%B8%AD%E5%9B%AD%20%E4%B8%8A%E4%B8%AD%E8%B7%AF402%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="衡复/湖南"
+                data-confidence="A"
+                data-admission="区域自主"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="39 乌鲁木齐南路幼儿园 衡复/湖南 本部 乌鲁木齐南路14号 3 4 区域内自主招生 A  区域自主 明确托班">
+                <td><div class="school-name">乌鲁木齐南路幼儿园</div><div class="sub">本部</div></td>
+                <td>衡复/湖南</td>
+                <td><span class="tag blue">区域自主</span></td>
+                <td>乌鲁木齐南路14号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>区域内自主招生</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E4%B9%8C%E9%B2%81%E6%9C%A8%E9%BD%90%E5%8D%97%E8%B7%AF%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E4%B9%8C%E9%B2%81%E6%9C%A8%E9%BD%90%E5%8D%97%E8%B7%AF14%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="衡复/湖南"
+                data-confidence="A"
+                data-admission="区域自主"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="39 乌鲁木齐南路幼儿园 衡复/湖南 境内部 淮海路1788号 3 4 区域内自主招生 A  区域自主 明确托班">
+                <td><div class="school-name">乌鲁木齐南路幼儿园</div><div class="sub">境内部</div></td>
+                <td>衡复/湖南</td>
+                <td><span class="tag blue">区域自主</span></td>
+                <td>淮海路1788号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>区域内自主招生</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E4%B9%8C%E9%B2%81%E6%9C%A8%E9%BD%90%E5%8D%97%E8%B7%AF%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%A2%83%E5%86%85%E9%83%A8%20%E6%B7%AE%E6%B5%B7%E8%B7%AF1788%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="衡复/湖南"
+                data-confidence="A"
+                data-admission="区域自主"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="39 乌鲁木齐南路幼儿园 衡复/湖南 境外部 淮海中路1480号 3 4 区域内自主招生 A  区域自主 明确托班">
+                <td><div class="school-name">乌鲁木齐南路幼儿园</div><div class="sub">境外部</div></td>
+                <td>衡复/湖南</td>
+                <td><span class="tag blue">区域自主</span></td>
+                <td>淮海中路1480号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>4 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>区域内自主招生</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E4%B9%8C%E9%B2%81%E6%9C%A8%E9%BD%90%E5%8D%97%E8%B7%AF%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%A2%83%E5%A4%96%E9%83%A8%20%E6%B7%AE%E6%B5%B7%E4%B8%AD%E8%B7%AF1480%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="徐家汇/田林"
+                data-confidence="A"
+                data-admission="区域自主"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="40 科技幼儿园 徐家汇/田林 宜山园1部 宜山路655弄1号 3 9 区域内自主招生 A  区域自主 明确托班">
+                <td><div class="school-name">科技幼儿园</div><div class="sub">宜山园1部</div></td>
+                <td>徐家汇/田林</td>
+                <td><span class="tag blue">区域自主</span></td>
+                <td>宜山路655弄1号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>9 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>区域内自主招生</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E7%A7%91%E6%8A%80%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%AE%9C%E5%B1%B1%E5%9B%AD1%E9%83%A8%20%E5%AE%9C%E5%B1%B1%E8%B7%AF655%E5%BC%841%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="徐家汇/田林"
+                data-confidence="A"
+                data-admission="区域自主"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="40 科技幼儿园 徐家汇/田林 嘉陵园 嘉陵路28号 3 9 区域内自主招生 A  区域自主 明确托班">
+                <td><div class="school-name">科技幼儿园</div><div class="sub">嘉陵园</div></td>
+                <td>徐家汇/田林</td>
+                <td><span class="tag blue">区域自主</span></td>
+                <td>嘉陵路28号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>9 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>区域内自主招生</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E7%A7%91%E6%8A%80%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%98%89%E9%99%B5%E5%9B%AD%20%E5%98%89%E9%99%B5%E8%B7%AF28%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="徐家汇/田林"
+                data-confidence="A"
+                data-admission="区域自主"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="40 科技幼儿园 徐家汇/田林 文定园 文定路476号 3 9 区域内自主招生 A  区域自主 明确托班">
+                <td><div class="school-name">科技幼儿园</div><div class="sub">文定园</div></td>
+                <td>徐家汇/田林</td>
+                <td><span class="tag blue">区域自主</span></td>
+                <td>文定路476号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>9 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>区域内自主招生</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E7%A7%91%E6%8A%80%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%96%87%E5%AE%9A%E5%9B%AD%20%E6%96%87%E5%AE%9A%E8%B7%AF476%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="徐家汇/田林"
+                data-confidence="A"
+                data-admission="区域自主"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="40 科技幼儿园 徐家汇/田林 宜山园10部 宜山路655弄10号 3 9 区域内自主招生 A  区域自主 明确托班">
+                <td><div class="school-name">科技幼儿园</div><div class="sub">宜山园10部</div></td>
+                <td>徐家汇/田林</td>
+                <td><span class="tag blue">区域自主</span></td>
+                <td>宜山路655弄10号</td>
+                <td><span class="tag blue">3</span></td>
+                <td>9 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>区域内自主招生</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E7%A7%91%E6%8A%80%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%AE%9C%E5%B1%B1%E5%9B%AD10%E9%83%A8%20%E5%AE%9C%E5%B1%B1%E8%B7%AF655%E5%BC%8410%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="龙华/滨江"
+                data-confidence="A"
+                data-admission="区域自主"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="41 宛南实验幼儿园 龙华/滨江 瑞宁部 瑞宁路816号 6 6 区域内自主招生 A  区域自主 明确托班">
+                <td><div class="school-name">宛南实验幼儿园</div><div class="sub">瑞宁部</div></td>
+                <td>龙华/滨江</td>
+                <td><span class="tag blue">区域自主</span></td>
+                <td>瑞宁路816号</td>
+                <td><span class="tag blue">6</span></td>
+                <td>6 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>区域内自主招生</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E5%AE%9B%E5%8D%97%E5%AE%9E%E9%AA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E7%91%9E%E5%AE%81%E9%83%A8%20%E7%91%9E%E5%AE%81%E8%B7%AF816%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="龙华/滨江"
+                data-confidence="A"
+                data-admission="区域自主"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="41 宛南实验幼儿园 龙华/滨江 滨江部 瑞宁路851号 6 6 区域内自主招生 A  区域自主 明确托班">
+                <td><div class="school-name">宛南实验幼儿园</div><div class="sub">滨江部</div></td>
+                <td>龙华/滨江</td>
+                <td><span class="tag blue">区域自主</span></td>
+                <td>瑞宁路851号</td>
+                <td><span class="tag blue">6</span></td>
+                <td>6 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>区域内自主招生</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E5%AE%9B%E5%8D%97%E5%AE%9E%E9%AA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%BB%A8%E6%B1%9F%E9%83%A8%20%E7%91%9E%E5%AE%81%E8%B7%AF851%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="龙华/滨江"
+                data-confidence="A"
+                data-admission="区域自主"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="41 宛南实验幼儿园 龙华/滨江 大木桥部 大木桥路323号 6 6 区域内自主招生 A  区域自主 明确托班">
+                <td><div class="school-name">宛南实验幼儿园</div><div class="sub">大木桥部</div></td>
+                <td>龙华/滨江</td>
+                <td><span class="tag blue">区域自主</span></td>
+                <td>大木桥路323号</td>
+                <td><span class="tag blue">6</span></td>
+                <td>6 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>区域内自主招生</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E5%AE%9B%E5%8D%97%E5%AE%9E%E9%AA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%A4%A7%E6%9C%A8%E6%A1%A5%E9%83%A8%20%E5%A4%A7%E6%9C%A8%E6%A1%A5%E8%B7%AF323%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="衡复/湖南/滨江"
+                data-confidence="A"
+                data-admission="区域自主"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="42 机关建国幼儿园 衡复/湖南/滨江 建国园 建国西路570号 2 6 区域内自主招生 A  区域自主 明确托班">
+                <td><div class="school-name">机关建国幼儿园</div><div class="sub">建国园</div></td>
+                <td>衡复/湖南/滨江</td>
+                <td><span class="tag blue">区域自主</span></td>
+                <td>建国西路570号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>6 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>区域内自主招生</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%9C%BA%E5%85%B3%E5%BB%BA%E5%9B%BD%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%BB%BA%E5%9B%BD%E5%9B%AD%20%E5%BB%BA%E5%9B%BD%E8%A5%BF%E8%B7%AF570%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="衡复/湖南/滨江"
+                data-confidence="A"
+                data-admission="区域自主"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="42 机关建国幼儿园 衡复/湖南/滨江 安亭园 安亭路112号 2 6 区域内自主招生 A  区域自主 明确托班">
+                <td><div class="school-name">机关建国幼儿园</div><div class="sub">安亭园</div></td>
+                <td>衡复/湖南/滨江</td>
+                <td><span class="tag blue">区域自主</span></td>
+                <td>安亭路112号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>6 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>区域内自主招生</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%9C%BA%E5%85%B3%E5%BB%BA%E5%9B%BD%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%AE%89%E4%BA%AD%E5%9B%AD%20%E5%AE%89%E4%BA%AD%E8%B7%AF112%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+              <tr
+                data-area="衡复/湖南/滨江"
+                data-confidence="A"
+                data-admission="区域自主"
+                data-toddler="明确托班"
+                data-confirm="yes"
+                data-text="42 机关建国幼儿园 衡复/湖南/滨江 滨江园 云锦路183弄30号 2 6 区域内自主招生 A  区域自主 明确托班">
+                <td><div class="school-name">机关建国幼儿园</div><div class="sub">滨江园</div></td>
+                <td>衡复/湖南/滨江</td>
+                <td><span class="tag blue">区域自主</span></td>
+                <td>云锦路183弄30号</td>
+                <td><span class="tag blue">2</span></td>
+                <td>6 班</td>
+                <td><span class="tag green">A</span></td>
+                <td>区域内自主招生</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%BE%90%E6%B1%87%E5%8C%BA%20%E6%9C%BA%E5%85%B3%E5%BB%BA%E5%9B%BD%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%BB%A8%E6%B1%9F%E5%9B%AD%20%E4%BA%91%E9%94%A6%E8%B7%AF183%E5%BC%8430%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>建议结合当年简章或电话确认。</td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="areas">
+      <div class="section-title">
+        <h2>片区容量观察</h2>
+        <p>片区统计用于判断供给密度，不直接代表个人录取概率；实际仍以居委、户籍和当年招生口径为准。</p>
+      </div>
+      <div class="areas">
+        
+          <article class="area-card">
+            <strong>华泾</strong>
+            <div class="area-metrics">
+              <span><b>5</b>主体</span>
+              <span><b>6</b>点位</span>
+              <span><b>14</b>小班</span>
+            </div>
+          </article>
+        
+          <article class="area-card">
+            <strong>衡复/湖南</strong>
+            <div class="area-metrics">
+              <span><b>3</b>主体</span>
+              <span><b>10</b>点位</span>
+              <span><b>12</b>小班</span>
+            </div>
+          </article>
+        
+          <article class="area-card">
+            <strong>徐家汇/田林</strong>
+            <div class="area-metrics">
+              <span><b>2</b>主体</span>
+              <span><b>5</b>点位</span>
+              <span><b>12</b>小班</span>
+            </div>
+          </article>
+        
+          <article class="area-card">
+            <strong>龙华/滨江</strong>
+            <div class="area-metrics">
+              <span><b>2</b>主体</span>
+              <span><b>5</b>点位</span>
+              <span><b>9</b>小班</span>
+            </div>
+          </article>
+        
+          <article class="area-card">
+            <strong>长桥/凌云</strong>
+            <div class="area-metrics">
+              <span><b>2</b>主体</span>
+              <span><b>5</b>点位</span>
+              <span><b>9</b>小班</span>
+            </div>
+          </article>
+        
+          <article class="area-card">
+            <strong>枫林/斜土</strong>
+            <div class="area-metrics">
+              <span><b>3</b>主体</span>
+              <span><b>5</b>点位</span>
+              <span><b>8</b>小班</span>
+            </div>
+          </article>
+        
+          <article class="area-card">
+            <strong>康健/南站</strong>
+            <div class="area-metrics">
+              <span><b>1</b>主体</span>
+              <span><b>2</b>点位</span>
+              <span><b>8</b>小班</span>
+            </div>
+          </article>
+        
+          <article class="area-card">
+            <strong>康健/桂林</strong>
+            <div class="area-metrics">
+              <span><b>3</b>主体</span>
+              <span><b>4</b>点位</span>
+              <span><b>7</b>小班</span>
+            </div>
+          </article>
+        
+          <article class="area-card">
+            <strong>长桥</strong>
+            <div class="area-metrics">
+              <span><b>2</b>主体</span>
+              <span><b>3</b>点位</span>
+              <span><b>7</b>小班</span>
+            </div>
+          </article>
+        
+          <article class="area-card">
+            <strong>凌云/梅陇</strong>
+            <div class="area-metrics">
+              <span><b>2</b>主体</span>
+              <span><b>3</b>点位</span>
+              <span><b>7</b>小班</span>
+            </div>
+          </article>
+        
+          <article class="area-card">
+            <strong>康健/漕河泾</strong>
+            <div class="area-metrics">
+              <span><b>1</b>主体</span>
+              <span><b>3</b>点位</span>
+              <span><b>6</b>小班</span>
+            </div>
+          </article>
+        
+          <article class="area-card">
+            <strong>衡复/湖南/滨江</strong>
+            <div class="area-metrics">
+              <span><b>1</b>主体</span>
+              <span><b>3</b>点位</span>
+              <span><b>6</b>小班</span>
+            </div>
+          </article>
+        
+      </div>
+    </section>
+
+    <section id="risks">
+      <div class="section-title">
+        <h2>核验重点</h2>
+        <p>这些不是错误，而是择园前最容易造成误判的地方。</p>
+      </div>
+      <div class="notice">
+        <article class="notice-card">
+          <h3>地址与园区分流</h3>
+          <p>汇星幼儿园北园、复旦大学附属徐汇实验幼儿园存在公开资料差异或合并后的园部安排变化，建议直接电话确认 2026 年小班实际入读园区。</p>
+        </article>
+        <article class="notice-card">
+          <h3>自主招生与扩招</h3>
+          <p>“区域内自主招生”和“另向某街道扩招”不等于普通固定居委一一对应，应结合当年简章、报名条件和录取顺位理解。</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">主要来源：上海本地宝《2026徐汇区幼儿园招生对口地段及招生计划班级数》，2026-04-15：https://m.sh.bendibao.com/edu/305291.html；上海本地宝《上海市徐汇区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://m.sh.bendibao.com/edu/284155.html；本地PDF：/Users/caofengyang/Downloads/徐汇区幼儿园对口地区.pdf（2026年徐汇区公办幼儿园对口居委一览表及计划班级数）</div>
+  </footer>
+
+  <script>
+    const search = document.querySelector("#search");
+    const area = document.querySelector("#area");
+    const admission = document.querySelector("#admission");
+    const toddler = document.querySelector("#toddler");
+    const confidence = document.querySelector("#confidence");
+    const confirmSelect = document.querySelector("#confirm");
+    const resultCount = document.querySelector("#resultCount");
+    const rows = Array.from(document.querySelectorAll("#rows tr"));
+
+    function applyFilters() {
+      const q = search.value.trim().toLowerCase();
+      let visible = 0;
+      for (const row of rows) {
+        const okText = !q || row.dataset.text.toLowerCase().includes(q);
+        const okArea = !area.value || row.dataset.area === area.value;
+        const okAdmission = !admission.value || row.dataset.admission === admission.value;
+        const okToddler = !toddler.value || row.dataset.toddler === toddler.value;
+        const okConfidence = !confidence.value || row.dataset.confidence === confidence.value;
+        const okConfirm = !confirmSelect.value || row.dataset.confirm === confirmSelect.value;
+        const show = okText && okArea && okAdmission && okToddler && okConfidence && okConfirm;
+        row.hidden = !show;
+        if (show) visible += 1;
+      }
+      resultCount.textContent = visible;
+    }
+
+    for (const control of [search, area, admission, toddler, confidence, confirmSelect]) {
+      control.addEventListener("input", applyFilters);
+      control.addEventListener("change", applyFilters);
+    }
+  </script>
+</body>
+</html>
