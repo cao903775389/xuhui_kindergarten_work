@@ -145,6 +145,19 @@ const officeLocation = {
 };
 
 const pendingAmapValue = "待高德MCP查询";
+const amapEnrichmentPath = path.join(process.cwd(), "data", "amap_enrichment.json");
+let amapEnrichmentByKey = {};
+try {
+  amapEnrichmentByKey = JSON.parse(await fs.readFile(amapEnrichmentPath, "utf8"));
+} catch {
+  amapEnrichmentByKey = {};
+}
+
+const amapItemKey = ({ nature, name, campus, address }) => [nature, name, campus, address].join("|");
+const getAmapEnrichment = (item) => {
+  const enrichment = amapEnrichmentByKey[amapItemKey(item)] || {};
+  return enrichment.status === "matched" ? enrichment : {};
+};
 
 const publicSchoolLevelById = new Map([
   [1, "一级"],
@@ -361,6 +374,7 @@ const publicCampusItems = campusRows.map(([id, campus, address, confidence, note
   const needsConfirm = confidence === "B" || admissionType !== "固定对口" || note;
   const schoolLevel = publicSchoolLevelById.get(id) || "待核验";
   const phone = publicCampusPhoneByKey.get(`${id}|${campus}`) || "待电话确认";
+  const amap = getAmapEnrichment({ nature: "公办", name: school.name, campus, address });
   const searchText = [
     id,
     "公办",
@@ -370,7 +384,7 @@ const publicCampusItems = campusRows.map(([id, campus, address, confidence, note
     campus,
     address,
     phone,
-    pendingAmapValue,
+    amap.officeDistanceText || pendingAmapValue,
     school.toddler,
     school.small,
     school.committee,
@@ -391,9 +405,10 @@ const publicCampusItems = campusRows.map(([id, campus, address, confidence, note
     address,
     mapUrl: mapSearch(school.name, campus, address),
     phone,
-    officeDistance: pendingAmapValue,
-    amapPoiName: pendingAmapValue,
-    amapLocation: pendingAmapValue,
+    officeDistance: amap.officeDistanceText || pendingAmapValue,
+    amapPoiName: amap.poiName || pendingAmapValue,
+    amapPoiAddress: amap.poiAddress || pendingAmapValue,
+    amapLocation: amap.location || pendingAmapValue,
     toddler: school.toddler,
     small: school.small,
     committee: school.committee,
@@ -411,6 +426,7 @@ const privateCampusItems = privateCampusRows.map((item, index) => {
   const campus = item.campus || "本部";
   const id = `M${index + 1}`;
   const area = inferPrivateArea(item.address);
+  const amap = getAmapEnrichment({ nature: "民办", name: item.name, campus, address: item.address });
   const searchText = [
     id,
     "民办",
@@ -421,7 +437,7 @@ const privateCampusItems = privateCampusRows.map((item, index) => {
     campus,
     item.address,
     item.phone,
-    pendingAmapValue,
+    amap.officeDistanceText || pendingAmapValue,
     "民办招生",
     "待确认",
     "民办招生范围需电话确认",
@@ -438,9 +454,10 @@ const privateCampusItems = privateCampusRows.map((item, index) => {
     address: item.address,
     mapUrl: mapSearch(item.name, campus, item.address),
     phone: item.phone,
-    officeDistance: pendingAmapValue,
-    amapPoiName: pendingAmapValue,
-    amapLocation: pendingAmapValue,
+    officeDistance: amap.officeDistanceText || pendingAmapValue,
+    amapPoiName: amap.poiName || pendingAmapValue,
+    amapPoiAddress: amap.poiAddress || pendingAmapValue,
+    amapLocation: amap.location || pendingAmapValue,
     toddler: "待电话确认",
     small: "待电话确认",
     committee: "民办招生范围、托班、小班名额、收费和材料要求需电话确认。",
@@ -456,7 +473,7 @@ const privateCampusItems = privateCampusRows.map((item, index) => {
 
 const campusItems = [...publicCampusItems, ...privateCampusItems];
 
-const campusHeader = ["编号", "性质", "办园类型", "办园等级", "幼儿园", "片区", "园区/分园", "地址", "高德POI名称", "高德经纬度", `距${officeLocation.name}`, "高德搜索链接", "联系电话", "托班计划", "小班计划", "对口居委/招生范围", "招生类型", "置信度", "备注", "主要来源"];
+const campusHeader = ["编号", "性质", "办园类型", "办园等级", "幼儿园", "片区", "园区/分园", "地址", "高德POI名称", "高德POI地址", "高德经纬度", `距${officeLocation.name}`, "高德搜索链接", "联系电话", "托班计划", "小班计划", "对口居委/招生范围", "招生类型", "置信度", "备注", "主要来源"];
 const campusData = campusItems.map((item) => [
   item.id,
   item.nature,
@@ -467,6 +484,7 @@ const campusData = campusItems.map((item) => [
   item.campus,
   item.address,
   item.amapPoiName,
+  item.amapPoiAddress,
   item.amapLocation,
   item.officeDistance,
   item.mapUrl,
@@ -512,7 +530,7 @@ const summaryRows = [
   ["公办园区/分园点位数", publicCampusItems.length, "按公开园部地址拆分；少数历史变更项标B级。"],
   ["民办/私立点位数", privateCampusItems.length, "来自徐汇区民办幼儿园名单公开资料；招生条件、收费和名额需电话确认。"],
   ["全部园区/点位数", campusData.length, "公办园区点位 + 民办/私立点位。"],
-  ["高德增强字段", "待接入", "高德MCP需要AMAP_MAPS_API_KEY；接入后补POI名称、经纬度和到西岸网易距离。"],
+  ["高德增强字段", "已接入", "已批量补POI名称、经纬度和到网易上海西岸研发中心的高德直线距离；低置信匹配保留为待核验。"],
   ["小班计划合计", schools.reduce((sum, s) => sum + s.small, 0), "PDF计划班级数合计。"],
   ["托班明确班级数合计", schools.reduce((sum, s) => sum + (/^\d+$/.test(s.toddler) ? Number(s.toddler) : 0), 0), "不含混龄式招生。"],
   ["混龄式招生主体数", schools.filter((s) => `${s.toddler}`.includes("混龄")).length, "混龄式招生不直接等同托班班级数。"],
@@ -525,7 +543,7 @@ const markdown = `# 徐汇区幼儿园园区位置与择园参考
 
 - 2026 PDF 共列出 ${schools.length} 个公办招生主体，拆分为 ${publicCampusItems.length} 个公办实际园区/分园点位。
 - 已补充 ${privateCampusItems.length} 个徐汇区民办/私立点位，包含级别、地址和联系电话；这些点位更适合作为当前暂无居住证情况下的兜底池。
-- 高德MCP增强字段已预留，待配置高德 Web 服务 Key 后可补齐 POI 名称、经纬度和到${officeLocation.name}的距离。
+- 已通过高德服务批量增强 POI 名称、经纬度和到${officeLocation.name}的直线距离；未可靠匹配项保留为待核验。
 - 小班计划合计 ${schools.reduce((sum, s) => sum + s.small, 0)} 个班；托班明确计划合计 ${schools.reduce((sum, s) => sum + (/^\d+$/.test(s.toddler) ? Number(s.toddler) : 0), 0)} 个班，另有 ${schools.filter((s) => `${s.toddler}`.includes("混龄")).length} 所为“混龄式招生”。
 - 园区数量与小班容量最集中的区域在田林/虹梅/康健/漕河泾、长桥/凌云/梅陇、龙华/滨江与衡复/湖南几条带状居住区。
 - 多园区幼儿园不能只搜园名，必须按“园区/分园 + 地址”在高德地图核验；表格中已为每个园区生成高德搜索链接。
@@ -559,6 +577,140 @@ const escapeHtml = (value) => String(value ?? "")
   .replaceAll("<", "&lt;")
   .replaceAll(">", "&gt;")
   .replaceAll('"', "&quot;");
+
+const campusLookup = new Map(campusItems.map((item) => [amapItemKey(item), item]));
+const campusRef = (nature, name, campus, address) => campusLookup.get([nature, name, campus, address].join("|"));
+const beikeSearch = (keyword) => `https://sh.zu.ke.com/zufang/rs${encodeURIComponent(keyword)}/`;
+const itemDistance = (item) => item?.officeDistance && item.officeDistance !== pendingAmapValue ? item.officeDistance : "高德未匹配，待电话/地图确认";
+const poiLine = (item) => item?.amapPoiName && item.amapPoiName !== pendingAmapValue
+  ? `${item.amapPoiName}${item.amapPoiAddress && item.amapPoiAddress !== pendingAmapValue ? `；${item.amapPoiAddress}` : ""}`
+  : "高德POI未可靠匹配";
+
+const decisionRecommendations = [
+  {
+    rank: "公办 1",
+    tag: "首选争取",
+    tagClass: "green",
+    type: "公办 / 一级",
+    item: campusRef("公办", "园南幼儿园", "本部", "龙川北路园南一村27号"),
+    rentArea: "园南一村 / 汇成五村 / 上中路",
+    beikeKeyword: "园南 长桥 3室 100平 10000",
+    price: "贝壳实时筛选：3室、100平以上、10000以内",
+    judgement: "租房预算、居住环境和公办争取的平衡最好，是当前主线。",
+  },
+  {
+    rank: "公办 2",
+    tag: "备选争取",
+    tagClass: "blue",
+    type: "公办 / 一级",
+    item: campusRef("公办", "徐汇实验幼儿园", "本部", "龙瑞路135号"),
+    rentArea: "华沁家园 / 华滨家园 / 龙瑞路",
+    beikeKeyword: "华沁家园 华滨家园 3室 100平 10000",
+    price: "贝壳实时筛选：华泾北大三房，优先电梯",
+    judgement: "距离公司近于长桥，面积更容易做大，但需严格反查居委。",
+  },
+  {
+    rank: "公办 3",
+    tag: "近公司",
+    tagClass: "amber",
+    type: "公办 / 二级",
+    item: campusRef("公办", "阳光幼儿园", "小班部", "龙水南路龙南三村7号"),
+    rentArea: "龙南三四村 / 樟树苑 / 龙水南路",
+    beikeKeyword: "龙南 龙水南路 3室 100平 10000",
+    price: "贝壳实时筛选：离公司近，但大户型低预算不稳定",
+    judgement: "高德距离最近，适合捡漏；不要作为唯一租房主线。",
+  },
+  {
+    rank: "公办 4",
+    tag: "容量好",
+    tagClass: "blue",
+    type: "公办 / 示范园",
+    item: campusRef("公办", "上海幼儿园", "上中园", "上中路402号"),
+    rentArea: "上中路 / 长桥 / 植物园",
+    beikeKeyword: "上中路 长桥 3室 100平 10000",
+    price: "贝壳实时筛选：长桥南侧大户型，优先材料配合",
+    judgement: "示范园且片区与租房需求匹配，但公办竞争和材料门槛仍高。",
+  },
+  {
+    rank: "公办 5",
+    tag: "通勤好",
+    tagClass: "amber",
+    type: "公办 / 一级",
+    item: campusRef("公办", "龙华幼儿园", "龙恒园", "龙华西路31弄15号"),
+    rentArea: "龙华西路 / 龙恒路 / 云锦路",
+    beikeKeyword: "龙华西路 龙恒路 3室 100平 10000",
+    price: "贝壳实时筛选：通勤优秀，但预算更容易被卡",
+    judgement: "距离公司好，但租金和公办顺位压力都更大，作为机会项。",
+  },
+  {
+    rank: "民办 1",
+    tag: "主兜底",
+    tagClass: "green",
+    type: "普惠民办 / 一级",
+    item: campusRef("民办", "汇城苑幼稚园", "本部", "百色路汇城五村75号"),
+    rentArea: "汇成五村 / 园南 / 百色路",
+    beikeKeyword: "汇成五村 园南 3室 100平 10000",
+    price: "贝壳实时筛选：和园南主线共用看房区域",
+    judgement: "最适合和园南/长桥公办争取线并行，优先电话确认名额。",
+  },
+  {
+    rank: "民办 2",
+    tag: "近公司",
+    tagClass: "green",
+    type: "民办 / 一级",
+    item: campusRef("民办", "胡姬港湾幼儿园", "本部", "丰谷路205弄35号"),
+    rentArea: "龙华 / 云锦路 / 丰谷路",
+    beikeKeyword: "云锦路 丰谷路 3室 100平 10000",
+    price: "贝壳实时筛选：近公司，预算需严格筛",
+    judgement: "高德距离近；名单地址与高德POI地址有差异，必须电话确认实际园区。",
+  },
+  {
+    rank: "民办 3",
+    tag: "长桥兜底",
+    tagClass: "blue",
+    type: "民办 / 二级",
+    item: campusRef("民办", "牛牛幼稚园", "本部", "罗城路700弄95号"),
+    rentArea: "罗城路 / 长桥 / 上中西路",
+    beikeKeyword: "罗城路 长桥 3室 100平 10000",
+    price: "贝壳实时筛选：长桥南侧更容易找大户型",
+    judgement: "和长桥租房主线兼容，适合作为第二民办兜底。",
+  },
+  {
+    rank: "民办 4",
+    tag: "华泾兜底",
+    tagClass: "blue",
+    type: "普惠民办 / 二级",
+    item: campusRef("民办", "凯琴数码幼儿园", "本部", "华泾路995号"),
+    rentArea: "华泾 / 华沁 / 华滨 / 罗秀",
+    beikeKeyword: "华泾 华沁 3室 100平 10000",
+    price: "贝壳实时筛选：华泾方向面积更友好",
+    judgement: "适合华泾北/罗秀租房线，距离公司中等，需确认名额和收费。",
+  },
+  {
+    rank: "民办 5",
+    tag: "康健备选",
+    tagClass: "amber",
+    type: "民办 / 一级",
+    item: campusRef("民办", "杜鹃园幼稚园", "本部", "桂林西街9弄57号"),
+    rentArea: "桂林西街 / 康健 / 田林南",
+    beikeKeyword: "桂林西街 康健 3室 100平 10000",
+    price: "贝壳实时筛选：生活成熟，通勤略远于龙华",
+    judgement: "一级民办，适合作为康健/田林方向的兜底备选。",
+  },
+];
+
+const renderDecisionRows = () => decisionRecommendations.map((row) => `
+            <tr>
+              <td><span class="tag ${row.tagClass}">${escapeHtml(row.rank)}</span><br><span class="sub">${escapeHtml(row.tag)}</span></td>
+              <td>${escapeHtml(row.type)}</td>
+              <td><strong>${escapeHtml(row.item?.name || "")} ${escapeHtml(row.item?.campus || "")}</strong><br><span class="sub">${escapeHtml(row.item?.address || "")}</span></td>
+              <td><strong>${escapeHtml(row.item?.phone || "待电话确认")}</strong><br><span class="sub">${escapeHtml(poiLine(row.item))}</span></td>
+              <td><strong>${escapeHtml(row.rentArea)}</strong></td>
+              <td><a href="${escapeHtml(beikeSearch(row.beikeKeyword))}" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">${escapeHtml(row.price)}</span></td>
+              <td><span class="distance-list"><span><b>园到公司：</b>${escapeHtml(itemDistance(row.item))}</span><span><b>口径：</b>高德 POI 直线距离</span></span></td>
+              <td>${escapeHtml(row.judgement)}</td>
+            </tr>
+`).join("");
 
 const html = `<!doctype html>
 <html lang="zh-CN">
@@ -1169,7 +1321,7 @@ const html = `<!doctype html>
     <section id="decision">
       <div class="section-title">
         <h2>首页结论</h2>
-        <p>这里直接给到“幼儿园/分园 + 租房小区 + 当前价格参考 + 到园/到公司距离”的组合建议。</p>
+        <p>这里直接给到 5 所公办争取、5 所民办兜底，距离使用高德 POI 到网易上海西岸研发中心的直线距离。</p>
       </div>
       <div class="summary-strip">
         <article class="summary-card urgent">
@@ -1178,11 +1330,11 @@ const html = `<!doctype html>
         </article>
         <article class="summary-card">
           <strong>主推荐</strong>
-          <span>长桥 / 植物园 / 园南 / 上中路，租房预算和生活便利性最匹配。</span>
+          <span>公办争取以园南、徐汇实验、阳光、上海幼儿园、龙华幼儿园为主。</span>
         </article>
         <article class="summary-card">
           <strong>备选</strong>
-          <span>华泾北 / 罗秀 / 龙瑞路，面积更容易做大，到西岸通勤仍可接受。</span>
+          <span>民办兜底以汇城苑、胡姬港湾、牛牛、凯琴、杜鹃园并行联系。</span>
         </article>
         <article class="summary-card">
           <strong>第一行动</strong>
@@ -1204,66 +1356,7 @@ const html = `<!doctype html>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><span class="tag green">首选</span></td>
-              <td><span class="tag blue">公办争取</span></td>
-              <td><strong>园南幼儿园 本部</strong><br><span class="sub">龙川北路园南一村27号</span></td>
-              <td><strong>021-64763190</strong><br><a href="https://xuexiao.duokuxinxi.com/xuexiao_details/40921" target="_blank" rel="noopener">电话来源</a></td>
-              <td><strong>园南 / 长桥 / 植物园</strong><br><span class="sub">园南一村、长桥三村、上中路周边</span></td>
-              <td><a href="https://sh.zu.ke.com/zufang/rs%E5%9B%AD%E5%8D%97%20%E9%95%BF%E6%A1%A5%203%E5%AE%A4%20100%E5%B9%B3/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">公开样本：长桥三房约 9000 元/月、115.61㎡；需以贝壳打开结果复核</span></td>
-              <td><span class="distance-list"><span><b>小区到园：</b>约 0.3-1.2 km</span><span><b>小区到公司：</b>约 5-7 km</span></span></td>
-              <td>最贴近预算和居住需求，适合作为主看房区域。</td>
-            </tr>
-            <tr>
-              <td><span class="tag blue">备选</span></td>
-              <td><span class="tag blue">公办争取</span></td>
-              <td><strong>徐汇实验幼儿园 本部</strong><br><span class="sub">龙瑞路135号</span></td>
-              <td><strong>021-54045192</strong><br><a href="https://m.sh.bendibao.com/wangdian/dian/5428880.shtm" target="_blank" rel="noopener">电话来源</a></td>
-              <td><strong>华沁家园 / 华滨家园 / 华泾北</strong><br><span class="sub">龙吴路、龙瑞路、华发路周边</span></td>
-              <td><a href="https://sh.zu.ke.com/zufang/rs%E5%8D%8E%E6%B2%81%E5%AE%B6%E5%9B%AD%203%E5%AE%A4%20100%E5%B9%B3/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">公开小区资料显示华沁家园有 3 房户型；价格需打开贝壳实时确认</span></td>
-              <td><span class="distance-list"><span><b>小区到园：</b>约 1-2 km</span><span><b>小区到公司：</b>约 4-6 km</span></span></td>
-              <td>面积更容易做大，通勤还可控，适合做第二主线。</td>
-            </tr>
-            <tr>
-              <td><span class="tag amber">捡漏</span></td>
-              <td><span class="tag blue">公办争取</span></td>
-              <td><strong>阳光幼儿园 小班部</strong><br><span class="sub">龙水南路龙南三村7号</span></td>
-              <td><strong>021-34604160</strong><br><a href="https://m.sh.bendibao.com/wangdian/dian/5428854.shtm" target="_blank" rel="noopener">电话来源</a></td>
-              <td><strong>龙南三四村 / 龙南五村 / 樟树苑</strong><br><span class="sub">龙水南路、龙南片区</span></td>
-              <td><a href="https://sh.zu.ke.com/zufang/rs%E9%BE%99%E5%8D%97%203%E5%AE%A4%20100%E5%B9%B3/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">离公司近，但 100㎡以上三房、1 万内、电梯房源不稳定</span></td>
-              <td><span class="distance-list"><span><b>小区到园：</b>约 0.5-1.5 km</span><span><b>小区到公司：</b>约 1.5-3 km</span></span></td>
-              <td>通勤最好，但预算和面积条件容易卡住，只适合作为捡漏。</td>
-            </tr>
-            <tr>
-              <td><span class="tag green">主兜底</span></td>
-              <td><span class="tag green">普惠民办</span></td>
-              <td><strong>汇城苑幼稚园</strong><br><span class="sub">百色路汇成五村75号，托幼一体</span></td>
-              <td><strong>021-64243807 / 021-64235119</strong><br><a href="https://www.xxh-edu.com/brand/57.html" target="_blank" rel="noopener">电话来源</a></td>
-              <td><strong>汇成 / 园南 / 上海南站</strong><br><span class="sub">汇成五村、园南、百色路周边</span></td>
-              <td><a href="https://sh.zu.ke.com/zufang/rs%E6%B1%87%E6%88%90%20%E5%9B%AD%E5%8D%97%203%E5%AE%A4%20100%E5%B9%B3/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">普惠民办兜底优先联系，租房价格需实时复核</span></td>
-              <td><span class="distance-list"><span><b>小区到园：</b>约 0.2-1.2 km</span><span><b>小区到公司：</b>约 5-7 km</span></span></td>
-              <td>最适合作为长桥/园南主线的民办兜底，建议优先电话确认名额。</td>
-            </tr>
-            <tr>
-              <td><span class="tag green">主兜底</span></td>
-              <td><span class="tag green">普惠民办</span></td>
-              <td><strong>民办凯琴数码幼儿园</strong><br><span class="sub">华泾路995号，托幼一体</span></td>
-              <td><strong>021-54822626</strong><br><a href="https://www.021school.cn/schools/12780" target="_blank" rel="noopener">电话来源</a></td>
-              <td><strong>华泾 / 华沁 / 华滨 / 罗秀</strong><br><span class="sub">华泾路、龙吴路、罗秀路周边</span></td>
-              <td><a href="https://sh.zu.ke.com/zufang/rs%E5%8D%8E%E6%B3%BE%20%E5%87%AF%E7%90%B4%203%E5%AE%A4%20100%E5%B9%B3/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">华泾方向面积更容易做大，价格需实时复核</span></td>
-              <td><span class="distance-list"><span><b>小区到园：</b>约 0.5-2 km</span><span><b>小区到公司：</b>约 4-7 km</span></span></td>
-              <td>适合作为华泾/罗秀租房线的核心兜底，需确认小班/托班名额。</td>
-            </tr>
-            <tr>
-              <td><span class="tag amber">兜底</span></td>
-              <td><span class="tag green">普惠民办</span></td>
-              <td><strong>民办小神童幼儿园</strong><br><span class="sub">龙吴路988弄25号</span></td>
-              <td><strong>021-54360296 / 13381809099</strong><br><a href="https://www.021school.cn/schools/12790" target="_blank" rel="noopener">电话来源</a></td>
-              <td><strong>龙吴路 / 龙水南路 / 龙南</strong><br><span class="sub">龙水南路、龙吴路、喜泰路周边</span></td>
-              <td><a href="https://sh.zu.ke.com/zufang/rs%E9%BE%99%E5%90%B4%E8%B7%AF%20%E5%B0%8F%E7%A5%9E%E7%AB%A5%203%E5%AE%A4%20100%E5%B9%B3/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">公开资料显示保育教育费 3000 元/月；需电话核验 2026 收费和名额</span></td>
-              <td><span class="distance-list"><span><b>小区到园：</b>约 0.5-2 km</span><span><b>小区到公司：</b>约 2-4 km</span></span></td>
-              <td>离公司相对近，可作为龙华/龙南线的民办兜底。</td>
-            </tr>
+${renderDecisionRows()}
           </tbody>
         </table>
       </div>
@@ -1446,7 +1539,7 @@ const html = `<!doctype html>
                 <td>${escapeHtml(item.area)}</td>
                 <td><span class="tag ${item.admissionType === "固定对口" ? "green" : item.admissionType === "扩招" || item.admissionType === "民办招生" ? "amber" : "blue"}">${escapeHtml(item.admissionType)}</span></td>
                 <td>${escapeHtml(item.address)}</td>
-                <td>${escapeHtml(item.amapPoiName)}</td>
+                <td><div>${escapeHtml(item.amapPoiName)}</div><div class="sub">${escapeHtml(item.amapPoiAddress)}</div></td>
                 <td>${escapeHtml(item.officeDistance)}</td>
                 <td>${escapeHtml(item.phone)}</td>
                 <td><span class="tag ${item.toddlerMode === "混龄式招生" ? "amber" : "blue"}">${escapeHtml(item.toddler)}</span></td>
@@ -1607,7 +1700,7 @@ const sourceSheet = workbook.worksheets.add("来源与核验规则");
 
 summary.getRange(`A1:C${summaryRows.length}`).values = summaryRows;
 schoolSheet.getRange(`A1:I${schoolData.length + 1}`).values = [schoolHeader, ...schoolData];
-campusSheet.getRange(`A1:T${campusData.length + 1}`).values = [campusHeader, ...campusData];
+campusSheet.getRange(`A1:U${campusData.length + 1}`).values = [campusHeader, ...campusData];
 areaSheet.getRange(`A1:F${areaStats.length + 1}`).values = [["片区", "招生主体数", "园区点位数", "小班计划数", "明确托班班级数", "混龄招生主体数"], ...areaStats];
 sourceSheet.getRange("A1:B11").values = [
   ["项目", "说明"],
@@ -1615,7 +1708,7 @@ sourceSheet.getRange("A1:B11").values = [
   ["2026线上主表", planSource],
   ["公办园部地址主来源", publicListSource],
   ["民办/私立地址与电话来源", privateListSource],
-  ["高德MCP接入口径", `目标办公点：${officeLocation.name}；${officeLocation.address}。待配置AMAP_MAPS_API_KEY后，用关键词搜索/详情搜索/距离测量补齐高德POI、经纬度和距离。`],
+  ["高德MCP接入口径", `目标办公点：${officeLocation.name}；高德匹配为“网易上海西岸研发中心”。用关键词搜索和距离测量补齐高德POI、经纬度和距离。`],
   ["高德检索口径", "表格中的高德链接使用“上海市徐汇区 + 幼儿园名 + 园区名 + 地址”生成，用于逐点打开核验。"],
   ["A级", "园部地址在公办园地址清单中明确列出，且无明显冲突。"],
   ["B级", "公开资料有变更、合并或地址冲突，位置大体可定位，但实际入读园区需电话确认。"],
@@ -1646,14 +1739,15 @@ campusSheet.getRange("B:D").format.columnWidthPx = 90;
 campusSheet.getRange("E:E").format.columnWidthPx = 190;
 campusSheet.getRange("F:F").format.columnWidthPx = 120;
 campusSheet.getRange("G:H").format.columnWidthPx = 150;
-campusSheet.getRange("I:K").format.columnWidthPx = 120;
-campusSheet.getRange("L:L").format.columnWidthPx = 360;
-campusSheet.getRange("M:M").format.columnWidthPx = 120;
-campusSheet.getRange("N:O").format.columnWidthPx = 88;
-campusSheet.getRange("P:P").format.columnWidthPx = 520;
-campusSheet.getRange("Q:R").format.columnWidthPx = 90;
-campusSheet.getRange("S:T").format.columnWidthPx = 360;
-campusSheet.getRange(`A1:T${campusData.length + 1}`).format.wrapText = true;
+campusSheet.getRange("I:J").format.columnWidthPx = 160;
+campusSheet.getRange("K:L").format.columnWidthPx = 120;
+campusSheet.getRange("M:M").format.columnWidthPx = 360;
+campusSheet.getRange("N:N").format.columnWidthPx = 120;
+campusSheet.getRange("O:P").format.columnWidthPx = 88;
+campusSheet.getRange("Q:Q").format.columnWidthPx = 520;
+campusSheet.getRange("R:S").format.columnWidthPx = 90;
+campusSheet.getRange("T:U").format.columnWidthPx = 360;
+campusSheet.getRange(`A1:U${campusData.length + 1}`).format.wrapText = true;
 campusSheet.freezePanes.freezeColumns(4);
 
 areaSheet.getRange("A:A").format.columnWidthPx = 160;
