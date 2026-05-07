@@ -528,6 +528,7 @@ const html = `<!doctype html>
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
     }
+    .notice + .source-list { margin-top: 14px; }
     .source-card {
       background: var(--paper);
       border: 1px solid var(--line);
@@ -536,6 +537,110 @@ const html = `<!doctype html>
     }
     .source-card strong { display: block; margin-bottom: 6px; }
     .source-card span { color: var(--soft); font-size: 13px; }
+    .summary-strip {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .summary-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      min-height: 118px;
+    }
+    .summary-card strong { display: block; font-size: 17px; margin-bottom: 8px; }
+    .summary-card span { color: var(--soft); }
+    .summary-card.urgent {
+      background: #fff8ed;
+      border-color: #fed7aa;
+      color: #7c3e06;
+    }
+    .summary-card.urgent span { color: #7c3e06; }
+    .judgement-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .judgement-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .judgement-card h3 { margin: 0 0 8px; font-size: 16px; }
+    .judgement-card p { margin: 0; color: var(--soft); }
+    .priority-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .priority-card {
+      display: grid;
+      gap: 12px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      min-height: 210px;
+    }
+    .priority-card header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .priority-card h3 { margin: 0; font-size: 17px; }
+    .priority-card p { margin: 0; color: var(--soft); }
+    .priority-card .reason { color: var(--ink); font-weight: 700; }
+    .action-steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      counter-reset: actions;
+    }
+    .action-card {
+      position: relative;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      min-height: 170px;
+    }
+    .action-card::before {
+      counter-increment: actions;
+      content: counter(actions);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      margin-bottom: 12px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 900;
+    }
+    .action-card strong { display: block; font-size: 17px; margin-bottom: 8px; }
+    .action-card p { margin: 0; color: var(--soft); }
+    .logic-compact {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .logic-card {
+      background: #f9fbfd;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .logic-card strong { display: block; margin-bottom: 6px; }
+    .logic-card span { color: var(--soft); font-size: 13px; }
+    .details-section {
+      padding: 4px 0 0;
+    }
     .filter-panel {
       background: var(--paper);
       border: 1px solid var(--line);
@@ -657,7 +762,7 @@ const html = `<!doctype html>
     }
     @media (max-width: 1100px) {
       .hero-grid, .workflow, .notice, .personal-grid { grid-template-columns: 1fr; }
-      .principles, .areas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .principles, .areas, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .source-list { grid-template-columns: 1fr; }
     }
@@ -667,7 +772,7 @@ const html = `<!doctype html>
       .nav { overflow: auto; width: 100%; padding-bottom: 2px; }
       .hero-grid { padding: 38px 14px 34px; min-height: auto; }
       .scoreboard { padding: 14px; }
-      .principles, .areas, .matrix, .toolbar { grid-template-columns: 1fr; }
+      .principles, .areas, .matrix, .toolbar, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip { grid-template-columns: 1fr; }
       .rank-item { grid-template-columns: 34px 1fr; }
       .rank-item .tag { grid-column: 2; justify-self: start; }
       .section-title { display: block; }
@@ -680,13 +785,11 @@ const html = `<!doctype html>
     <div class="shell">
       <div class="brand">徐汇区幼儿园筛选方案</div>
       <nav class="nav" aria-label="页面导航">
-        <a href="#personal">个人方案</a>
-        <a href="#framework">筛选框架</a>
-        <a href="#workflow">决策路径</a>
-        <a href="#filter">园区筛选</a>
-        <a href="#areas">片区统计</a>
-        <a href="#risks">核验重点</a>
-        <a href="#sources">参考来源</a>
+        <a href="#decision">结论</a>
+        <a href="#priority">推荐板块</a>
+        <a href="#actions">行动清单</a>
+        <a href="#query">园区查询</a>
+        <a href="#sources">来源</a>
       </nav>
     </div>
   </header>
@@ -694,11 +797,11 @@ const html = `<!doctype html>
   <section class="hero">
     <div class="shell hero-grid">
       <div>
-        <h1>先判断资格，再比较便利性。</h1>
-        <p class="lead">这个页面把徐汇区 2026 公办幼儿园资料整理成一套可执行的筛选方案，并补充了“刚来上海、暂无居住证、在西岸网易研发中心上班、需要 3 房 100 平以上租房”的个人决策建议。</p>
+        <h1>长桥/植物园优先，先把材料链补齐。</h1>
+        <p class="lead">基于你刚来上海、暂无居住证、办公点在西岸网易研发中心、需要 3 房 100 平以上租房的情况，当前主线不是冲热门公办园，而是先选更可租、更可办材料、更适合接送的居住板块。</p>
         <div class="hero-actions">
-          <a class="button primary" href="#personal">查看个人建议</a>
-          <a class="button primary" href="#filter">开始筛选园区</a>
+          <a class="button primary" href="#decision">看明确结论</a>
+          <a class="button" href="#query">进入园区查询</a>
           <a class="button" href="徐汇区幼儿园园区位置与择园参考.xlsx">打开 Excel 表</a>
         </div>
       </div>
@@ -712,153 +815,96 @@ const html = `<!doctype html>
   </section>
 
   <main class="shell">
-    <section id="personal">
+    <section id="decision">
       <div class="section-title">
-        <h2>个人推荐方案</h2>
-        <p>基于你的实际条件：刚来上海、暂无居住证、办公点在徐汇区西岸网易研发中心，需要先租房再匹配幼儿园。</p>
+        <h2>首页结论</h2>
+        <p>先把选择压缩成可执行判断：住哪里、为什么、马上做什么。</p>
       </div>
-      <div class="personal-grid">
-        <article class="decision-card">
-          <h3>明确结论</h3>
-          <p>当前不建议把“住在徐汇滨江核心区并冲热门公办园”作为主方案。更稳妥的路径是：先解决居住证材料链，再在长桥/植物园/华泾北/罗秀一带找房，并同步准备民办或普惠民办兜底。</p>
-          <ul>
-            <li><strong>公办录取判断：</strong>暂无居住证时，公办小班录取概率偏低；即便有居住登记凭证，外省市户籍仍是在本区户籍之后按居住证年限、社保年限、居住情况等排序统筹。</li>
-            <li><strong>通勤判断：</strong>西岸网易研发中心靠近龙耀路/徐汇滨江，龙华最近，但 3 房 100 平以上且 1 万内很难稳定满足。</li>
-            <li><strong>租房判断：</strong>长桥、植物园、华泾北、罗秀更容易找到面积和预算匹配的三房，也更适合老人接送和遛娃。</li>
-          </ul>
+      <div class="summary-strip">
+        <article class="summary-card urgent">
+          <strong>最大风险</strong>
+          <span>暂无居住证会明显影响公办报名材料完整性和录取顺位，公办小班概率当前偏低。</span>
         </article>
-        <aside class="verdict">
-          <strong>推荐排序</strong>
-          <span>长桥/植物园优先，华泾北/罗秀备选，龙华/徐汇滨江只作为捡漏；徐家汇、衡复、湖南路不建议当前阶段优先。</span>
-          <span class="tag red">公办概率：当前偏低</span>
-          <span class="tag amber">关键动作：先办居住登记</span>
-          <span class="tag green">租房策略：可办居住证优先</span>
-        </aside>
-      </div>
-
-      <div class="section-title">
-        <h2>居住板块排序</h2>
-        <p>排序同时考虑公办机会、租房预算、面积可得性、老人接送、遛娃和到西岸网易研发中心的通勤。</p>
-      </div>
-      <div class="rank-list">
-        <div class="rank-item">
-          <span class="rank-number">1</span>
-          <div><strong>长桥 / 植物园 / 园南 / 上中路</strong><span>预算最匹配，生活成熟，靠近上海植物园；可重点反查长桥第二、长桥第三、园南、上海幼儿园等招生范围。</span></div>
-          <span class="tag green">首选</span>
-        </div>
-        <div class="rank-item">
-          <span class="rank-number">2</span>
-          <div><strong>华泾北 / 罗秀 / 龙瑞路</strong><span>面积更容易做大，租金压力相对可控，到西岸通勤仍可接受；可关注徐汇实验、星辰、果果、盛华、印象等方向。</span></div>
-          <span class="tag blue">备选首选</span>
-        </div>
-        <div class="rank-item">
-          <span class="rank-number">3</span>
-          <div><strong>龙华 / 龙南 / 龙水南路</strong><span>通勤最好，离西岸网易更近；但 3 房 100 平以上、带电梯、小区好、1 万以内的房源不稳定。</span></div>
-          <span class="tag amber">捡漏</span>
-        </div>
-        <div class="rank-item">
-          <span class="rank-number">4</span>
-          <div><strong>徐家汇 / 衡复 / 湖南路</strong><span>关注度高、租金高、公办竞争强，不适合在暂无居住证和预算受限时作为主方案。</span></div>
-          <span class="tag red">谨慎</span>
-        </div>
-      </div>
-
-      <div class="table-box logic-table">
-        <table>
-          <thead>
-            <tr><th>目标</th><th>当前判断</th><th>应该怎么做</th><th>风险</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>公办报名资格</td><td>暂无居住证会明显拉低顺位，材料链可能不完整。</td><td>租房第一优先确认房东是否配合居住登记、租赁合同/备案、居住证地址一致。</td><td>只看房子不看材料，后面可能无法用于报名。</td></tr>
-            <tr><td>录取概率</td><td>公办主线可保留，但不能当唯一方案。</td><td>同步联系民办/普惠民办，尤其是徐汇南部和闵行古美/梅陇边界。</td><td>热门公办通常优先本区户籍和材料更完整家庭。</td></tr>
-            <tr><td>上班通勤</td><td>龙华最近，长桥/华泾北仍可接受。</td><td>用高德实测早高峰路线，优先考虑开车/打车/骑行接送链路。</td><td>仅看直线距离会低估跨路、停车、雨天接送成本。</td></tr>
-            <tr><td>租房筛选</td><td>西岸核心 1 万内三房 100 平以上难度高。</td><td>贝壳筛选“徐汇 + 长桥/植物园/华泾/罗秀 + 3室 + 100㎡以上 + 10000以内”。</td><td>徐汇滨江同类房源常见租金高于预算。</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="section-title">
-        <h2>租房搜索清单</h2>
-        <p>看房时不要只问价格和面积，第一句就问“能不能办居住登记/居住证材料”。</p>
-      </div>
-      <div class="principles">
-        <article class="principle">
-          <strong>必选条件</strong>
-          <p>3 个房间以上、100 平以上、整租、预算 10000 以内。</p>
-          <ul><li>优先电梯房</li><li>可长期租</li><li>房东配合材料</li></ul>
+        <article class="summary-card">
+          <strong>主推荐</strong>
+          <span>长桥 / 植物园 / 园南 / 上中路，租房预算和生活便利性最匹配。</span>
         </article>
-        <article class="principle">
-          <strong>优先关键词</strong>
-          <p>长桥、植物园、园南、汇成、华泾、罗秀、龙瑞路。</p>
-          <ul><li>近公园</li><li>近地铁/公交</li><li>小区环境好</li></ul>
+        <article class="summary-card">
+          <strong>备选</strong>
+          <span>华泾北 / 罗秀 / 龙瑞路，面积更容易做大，到西岸通勤仍可接受。</span>
         </article>
-        <article class="principle">
-          <strong>看房必问</strong>
-          <p>居住登记、租赁合同、地址一致、是否可用于幼儿园报名。</p>
-          <ul><li>房东是否配合</li><li>是否可备案</li><li>合同周期</li></ul>
-        </article>
-        <article class="principle">
-          <strong>兜底动作</strong>
-          <p>公办报名同时准备民办/普惠民办，不把希望压在单一园所。</p>
-          <ul><li>先问招生范围</li><li>再看学费</li><li>最后比较接送</li></ul>
+        <article class="summary-card">
+          <strong>第一行动</strong>
+          <span>看房前先问房东是否配合居住登记、租赁合同/备案和居住证材料。</span>
         </article>
       </div>
     </section>
 
-    <section id="framework">
+    <section id="judgement">
       <div class="section-title">
-        <h2>四层筛选框架</h2>
-        <p>这套方案的重点不是先看“名气”或直线距离，而是把影响录取和日常接送的因素分层处理。</p>
+        <h2>你的情况判断</h2>
+        <p>这四项决定了为什么不建议一上来就住徐汇滨江核心区冲热门公办。</p>
       </div>
-      <div class="principles">
-        <article class="principle">
-          <strong>1. 资格层</strong>
-          <p>先用居委、招生范围和人户一致情况判断是否值得进入候选。</p>
-          <ul><li>固定对口优先</li><li>区域自主单独标记</li><li>扩招不等同兜底</li></ul>
+      <div class="judgement-grid">
+        <article class="judgement-card"><h3>公办概率</h3><p>暂无居住证时，非沪籍公办录取顺位和材料完整性都不占优，需准备民办/普惠民办兜底。</p></article>
+        <article class="judgement-card"><h3>材料链</h3><p>租房地址、居住登记、居住证、租赁合同/备案要尽量一致；房东配合度是硬条件。</p></article>
+        <article class="judgement-card"><h3>上班通勤</h3><p>西岸网易研发中心靠近龙耀路/徐汇滨江，龙华最近，长桥和华泾北仍可接受。</p></article>
+        <article class="judgement-card"><h3>租房预算</h3><p>1 万内、3 房、100 平以上、优先电梯和好环境，西岸核心区难度高，南部板块更现实。</p></article>
+      </div>
+      <div class="logic-compact">
+        <article class="logic-card"><strong>资格层</strong><span>先看居住证、居住登记、居委和招生范围是否匹配。</span></article>
+        <article class="logic-card"><strong>风险层</strong><span>区域自主、扩招、B 级地址、多园区分流都需要电话确认。</span></article>
+        <article class="logic-card"><strong>便利层</strong><span>看实际园区地址和接送路线，不只看幼儿园总名。</span></article>
+        <article class="logic-card"><strong>偏好层</strong><span>最后比较托班、小班容量、老人接送和遛娃空间。</span></article>
+      </div>
+    </section>
+
+    <section id="priority">
+      <div class="section-title">
+        <h2>推荐居住板块</h2>
+        <p>按“录取材料可行性、租房预算、通勤、接送与遛娃”综合排序。</p>
+      </div>
+      <div class="priority-grid">
+        <article class="priority-card">
+          <header><h3>长桥 / 植物园</h3><span class="tag green">首选</span></header>
+          <p class="reason">预算和生活便利性最匹配。</p>
+          <p>重点看园南、上中路、汇成、长桥新村周边；可反查长桥第二、长桥第三、园南、上海幼儿园等招生范围。</p>
         </article>
-        <article class="principle">
-          <strong>2. 风险层</strong>
-          <p>把地址冲突、合并调整、多园区分流和自主招生都作为电话确认项。</p>
-          <ul><li>A/B 置信度</li><li>需确认园区</li><li>招生简章复核</li></ul>
+        <article class="priority-card">
+          <header><h3>华泾北 / 罗秀</h3><span class="tag blue">备选首选</span></header>
+          <p class="reason">面积更容易做大，通勤仍可接受。</p>
+          <p>关注龙瑞路、罗秀路、华沁/华滨/徐汇新城周边；可看徐汇实验、星辰、果果、盛华、印象等方向。</p>
         </article>
-        <article class="principle">
-          <strong>3. 便利层</strong>
-          <p>看实际入读园区，而不是幼儿园总名；高德链接用于逐点核验。</p>
-          <ul><li>园区地址</li><li>步行/骑行路线</li><li>跨主干道成本</li></ul>
+        <article class="priority-card">
+          <header><h3>龙华 / 龙南</h3><span class="tag amber">捡漏</span></header>
+          <p class="reason">通勤最好，但预算压力最大。</p>
+          <p>如果出现 1 万内、100 平以上、房东配合材料的房源可以看；否则不要把它作为唯一主线。</p>
         </article>
-        <article class="principle">
-          <strong>4. 偏好层</strong>
-          <p>最后再看托班、小班容量、多园区、接送人安排等家庭偏好。</p>
-          <ul><li>托班模式</li><li>小班计划</li><li>家人接送便利</li></ul>
+        <article class="priority-card">
+          <header><h3>徐家汇 / 衡复</h3><span class="tag red">谨慎</span></header>
+          <p class="reason">租金高、竞争强、当前阶段不划算。</p>
+          <p>除非预算上调或已有稳定材料优势，否则不建议优先投入看房和报名精力。</p>
         </article>
       </div>
     </section>
 
-    <section id="workflow">
+    <section id="actions">
       <div class="section-title">
-        <h2>推荐决策路径</h2>
-        <p>实际使用时建议按顺序推进，先排除明显不合适的，再把剩余园区拿去地图和电话核验。</p>
+        <h2>行动清单</h2>
+        <p>按这个顺序推进，避免看了很多房，最后发现报名材料用不上。</p>
       </div>
-      <div class="workflow">
-        <div class="steps">
-          <div class="step"><span class="step-number">1</span><div><strong>定位家庭所属居委</strong><span>用居委名称搜索，先找固定对口和招生范围。</span></div></div>
-          <div class="step"><span class="step-number">2</span><div><strong>识别招生类型</strong><span>固定对口、区域自主、扩招分别看待。</span></div></div>
-          <div class="step"><span class="step-number">3</span><div><strong>核验实际园区</strong><span>多园区幼儿园必须确认小班在哪个园区。</span></div></div>
-          <div class="step"><span class="step-number">4</span><div><strong>比较家庭偏好</strong><span>托班、小班容量、路线、接送人安排一起比较。</span></div></div>
-        </div>
-        <div class="matrix">
-          <article class="matrix-card"><h3>优先候选</h3><p>居委明确对口、置信度 A、园区地址清楚、路线可接受。</p></article>
-          <article class="matrix-card"><h3>备选候选</h3><p>区域自主或扩招，但距离、容量、家庭偏好有优势。</p></article>
-          <article class="matrix-card"><h3>电话确认</h3><p>B 级地址、合并调整、多园区分流、实际小班园区不确定。</p></article>
-          <article class="matrix-card"><h3>谨慎投入</h3><p>只看到总园名、没有明确入读园区，或招生口径不是固定对口。</p></article>
-        </div>
+      <div class="action-steps">
+        <article class="action-card"><strong>先问材料</strong><p>看房第一句问：房东是否配合居住登记、租赁合同/备案、居住证地址一致。</p></article>
+        <article class="action-card"><strong>锁定板块</strong><p>优先筛“长桥/植物园/华泾/罗秀 + 3室 + 100㎡以上 + 10000以内”。</p></article>
+        <article class="action-card"><strong>反查居委</strong><p>拿到小区名后确认所属居委，再用园区查询工具匹配公办招生范围。</p></article>
+        <article class="action-card"><strong>准备兜底</strong><p>公办主线保留，同时联系民办/普惠民办，不把希望压在单一园所。</p></article>
       </div>
     </section>
 
-    <section id="filter">
+    <section id="query" class="details-section">
       <div class="section-title">
-        <h2>园区筛选器</h2>
-        <p>输入居委、小区、幼儿园或地址关键词，再叠加片区、招生类型、托班和置信度条件。</p>
+        <h2>园区查询</h2>
+        <p>需要细查时再用这里：输入居委、小区、幼儿园或地址关键词，再叠加片区、招生类型、托班和置信度条件。</p>
       </div>
       <div class="filter-panel">
         <div class="toolbar">
@@ -954,8 +1000,8 @@ const html = `<!doctype html>
 
     <section id="areas">
       <div class="section-title">
-        <h2>片区容量观察</h2>
-        <p>片区统计用于判断供给密度，不直接代表个人录取概率；实际仍以居委、户籍和当年招生口径为准。</p>
+        <h2>片区容量概览</h2>
+        <p>只展示前 12 个供给相对集中的片区，用于判断大方向；个人录取仍以居委、材料和当年政策为准。</p>
       </div>
       <div class="areas">
         ${areaStats.slice(0, 12).map((row) => `
@@ -971,10 +1017,10 @@ const html = `<!doctype html>
       </div>
     </section>
 
-    <section id="risks">
+    <section id="sources">
       <div class="section-title">
-        <h2>核验重点</h2>
-        <p>这些不是错误，而是择园前最容易造成误判的地方。</p>
+        <h2>风险与来源</h2>
+        <p>这些信息用于解释结论依据；政策和租房页面会变化，最终以当年官方公告、实际看房和电话确认为准。</p>
       </div>
       <div class="notice">
         <article class="notice-card">
@@ -985,13 +1031,6 @@ const html = `<!doctype html>
           <h3>自主招生与扩招</h3>
           <p>“区域内自主招生”和“另向某街道扩招”不等于普通固定居委一一对应，应结合当年简章、报名条件和录取顺位理解。</p>
         </article>
-      </div>
-    </section>
-
-    <section id="sources">
-      <div class="section-title">
-        <h2>政策与租房参考</h2>
-        <p>外部页面会随时间变化，租房信息尤其需要以实际看房和中介/房东确认为准。</p>
       </div>
       <div class="source-list">
         <article class="source-card">
