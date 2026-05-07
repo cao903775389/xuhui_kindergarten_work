@@ -6,6 +6,7 @@ const outputDir = path.join(process.cwd(), "outputs");
 
 const pdfSource = "本地PDF：/Users/caofengyang/Downloads/徐汇区幼儿园对口地区.pdf（2026年徐汇区公办幼儿园对口居委一览表及计划班级数）";
 const publicListSource = "上海本地宝《上海市徐汇区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://m.sh.bendibao.com/edu/284155.html";
+const privateListSource = "上海本地宝《上海市徐汇区民办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284155_2.shtm";
 const planSource = "上海本地宝《2026徐汇区幼儿园招生对口地段及招生计划班级数》，2026-04-15：https://m.sh.bendibao.com/edu/305291.html";
 
 const schools = [
@@ -137,6 +138,52 @@ const campusRows = [
   [42, "滨江园", "云锦路183弄30号", "A", ""],
 ];
 
+const privateCampusRows = [
+  { name: "维亚幼儿园", level: "二级", address: "华亭路71弄1号", phone: "54036901" },
+  { name: "四季方馨幼儿园", level: "二级", address: "五原路112号", phone: "021-54036603" },
+  { name: "滨江幼儿园", level: "二级", address: "云锦路80弄10号", phone: "64380700" },
+  { name: "汇宝幼儿园", level: "二级", address: "宛平南路592号", phone: "64690445" },
+  { name: "蒙世学堂幼儿园", level: "二级", address: "斜土路2421号", phone: "021-64686261*8103" },
+  { name: "樱花园幼稚园", level: "二级", address: "百花街380号", phone: "54185106" },
+  { name: "新宜幼稚园", level: "二级", address: "古宜路170弄7号", phone: "64684874" },
+  { name: "蓓蕾幼稚园", campus: "本部", level: "二级", address: "蒲江塘路50号玉兰花苑6幢", phone: "64647491" },
+  { name: "蓓蕾幼稚园", campus: "分园", level: "二级", address: "天钥桥路380弄11号", phone: "64647491" },
+  { name: "淇莲幼儿园", level: "二级", address: "浦北路50号", phone: "54669909" },
+  { name: "田林街道中心幼儿园", level: "二级", address: "田林六村10号", phone: "64705223" },
+  { name: "胡姬港湾新汇幼儿园", level: "二级", address: "浦北路21弄42号", phone: "54669810" },
+  { name: "小神童幼儿园", level: "二级", address: "龙吴路988弄25号", phone: "021-54360296" },
+  { name: "安琪曈幼稚园", level: "二级", address: "衡山路9弄2号", phone: "64665309" },
+  { name: "鲁浦幼儿园", campus: "本部", level: "二级", address: "宛南一村23号", phone: "64384206" },
+  { name: "鲁浦幼儿园", campus: "分园", level: "二级", address: "宛南五村1号", phone: "64384206" },
+  { name: "康文云锦幼儿园", level: "二级", address: "龙兰路398号", phone: "64282682" },
+  { name: "爱文幼儿园", level: "二级", address: "古羊路160号1幢", phone: "021-62090135" },
+  { name: "童稻幼儿园", level: "二级", address: "淮海西路365弄2号楼、3号楼", phone: "52668270" },
+  { name: "嘉宝幼儿园", level: "二级", address: "吴兴路75号", phone: "64373773" },
+  { name: "金贝贝幼儿园", level: "二级", address: "龙吟路300号", phone: "54820000" },
+  { name: "世纪昂立幼儿园", level: "二级", address: "龙山新村115号（近零陵路）", phone: "54890979 / 64382277" },
+  { name: "爱菊幼儿园", level: "二级", address: "复兴西路70号", phone: "64043162" },
+  { name: "培蕾幼稚园", campus: "本部", level: "二级", address: "梅陇三村49号", phone: "64768480" },
+  { name: "培蕾幼稚园", campus: "分园", level: "二级", address: "梅陇六村41号", phone: "64767077" },
+  { name: "枫叶交响幼儿园", level: "二级", address: "太原路87号", phone: "64730053" },
+  { name: "泰宁田林幼儿园", level: "二级", address: "田林十一村36号", phone: "64755118-804" },
+  { name: "田林东方幼儿园", level: "二级", address: "宜山路田林十四村27号", phone: "021-64085912" },
+  { name: "澳宝幼儿园", level: "二级", address: "永嘉路356弄31号", phone: "64720200" },
+  { name: "吉的堡小蜻蜓幼儿园", level: "二级", address: "虹梅路1035弄30号", phone: "64368108" },
+  { name: "东泉大地幼儿园", level: "二级", address: "东泉路65弄9号", phone: "54084130" },
+  { name: "吉的堡新徐汇幼儿园", level: "二级", address: "小木桥路101弄20号", phone: "021-54245100" },
+  { name: "爱悠小红花幼儿园", level: "二级", address: "梅陇路130号1幢、2幢", phone: "021-54333289" },
+  { name: "中山幼儿园", level: "二级", address: "桃江路42号", phone: "021-33565515" },
+  { name: "创意幼儿园", level: "二级", address: "柳州路田林十村6号", phone: "64828813 / 64820881" },
+  { name: "牛牛幼稚园", level: "二级", address: "罗城路700弄95号", phone: "54115988" },
+  { name: "领幼幼儿园", level: "二级", address: "天钥桥路1057弄3号", phone: "64458520" },
+  { name: "漕河泾新汇幼儿园", level: "二级", address: "漕泾一村30号", phone: "64364348" },
+  { name: "凯琴数码幼儿园", level: "二级", address: "华泾路995号", phone: "54822626" },
+  { name: "陇龙幼稚园", level: "二级", address: "梅陇十一村96号", phone: "64549910" },
+  { name: "世蒙幼儿园", level: "二级", address: "东湖路21号", phone: "021-54038979" },
+  { name: "蒂伊幼稚园", level: "二级", address: "永嘉路383号", phone: "64749388" },
+  { name: "吉的堡新汇幼儿园", level: "二级", address: "康健小区虹漕南路百花街18号、6号", phone: "54183331" },
+];
+
 const byId = new Map(schools.map((school) => [school.id, school]));
 const mapSearch = (name, campus, address) => {
   const query = `上海市徐汇区 ${name} ${campus} ${address}`;
@@ -155,13 +202,27 @@ const getToddlerMode = (toddler) => {
   return "未列明";
 };
 
-const campusItems = campusRows.map(([id, campus, address, confidence, note]) => {
+const inferPrivateArea = (address) => {
+  if (/龙吴|华泾|喜泰|龙吟|华发|漓江山水/.test(address)) return "华泾/龙吴";
+  if (/梅陇|上中西|老沪闵|金塘|罗城/.test(address)) return "长桥/梅陇";
+  if (/田林|柳州|宜山|虹漕|虹梅|桂平|桂林西|康健|百花|古宜|杨家桥|浦北/.test(address)) return "田林/康健";
+  if (/龙华|机场|龙恒|龙兰|东泉|龙水|宛南|云锦/.test(address)) return "龙华/滨江";
+  if (/永嘉|衡山|安福|五原|华亭|太原|东湖|复兴西|桃江/.test(address)) return "衡复/湖南";
+  if (/吴兴|天钥|零陵|斜土|大木桥|小木桥|蒲江塘|宛平南/.test(address)) return "徐家汇/枫林";
+  if (/古羊|淮海西/.test(address)) return "徐家汇/虹桥";
+  if (/漕泾/.test(address)) return "漕溪/龙漕";
+  return "民办/待归类";
+};
+
+const publicCampusItems = campusRows.map(([id, campus, address, confidence, note]) => {
   const school = byId.get(id);
   const admissionType = getAdmissionType(school.committee);
   const toddlerMode = getToddlerMode(school.toddler);
   const needsConfirm = confidence === "B" || admissionType !== "固定对口" || note;
   const searchText = [
     id,
+    "公办",
+    "公办",
     school.name,
     school.area,
     campus,
@@ -177,11 +238,14 @@ const campusItems = campusRows.map(([id, campus, address, confidence, note]) => 
 
   return {
     id,
+    nature: "公办",
+    level: "公办",
     name: school.name,
     area: school.area,
     campus,
     address,
     mapUrl: mapSearch(school.name, campus, address),
+    phone: "待电话确认",
     toddler: school.toddler,
     small: school.small,
     committee: school.committee,
@@ -195,17 +259,64 @@ const campusItems = campusRows.map(([id, campus, address, confidence, note]) => 
   };
 });
 
-const campusHeader = ["编号", "幼儿园", "片区", "园区/分园", "地址", "高德搜索链接", "托班计划", "小班计划", "对口居委/招生范围", "置信度", "备注", "主要来源"];
+const privateCampusItems = privateCampusRows.map((item, index) => {
+  const campus = item.campus || "本部";
+  const id = `M${index + 1}`;
+  const area = inferPrivateArea(item.address);
+  const searchText = [
+    id,
+    "民办",
+    item.level,
+    item.name,
+    area,
+    campus,
+    item.address,
+    item.phone,
+    "民办招生",
+    "待确认",
+    "民办招生范围需电话确认",
+  ].join(" ");
+
+  return {
+    id,
+    nature: "民办",
+    level: item.level,
+    name: item.name,
+    area,
+    campus,
+    address: item.address,
+    mapUrl: mapSearch(item.name, campus, item.address),
+    phone: item.phone,
+    toddler: "待电话确认",
+    small: "待电话确认",
+    committee: "民办招生范围、托班、小班名额、收费和材料要求需电话确认。",
+    confidence: "A",
+    note: "民办/私立招生条件、收费、名额每年可能变化，报名前必须电话核验。",
+    source: privateListSource,
+    admissionType: "民办招生",
+    toddlerMode: "待确认",
+    needsConfirm: true,
+    searchText,
+  };
+});
+
+const campusItems = [...publicCampusItems, ...privateCampusItems];
+
+const campusHeader = ["编号", "性质", "级别", "幼儿园", "片区", "园区/分园", "地址", "高德搜索链接", "联系电话", "托班计划", "小班计划", "对口居委/招生范围", "招生类型", "置信度", "备注", "主要来源"];
 const campusData = campusItems.map((item) => [
   item.id,
+  item.nature,
+  item.level,
   item.name,
   item.area,
   item.campus,
   item.address,
   item.mapUrl,
+  item.phone,
   item.toddler,
   item.small,
   item.committee,
+  item.admissionType,
   item.confidence,
   item.note,
   item.source,
@@ -239,19 +350,22 @@ const areaStats = [...schools.reduce((map, school) => {
 
 const summaryRows = [
   ["指标", "值", "说明"],
-  ["招生主体数", schools.length, "来自2026 PDF。"],
-  ["拆分园区/分园数", campusData.length, "按公开园部地址拆分；少数历史变更项标B级。"],
+  ["公办招生主体数", schools.length, "来自2026 PDF。"],
+  ["公办园区/分园点位数", publicCampusItems.length, "按公开园部地址拆分；少数历史变更项标B级。"],
+  ["民办/私立点位数", privateCampusItems.length, "来自徐汇区民办幼儿园名单公开资料；招生条件、收费和名额需电话确认。"],
+  ["全部园区/点位数", campusData.length, "公办园区点位 + 民办/私立点位。"],
   ["小班计划合计", schools.reduce((sum, s) => sum + s.small, 0), "PDF计划班级数合计。"],
   ["托班明确班级数合计", schools.reduce((sum, s) => sum + (/^\d+$/.test(s.toddler) ? Number(s.toddler) : 0), 0), "不含混龄式招生。"],
   ["混龄式招生主体数", schools.filter((s) => `${s.toddler}`.includes("混龄")).length, "混龄式招生不直接等同托班班级数。"],
   ["重点核验", "汇星北园、复旦大学附属徐汇实验幼儿园", "公开资料出现地址/合并后的园部安排差异，择园前应电话确认。"],
 ];
 
-const markdown = `# 徐汇区公办幼儿园园区位置与择园参考
+const markdown = `# 徐汇区幼儿园园区位置与择园参考
 
 ## 结论摘要
 
-- 2026 PDF 共列出 ${schools.length} 个公办招生主体，拆分为 ${campusData.length} 个实际园区/分园点位。
+- 2026 PDF 共列出 ${schools.length} 个公办招生主体，拆分为 ${publicCampusItems.length} 个公办实际园区/分园点位。
+- 已补充 ${privateCampusItems.length} 个徐汇区民办/私立点位，包含级别、地址和联系电话；这些点位更适合作为当前暂无居住证情况下的兜底池。
 - 小班计划合计 ${schools.reduce((sum, s) => sum + s.small, 0)} 个班；托班明确计划合计 ${schools.reduce((sum, s) => sum + (/^\d+$/.test(s.toddler) ? Number(s.toddler) : 0), 0)} 个班，另有 ${schools.filter((s) => `${s.toddler}`.includes("混龄")).length} 所为“混龄式招生”。
 - 园区数量与小班容量最集中的区域在田林/虹梅/康健/漕河泾、长桥/凌云/梅陇、龙华/滨江与衡复/湖南几条带状居住区。
 - 多园区幼儿园不能只搜园名，必须按“园区/分园 + 地址”在高德地图核验；表格中已为每个园区生成高德搜索链接。
@@ -276,6 +390,7 @@ ${areaStats.map((row) => `| ${row[0]} | ${row[1]} | ${row[2]} | ${row[3]} | ${ro
 - ${pdfSource}
 - ${planSource}
 - ${publicListSource}
+- ${privateListSource}
 - 复旦大学附属徐汇实验幼儿园、汇星幼儿园等少数变更项参考了园所公开资料、上哪学/021school收录的招生简章信息，并在表中标注为需核验。
 `;
 
@@ -758,7 +873,7 @@ const html = `<!doctype html>
       background: var(--paper);
       max-height: 76vh;
     }
-    table { border-collapse: collapse; width: 100%; min-width: 1320px; }
+    table { border-collapse: collapse; width: 100%; min-width: 1580px; }
     th, td { border-bottom: 1px solid var(--line); padding: 11px 12px; text-align: left; vertical-align: top; }
     th {
       position: sticky;
@@ -770,7 +885,7 @@ const html = `<!doctype html>
       color: #42536a;
     }
     td { font-size: 13px; }
-    td:nth-child(8), td:nth-child(10) { max-width: 330px; }
+    td:nth-child(11), td:nth-child(13) { max-width: 330px; }
     .school-name { font-weight: 800; font-size: 14px; }
     .sub { color: var(--soft); font-size: 12px; margin-top: 3px; }
     .tag {
@@ -870,7 +985,7 @@ const html = `<!doctype html>
       </div>
       <aside class="scoreboard" aria-label="数据摘要">
         <div class="score-row"><span>公办招生主体</span><strong>${schools.length}</strong></div>
-        <div class="score-row"><span>实际园区/分园点位</span><strong>${campusItems.length}</strong></div>
+        <div class="score-row"><span>全部园区/点位</span><strong>${campusItems.length}</strong></div>
         <div class="score-row"><span>小班计划合计</span><strong>${schools.reduce((sum, s) => sum + s.small, 0)}</strong></div>
         <div class="score-row"><span>明确托班计划</span><strong>${schools.reduce((sum, s) => sum + (/^\\d+$/.test(s.toddler) ? Number(s.toddler) : 0), 0)}</strong></div>
       </aside>
@@ -1088,7 +1203,7 @@ const html = `<!doctype html>
           <label>片区
             <select id="area">
               <option value="">全部片区</option>
-              ${[...new Set(schools.map((school) => school.area))].sort().map((area) => `<option>${escapeHtml(area)}</option>`).join("")}
+              ${[...new Set(campusItems.map((item) => item.area))].sort().map((area) => `<option>${escapeHtml(area)}</option>`).join("")}
             </select>
           </label>
           <label>招生类型
@@ -1097,6 +1212,7 @@ const html = `<!doctype html>
               <option value="固定对口">固定对口</option>
               <option value="区域自主">区域自主</option>
               <option value="扩招">扩招</option>
+              <option value="民办招生">民办招生</option>
             </select>
           </label>
           <label>托班模式
@@ -1104,6 +1220,7 @@ const html = `<!doctype html>
               <option value="">全部托班</option>
               <option value="明确托班">明确托班</option>
               <option value="混龄式招生">混龄式招生</option>
+              <option value="待确认">待确认</option>
             </select>
           </label>
           <label>置信度
@@ -1126,6 +1243,7 @@ const html = `<!doctype html>
           <div class="chips">
             <span class="chip">先搜居委</span>
             <span class="chip">再看园区地址</span>
+            <span class="chip">可筛民办兜底</span>
             <span class="chip">B 级务必电话确认</span>
           </div>
         </div>
@@ -1135,9 +1253,12 @@ const html = `<!doctype html>
           <thead>
             <tr>
               <th>幼儿园/园区</th>
+              <th>性质</th>
+              <th>级别</th>
               <th>片区</th>
               <th>招生类型</th>
               <th>地址</th>
+              <th>联系电话</th>
               <th>托班</th>
               <th>小班</th>
               <th>置信度</th>
@@ -1156,11 +1277,14 @@ const html = `<!doctype html>
                 data-confirm="${item.needsConfirm ? "yes" : "no"}"
                 data-text="${escapeHtml(item.searchText)}">
                 <td><div class="school-name">${escapeHtml(item.name)}</div><div class="sub">${escapeHtml(item.campus)}</div></td>
+                <td><span class="tag ${item.nature === "民办" ? "amber" : "green"}">${escapeHtml(item.nature)}</span></td>
+                <td>${escapeHtml(item.level)}</td>
                 <td>${escapeHtml(item.area)}</td>
-                <td><span class="tag ${item.admissionType === "固定对口" ? "green" : item.admissionType === "扩招" ? "amber" : "blue"}">${escapeHtml(item.admissionType)}</span></td>
+                <td><span class="tag ${item.admissionType === "固定对口" ? "green" : item.admissionType === "扩招" || item.admissionType === "民办招生" ? "amber" : "blue"}">${escapeHtml(item.admissionType)}</span></td>
                 <td>${escapeHtml(item.address)}</td>
+                <td>${escapeHtml(item.phone)}</td>
                 <td><span class="tag ${item.toddlerMode === "混龄式招生" ? "amber" : "blue"}">${escapeHtml(item.toddler)}</span></td>
-                <td>${escapeHtml(item.small)} 班</td>
+                <td>${Number.isFinite(Number(item.small)) ? escapeHtml(item.small) + " 班" : escapeHtml(item.small)}</td>
                 <td><span class="tag ${item.confidence === "B" ? "red" : "green"}">${escapeHtml(item.confidence)}</span></td>
                 <td>${escapeHtml(item.committee)}</td>
                 <td><a href="${escapeHtml(item.mapUrl)}" target="_blank" rel="noopener">打开高德</a></td>
@@ -1220,6 +1344,10 @@ const html = `<!doctype html>
           <span>用于确认居住登记、合法稳定住所、租赁合同/备案等材料链。</span>
         </article>
         <article class="source-card">
+          <strong><a href="https://sh.bendibao.com/edu/2024325/284155_2.shtm" target="_blank" rel="noopener">徐汇区民办幼儿园名单</a></strong>
+          <span>用于补充民办/私立幼儿园的级别、地址和联系电话，作为公办概率偏低时的兜底池。</span>
+        </article>
+        <article class="source-card">
           <strong><a href="https://sh.zu.ke.com/" target="_blank" rel="noopener">贝壳上海租房</a></strong>
           <span>用于实时搜索 3 室、100 平以上、10000 元以内的整租房源。</span>
         </article>
@@ -1248,7 +1376,7 @@ const html = `<!doctype html>
   </main>
 
   <footer>
-    <div class="shell">主要来源：${escapeHtml(planSource)}；${escapeHtml(publicListSource)}；${escapeHtml(pdfSource)}；2026 徐汇招生政策、上海居住证办理指南、贝壳/58 等公开租房信息。</div>
+    <div class="shell">主要来源：${escapeHtml(planSource)}；${escapeHtml(publicListSource)}；${escapeHtml(privateListSource)}；${escapeHtml(pdfSource)}；2026 徐汇招生政策、上海居住证办理指南、贝壳/58 等公开租房信息。</div>
   </footer>
 
   <script>
@@ -1313,18 +1441,19 @@ const sourceSheet = workbook.worksheets.add("来源与核验规则");
 
 summary.getRange(`A1:C${summaryRows.length}`).values = summaryRows;
 schoolSheet.getRange(`A1:I${schoolData.length + 1}`).values = [schoolHeader, ...schoolData];
-campusSheet.getRange(`A1:L${campusData.length + 1}`).values = [campusHeader, ...campusData];
+campusSheet.getRange(`A1:P${campusData.length + 1}`).values = [campusHeader, ...campusData];
 areaSheet.getRange(`A1:F${areaStats.length + 1}`).values = [["片区", "招生主体数", "园区点位数", "小班计划数", "明确托班班级数", "混龄招生主体数"], ...areaStats];
-sourceSheet.getRange("A1:B9").values = [
+sourceSheet.getRange("A1:B10").values = [
   ["项目", "说明"],
   ["PDF主表", pdfSource],
   ["2026线上主表", planSource],
-  ["园部地址主来源", publicListSource],
+  ["公办园部地址主来源", publicListSource],
+  ["民办/私立地址与电话来源", privateListSource],
   ["高德检索口径", "表格中的高德链接使用“上海市徐汇区 + 幼儿园名 + 园区名 + 地址”生成，用于逐点打开核验。"],
   ["A级", "园部地址在公办园地址清单中明确列出，且无明显冲突。"],
   ["B级", "公开资料有变更、合并或地址冲突，位置大体可定位，但实际入读园区需电话确认。"],
   ["C级", "仅有第三方或地图信息，缺少官方交叉验证。本表目前未使用C级作为主确认。"],
-  ["电话确认重点", "汇星幼儿园北园；复旦大学附属徐汇实验幼儿园；区域内自主招生及扩招园。"],
+  ["电话确认重点", "汇星幼儿园北园；复旦大学附属徐汇实验幼儿园；区域内自主招生、扩招园、民办/私立园。"],
 ];
 
 for (const sheet of [summary, schoolSheet, campusSheet, areaSheet, sourceSheet]) {
@@ -1335,7 +1464,7 @@ for (const sheet of [summary, schoolSheet, campusSheet, areaSheet, sourceSheet])
 summary.getRange("A:A").format.columnWidthPx = 150;
 summary.getRange("B:B").format.columnWidthPx = 150;
 summary.getRange("C:C").format.columnWidthPx = 560;
-summary.getRange("A1:C7").format.wrapText = true;
+summary.getRange(`A1:C${summaryRows.length}`).format.wrapText = true;
 
 schoolSheet.getRange("A:A").format.columnWidthPx = 54;
 schoolSheet.getRange("B:B").format.columnWidthPx = 190;
@@ -1346,23 +1475,25 @@ schoolSheet.getRange("H:I").format.columnWidthPx = 280;
 schoolSheet.getRange(`A1:I${schoolData.length + 1}`).format.wrapText = true;
 
 campusSheet.getRange("A:A").format.columnWidthPx = 54;
-campusSheet.getRange("B:B").format.columnWidthPx = 190;
-campusSheet.getRange("C:C").format.columnWidthPx = 120;
-campusSheet.getRange("D:E").format.columnWidthPx = 150;
-campusSheet.getRange("F:F").format.columnWidthPx = 360;
-campusSheet.getRange("G:H").format.columnWidthPx = 88;
-campusSheet.getRange("I:I").format.columnWidthPx = 520;
-campusSheet.getRange("J:J").format.columnWidthPx = 70;
-campusSheet.getRange("K:L").format.columnWidthPx = 360;
-campusSheet.getRange(`A1:L${campusData.length + 1}`).format.wrapText = true;
-campusSheet.freezePanes.freezeColumns(2);
+campusSheet.getRange("B:C").format.columnWidthPx = 80;
+campusSheet.getRange("D:D").format.columnWidthPx = 190;
+campusSheet.getRange("E:E").format.columnWidthPx = 120;
+campusSheet.getRange("F:G").format.columnWidthPx = 150;
+campusSheet.getRange("H:H").format.columnWidthPx = 360;
+campusSheet.getRange("I:I").format.columnWidthPx = 120;
+campusSheet.getRange("J:K").format.columnWidthPx = 88;
+campusSheet.getRange("L:L").format.columnWidthPx = 520;
+campusSheet.getRange("M:N").format.columnWidthPx = 90;
+campusSheet.getRange("O:P").format.columnWidthPx = 360;
+campusSheet.getRange(`A1:P${campusData.length + 1}`).format.wrapText = true;
+campusSheet.freezePanes.freezeColumns(4);
 
 areaSheet.getRange("A:A").format.columnWidthPx = 160;
 areaSheet.getRange("B:F").format.columnWidthPx = 110;
 
 sourceSheet.getRange("A:A").format.columnWidthPx = 150;
 sourceSheet.getRange("B:B").format.columnWidthPx = 760;
-sourceSheet.getRange("A1:B9").format.wrapText = true;
+sourceSheet.getRange("A1:B10").format.wrapText = true;
 
 const output = await SpreadsheetFile.exportXlsx(workbook);
 await output.save(path.join(outputDir, "徐汇区幼儿园园区位置与择园参考.xlsx"));
@@ -1371,6 +1502,8 @@ console.log(JSON.stringify({
   outputDir,
   campuses: campusData.length,
   schools: schools.length,
+  publicCampuses: publicCampusItems.length,
+  privateCampuses: privateCampusItems.length,
   xlsx: path.join(outputDir, "徐汇区幼儿园园区位置与择园参考.xlsx"),
   csv: path.join(outputDir, "徐汇区幼儿园园区位置表.csv"),
   md: path.join(outputDir, "徐汇区幼儿园择园参考.md"),
