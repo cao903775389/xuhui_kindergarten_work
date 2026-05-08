@@ -604,6 +604,21 @@ const itemDistance = (item) => item?.officeDistance && item.officeDistance !== p
 const poiLine = (item) => item?.amapPoiName && item.amapPoiName !== pendingAmapValue
   ? `${item.amapPoiName}${item.amapPoiAddress && item.amapPoiAddress !== pendingAmapValue ? `；${item.amapPoiAddress}` : ""}`
   : "高德POI未可靠匹配";
+const phoneDialValue = (value) => {
+  const digits = String(value ?? "").match(/\d+/g)?.join("") || "";
+  return digits.length >= 7 ? digits : "";
+};
+const renderPhoneLinks = (value) => {
+  const phone = String(value ?? "待电话确认");
+  const parts = phone
+    .split(/\s*(?:\/|、|，|,|；|;)\s*/u)
+    .filter(Boolean);
+  if (!parts.length || phone.includes("待电话确认")) return escapeHtml(phone);
+  return parts.map((part) => {
+    const dial = phoneDialValue(part);
+    return dial ? `<a class="phone-link" href="tel:${escapeHtml(dial)}">${escapeHtml(part)}</a>` : escapeHtml(part);
+  }).join('<span class="phone-separator"> / </span>');
+};
 
 const decisionRecommendations = [
   {
@@ -769,7 +784,7 @@ const renderSchoolDecisionCards = (nature) => decisionRecommendations
         <div class="card-meta">
           <div><span>性质/等级</span><b>${escapeHtml(row.type)}</b></div>
           <div><span>招生类型</span><b>${escapeHtml(row.item?.admissionType || "待确认")}</b></div>
-          <div><span>联系电话</span><b>${escapeHtml(row.item?.phone || "待电话确认")}</b></div>
+          <div><span>联系电话</span><b>${renderPhoneLinks(row.item?.phone || "待电话确认")}</b></div>
           <div><span>租房板块</span><b>${escapeHtml(row.rentArea)}</b></div>
         </div>
         <p class="address-line">${escapeHtml(row.item?.address || "")}</p>
@@ -1193,6 +1208,15 @@ const html = `<!doctype html>
       color: var(--blue);
       font-weight: 800;
       font-size: 12px;
+    }
+    .phone-link {
+      color: var(--blue);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .phone-separator {
+      color: var(--soft);
+      margin: 0 2px;
     }
     .distance-list {
       display: grid;
@@ -1747,7 +1771,7 @@ ${renderRentBoardCards()}
                 <td>${escapeHtml(item.address)}</td>
                 <td><div>${escapeHtml(item.amapPoiName)}</div><div class="sub">${escapeHtml(item.amapPoiAddress)}</div></td>
                 <td>${escapeHtml(item.officeDistance)}</td>
-                <td>${escapeHtml(item.phone)}</td>
+                <td>${renderPhoneLinks(item.phone)}</td>
                 <td><span class="tag ${item.toddlerMode === "混龄式招生" ? "amber" : "blue"}">${escapeHtml(item.toddler)}</span></td>
                 <td>${Number.isFinite(Number(item.small)) ? escapeHtml(item.small) + " 班" : escapeHtml(item.small)}</td>
                 <td><span class="tag ${item.confidence === "B" ? "red" : "green"}">${escapeHtml(item.confidence)}</span></td>
