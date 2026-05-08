@@ -153,6 +153,14 @@ try {
   amapEnrichmentByKey = {};
 }
 
+const beikeRentalSchemaPath = path.join(process.cwd(), "data", "beike_rental_filter_schema.json");
+let beikeRentalSchema = {};
+try {
+  beikeRentalSchema = JSON.parse(await fs.readFile(beikeRentalSchemaPath, "utf8"));
+} catch {
+  beikeRentalSchema = {};
+}
+
 const amapItemKey = ({ nature, name, campus, address }) => [nature, name, campus, address].join("|");
 const getAmapEnrichment = (item) => {
   const enrichment = amapEnrichmentByKey[amapItemKey(item)] || {};
@@ -583,7 +591,15 @@ const escapeHtml = (value) => String(value ?? "")
 
 const campusLookup = new Map(campusItems.map((item) => [amapItemKey(item), item]));
 const campusRef = (nature, name, campus, address) => campusLookup.get([nature, name, campus, address].join("|"));
-const beikeSearch = (keyword) => `https://sh.zu.ke.com/zufang/rs${encodeURIComponent(keyword)}/`;
+const beikeDefaultTokens = ["rt200600000001", "brp0erp10000", "l2", "l3", "ra4", "ra5", "ie1"];
+const beikeBizcircleBySlug = new Map((beikeRentalSchema.filters?.bizcircle?.flatOptions || [])
+  .map((option) => [option.slug, option]));
+const beikeAreaLabel = (slug) => slug === "xuhui" ? "徐汇全区" : (beikeBizcircleBySlug.get(slug)?.label || slug);
+const beikeRentalUrl = (slug = "xuhui") => {
+  const safeSlug = slug || "xuhui";
+  return `https://sh.zu.ke.com/zufang/${safeSlug}/${beikeDefaultTokens.join("")}/?showMore=1`;
+};
+const beikeRentalConditionText = "整租 / 0-10000元 / 三居或四居+ / 100㎡以上 / 有电梯";
 const itemDistance = (item) => item?.officeDistance && item.officeDistance !== pendingAmapValue ? item.officeDistance : "高德未匹配，待电话/地图确认";
 const poiLine = (item) => item?.amapPoiName && item.amapPoiName !== pendingAmapValue
   ? `${item.amapPoiName}${item.amapPoiAddress && item.amapPoiAddress !== pendingAmapValue ? `；${item.amapPoiAddress}` : ""}`
@@ -597,8 +613,10 @@ const decisionRecommendations = [
     type: "公办 / 一级",
     item: campusRef("公办", "园南幼儿园", "本部", "龙川北路园南一村27号"),
     rentArea: "园南一村 / 汇成五村 / 上中路",
-    beikeKeyword: "园南 长桥 3室 100平 10000",
-    price: "贝壳实时筛选：3室、100平以上、10000以内",
+    rentSlug: "changqiao",
+    backupRentSlug: "zhiwuyuan",
+    strategy: "公办争取线",
+    risk: "暂无居住证时需严格匹配居委、租赁材料和当年招生顺位。",
     judgement: "租房预算、居住环境和公办争取的平衡最好，是当前主线。",
   },
   {
@@ -608,8 +626,10 @@ const decisionRecommendations = [
     type: "公办 / 一级",
     item: campusRef("公办", "徐汇实验幼儿园", "本部", "龙瑞路135号"),
     rentArea: "华沁家园 / 华滨家园 / 龙瑞路",
-    beikeKeyword: "华沁家园 华滨家园 3室 100平 10000",
-    price: "贝壳实时筛选：华泾北大三房，优先电梯",
+    rentSlug: "huajing",
+    backupRentSlug: "xuhui",
+    strategy: "公办争取线",
+    risk: "华泾/罗秀具体居委边界要反查，不能只按地图距离判断。",
     judgement: "距离公司近于长桥，面积更容易做大，但需严格反查居委。",
   },
   {
@@ -619,8 +639,10 @@ const decisionRecommendations = [
     type: "公办 / 二级",
     item: campusRef("公办", "阳光幼儿园", "小班部", "龙水南路龙南三村7号"),
     rentArea: "龙南三四村 / 樟树苑 / 龙水南路",
-    beikeKeyword: "龙南 龙水南路 3室 100平 10000",
-    price: "贝壳实时筛选：离公司近，但大户型低预算不稳定",
+    rentSlug: "longhua",
+    backupRentSlug: "xuhuibinjiang",
+    strategy: "近公司机会项",
+    risk: "龙华/滨江满足 100㎡以上、1 万内、电梯的房源更少。",
     judgement: "高德距离最近，适合捡漏；不要作为唯一租房主线。",
   },
   {
@@ -630,8 +652,10 @@ const decisionRecommendations = [
     type: "公办 / 示范园",
     item: campusRef("公办", "上海幼儿园", "上中园", "上中路402号"),
     rentArea: "上中路 / 长桥 / 植物园",
-    beikeKeyword: "上中路 长桥 3室 100平 10000",
-    price: "贝壳实时筛选：长桥南侧大户型，优先材料配合",
+    rentSlug: "zhiwuyuan",
+    backupRentSlug: "changqiao",
+    strategy: "公办争取线",
+    risk: "示范园关注度高，扩招和自主口径需以当年简章为准。",
     judgement: "示范园且片区与租房需求匹配，但公办竞争和材料门槛仍高。",
   },
   {
@@ -641,8 +665,10 @@ const decisionRecommendations = [
     type: "公办 / 一级",
     item: campusRef("公办", "龙华幼儿园", "龙恒园", "龙华西路31弄15号"),
     rentArea: "龙华西路 / 龙恒路 / 云锦路",
-    beikeKeyword: "龙华西路 龙恒路 3室 100平 10000",
-    price: "贝壳实时筛选：通勤优秀，但预算更容易被卡",
+    rentSlug: "longhua",
+    backupRentSlug: "xuhuibinjiang",
+    strategy: "近公司机会项",
+    risk: "预算、房源面积、公办顺位三项压力同时偏高。",
     judgement: "距离公司好，但租金和公办顺位压力都更大，作为机会项。",
   },
   {
@@ -652,8 +678,10 @@ const decisionRecommendations = [
     type: "普惠民办 / 一级",
     item: campusRef("民办", "汇城苑幼稚园", "本部", "百色路汇城五村75号"),
     rentArea: "汇成五村 / 园南 / 百色路",
-    beikeKeyword: "汇成五村 园南 3室 100平 10000",
-    price: "贝壳实时筛选：和园南主线共用看房区域",
+    rentSlug: "changqiao",
+    backupRentSlug: "zhiwuyuan",
+    strategy: "民办兜底线",
+    risk: "需电话确认剩余名额、收费、是否接受当前材料状态。",
     judgement: "最适合和园南/长桥公办争取线并行，优先电话确认名额。",
   },
   {
@@ -663,8 +691,10 @@ const decisionRecommendations = [
     type: "民办 / 一级",
     item: campusRef("民办", "胡姬港湾幼儿园", "本部", "丰谷路205弄35号"),
     rentArea: "龙华 / 云锦路 / 丰谷路",
-    beikeKeyword: "云锦路 丰谷路 3室 100平 10000",
-    price: "贝壳实时筛选：近公司，预算需严格筛",
+    rentSlug: "longhua",
+    backupRentSlug: "xuhuibinjiang",
+    strategy: "近公司兜底线",
+    risk: "名单地址与高德 POI 地址有差异，必须电话确认实际园区。",
     judgement: "高德距离近；名单地址与高德POI地址有差异，必须电话确认实际园区。",
   },
   {
@@ -674,8 +704,10 @@ const decisionRecommendations = [
     type: "民办 / 二级",
     item: campusRef("民办", "牛牛幼稚园", "本部", "罗城路700弄95号"),
     rentArea: "罗城路 / 长桥 / 上中西路",
-    beikeKeyword: "罗城路 长桥 3室 100平 10000",
-    price: "贝壳实时筛选：长桥南侧更容易找大户型",
+    rentSlug: "changqiao",
+    backupRentSlug: "zhiwuyuan",
+    strategy: "长桥兜底线",
+    risk: "二级民办，需实地看园并确认班额、师资和收费。",
     judgement: "和长桥租房主线兼容，适合作为第二民办兜底。",
   },
   {
@@ -685,8 +717,10 @@ const decisionRecommendations = [
     type: "普惠民办 / 二级",
     item: campusRef("民办", "凯琴数码幼儿园", "本部", "华泾路995号"),
     rentArea: "华泾 / 华沁 / 华滨 / 罗秀",
-    beikeKeyword: "华泾 华沁 3室 100平 10000",
-    price: "贝壳实时筛选：华泾方向面积更友好",
+    rentSlug: "huajing",
+    backupRentSlug: "xuhui",
+    strategy: "华泾兜底线",
+    risk: "需确认普惠口径、招生名额、收费和可入园时间。",
     judgement: "适合华泾北/罗秀租房线，距离公司中等，需确认名额和收费。",
   },
   {
@@ -696,23 +730,62 @@ const decisionRecommendations = [
     type: "民办 / 一级",
     item: campusRef("民办", "杜鹃园幼稚园", "本部", "桂林西街9弄57号"),
     rentArea: "桂林西街 / 康健 / 田林南",
-    beikeKeyword: "桂林西街 康健 3室 100平 10000",
-    price: "贝壳实时筛选：生活成熟，通勤略远于龙华",
+    rentSlug: "kangjian",
+    backupRentSlug: "tianlin",
+    strategy: "康健备选线",
+    risk: "生活成熟但通勤略远，建议作为备选而不是第一主线。",
     judgement: "一级民办，适合作为康健/田林方向的兜底备选。",
   },
 ];
 
-const renderDecisionRows = () => decisionRecommendations.map((row) => `
-            <tr>
-              <td><span class="tag ${row.tagClass}">${escapeHtml(row.rank)}</span><br><span class="sub">${escapeHtml(row.tag)}</span></td>
-              <td>${escapeHtml(row.type)}</td>
-              <td><strong>${escapeHtml(row.item?.name || "")} ${escapeHtml(row.item?.campus || "")}</strong><br><span class="sub">${escapeHtml(row.item?.address || "")}</span></td>
-              <td><strong>${escapeHtml(row.item?.phone || "待电话确认")}</strong><br><span class="sub">${escapeHtml(poiLine(row.item))}</span></td>
-              <td><strong>${escapeHtml(row.rentArea)}</strong></td>
-              <td><a href="${escapeHtml(beikeSearch(row.beikeKeyword))}" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">${escapeHtml(row.price)}</span></td>
-              <td><span class="distance-list"><span><b>园到公司：</b>${escapeHtml(itemDistance(row.item))}</span><span><b>口径：</b>高德 POI 直线距离</span></span></td>
-              <td>${escapeHtml(row.judgement)}</td>
-            </tr>
+const rentalBoards = [
+  { slug: "changqiao", tag: "首选", title: "长桥", fit: "园南幼儿园、汇城苑、牛牛", note: "预算、面积和材料办理可行性最平衡。" },
+  { slug: "zhiwuyuan", tag: "首选备选", title: "植物园", fit: "上海幼儿园上中园、园南幼儿园", note: "靠近上中路/长桥南侧，适合找大户型。" },
+  { slug: "huajing", tag: "备选首选", title: "华泾", fit: "徐汇实验幼儿园、凯琴数码幼儿园", note: "100㎡以上房源更友好，通勤仍可接受。" },
+  { slug: "longhua", tag: "近公司", title: "龙华", fit: "阳光幼儿园、龙华幼儿园、胡姬港湾", note: "通勤最好，但预算和大户型筛选压力高。" },
+  { slug: "kangjian", tag: "生活成熟", title: "康健", fit: "杜鹃园幼稚园", note: "生活便利，适合作为康健/田林方向备选。" },
+  { slug: "xuhui", tag: "放宽", title: "徐汇全区", fit: "预算不足时扩大池子", note: "当二级商圈房源过少时，用全区链接补充看房池。" },
+];
+
+const renderRentalLinks = (row) => `
+        <div class="rent-links">
+          <a href="${escapeHtml(beikeRentalUrl(row.rentSlug))}" target="_blank" rel="noopener">推荐商圈：${escapeHtml(beikeAreaLabel(row.rentSlug))}</a>
+          ${row.backupRentSlug && row.backupRentSlug !== "xuhui" ? `<a href="${escapeHtml(beikeRentalUrl(row.backupRentSlug))}" target="_blank" rel="noopener">备选商圈：${escapeHtml(beikeAreaLabel(row.backupRentSlug))}</a>` : ""}
+          <a href="${escapeHtml(beikeRentalUrl("xuhui"))}" target="_blank" rel="noopener">徐汇全区放宽查找</a>
+        </div>
+`;
+
+const renderSchoolDecisionCards = (nature) => decisionRecommendations
+  .filter((row) => row.item?.nature === nature)
+  .map((row) => `
+      <article class="school-card">
+        <header>
+          <div>
+            <span class="tag ${row.tagClass}">${escapeHtml(row.rank)} · ${escapeHtml(row.tag)}</span>
+            <h3>${escapeHtml(row.item?.name || "")}${row.item?.campus ? ` · ${escapeHtml(row.item.campus)}` : ""}</h3>
+          </div>
+          <strong>${escapeHtml(itemDistance(row.item))}</strong>
+        </header>
+        <div class="card-meta">
+          <div><span>性质/等级</span><b>${escapeHtml(row.type)}</b></div>
+          <div><span>招生类型</span><b>${escapeHtml(row.item?.admissionType || "待确认")}</b></div>
+          <div><span>联系电话</span><b>${escapeHtml(row.item?.phone || "待电话确认")}</b></div>
+          <div><span>租房板块</span><b>${escapeHtml(row.rentArea)}</b></div>
+        </div>
+        <p class="address-line">${escapeHtml(row.item?.address || "")}</p>
+        <p>${escapeHtml(row.judgement)}</p>
+        <div class="risk-box"><strong>${escapeHtml(row.strategy)}</strong><span>${escapeHtml(row.risk)}</span></div>
+        ${renderRentalLinks(row)}
+      </article>
+`).join("");
+
+const renderRentBoardCards = () => rentalBoards.map((board) => `
+        <article class="rent-board-card">
+          <header><h3>${escapeHtml(board.title)}</h3><span class="tag ${board.slug === "xuhui" ? "amber" : "blue"}">${escapeHtml(board.tag)}</span></header>
+          <p><strong>适配园所：</strong>${escapeHtml(board.fit)}</p>
+          <p>${escapeHtml(board.note)}</p>
+          <a href="${escapeHtml(beikeRentalUrl(board.slug))}" target="_blank" rel="noopener">打开${escapeHtml(beikeAreaLabel(board.slug))}房源</a>
+        </article>
 `).join("");
 
 const unmatchedPreview = amapUnmatchedItems.slice(0, 12)
@@ -1016,6 +1089,111 @@ const html = `<!doctype html>
     .recommendation-table td:nth-child(1),
     .recommendation-table td:nth-child(2),
     .recommendation-table td:nth-child(3) { max-width: 260px; }
+    .school-decision-layout {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+      align-items: start;
+    }
+    .school-column {
+      display: grid;
+      gap: 12px;
+    }
+    .school-column > h3 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.3;
+    }
+    .school-card {
+      display: grid;
+      gap: 12px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 10px 28px rgba(23, 32, 51, 0.05);
+    }
+    .school-card header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .school-card h3 {
+      margin: 9px 0 0;
+      font-size: 20px;
+      line-height: 1.28;
+    }
+    .school-card header > strong {
+      color: var(--blue);
+      white-space: nowrap;
+      font-size: 15px;
+    }
+    .school-card p {
+      margin: 0;
+      color: var(--soft);
+    }
+    .school-card .address-line {
+      color: var(--ink);
+      font-weight: 700;
+    }
+    .card-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .card-meta div {
+      min-height: 62px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f9fbfd;
+      border: 1px solid var(--line);
+    }
+    .card-meta span {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--soft);
+      font-size: 12px;
+    }
+    .card-meta b {
+      display: block;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+    .risk-box {
+      display: grid;
+      gap: 4px;
+      padding: 12px;
+      border-radius: 8px;
+      background: #fff8ed;
+      border: 1px solid #fed7aa;
+      color: #7c3e06;
+    }
+    .risk-box span {
+      color: #7c3e06;
+      font-size: 13px;
+    }
+    .rent-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .rent-links a,
+    .rent-board-card a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 10px;
+      border: 1px solid #bdd3ea;
+      border-radius: 8px;
+      background: #eef6ff;
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 12px;
+    }
     .distance-list {
       display: grid;
       gap: 5px;
@@ -1090,6 +1268,37 @@ const html = `<!doctype html>
     .priority-card h3 { margin: 0; font-size: 17px; }
     .priority-card p { margin: 0; color: var(--soft); }
     .priority-card .reason { color: var(--ink); font-weight: 700; }
+    .rent-panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .rent-panel strong { display: block; margin-bottom: 6px; font-size: 17px; }
+    .rent-panel p { margin: 0; color: var(--soft); }
+    .rent-board-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .rent-board-card {
+      display: grid;
+      gap: 10px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      min-height: 190px;
+    }
+    .rent-board-card header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .rent-board-card h3 { margin: 0; font-size: 17px; }
+    .rent-board-card p { margin: 0; color: var(--soft); }
     .action-steps {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1258,7 +1467,8 @@ const html = `<!doctype html>
     }
     @media (max-width: 1100px) {
       .hero-grid, .workflow, .notice, .personal-grid { grid-template-columns: 1fr; }
-      .principles, .areas, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .principles, .areas, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .school-decision-layout { grid-template-columns: 1fr; }
       .toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .source-list { grid-template-columns: 1fr; }
     }
@@ -1268,7 +1478,9 @@ const html = `<!doctype html>
       .nav { overflow: auto; width: 100%; padding-bottom: 2px; }
       .hero-grid { padding: 38px 14px 34px; min-height: auto; }
       .scoreboard { padding: 14px; }
-      .principles, .areas, .matrix, .toolbar, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board { grid-template-columns: 1fr; }
+      .principles, .areas, .matrix, .toolbar, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .card-meta { grid-template-columns: 1fr; }
+      .school-card header { display: grid; }
+      .school-card header > strong { white-space: normal; }
       .rank-item { grid-template-columns: 34px 1fr; }
       .rank-item .tag { grid-column: 2; justify-self: start; }
       .section-title { display: block; }
@@ -1282,10 +1494,10 @@ const html = `<!doctype html>
       <div class="brand">徐汇区幼儿园筛选方案</div>
       <nav class="nav" aria-label="页面导航">
         <a href="#profile">基本情况</a>
-        <a href="#decision">结论</a>
-        <a href="#priority">推荐板块</a>
-        <a href="#todos">待办</a>
-        <a href="#query">园区查询</a>
+        <a href="#decision">推荐园所</a>
+        <a href="#rent">租房联动</a>
+        <a href="#todos">入园待办</a>
+        <a href="#query">详细查询</a>
         <a href="#sources">来源</a>
       </nav>
     </div>
@@ -1294,11 +1506,11 @@ const html = `<!doctype html>
   <section class="hero">
     <div class="shell hero-grid">
       <div>
-        <h1>长桥/植物园优先，先把材料链补齐。</h1>
-        <p class="lead">基于你刚来上海、暂无居住证、办公点在西岸网易研发中心、需要 3 房 100 平以上租房的情况，当前主线不是冲热门公办园，而是先选更可租、更可办材料、更适合接送的居住板块。</p>
+        <h1>先选幼儿园，再反推租房板块。</h1>
+        <p class="lead">基于你刚来上海、暂无居住证、办公点在西岸网易研发中心、需要 3 房 100 平以上租房的情况，页面主线改为 5 所公办争取 + 5 所民办兜底，并为每所园生成结构化贝壳租房入口。</p>
         <div class="hero-actions">
-          <a class="button primary" href="#decision">看明确结论</a>
-          <a class="button" href="#query">进入园区查询</a>
+          <a class="button primary" href="#decision">看推荐园所</a>
+          <a class="button" href="#rent">打开租房联动</a>
           <a class="button" href="徐汇区幼儿园园区位置与择园参考.xlsx">打开 Excel 表</a>
         </div>
       </div>
@@ -1328,8 +1540,8 @@ const html = `<!doctype html>
 
     <section id="decision">
       <div class="section-title">
-        <h2>首页结论</h2>
-        <p>这里直接给到 5 所公办争取、5 所民办兜底，距离使用高德 POI 到网易上海西岸研发中心的直线距离。</p>
+        <h2>推荐园所</h2>
+        <p>先确定 5 所公办争取线和 5 所民办兜底线，再用推荐商圈房源链接反推小区和居住材料。</p>
       </div>
       <div class="summary-strip">
         <article class="summary-card urgent">
@@ -1359,36 +1571,27 @@ const html = `<!doctype html>
           <p>本页 ${amapMatchedCount}/${campusItems.length} 个点位已可靠匹配高德 POI，匹配率 ${amapMatchRate}；距离均为到网易上海西岸研发中心的直线距离，实际通勤仍需按步行/骑行/驾车路线复核。</p>
         </article>
       </div>
-      <div class="recommendation-table">
-        <table>
-          <thead>
-            <tr>
-              <th>优先级</th>
-              <th>园所类型</th>
-              <th>推荐幼儿园/分园</th>
-              <th>联系电话/来源</th>
-              <th>推荐租房小区/板块</th>
-              <th>贝壳租房链接与价格</th>
-              <th>距离估算</th>
-              <th>判断</th>
-            </tr>
-          </thead>
-          <tbody>
-${renderDecisionRows()}
-          </tbody>
-        </table>
+      <div class="school-decision-layout">
+        <div class="school-column">
+          <h3>公办争取线</h3>
+${renderSchoolDecisionCards("公办")}
+        </div>
+        <div class="school-column">
+          <h3>民办兜底线</h3>
+${renderSchoolDecisionCards("民办")}
+        </div>
       </div>
     </section>
 
     <section id="judgement">
       <div class="section-title">
-        <h2>你的情况判断</h2>
-        <p>这四项决定了为什么不建议一上来就住徐汇滨江核心区冲热门公办。</p>
+        <h2>公办/民办策略</h2>
+        <p>当前最稳妥的结构是公办作为争取线，民办作为兜底线，两条线同步推进。</p>
       </div>
       <div class="judgement-grid">
         <article class="judgement-card"><h3>公办概率</h3><p>暂无居住证时，非沪籍公办录取顺位和材料完整性都不占优；公办只能作为争取线。</p></article>
         <article class="judgement-card"><h3>材料链</h3><p>租房地址、居住登记、居住证、租赁合同/备案要尽量一致；房东配合度是硬条件。</p></article>
-        <article class="judgement-card"><h3>普惠民办</h3><p>应提升为并行主线，优先联系汇城苑、凯琴、小神童这类离推荐板块近的普惠民办。</p></article>
+        <article class="judgement-card"><h3>普惠民办</h3><p>应提升为并行主线，优先联系汇城苑、胡姬港湾、牛牛、凯琴、杜鹃园这 5 所民办兜底园。</p></article>
         <article class="judgement-card"><h3>租房预算</h3><p>1 万内、3 房、100 平以上、优先电梯和好环境，西岸核心区难度高，南部板块更现实。</p></article>
       </div>
       <div class="logic-compact">
@@ -1399,32 +1602,17 @@ ${renderDecisionRows()}
       </div>
     </section>
 
-    <section id="priority">
+    <section id="rent">
       <div class="section-title">
-        <h2>推荐居住板块</h2>
-        <p>按“录取材料可行性、租房预算、通勤、接送与遛娃”综合排序。</p>
+        <h2>租房联动</h2>
+        <p>租房入口基于贝壳结构化参数生成，不使用关键词搜索。默认条件固定为：${escapeHtml(beikeRentalConditionText)}。</p>
       </div>
-      <div class="priority-grid">
-        <article class="priority-card">
-          <header><h3>长桥 / 植物园</h3><span class="tag green">首选</span></header>
-          <p class="reason">预算和生活便利性最匹配。</p>
-          <p>重点看园南、上中路、汇成、长桥新村周边；可反查长桥第二、长桥第三、园南、上海幼儿园等招生范围。</p>
-        </article>
-        <article class="priority-card">
-          <header><h3>华泾北 / 罗秀</h3><span class="tag blue">备选首选</span></header>
-          <p class="reason">面积更容易做大，通勤仍可接受。</p>
-          <p>关注龙瑞路、罗秀路、华沁/华滨/徐汇新城周边；可看徐汇实验、星辰、果果、盛华、印象等方向。</p>
-        </article>
-        <article class="priority-card">
-          <header><h3>龙华 / 龙南</h3><span class="tag amber">捡漏</span></header>
-          <p class="reason">通勤最好，但预算压力最大。</p>
-          <p>如果出现 1 万内、100 平以上、房东配合材料的房源可以看；否则不要把它作为唯一主线。</p>
-        </article>
-        <article class="priority-card">
-          <header><h3>徐家汇 / 衡复</h3><span class="tag red">谨慎</span></header>
-          <p class="reason">租金高、竞争强、当前阶段不划算。</p>
-          <p>除非预算上调或已有稳定材料优势，否则不建议优先投入看房和报名精力。</p>
-        </article>
+      <div class="rent-panel">
+        <strong>统一筛选 token</strong>
+        <p><code>${beikeDefaultTokens.join("")}</code>，含整租、0-10000 元、三居/四居+、100-120㎡/120㎡以上、有电梯。二级商圈只替换 URL 中的区域 slug。</p>
+      </div>
+      <div class="rent-board-grid">
+${renderRentBoardCards()}
       </div>
     </section>
 
@@ -1439,7 +1627,7 @@ ${renderDecisionRows()}
           <label class="todo-item"><input type="checkbox" data-todo="confirm-year"><span>确认目标入园年份和年龄段<small>2026 插班/小班、2027 小班、或更晚入园。</small></span></label>
           <label class="todo-item"><input type="checkbox" data-todo="rental-material"><span>看房前确认房东是否配合材料<small>居住登记、租赁合同/备案、地址一致。</small></span></label>
           <label class="todo-item"><input type="checkbox" data-todo="beike-shortlist"><span>建立贝壳房源候选表<small>记录小区、价格、面积、是否电梯、是否可办材料。</small></span></label>
-          <label class="todo-item"><input type="checkbox" data-todo="private-backup"><span>同步联系普惠民办/民办园<small>优先电话问汇城苑、凯琴、小神童是否有名额。</small></span></label>
+          <label class="todo-item"><input type="checkbox" data-todo="private-backup"><span>同步联系普惠民办/民办园<small>优先电话问汇城苑、胡姬港湾、牛牛、凯琴、杜鹃园是否有名额。</small></span></label>
           <label class="todo-item"><input type="checkbox" data-todo="private-fee"><span>确认民办收费和退费规则<small>记录保育教育费、餐费、校车/延时服务等。</small></span></label>
         </article>
         <article class="todo-column">
@@ -1463,7 +1651,7 @@ ${renderDecisionRows()}
 
     <section id="query" class="details-section">
       <div class="section-title">
-        <h2>园区查询</h2>
+        <h2>详细查询</h2>
         <p>需要细查时再用这里：输入居委、小区、幼儿园或地址关键词，再叠加片区、招生类型、托班和置信度条件。</p>
       </div>
       <div class="filter-panel">
@@ -1613,51 +1801,71 @@ ${renderDecisionRows()}
       </div>
       <div class="source-list">
         <article class="source-card">
+          <strong>公办招生范围与计划班级数</strong>
+          <span>来源：${escapeHtml(pdfSource)}</span>
+          <span>用途：生成 42 个公办招生主体、对口居委、小班计划、托班/混龄信息，是公办筛选的主数据源。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://m.sh.bendibao.com/edu/305291.html" target="_blank" rel="noopener">2026 徐汇区幼儿园招生对口地段及计划</a></strong>
+          <span>来源：${escapeHtml(planSource)}</span>
+          <span>用途：与本地 PDF 互相校验公办招生计划、对口地段和扩招/自主招生口径。</span>
+        </article>
+        <article class="source-card">
           <strong><a href="https://sh.bendibao.com/news/2026415/305294.shtm" target="_blank" rel="noopener">2026 徐汇区幼儿园招生工作方案</a></strong>
-          <span>用于判断户籍优先、外省市户籍排序、录取批次和报名验证要求。</span>
+          <span>用途：判断户籍优先、外省市户籍排序、录取批次、报名验证和统筹规则。</span>
+          <span>置信度：政策规则以当年官方发布和报名系统要求为准，本页只做决策提示。</span>
         </article>
         <article class="source-card">
           <strong><a href="https://m.sh.bendibao.com/edu/305384.html" target="_blank" rel="noopener">2026 徐汇幼儿园报名材料</a></strong>
-          <span>用于核对非本市户籍幼儿、父母居住证、租赁合同和地址一致要求。</span>
+          <span>用途：核对非本市户籍幼儿、父母居住证、租赁合同、居住登记和地址一致性要求。</span>
+          <span>本页结论中的“暂无居住证风险”来自该材料口径与招生顺位判断。</span>
         </article>
         <article class="source-card">
           <strong><a href="https://m.sh.bendibao.com/zffw/285087.html" target="_blank" rel="noopener">上海居住证办理条件</a></strong>
-          <span>用于确认居住登记、合法稳定住所、租赁合同/备案等材料链。</span>
+          <span>用途：确认居住登记、合法稳定住所、租赁合同/备案等材料链要求。</span>
+          <span>租房看房清单中的“房东是否配合材料”来自该口径。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://m.sh.bendibao.com/edu/284155.html" target="_blank" rel="noopener">徐汇区公办幼儿园名单</a></strong>
+          <span>来源：${escapeHtml(publicListSource)}</span>
+          <span>用途：补充公办园区/分园地址、办园等级和电话，与 2026 对口表拆分为 81 个公办园区点位。</span>
         </article>
         <article class="source-card">
           <strong><a href="https://sh.bendibao.com/edu/2024325/284155_2.shtm" target="_blank" rel="noopener">徐汇区民办幼儿园名单</a></strong>
-          <span>用于补充民办/私立幼儿园的级别、地址和联系电话，作为公办概率偏低时的兜底池。</span>
+          <span>来源：${escapeHtml(privateListSource)}</span>
+          <span>用途：补充 46 个民办/私立点位的级别、地址和联系电话，作为公办概率偏低时的兜底池。</span>
         </article>
         <article class="source-card">
-          <strong><a href="https://sh.zu.ke.com/" target="_blank" rel="noopener">贝壳上海租房</a></strong>
-          <span>用于实时搜索 3 室、100 平以上、10000 元以内的整租房源。</span>
+          <strong>高德地图 POI 与距离数据</strong>
+          <span>来源：高德地图 MCP/API 查询结果，落地在 <code>data/amap_enrichment.json</code>。</span>
+          <span>用途：补充 POI 名称、POI 地址、经纬度，以及到${escapeHtml(officeLocation.name)}的直线距离；当前可靠匹配 ${amapMatchedCount}/${campusItems.length}，匹配率 ${amapMatchRate}。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://sh.zu.ke.com/" target="_blank" rel="noopener">贝壳上海租房结构化筛选</a></strong>
+          <span>来源：贝壳租房页面参数解析，结构化数据保存在 <code>data/beike_rental_filter_schema.json</code>。</span>
+          <span>用途：生成整租、0-10000 元、三居/四居+、100㎡以上、有电梯的房源链接，固定 token 为 <code>${beikeDefaultTokens.join("")}</code>。</span>
         </article>
         <article class="source-card">
           <strong><a href="https://sh.zu.ke.com/wzdt/" target="_blank" rel="noopener">贝壳徐汇租房板块</a></strong>
-          <span>用于快速进入徐汇滨江、华泾、龙华、植物园、长桥等板块。</span>
+          <span>用途：解析徐汇一级区域和长桥、华泾、龙华、康健、植物园、徐汇滨江、田林等二级商圈 slug。</span>
+          <span>说明：贝壳房源价格和库存实时变化，本页只保留查询入口，不固化具体房源价格。</span>
         </article>
         <article class="source-card">
           <strong><a href="https://www.chooffice.com/1357.html" target="_blank" rel="noopener">西岸网易研发中心办公点参考</a></strong>
-          <span>用于确认西岸网易研发中心靠近龙耀路、徐汇滨江一带的通勤判断。</span>
+          <span>用途：确认办公点在徐汇滨江/龙耀路/云锦路一带，作为通勤和园所距离估算的目标点。</span>
+          <span>说明：实际通勤仍需按步行、骑行、驾车路线二次验证。</span>
         </article>
         <article class="source-card">
-          <strong><a href="https://www.xxh-edu.com/brand/57.html" target="_blank" rel="noopener">汇城苑幼稚园公开资料</a></strong>
-          <span>用于核对汇城苑幼稚园地址、电话、托幼一体和普惠民办属性。</span>
-        </article>
-        <article class="source-card">
-          <strong><a href="https://www.021school.cn/schools/12780" target="_blank" rel="noopener">凯琴数码幼儿园公开资料</a></strong>
-          <span>用于核对凯琴数码幼儿园地址、电话、托幼一体和普惠民办属性。</span>
-        </article>
-        <article class="source-card">
-          <strong><a href="https://www.021school.cn/schools/12790" target="_blank" rel="noopener">小神童幼儿园公开资料</a></strong>
-          <span>用于核对小神童幼儿园地址、电话、收费参考和普惠民办属性。</span>
+          <strong>第三方园所公开资料</strong>
+          <span>来源：上哪学、021school、园所公开页面等，用于交叉核对部分民办园电话、收费、托幼一体和地址差异。</span>
+          <span>示例：<a href="https://www.xxh-edu.com/brand/57.html" target="_blank" rel="noopener">汇城苑幼稚园</a>、<a href="https://www.021school.cn/schools/12780" target="_blank" rel="noopener">凯琴数码幼儿园</a>、<a href="https://www.021school.cn/schools/12790" target="_blank" rel="noopener">小神童幼儿园</a>。第三方信息仅作辅助，最终以园所电话确认为准。</span>
         </article>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="shell">主要来源：${escapeHtml(planSource)}；${escapeHtml(publicListSource)}；${escapeHtml(privateListSource)}；${escapeHtml(pdfSource)}；2026 徐汇招生政策、上海居住证办理指南、贝壳/58 等公开租房信息。</div>
+    <div class="shell">来源、数据口径和置信度说明已合并到“风险与来源”模块；页面结论仅用于择园和租房初筛，报名前以当年官方公告、园所电话和实地看房为准。</div>
   </footer>
 
   <script>
@@ -1724,19 +1932,28 @@ summary.getRange(`A1:C${summaryRows.length}`).values = summaryRows;
 schoolSheet.getRange(`A1:I${schoolData.length + 1}`).values = [schoolHeader, ...schoolData];
 campusSheet.getRange(`A1:U${campusData.length + 1}`).values = [campusHeader, ...campusData];
 areaSheet.getRange(`A1:F${areaStats.length + 1}`).values = [["片区", "招生主体数", "园区点位数", "小班计划数", "明确托班班级数", "混龄招生主体数"], ...areaStats];
-sourceSheet.getRange("A1:B11").values = [
+const sourceRows = [
   ["项目", "说明"],
   ["PDF主表", pdfSource],
   ["2026线上主表", planSource],
+  ["2026招生工作方案", "https://sh.bendibao.com/news/2026415/305294.shtm；用于判断户籍优先、外省市户籍排序、录取批次、报名验证和统筹规则。"],
+  ["2026报名材料", "https://m.sh.bendibao.com/edu/305384.html；用于核对非沪籍幼儿、父母居住证、租赁合同、居住登记和地址一致性要求。"],
+  ["上海居住证办理条件", "https://m.sh.bendibao.com/zffw/285087.html；用于确认居住登记、合法稳定住所、租赁合同/备案等材料链要求。"],
   ["公办园部地址主来源", publicListSource],
   ["民办/私立地址与电话来源", privateListSource],
   ["高德MCP接入口径", `目标办公点：${officeLocation.name}；高德匹配为“网易上海西岸研发中心”。用关键词搜索和距离测量补齐高德POI、经纬度和距离。`],
+  ["高德增强落地数据", "data/amap_enrichment.json；用于补充POI名称、POI地址、经纬度、距公司直线距离。低置信匹配不写入推荐结论。"],
   ["高德检索口径", "表格中的高德链接使用“上海市徐汇区 + 幼儿园名 + 园区名 + 地址”生成，用于逐点打开核验。"],
+  ["贝壳租房参数", `data/beike_rental_filter_schema.json；用于生成徐汇及二级商圈结构化租房链接，固定token：${beikeDefaultTokens.join("")}。`],
+  ["贝壳租房口径", "https://sh.zu.ke.com/；房源价格和库存实时变化，本页只保存查询条件和入口，不固化具体房源。"],
+  ["办公点参考", "https://www.chooffice.com/1357.html；用于确认西岸网易研发中心靠近龙耀路、徐汇滨江一带。"],
+  ["第三方园所资料", "上哪学、021school、园所公开页面等；用于交叉核对部分民办园电话、收费、托幼一体和地址差异，最终以园所电话确认为准。"],
   ["A级", "园部地址在公办园地址清单中明确列出，且无明显冲突。"],
   ["B级", "公开资料有变更、合并或地址冲突，位置大体可定位，但实际入读园区需电话确认。"],
   ["C级", "仅有第三方或地图信息，缺少官方交叉验证。本表目前未使用C级作为主确认。"],
   ["电话确认重点", "汇星幼儿园北园；复旦大学附属徐汇实验幼儿园；区域内自主招生、扩招园、民办/私立园。"],
 ];
+sourceSheet.getRange(`A1:B${sourceRows.length}`).values = sourceRows;
 
 for (const sheet of [summary, schoolSheet, campusSheet, areaSheet, sourceSheet]) {
   sheet.getRange("A1:Z1").format = { fontWeight: "bold", fill: "#E8F2FF", wrapText: true };
@@ -1777,7 +1994,7 @@ areaSheet.getRange("B:F").format.columnWidthPx = 110;
 
 sourceSheet.getRange("A:A").format.columnWidthPx = 150;
 sourceSheet.getRange("B:B").format.columnWidthPx = 760;
-sourceSheet.getRange("A1:B11").format.wrapText = true;
+sourceSheet.getRange(`A1:B${sourceRows.length}`).format.wrapText = true;
 
 const output = await SpreadsheetFile.exportXlsx(workbook);
 await output.save(path.join(outputDir, "徐汇区幼儿园园区位置与择园参考.xlsx"));

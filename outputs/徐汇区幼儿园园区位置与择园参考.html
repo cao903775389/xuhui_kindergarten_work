@@ -295,6 +295,111 @@
     .recommendation-table td:nth-child(1),
     .recommendation-table td:nth-child(2),
     .recommendation-table td:nth-child(3) { max-width: 260px; }
+    .school-decision-layout {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+      align-items: start;
+    }
+    .school-column {
+      display: grid;
+      gap: 12px;
+    }
+    .school-column > h3 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.3;
+    }
+    .school-card {
+      display: grid;
+      gap: 12px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 10px 28px rgba(23, 32, 51, 0.05);
+    }
+    .school-card header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .school-card h3 {
+      margin: 9px 0 0;
+      font-size: 20px;
+      line-height: 1.28;
+    }
+    .school-card header > strong {
+      color: var(--blue);
+      white-space: nowrap;
+      font-size: 15px;
+    }
+    .school-card p {
+      margin: 0;
+      color: var(--soft);
+    }
+    .school-card .address-line {
+      color: var(--ink);
+      font-weight: 700;
+    }
+    .card-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .card-meta div {
+      min-height: 62px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f9fbfd;
+      border: 1px solid var(--line);
+    }
+    .card-meta span {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--soft);
+      font-size: 12px;
+    }
+    .card-meta b {
+      display: block;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+    .risk-box {
+      display: grid;
+      gap: 4px;
+      padding: 12px;
+      border-radius: 8px;
+      background: #fff8ed;
+      border: 1px solid #fed7aa;
+      color: #7c3e06;
+    }
+    .risk-box span {
+      color: #7c3e06;
+      font-size: 13px;
+    }
+    .rent-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .rent-links a,
+    .rent-board-card a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 10px;
+      border: 1px solid #bdd3ea;
+      border-radius: 8px;
+      background: #eef6ff;
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 12px;
+    }
     .distance-list {
       display: grid;
       gap: 5px;
@@ -369,6 +474,37 @@
     .priority-card h3 { margin: 0; font-size: 17px; }
     .priority-card p { margin: 0; color: var(--soft); }
     .priority-card .reason { color: var(--ink); font-weight: 700; }
+    .rent-panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .rent-panel strong { display: block; margin-bottom: 6px; font-size: 17px; }
+    .rent-panel p { margin: 0; color: var(--soft); }
+    .rent-board-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .rent-board-card {
+      display: grid;
+      gap: 10px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      min-height: 190px;
+    }
+    .rent-board-card header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .rent-board-card h3 { margin: 0; font-size: 17px; }
+    .rent-board-card p { margin: 0; color: var(--soft); }
     .action-steps {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -537,7 +673,8 @@
     }
     @media (max-width: 1100px) {
       .hero-grid, .workflow, .notice, .personal-grid { grid-template-columns: 1fr; }
-      .principles, .areas, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .principles, .areas, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .school-decision-layout { grid-template-columns: 1fr; }
       .toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .source-list { grid-template-columns: 1fr; }
     }
@@ -547,7 +684,9 @@
       .nav { overflow: auto; width: 100%; padding-bottom: 2px; }
       .hero-grid { padding: 38px 14px 34px; min-height: auto; }
       .scoreboard { padding: 14px; }
-      .principles, .areas, .matrix, .toolbar, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board { grid-template-columns: 1fr; }
+      .principles, .areas, .matrix, .toolbar, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .card-meta { grid-template-columns: 1fr; }
+      .school-card header { display: grid; }
+      .school-card header > strong { white-space: normal; }
       .rank-item { grid-template-columns: 34px 1fr; }
       .rank-item .tag { grid-column: 2; justify-self: start; }
       .section-title { display: block; }
@@ -561,10 +700,10 @@
       <div class="brand">徐汇区幼儿园筛选方案</div>
       <nav class="nav" aria-label="页面导航">
         <a href="#profile">基本情况</a>
-        <a href="#decision">结论</a>
-        <a href="#priority">推荐板块</a>
-        <a href="#todos">待办</a>
-        <a href="#query">园区查询</a>
+        <a href="#decision">推荐园所</a>
+        <a href="#rent">租房联动</a>
+        <a href="#todos">入园待办</a>
+        <a href="#query">详细查询</a>
         <a href="#sources">来源</a>
       </nav>
     </div>
@@ -573,11 +712,11 @@
   <section class="hero">
     <div class="shell hero-grid">
       <div>
-        <h1>长桥/植物园优先，先把材料链补齐。</h1>
-        <p class="lead">基于你刚来上海、暂无居住证、办公点在西岸网易研发中心、需要 3 房 100 平以上租房的情况，当前主线不是冲热门公办园，而是先选更可租、更可办材料、更适合接送的居住板块。</p>
+        <h1>先选幼儿园，再反推租房板块。</h1>
+        <p class="lead">基于你刚来上海、暂无居住证、办公点在西岸网易研发中心、需要 3 房 100 平以上租房的情况，页面主线改为 5 所公办争取 + 5 所民办兜底，并为每所园生成结构化贝壳租房入口。</p>
         <div class="hero-actions">
-          <a class="button primary" href="#decision">看明确结论</a>
-          <a class="button" href="#query">进入园区查询</a>
+          <a class="button primary" href="#decision">看推荐园所</a>
+          <a class="button" href="#rent">打开租房联动</a>
           <a class="button" href="徐汇区幼儿园园区位置与择园参考.xlsx">打开 Excel 表</a>
         </div>
       </div>
@@ -607,8 +746,8 @@
 
     <section id="decision">
       <div class="section-title">
-        <h2>首页结论</h2>
-        <p>这里直接给到 5 所公办争取、5 所民办兜底，距离使用高德 POI 到网易上海西岸研发中心的直线距离。</p>
+        <h2>推荐园所</h2>
+        <p>先确定 5 所公办争取线和 5 所民办兜底线，再用推荐商圈房源链接反推小区和居住材料。</p>
       </div>
       <div class="summary-strip">
         <article class="summary-card urgent">
@@ -638,146 +777,287 @@
           <p>本页 101/127 个点位已可靠匹配高德 POI，匹配率 80%；距离均为到网易上海西岸研发中心的直线距离，实际通勤仍需按步行/骑行/驾车路线复核。</p>
         </article>
       </div>
-      <div class="recommendation-table">
-        <table>
-          <thead>
-            <tr>
-              <th>优先级</th>
-              <th>园所类型</th>
-              <th>推荐幼儿园/分园</th>
-              <th>联系电话/来源</th>
-              <th>推荐租房小区/板块</th>
-              <th>贝壳租房链接与价格</th>
-              <th>距离估算</th>
-              <th>判断</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div class="school-decision-layout">
+        <div class="school-column">
+          <h3>公办争取线</h3>
 
-            <tr>
-              <td><span class="tag green">公办 1</span><br><span class="sub">首选争取</span></td>
-              <td>公办 / 一级</td>
-              <td><strong>园南幼儿园 本部</strong><br><span class="sub">龙川北路园南一村27号</span></td>
-              <td><strong>64763190</strong><br><span class="sub">上海市徐汇区园南幼儿园；园南一村27号</span></td>
-              <td><strong>园南一村 / 汇成五村 / 上中路</strong></td>
-              <td><a href="https://sh.zu.ke.com/zufang/rs%E5%9B%AD%E5%8D%97%20%E9%95%BF%E6%A1%A5%203%E5%AE%A4%20100%E5%B9%B3%2010000/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">贝壳实时筛选：3室、100平以上、10000以内</span></td>
-              <td><span class="distance-list"><span><b>园到公司：</b>高德直线约 2.47 km</span><span><b>口径：</b>高德 POI 直线距离</span></span></td>
-              <td>租房预算、居住环境和公办争取的平衡最好，是当前主线。</td>
-            </tr>
+      <article class="school-card">
+        <header>
+          <div>
+            <span class="tag green">公办 1 · 首选争取</span>
+            <h3>园南幼儿园 · 本部</h3>
+          </div>
+          <strong>高德直线约 2.47 km</strong>
+        </header>
+        <div class="card-meta">
+          <div><span>性质/等级</span><b>公办 / 一级</b></div>
+          <div><span>招生类型</span><b>固定对口</b></div>
+          <div><span>联系电话</span><b>64763190</b></div>
+          <div><span>租房板块</span><b>园南一村 / 汇成五村 / 上中路</b></div>
+        </div>
+        <p class="address-line">龙川北路园南一村27号</p>
+        <p>租房预算、居住环境和公办争取的平衡最好，是当前主线。</p>
+        <div class="risk-box"><strong>公办争取线</strong><span>暂无居住证时需严格匹配居委、租赁材料和当年招生顺位。</span></div>
+        
+        <div class="rent-links">
+          <a href="https://sh.zu.ke.com/zufang/changqiao/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">推荐商圈：长桥</a>
+          <a href="https://sh.zu.ke.com/zufang/zhiwuyuan/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">备选商圈：植物园</a>
+          <a href="https://sh.zu.ke.com/zufang/xuhui/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">徐汇全区放宽查找</a>
+        </div>
 
-            <tr>
-              <td><span class="tag blue">公办 2</span><br><span class="sub">备选争取</span></td>
-              <td>公办 / 一级</td>
-              <td><strong>徐汇实验幼儿园 本部</strong><br><span class="sub">龙瑞路135号</span></td>
-              <td><strong>54045192</strong><br><span class="sub">上海市徐汇区徐汇实验幼儿园；龙瑞路135号</span></td>
-              <td><strong>华沁家园 / 华滨家园 / 龙瑞路</strong></td>
-              <td><a href="https://sh.zu.ke.com/zufang/rs%E5%8D%8E%E6%B2%81%E5%AE%B6%E5%9B%AD%20%E5%8D%8E%E6%BB%A8%E5%AE%B6%E5%9B%AD%203%E5%AE%A4%20100%E5%B9%B3%2010000/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">贝壳实时筛选：华泾北大三房，优先电梯</span></td>
-              <td><span class="distance-list"><span><b>园到公司：</b>高德直线约 2.03 km</span><span><b>口径：</b>高德 POI 直线距离</span></span></td>
-              <td>距离公司近于长桥，面积更容易做大，但需严格反查居委。</td>
-            </tr>
+      </article>
 
-            <tr>
-              <td><span class="tag amber">公办 3</span><br><span class="sub">近公司</span></td>
-              <td>公办 / 二级</td>
-              <td><strong>阳光幼儿园 小班部</strong><br><span class="sub">龙水南路龙南三村7号</span></td>
-              <td><strong>021-34604160</strong><br><span class="sub">上海市徐汇区阳光幼儿园(小班部)；龙南三村7号</span></td>
-              <td><strong>龙南三四村 / 樟树苑 / 龙水南路</strong></td>
-              <td><a href="https://sh.zu.ke.com/zufang/rs%E9%BE%99%E5%8D%97%20%E9%BE%99%E6%B0%B4%E5%8D%97%E8%B7%AF%203%E5%AE%A4%20100%E5%B9%B3%2010000/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">贝壳实时筛选：离公司近，但大户型低预算不稳定</span></td>
-              <td><span class="distance-list"><span><b>园到公司：</b>高德直线约 0.17 km</span><span><b>口径：</b>高德 POI 直线距离</span></span></td>
-              <td>高德距离最近，适合捡漏；不要作为唯一租房主线。</td>
-            </tr>
+      <article class="school-card">
+        <header>
+          <div>
+            <span class="tag blue">公办 2 · 备选争取</span>
+            <h3>徐汇实验幼儿园 · 本部</h3>
+          </div>
+          <strong>高德直线约 2.03 km</strong>
+        </header>
+        <div class="card-meta">
+          <div><span>性质/等级</span><b>公办 / 一级</b></div>
+          <div><span>招生类型</span><b>固定对口</b></div>
+          <div><span>联系电话</span><b>54045192</b></div>
+          <div><span>租房板块</span><b>华沁家园 / 华滨家园 / 龙瑞路</b></div>
+        </div>
+        <p class="address-line">龙瑞路135号</p>
+        <p>距离公司近于长桥，面积更容易做大，但需严格反查居委。</p>
+        <div class="risk-box"><strong>公办争取线</strong><span>华泾/罗秀具体居委边界要反查，不能只按地图距离判断。</span></div>
+        
+        <div class="rent-links">
+          <a href="https://sh.zu.ke.com/zufang/huajing/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">推荐商圈：华泾</a>
+          
+          <a href="https://sh.zu.ke.com/zufang/xuhui/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">徐汇全区放宽查找</a>
+        </div>
 
-            <tr>
-              <td><span class="tag blue">公办 4</span><br><span class="sub">容量好</span></td>
-              <td>公办 / 示范园</td>
-              <td><strong>上海幼儿园 上中园</strong><br><span class="sub">上中路402号</span></td>
-              <td><strong>64106663 / 64100564 / 64250961</strong><br><span class="sub">上海市徐汇区上海幼儿园(上中园)；上中路402号</span></td>
-              <td><strong>上中路 / 长桥 / 植物园</strong></td>
-              <td><a href="https://sh.zu.ke.com/zufang/rs%E4%B8%8A%E4%B8%AD%E8%B7%AF%20%E9%95%BF%E6%A1%A5%203%E5%AE%A4%20100%E5%B9%B3%2010000/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">贝壳实时筛选：长桥南侧大户型，优先材料配合</span></td>
-              <td><span class="distance-list"><span><b>园到公司：</b>高德直线约 2.69 km</span><span><b>口径：</b>高德 POI 直线距离</span></span></td>
-              <td>示范园且片区与租房需求匹配，但公办竞争和材料门槛仍高。</td>
-            </tr>
+      </article>
 
-            <tr>
-              <td><span class="tag amber">公办 5</span><br><span class="sub">通勤好</span></td>
-              <td>公办 / 一级</td>
-              <td><strong>龙华幼儿园 龙恒园</strong><br><span class="sub">龙华西路31弄15号</span></td>
-              <td><strong>64576761</strong><br><span class="sub">上海市徐汇区龙华幼儿园(龙恒园)；龙华西路31弄15号</span></td>
-              <td><strong>龙华西路 / 龙恒路 / 云锦路</strong></td>
-              <td><a href="https://sh.zu.ke.com/zufang/rs%E9%BE%99%E5%8D%8E%E8%A5%BF%E8%B7%AF%20%E9%BE%99%E6%81%92%E8%B7%AF%203%E5%AE%A4%20100%E5%B9%B3%2010000/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">贝壳实时筛选：通勤优秀，但预算更容易被卡</span></td>
-              <td><span class="distance-list"><span><b>园到公司：</b>高德直线约 1.63 km</span><span><b>口径：</b>高德 POI 直线距离</span></span></td>
-              <td>距离公司好，但租金和公办顺位压力都更大，作为机会项。</td>
-            </tr>
+      <article class="school-card">
+        <header>
+          <div>
+            <span class="tag amber">公办 3 · 近公司</span>
+            <h3>阳光幼儿园 · 小班部</h3>
+          </div>
+          <strong>高德直线约 0.17 km</strong>
+        </header>
+        <div class="card-meta">
+          <div><span>性质/等级</span><b>公办 / 二级</b></div>
+          <div><span>招生类型</span><b>固定对口</b></div>
+          <div><span>联系电话</span><b>021-34604160</b></div>
+          <div><span>租房板块</span><b>龙南三四村 / 樟树苑 / 龙水南路</b></div>
+        </div>
+        <p class="address-line">龙水南路龙南三村7号</p>
+        <p>高德距离最近，适合捡漏；不要作为唯一租房主线。</p>
+        <div class="risk-box"><strong>近公司机会项</strong><span>龙华/滨江满足 100㎡以上、1 万内、电梯的房源更少。</span></div>
+        
+        <div class="rent-links">
+          <a href="https://sh.zu.ke.com/zufang/longhua/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">推荐商圈：龙华</a>
+          <a href="https://sh.zu.ke.com/zufang/xuhuibinjiang/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">备选商圈：徐汇滨江</a>
+          <a href="https://sh.zu.ke.com/zufang/xuhui/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">徐汇全区放宽查找</a>
+        </div>
 
-            <tr>
-              <td><span class="tag green">民办 1</span><br><span class="sub">主兜底</span></td>
-              <td>普惠民办 / 一级</td>
-              <td><strong>汇城苑幼稚园 本部</strong><br><span class="sub">百色路汇城五村75号</span></td>
-              <td><strong>64235119</strong><br><span class="sub">上海市徐汇区汇城苑幼稚园；百色路汇成五村75号</span></td>
-              <td><strong>汇成五村 / 园南 / 百色路</strong></td>
-              <td><a href="https://sh.zu.ke.com/zufang/rs%E6%B1%87%E6%88%90%E4%BA%94%E6%9D%91%20%E5%9B%AD%E5%8D%97%203%E5%AE%A4%20100%E5%B9%B3%2010000/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">贝壳实时筛选：和园南主线共用看房区域</span></td>
-              <td><span class="distance-list"><span><b>园到公司：</b>高德直线约 2.71 km</span><span><b>口径：</b>高德 POI 直线距离</span></span></td>
-              <td>最适合和园南/长桥公办争取线并行，优先电话确认名额。</td>
-            </tr>
+      </article>
 
-            <tr>
-              <td><span class="tag green">民办 2</span><br><span class="sub">近公司</span></td>
-              <td>民办 / 一级</td>
-              <td><strong>胡姬港湾幼儿园 本部</strong><br><span class="sub">丰谷路205弄35号</span></td>
-              <td><strong>64560614</strong><br><span class="sub">上海徐汇区民办胡姬港湾幼儿园；云锦路80弄10号(龙华地铁站5号口步行3分钟)</span></td>
-              <td><strong>龙华 / 云锦路 / 丰谷路</strong></td>
-              <td><a href="https://sh.zu.ke.com/zufang/rs%E4%BA%91%E9%94%A6%E8%B7%AF%20%E4%B8%B0%E8%B0%B7%E8%B7%AF%203%E5%AE%A4%20100%E5%B9%B3%2010000/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">贝壳实时筛选：近公司，预算需严格筛</span></td>
-              <td><span class="distance-list"><span><b>园到公司：</b>高德直线约 1.92 km</span><span><b>口径：</b>高德 POI 直线距离</span></span></td>
-              <td>高德距离近；名单地址与高德POI地址有差异，必须电话确认实际园区。</td>
-            </tr>
+      <article class="school-card">
+        <header>
+          <div>
+            <span class="tag blue">公办 4 · 容量好</span>
+            <h3>上海幼儿园 · 上中园</h3>
+          </div>
+          <strong>高德直线约 2.69 km</strong>
+        </header>
+        <div class="card-meta">
+          <div><span>性质/等级</span><b>公办 / 示范园</b></div>
+          <div><span>招生类型</span><b>扩招</b></div>
+          <div><span>联系电话</span><b>64106663 / 64100564 / 64250961</b></div>
+          <div><span>租房板块</span><b>上中路 / 长桥 / 植物园</b></div>
+        </div>
+        <p class="address-line">上中路402号</p>
+        <p>示范园且片区与租房需求匹配，但公办竞争和材料门槛仍高。</p>
+        <div class="risk-box"><strong>公办争取线</strong><span>示范园关注度高，扩招和自主口径需以当年简章为准。</span></div>
+        
+        <div class="rent-links">
+          <a href="https://sh.zu.ke.com/zufang/zhiwuyuan/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">推荐商圈：植物园</a>
+          <a href="https://sh.zu.ke.com/zufang/changqiao/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">备选商圈：长桥</a>
+          <a href="https://sh.zu.ke.com/zufang/xuhui/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">徐汇全区放宽查找</a>
+        </div>
 
-            <tr>
-              <td><span class="tag blue">民办 3</span><br><span class="sub">长桥兜底</span></td>
-              <td>民办 / 二级</td>
-              <td><strong>牛牛幼稚园 本部</strong><br><span class="sub">罗城路700弄95号</span></td>
-              <td><strong>54115988</strong><br><span class="sub">徐汇区牛牛幼稚园(南门)；罗城路700弄95号</span></td>
-              <td><strong>罗城路 / 长桥 / 上中西路</strong></td>
-              <td><a href="https://sh.zu.ke.com/zufang/rs%E7%BD%97%E5%9F%8E%E8%B7%AF%20%E9%95%BF%E6%A1%A5%203%E5%AE%A4%20100%E5%B9%B3%2010000/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">贝壳实时筛选：长桥南侧更容易找大户型</span></td>
-              <td><span class="distance-list"><span><b>园到公司：</b>高德直线约 2.55 km</span><span><b>口径：</b>高德 POI 直线距离</span></span></td>
-              <td>和长桥租房主线兼容，适合作为第二民办兜底。</td>
-            </tr>
+      </article>
 
-            <tr>
-              <td><span class="tag blue">民办 4</span><br><span class="sub">华泾兜底</span></td>
-              <td>普惠民办 / 二级</td>
-              <td><strong>凯琴数码幼儿园 本部</strong><br><span class="sub">华泾路995号</span></td>
-              <td><strong>54822626</strong><br><span class="sub">上海徐汇区民办凯琴数码幼儿园；华泾路995号</span></td>
-              <td><strong>华泾 / 华沁 / 华滨 / 罗秀</strong></td>
-              <td><a href="https://sh.zu.ke.com/zufang/rs%E5%8D%8E%E6%B3%BE%20%E5%8D%8E%E6%B2%81%203%E5%AE%A4%20100%E5%B9%B3%2010000/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">贝壳实时筛选：华泾方向面积更友好</span></td>
-              <td><span class="distance-list"><span><b>园到公司：</b>高德直线约 4.48 km</span><span><b>口径：</b>高德 POI 直线距离</span></span></td>
-              <td>适合华泾北/罗秀租房线，距离公司中等，需确认名额和收费。</td>
-            </tr>
+      <article class="school-card">
+        <header>
+          <div>
+            <span class="tag amber">公办 5 · 通勤好</span>
+            <h3>龙华幼儿园 · 龙恒园</h3>
+          </div>
+          <strong>高德直线约 1.63 km</strong>
+        </header>
+        <div class="card-meta">
+          <div><span>性质/等级</span><b>公办 / 一级</b></div>
+          <div><span>招生类型</span><b>固定对口</b></div>
+          <div><span>联系电话</span><b>64576761</b></div>
+          <div><span>租房板块</span><b>龙华西路 / 龙恒路 / 云锦路</b></div>
+        </div>
+        <p class="address-line">龙华西路31弄15号</p>
+        <p>距离公司好，但租金和公办顺位压力都更大，作为机会项。</p>
+        <div class="risk-box"><strong>近公司机会项</strong><span>预算、房源面积、公办顺位三项压力同时偏高。</span></div>
+        
+        <div class="rent-links">
+          <a href="https://sh.zu.ke.com/zufang/longhua/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">推荐商圈：龙华</a>
+          <a href="https://sh.zu.ke.com/zufang/xuhuibinjiang/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">备选商圈：徐汇滨江</a>
+          <a href="https://sh.zu.ke.com/zufang/xuhui/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">徐汇全区放宽查找</a>
+        </div>
 
-            <tr>
-              <td><span class="tag amber">民办 5</span><br><span class="sub">康健备选</span></td>
-              <td>民办 / 一级</td>
-              <td><strong>杜鹃园幼稚园 本部</strong><br><span class="sub">桂林西街9弄57号</span></td>
-              <td><strong>021-54202188</strong><br><span class="sub">上海市徐汇区杜鹃园幼稚园；桂林西街9弄57号</span></td>
-              <td><strong>桂林西街 / 康健 / 田林南</strong></td>
-              <td><a href="https://sh.zu.ke.com/zufang/rs%E6%A1%82%E6%9E%97%E8%A5%BF%E8%A1%97%20%E5%BA%B7%E5%81%A5%203%E5%AE%A4%20100%E5%B9%B3%2010000/" target="_blank" rel="noopener">贝壳实时搜索</a><br><span class="sub">贝壳实时筛选：生活成熟，通勤略远于龙华</span></td>
-              <td><span class="distance-list"><span><b>园到公司：</b>高德直线约 3.88 km</span><span><b>口径：</b>高德 POI 直线距离</span></span></td>
-              <td>一级民办，适合作为康健/田林方向的兜底备选。</td>
-            </tr>
+      </article>
 
-          </tbody>
-        </table>
+        </div>
+        <div class="school-column">
+          <h3>民办兜底线</h3>
+
+      <article class="school-card">
+        <header>
+          <div>
+            <span class="tag green">民办 1 · 主兜底</span>
+            <h3>汇城苑幼稚园 · 本部</h3>
+          </div>
+          <strong>高德直线约 2.71 km</strong>
+        </header>
+        <div class="card-meta">
+          <div><span>性质/等级</span><b>普惠民办 / 一级</b></div>
+          <div><span>招生类型</span><b>民办招生</b></div>
+          <div><span>联系电话</span><b>64235119</b></div>
+          <div><span>租房板块</span><b>汇成五村 / 园南 / 百色路</b></div>
+        </div>
+        <p class="address-line">百色路汇城五村75号</p>
+        <p>最适合和园南/长桥公办争取线并行，优先电话确认名额。</p>
+        <div class="risk-box"><strong>民办兜底线</strong><span>需电话确认剩余名额、收费、是否接受当前材料状态。</span></div>
+        
+        <div class="rent-links">
+          <a href="https://sh.zu.ke.com/zufang/changqiao/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">推荐商圈：长桥</a>
+          <a href="https://sh.zu.ke.com/zufang/zhiwuyuan/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">备选商圈：植物园</a>
+          <a href="https://sh.zu.ke.com/zufang/xuhui/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">徐汇全区放宽查找</a>
+        </div>
+
+      </article>
+
+      <article class="school-card">
+        <header>
+          <div>
+            <span class="tag green">民办 2 · 近公司</span>
+            <h3>胡姬港湾幼儿园 · 本部</h3>
+          </div>
+          <strong>高德直线约 1.92 km</strong>
+        </header>
+        <div class="card-meta">
+          <div><span>性质/等级</span><b>民办 / 一级</b></div>
+          <div><span>招生类型</span><b>民办招生</b></div>
+          <div><span>联系电话</span><b>64560614</b></div>
+          <div><span>租房板块</span><b>龙华 / 云锦路 / 丰谷路</b></div>
+        </div>
+        <p class="address-line">丰谷路205弄35号</p>
+        <p>高德距离近；名单地址与高德POI地址有差异，必须电话确认实际园区。</p>
+        <div class="risk-box"><strong>近公司兜底线</strong><span>名单地址与高德 POI 地址有差异，必须电话确认实际园区。</span></div>
+        
+        <div class="rent-links">
+          <a href="https://sh.zu.ke.com/zufang/longhua/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">推荐商圈：龙华</a>
+          <a href="https://sh.zu.ke.com/zufang/xuhuibinjiang/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">备选商圈：徐汇滨江</a>
+          <a href="https://sh.zu.ke.com/zufang/xuhui/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">徐汇全区放宽查找</a>
+        </div>
+
+      </article>
+
+      <article class="school-card">
+        <header>
+          <div>
+            <span class="tag blue">民办 3 · 长桥兜底</span>
+            <h3>牛牛幼稚园 · 本部</h3>
+          </div>
+          <strong>高德直线约 2.55 km</strong>
+        </header>
+        <div class="card-meta">
+          <div><span>性质/等级</span><b>民办 / 二级</b></div>
+          <div><span>招生类型</span><b>民办招生</b></div>
+          <div><span>联系电话</span><b>54115988</b></div>
+          <div><span>租房板块</span><b>罗城路 / 长桥 / 上中西路</b></div>
+        </div>
+        <p class="address-line">罗城路700弄95号</p>
+        <p>和长桥租房主线兼容，适合作为第二民办兜底。</p>
+        <div class="risk-box"><strong>长桥兜底线</strong><span>二级民办，需实地看园并确认班额、师资和收费。</span></div>
+        
+        <div class="rent-links">
+          <a href="https://sh.zu.ke.com/zufang/changqiao/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">推荐商圈：长桥</a>
+          <a href="https://sh.zu.ke.com/zufang/zhiwuyuan/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">备选商圈：植物园</a>
+          <a href="https://sh.zu.ke.com/zufang/xuhui/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">徐汇全区放宽查找</a>
+        </div>
+
+      </article>
+
+      <article class="school-card">
+        <header>
+          <div>
+            <span class="tag blue">民办 4 · 华泾兜底</span>
+            <h3>凯琴数码幼儿园 · 本部</h3>
+          </div>
+          <strong>高德直线约 4.48 km</strong>
+        </header>
+        <div class="card-meta">
+          <div><span>性质/等级</span><b>普惠民办 / 二级</b></div>
+          <div><span>招生类型</span><b>民办招生</b></div>
+          <div><span>联系电话</span><b>54822626</b></div>
+          <div><span>租房板块</span><b>华泾 / 华沁 / 华滨 / 罗秀</b></div>
+        </div>
+        <p class="address-line">华泾路995号</p>
+        <p>适合华泾北/罗秀租房线，距离公司中等，需确认名额和收费。</p>
+        <div class="risk-box"><strong>华泾兜底线</strong><span>需确认普惠口径、招生名额、收费和可入园时间。</span></div>
+        
+        <div class="rent-links">
+          <a href="https://sh.zu.ke.com/zufang/huajing/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">推荐商圈：华泾</a>
+          
+          <a href="https://sh.zu.ke.com/zufang/xuhui/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">徐汇全区放宽查找</a>
+        </div>
+
+      </article>
+
+      <article class="school-card">
+        <header>
+          <div>
+            <span class="tag amber">民办 5 · 康健备选</span>
+            <h3>杜鹃园幼稚园 · 本部</h3>
+          </div>
+          <strong>高德直线约 3.88 km</strong>
+        </header>
+        <div class="card-meta">
+          <div><span>性质/等级</span><b>民办 / 一级</b></div>
+          <div><span>招生类型</span><b>民办招生</b></div>
+          <div><span>联系电话</span><b>021-54202188</b></div>
+          <div><span>租房板块</span><b>桂林西街 / 康健 / 田林南</b></div>
+        </div>
+        <p class="address-line">桂林西街9弄57号</p>
+        <p>一级民办，适合作为康健/田林方向的兜底备选。</p>
+        <div class="risk-box"><strong>康健备选线</strong><span>生活成熟但通勤略远，建议作为备选而不是第一主线。</span></div>
+        
+        <div class="rent-links">
+          <a href="https://sh.zu.ke.com/zufang/kangjian/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">推荐商圈：康健</a>
+          <a href="https://sh.zu.ke.com/zufang/tianlin/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">备选商圈：田林</a>
+          <a href="https://sh.zu.ke.com/zufang/xuhui/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">徐汇全区放宽查找</a>
+        </div>
+
+      </article>
+
+        </div>
       </div>
     </section>
 
     <section id="judgement">
       <div class="section-title">
-        <h2>你的情况判断</h2>
-        <p>这四项决定了为什么不建议一上来就住徐汇滨江核心区冲热门公办。</p>
+        <h2>公办/民办策略</h2>
+        <p>当前最稳妥的结构是公办作为争取线，民办作为兜底线，两条线同步推进。</p>
       </div>
       <div class="judgement-grid">
         <article class="judgement-card"><h3>公办概率</h3><p>暂无居住证时，非沪籍公办录取顺位和材料完整性都不占优；公办只能作为争取线。</p></article>
         <article class="judgement-card"><h3>材料链</h3><p>租房地址、居住登记、居住证、租赁合同/备案要尽量一致；房东配合度是硬条件。</p></article>
-        <article class="judgement-card"><h3>普惠民办</h3><p>应提升为并行主线，优先联系汇城苑、凯琴、小神童这类离推荐板块近的普惠民办。</p></article>
+        <article class="judgement-card"><h3>普惠民办</h3><p>应提升为并行主线，优先联系汇城苑、胡姬港湾、牛牛、凯琴、杜鹃园这 5 所民办兜底园。</p></article>
         <article class="judgement-card"><h3>租房预算</h3><p>1 万内、3 房、100 平以上、优先电梯和好环境，西岸核心区难度高，南部板块更现实。</p></article>
       </div>
       <div class="logic-compact">
@@ -788,32 +1068,59 @@
       </div>
     </section>
 
-    <section id="priority">
+    <section id="rent">
       <div class="section-title">
-        <h2>推荐居住板块</h2>
-        <p>按“录取材料可行性、租房预算、通勤、接送与遛娃”综合排序。</p>
+        <h2>租房联动</h2>
+        <p>租房入口基于贝壳结构化参数生成，不使用关键词搜索。默认条件固定为：整租 / 0-10000元 / 三居或四居+ / 100㎡以上 / 有电梯。</p>
       </div>
-      <div class="priority-grid">
-        <article class="priority-card">
-          <header><h3>长桥 / 植物园</h3><span class="tag green">首选</span></header>
-          <p class="reason">预算和生活便利性最匹配。</p>
-          <p>重点看园南、上中路、汇成、长桥新村周边；可反查长桥第二、长桥第三、园南、上海幼儿园等招生范围。</p>
+      <div class="rent-panel">
+        <strong>统一筛选 token</strong>
+        <p><code>rt200600000001brp0erp10000l2l3ra4ra5ie1</code>，含整租、0-10000 元、三居/四居+、100-120㎡/120㎡以上、有电梯。二级商圈只替换 URL 中的区域 slug。</p>
+      </div>
+      <div class="rent-board-grid">
+
+        <article class="rent-board-card">
+          <header><h3>长桥</h3><span class="tag blue">首选</span></header>
+          <p><strong>适配园所：</strong>园南幼儿园、汇城苑、牛牛</p>
+          <p>预算、面积和材料办理可行性最平衡。</p>
+          <a href="https://sh.zu.ke.com/zufang/changqiao/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">打开长桥房源</a>
         </article>
-        <article class="priority-card">
-          <header><h3>华泾北 / 罗秀</h3><span class="tag blue">备选首选</span></header>
-          <p class="reason">面积更容易做大，通勤仍可接受。</p>
-          <p>关注龙瑞路、罗秀路、华沁/华滨/徐汇新城周边；可看徐汇实验、星辰、果果、盛华、印象等方向。</p>
+
+        <article class="rent-board-card">
+          <header><h3>植物园</h3><span class="tag blue">首选备选</span></header>
+          <p><strong>适配园所：</strong>上海幼儿园上中园、园南幼儿园</p>
+          <p>靠近上中路/长桥南侧，适合找大户型。</p>
+          <a href="https://sh.zu.ke.com/zufang/zhiwuyuan/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">打开植物园房源</a>
         </article>
-        <article class="priority-card">
-          <header><h3>龙华 / 龙南</h3><span class="tag amber">捡漏</span></header>
-          <p class="reason">通勤最好，但预算压力最大。</p>
-          <p>如果出现 1 万内、100 平以上、房东配合材料的房源可以看；否则不要把它作为唯一主线。</p>
+
+        <article class="rent-board-card">
+          <header><h3>华泾</h3><span class="tag blue">备选首选</span></header>
+          <p><strong>适配园所：</strong>徐汇实验幼儿园、凯琴数码幼儿园</p>
+          <p>100㎡以上房源更友好，通勤仍可接受。</p>
+          <a href="https://sh.zu.ke.com/zufang/huajing/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">打开华泾房源</a>
         </article>
-        <article class="priority-card">
-          <header><h3>徐家汇 / 衡复</h3><span class="tag red">谨慎</span></header>
-          <p class="reason">租金高、竞争强、当前阶段不划算。</p>
-          <p>除非预算上调或已有稳定材料优势，否则不建议优先投入看房和报名精力。</p>
+
+        <article class="rent-board-card">
+          <header><h3>龙华</h3><span class="tag blue">近公司</span></header>
+          <p><strong>适配园所：</strong>阳光幼儿园、龙华幼儿园、胡姬港湾</p>
+          <p>通勤最好，但预算和大户型筛选压力高。</p>
+          <a href="https://sh.zu.ke.com/zufang/longhua/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">打开龙华房源</a>
         </article>
+
+        <article class="rent-board-card">
+          <header><h3>康健</h3><span class="tag blue">生活成熟</span></header>
+          <p><strong>适配园所：</strong>杜鹃园幼稚园</p>
+          <p>生活便利，适合作为康健/田林方向备选。</p>
+          <a href="https://sh.zu.ke.com/zufang/kangjian/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">打开康健房源</a>
+        </article>
+
+        <article class="rent-board-card">
+          <header><h3>徐汇全区</h3><span class="tag amber">放宽</span></header>
+          <p><strong>适配园所：</strong>预算不足时扩大池子</p>
+          <p>当二级商圈房源过少时，用全区链接补充看房池。</p>
+          <a href="https://sh.zu.ke.com/zufang/xuhui/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">打开徐汇全区房源</a>
+        </article>
+
       </div>
     </section>
 
@@ -828,7 +1135,7 @@
           <label class="todo-item"><input type="checkbox" data-todo="confirm-year"><span>确认目标入园年份和年龄段<small>2026 插班/小班、2027 小班、或更晚入园。</small></span></label>
           <label class="todo-item"><input type="checkbox" data-todo="rental-material"><span>看房前确认房东是否配合材料<small>居住登记、租赁合同/备案、地址一致。</small></span></label>
           <label class="todo-item"><input type="checkbox" data-todo="beike-shortlist"><span>建立贝壳房源候选表<small>记录小区、价格、面积、是否电梯、是否可办材料。</small></span></label>
-          <label class="todo-item"><input type="checkbox" data-todo="private-backup"><span>同步联系普惠民办/民办园<small>优先电话问汇城苑、凯琴、小神童是否有名额。</small></span></label>
+          <label class="todo-item"><input type="checkbox" data-todo="private-backup"><span>同步联系普惠民办/民办园<small>优先电话问汇城苑、胡姬港湾、牛牛、凯琴、杜鹃园是否有名额。</small></span></label>
           <label class="todo-item"><input type="checkbox" data-todo="private-fee"><span>确认民办收费和退费规则<small>记录保育教育费、餐费、校车/延时服务等。</small></span></label>
         </article>
         <article class="todo-column">
@@ -852,7 +1159,7 @@
 
     <section id="query" class="details-section">
       <div class="section-title">
-        <h2>园区查询</h2>
+        <h2>详细查询</h2>
         <p>需要细查时再用这里：输入居委、小区、幼儿园或地址关键词，再叠加片区、招生类型、托班和置信度条件。</p>
       </div>
       <div class="filter-panel">
@@ -4251,51 +4558,71 @@
       </div>
       <div class="source-list">
         <article class="source-card">
+          <strong>公办招生范围与计划班级数</strong>
+          <span>来源：本地PDF：/Users/caofengyang/Downloads/徐汇区幼儿园对口地区.pdf（2026年徐汇区公办幼儿园对口居委一览表及计划班级数）</span>
+          <span>用途：生成 42 个公办招生主体、对口居委、小班计划、托班/混龄信息，是公办筛选的主数据源。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://m.sh.bendibao.com/edu/305291.html" target="_blank" rel="noopener">2026 徐汇区幼儿园招生对口地段及计划</a></strong>
+          <span>来源：上海本地宝《2026徐汇区幼儿园招生对口地段及招生计划班级数》，2026-04-15：https://m.sh.bendibao.com/edu/305291.html</span>
+          <span>用途：与本地 PDF 互相校验公办招生计划、对口地段和扩招/自主招生口径。</span>
+        </article>
+        <article class="source-card">
           <strong><a href="https://sh.bendibao.com/news/2026415/305294.shtm" target="_blank" rel="noopener">2026 徐汇区幼儿园招生工作方案</a></strong>
-          <span>用于判断户籍优先、外省市户籍排序、录取批次和报名验证要求。</span>
+          <span>用途：判断户籍优先、外省市户籍排序、录取批次、报名验证和统筹规则。</span>
+          <span>置信度：政策规则以当年官方发布和报名系统要求为准，本页只做决策提示。</span>
         </article>
         <article class="source-card">
           <strong><a href="https://m.sh.bendibao.com/edu/305384.html" target="_blank" rel="noopener">2026 徐汇幼儿园报名材料</a></strong>
-          <span>用于核对非本市户籍幼儿、父母居住证、租赁合同和地址一致要求。</span>
+          <span>用途：核对非本市户籍幼儿、父母居住证、租赁合同、居住登记和地址一致性要求。</span>
+          <span>本页结论中的“暂无居住证风险”来自该材料口径与招生顺位判断。</span>
         </article>
         <article class="source-card">
           <strong><a href="https://m.sh.bendibao.com/zffw/285087.html" target="_blank" rel="noopener">上海居住证办理条件</a></strong>
-          <span>用于确认居住登记、合法稳定住所、租赁合同/备案等材料链。</span>
+          <span>用途：确认居住登记、合法稳定住所、租赁合同/备案等材料链要求。</span>
+          <span>租房看房清单中的“房东是否配合材料”来自该口径。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://m.sh.bendibao.com/edu/284155.html" target="_blank" rel="noopener">徐汇区公办幼儿园名单</a></strong>
+          <span>来源：上海本地宝《上海市徐汇区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://m.sh.bendibao.com/edu/284155.html</span>
+          <span>用途：补充公办园区/分园地址、办园等级和电话，与 2026 对口表拆分为 81 个公办园区点位。</span>
         </article>
         <article class="source-card">
           <strong><a href="https://sh.bendibao.com/edu/2024325/284155_2.shtm" target="_blank" rel="noopener">徐汇区民办幼儿园名单</a></strong>
-          <span>用于补充民办/私立幼儿园的级别、地址和联系电话，作为公办概率偏低时的兜底池。</span>
+          <span>来源：上海本地宝《上海市徐汇区民办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284155_2.shtm</span>
+          <span>用途：补充 46 个民办/私立点位的级别、地址和联系电话，作为公办概率偏低时的兜底池。</span>
         </article>
         <article class="source-card">
-          <strong><a href="https://sh.zu.ke.com/" target="_blank" rel="noopener">贝壳上海租房</a></strong>
-          <span>用于实时搜索 3 室、100 平以上、10000 元以内的整租房源。</span>
+          <strong>高德地图 POI 与距离数据</strong>
+          <span>来源：高德地图 MCP/API 查询结果，落地在 <code>data/amap_enrichment.json</code>。</span>
+          <span>用途：补充 POI 名称、POI 地址、经纬度，以及到西岸网易研发中心的直线距离；当前可靠匹配 101/127，匹配率 80%。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://sh.zu.ke.com/" target="_blank" rel="noopener">贝壳上海租房结构化筛选</a></strong>
+          <span>来源：贝壳租房页面参数解析，结构化数据保存在 <code>data/beike_rental_filter_schema.json</code>。</span>
+          <span>用途：生成整租、0-10000 元、三居/四居+、100㎡以上、有电梯的房源链接，固定 token 为 <code>rt200600000001brp0erp10000l2l3ra4ra5ie1</code>。</span>
         </article>
         <article class="source-card">
           <strong><a href="https://sh.zu.ke.com/wzdt/" target="_blank" rel="noopener">贝壳徐汇租房板块</a></strong>
-          <span>用于快速进入徐汇滨江、华泾、龙华、植物园、长桥等板块。</span>
+          <span>用途：解析徐汇一级区域和长桥、华泾、龙华、康健、植物园、徐汇滨江、田林等二级商圈 slug。</span>
+          <span>说明：贝壳房源价格和库存实时变化，本页只保留查询入口，不固化具体房源价格。</span>
         </article>
         <article class="source-card">
           <strong><a href="https://www.chooffice.com/1357.html" target="_blank" rel="noopener">西岸网易研发中心办公点参考</a></strong>
-          <span>用于确认西岸网易研发中心靠近龙耀路、徐汇滨江一带的通勤判断。</span>
+          <span>用途：确认办公点在徐汇滨江/龙耀路/云锦路一带，作为通勤和园所距离估算的目标点。</span>
+          <span>说明：实际通勤仍需按步行、骑行、驾车路线二次验证。</span>
         </article>
         <article class="source-card">
-          <strong><a href="https://www.xxh-edu.com/brand/57.html" target="_blank" rel="noopener">汇城苑幼稚园公开资料</a></strong>
-          <span>用于核对汇城苑幼稚园地址、电话、托幼一体和普惠民办属性。</span>
-        </article>
-        <article class="source-card">
-          <strong><a href="https://www.021school.cn/schools/12780" target="_blank" rel="noopener">凯琴数码幼儿园公开资料</a></strong>
-          <span>用于核对凯琴数码幼儿园地址、电话、托幼一体和普惠民办属性。</span>
-        </article>
-        <article class="source-card">
-          <strong><a href="https://www.021school.cn/schools/12790" target="_blank" rel="noopener">小神童幼儿园公开资料</a></strong>
-          <span>用于核对小神童幼儿园地址、电话、收费参考和普惠民办属性。</span>
+          <strong>第三方园所公开资料</strong>
+          <span>来源：上哪学、021school、园所公开页面等，用于交叉核对部分民办园电话、收费、托幼一体和地址差异。</span>
+          <span>示例：<a href="https://www.xxh-edu.com/brand/57.html" target="_blank" rel="noopener">汇城苑幼稚园</a>、<a href="https://www.021school.cn/schools/12780" target="_blank" rel="noopener">凯琴数码幼儿园</a>、<a href="https://www.021school.cn/schools/12790" target="_blank" rel="noopener">小神童幼儿园</a>。第三方信息仅作辅助，最终以园所电话确认为准。</span>
         </article>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="shell">主要来源：上海本地宝《2026徐汇区幼儿园招生对口地段及招生计划班级数》，2026-04-15：https://m.sh.bendibao.com/edu/305291.html；上海本地宝《上海市徐汇区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://m.sh.bendibao.com/edu/284155.html；上海本地宝《上海市徐汇区民办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284155_2.shtm；本地PDF：/Users/caofengyang/Downloads/徐汇区幼儿园对口地区.pdf（2026年徐汇区公办幼儿园对口居委一览表及计划班级数）；2026 徐汇招生政策、上海居住证办理指南、贝壳/58 等公开租房信息。</div>
+    <div class="shell">来源、数据口径和置信度说明已合并到“风险与来源”模块；页面结论仅用于择园和租房初筛，报名前以当年官方公告、园所电话和实地看房为准。</div>
   </footer>
 
   <script>

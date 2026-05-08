@@ -1,0 +1,3753 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-05-08",
+  "site": {
+    "name": "贝壳上海租房",
+    "desktopBaseUrl": "https://sh.zu.ke.com",
+    "mobileBaseUrl": "https://m.ke.com/chuzu/sh",
+    "channel": "zufang"
+  },
+  "urlRules": {
+    "desktopListPattern": "https://sh.zu.ke.com/zufang/{areaSlug}/{tokens}/?showMore=1",
+    "desktopKeywordPattern": "https://sh.zu.ke.com/zufang/rs{keyword}/",
+    "desktopMetroPattern": "https://sh.zu.ke.com/ditiezufang/{lineToken}/{tokens}/?showMore=1",
+    "tokenJoinRule": "多个筛选 token 直接连续拼接在同一个路径段中，顺序通常不影响语义。",
+    "customPricePattern": "brp{min}erp{max}",
+    "customAreaPattern": "rba{min}rea{max}",
+    "showMore": {
+      "token": "showMore=1",
+      "label": "展开更多筛选",
+      "type": "query"
+    }
+  },
+  "filters": {
+    "district": {
+      "label": "区域",
+      "pathMode": "slug",
+      "sourceConfidence": "confirmed",
+      "options": [
+        {
+          "slug": "",
+          "id": "0",
+          "label": "不限"
+        },
+        {
+          "slug": "jingan",
+          "id": "310106",
+          "label": "静安"
+        },
+        {
+          "slug": "xuhui",
+          "id": "310104",
+          "label": "徐汇"
+        },
+        {
+          "slug": "huangpu",
+          "id": "310101",
+          "label": "黄浦"
+        },
+        {
+          "slug": "changning",
+          "id": "310105",
+          "label": "长宁"
+        },
+        {
+          "slug": "putuo",
+          "id": "310107",
+          "label": "普陀"
+        },
+        {
+          "slug": "pudong",
+          "id": "310115",
+          "label": "浦东"
+        },
+        {
+          "slug": "baoshan",
+          "id": "310113",
+          "label": "宝山"
+        },
+        {
+          "slug": "hongkou",
+          "id": "310109",
+          "label": "虹口"
+        },
+        {
+          "slug": "yangpu",
+          "id": "310110",
+          "label": "杨浦"
+        },
+        {
+          "slug": "minhang",
+          "id": "310112",
+          "label": "闵行"
+        },
+        {
+          "slug": "jinshan",
+          "id": "310116",
+          "label": "金山"
+        },
+        {
+          "slug": "jiading",
+          "id": "310114",
+          "label": "嘉定"
+        },
+        {
+          "slug": "chongming",
+          "id": "310230",
+          "label": "崇明"
+        },
+        {
+          "slug": "fengxian",
+          "id": "310120",
+          "label": "奉贤"
+        },
+        {
+          "slug": "songjiang",
+          "id": "310117",
+          "label": "松江"
+        },
+        {
+          "slug": "qingpu",
+          "id": "310118",
+          "label": "青浦"
+        }
+      ]
+    },
+    "metroLine": {
+      "label": "地铁线",
+      "pathMode": "ditiezufang/li{id}",
+      "sourceConfidence": "confirmed",
+      "options": [
+        {
+          "token": "",
+          "id": "0",
+          "label": "不限"
+        },
+        {
+          "token": "li143685036",
+          "id": "143685036",
+          "label": "1号线"
+        },
+        {
+          "token": "li143685058",
+          "id": "143685058",
+          "label": "2号线"
+        },
+        {
+          "token": "li143684974",
+          "id": "143684974",
+          "label": "3号线"
+        },
+        {
+          "token": "li143685059",
+          "id": "143685059",
+          "label": "4号线"
+        },
+        {
+          "token": "li50000001862401",
+          "id": "50000001862401",
+          "label": "5号线支线"
+        },
+        {
+          "token": "li143685060",
+          "id": "143685060",
+          "label": "5号线"
+        },
+        {
+          "token": "li143685061",
+          "id": "143685061",
+          "label": "6号线"
+        },
+        {
+          "token": "li110460726",
+          "id": "110460726",
+          "label": "7号线"
+        },
+        {
+          "token": "li143685063",
+          "id": "143685063",
+          "label": "8号线"
+        },
+        {
+          "token": "li143685064",
+          "id": "143685064",
+          "label": "9号线"
+        },
+        {
+          "token": "li143685065",
+          "id": "143685065",
+          "label": "10号线(新江湾城-虹桥火车站)"
+        },
+        {
+          "token": "li5020034682070158",
+          "id": "5020034682070158",
+          "label": "10号线(新江湾城-航中路)"
+        },
+        {
+          "token": "li50000014111591",
+          "id": "50000014111591",
+          "label": "10号线(基隆路-航中路)"
+        },
+        {
+          "token": "li50000014111592",
+          "id": "50000014111592",
+          "label": "10号线(基隆路-虹桥火车站)"
+        },
+        {
+          "token": "li50000011648963",
+          "id": "50000011648963",
+          "label": "10号线(二期)"
+        },
+        {
+          "token": "li5020034644313403",
+          "id": "5020034644313403",
+          "label": "11号线(嘉定北-迪士尼)"
+        },
+        {
+          "token": "li50000001862400",
+          "id": "50000001862400",
+          "label": "11号线(花桥-迪士尼)"
+        },
+        {
+          "token": "li110460731",
+          "id": "110460731",
+          "label": "12号线"
+        },
+        {
+          "token": "li110460732",
+          "id": "110460732",
+          "label": "13号线"
+        },
+        {
+          "token": "li5020063735462918",
+          "id": "5020063735462918",
+          "label": "14号线"
+        },
+        {
+          "token": "li50000012336968",
+          "id": "50000012336968",
+          "label": "15号线"
+        },
+        {
+          "token": "li110460733",
+          "id": "110460733",
+          "label": "16号线"
+        },
+        {
+          "token": "li99620692",
+          "id": "99620692",
+          "label": "17号线"
+        },
+        {
+          "token": "li50000011648964",
+          "id": "50000011648964",
+          "label": "18号线"
+        },
+        {
+          "token": "li5020034301305472",
+          "id": "5020034301305472",
+          "label": "浦江线"
+        },
+        {
+          "token": "li5020043128392266",
+          "id": "5020043128392266",
+          "label": "金山铁路"
+        },
+        {
+          "token": "li50000001862402",
+          "id": "50000001862402",
+          "label": "磁悬浮"
+        }
+      ]
+    },
+    "rentType": {
+      "label": "方式",
+      "sourceConfidence": "confirmed",
+      "options": [
+        {
+          "token": "",
+          "id": "0",
+          "label": "不限"
+        },
+        {
+          "token": "rt200600000001",
+          "id": "200600000001",
+          "label": "整租"
+        },
+        {
+          "token": "rt200600000002",
+          "id": "200600000002",
+          "label": "合租"
+        }
+      ]
+    },
+    "price": {
+      "label": "租金",
+      "unit": "元/月",
+      "sourceConfidence": "confirmed",
+      "customToken": {
+        "pattern": "brp{min}erp{max}",
+        "examples": [
+          {
+            "token": "brp2000erp10000",
+            "min": 2000,
+            "max": 10000,
+            "label": "2000-10000元"
+          },
+          {
+            "token": "brp0erp10000",
+            "min": 0,
+            "max": 10000,
+            "label": "10000元以下"
+          }
+        ]
+      },
+      "options": [
+        {
+          "token": "rp1",
+          "label": "≤1500元",
+          "max": 1500
+        },
+        {
+          "token": "rp2",
+          "label": "1500-2500元",
+          "min": 1500,
+          "max": 2500
+        },
+        {
+          "token": "rp3",
+          "label": "2500-3500元",
+          "min": 2500,
+          "max": 3500
+        },
+        {
+          "token": "rp4",
+          "label": "3500-4500元",
+          "min": 3500,
+          "max": 4500
+        },
+        {
+          "token": "rp5",
+          "label": "4500-5500元",
+          "min": 4500,
+          "max": 5500
+        },
+        {
+          "token": "rp6",
+          "label": "5500-7000元",
+          "min": 5500,
+          "max": 7000
+        },
+        {
+          "token": "rp7",
+          "label": "7000-20000元",
+          "min": 7000,
+          "max": 20000
+        },
+        {
+          "token": "rp8",
+          "label": "≥20000元",
+          "min": 20000
+        }
+      ]
+    },
+    "rooms": {
+      "label": "户型",
+      "sourceConfidence": "confirmed",
+      "options": [
+        {
+          "token": "l0",
+          "label": "一居",
+          "roomsMin": 1,
+          "roomsMax": 1
+        },
+        {
+          "token": "l1",
+          "label": "两居",
+          "roomsMin": 2,
+          "roomsMax": 2
+        },
+        {
+          "token": "l2",
+          "label": "三居",
+          "roomsMin": 3,
+          "roomsMax": 3
+        },
+        {
+          "token": "l3",
+          "label": "四居+",
+          "roomsMin": 4
+        }
+      ]
+    },
+    "area": {
+      "label": "面积",
+      "unit": "平方米",
+      "sourceConfidence": "partially-confirmed",
+      "note": "当前抓取到的 PC/移动端源码未展开面积档位选项；用户提供的完整筛选 URL 使用 ra* 档位。已确认 rba{min}rea{max} 这类自定义面积 token 会触发登录跳转，不应作为推荐查询链接使用。",
+      "customToken": {
+        "pattern": "rba{min}rea{max}",
+        "status": "not-recommended",
+        "reason": "实测 rba100rea 会触发贝壳登录跳转，不能作为可靠公开查询 URL。",
+        "examples": [
+          {
+            "token": "rba100rea",
+            "min": 100,
+            "label": "100平方米以上"
+          },
+          {
+            "token": "rba100rea999",
+            "min": 100,
+            "max": 999,
+            "label": "100-999平方米"
+          }
+        ]
+      },
+      "options": [
+        {
+          "token": "ra1",
+          "label": "50平方米以下",
+          "max": 50,
+          "confidence": "inferred"
+        },
+        {
+          "token": "ra2",
+          "label": "50-80平方米",
+          "min": 50,
+          "max": 80,
+          "confidence": "inferred"
+        },
+        {
+          "token": "ra3",
+          "label": "80-100平方米",
+          "min": 80,
+          "max": 100,
+          "confidence": "inferred"
+        },
+        {
+          "token": "ra4",
+          "label": "100-120平方米",
+          "min": 100,
+          "max": 120,
+          "confidence": "user-url-reviewed"
+        },
+        {
+          "token": "ra5",
+          "label": "120平方米以上",
+          "min": 120,
+          "confidence": "user-url-reviewed"
+        }
+      ]
+    },
+    "orientation": {
+      "label": "朝向",
+      "sourceConfidence": "confirmed",
+      "options": [
+        {
+          "token": "f100500000001",
+          "label": "东"
+        },
+        {
+          "token": "f100500000005",
+          "label": "西"
+        },
+        {
+          "token": "f100500000003",
+          "label": "南"
+        },
+        {
+          "token": "f100500000007",
+          "label": "北"
+        },
+        {
+          "token": "f100500000009",
+          "label": "南北"
+        }
+      ]
+    },
+    "brand": {
+      "label": "品牌",
+      "sourceConfidence": "confirmed",
+      "options": [
+        {
+          "token": "ab200306004772",
+          "label": "贝壳省心租"
+        },
+        {
+          "token": "ab200306013105",
+          "label": "贝壳新青年公寓"
+        },
+        {
+          "token": "ab200301001000",
+          "label": "链家"
+        },
+        {
+          "token": "ab200302002000",
+          "label": "自如"
+        },
+        {
+          "token": "ab200306000304",
+          "label": "柚米国际社区"
+        },
+        {
+          "token": "ab200302144000",
+          "label": "城家公寓"
+        },
+        {
+          "token": "ab200306010384",
+          "label": "融寓"
+        },
+        {
+          "token": "ab200306006488",
+          "label": "悦樘公寓"
+        },
+        {
+          "token": "ab200306001014",
+          "label": "唐巢公寓"
+        },
+        {
+          "token": "ab200306009957",
+          "label": "悦徕国际公寓"
+        },
+        {
+          "token": "ab200306003080",
+          "label": "方隅公寓"
+        },
+        {
+          "token": "ab200306001519",
+          "label": "彩虹小居"
+        }
+      ]
+    },
+    "features": {
+      "label": "特色",
+      "sourceConfidence": "confirmed",
+      "options": [
+        {
+          "token": "su1",
+          "label": "近地铁"
+        },
+        {
+          "token": "bc1",
+          "label": "拎包入住"
+        },
+        {
+          "token": "de1",
+          "label": "精装修"
+        },
+        {
+          "token": "rpw1",
+          "label": "押一付一"
+        },
+        {
+          "token": "in1",
+          "label": "新上"
+        },
+        {
+          "token": "ht1",
+          "label": "认证公寓"
+        },
+        {
+          "token": "hk1",
+          "label": "随时看房"
+        },
+        {
+          "token": "vr1",
+          "label": "VR房源"
+        },
+        {
+          "token": "orec1",
+          "label": "业主自荐"
+        }
+      ]
+    },
+    "leaseTerm": {
+      "label": "租期",
+      "sourceConfidence": "confirmed",
+      "options": [
+        {
+          "token": "rmp1",
+          "label": "月租"
+        },
+        {
+          "token": "rmp2",
+          "label": "年租"
+        },
+        {
+          "token": "rmp3",
+          "label": "一个月起租"
+        },
+        {
+          "token": "rmp4",
+          "label": "1-3个月"
+        },
+        {
+          "token": "rmp5",
+          "label": "4-6个月"
+        }
+      ]
+    },
+    "quality": {
+      "label": "服务保障",
+      "sourceConfidence": "confirmed-mobile",
+      "options": [
+        {
+          "token": "als10001",
+          "label": "品质认证"
+        },
+        {
+          "token": "als100001",
+          "label": "租住保障"
+        }
+      ]
+    },
+    "floor": {
+      "label": "楼层",
+      "sourceConfidence": "confirmed",
+      "options": [
+        {
+          "token": "lc200500000003",
+          "label": "低楼层"
+        },
+        {
+          "token": "lc200500000002",
+          "label": "中楼层"
+        },
+        {
+          "token": "lc200500000001",
+          "label": "高楼层"
+        }
+      ]
+    },
+    "elevator": {
+      "label": "电梯",
+      "sourceConfidence": "confirmed",
+      "options": [
+        {
+          "token": "ie0",
+          "label": "无电梯"
+        },
+        {
+          "token": "ie1",
+          "label": "有电梯"
+        }
+      ]
+    },
+    "sort": {
+      "label": "排序",
+      "sourceConfidence": "confirmed",
+      "options": [
+        {
+          "token": "",
+          "label": "综合排序"
+        },
+        {
+          "token": "rco11",
+          "label": "最新上架"
+        },
+        {
+          "token": "rco21",
+          "label": "价格"
+        },
+        {
+          "token": "rco31",
+          "label": "面积"
+        }
+      ]
+    },
+    "pagination": {
+      "label": "分页",
+      "sourceConfidence": "confirmed",
+      "pattern": "pg{page}",
+      "example": "pg2"
+    },
+    "keyword": {
+      "label": "关键词搜索",
+      "sourceConfidence": "confirmed",
+      "pattern": "rs{keyword}",
+      "example": "rs园南 长桥 3室 100平 10000"
+    },
+    "bizcircle": {
+      "label": "二级区域/商圈",
+      "pathMode": "slug",
+      "sourceConfidence": "confirmed-api",
+      "sourceEndpoint": "https://m.ke.com/chuzu/aj/config/filter?city_id=310000",
+      "urlRule": "二级区域与一级区域一样作为 /zufang/{slug}/ 的路径段使用；选择二级区域时使用二级 slug 替代一级区 slug。",
+      "optionsByDistrict": {
+        "jingan": [
+          {
+            "slug": "beiwaitan",
+            "id": "611900028",
+            "label": "北外滩",
+            "parentSlug": "jingan",
+            "parentLabel": "静安"
+          },
+          {
+            "slug": "buyecheng",
+            "id": "611900117",
+            "label": "不夜城",
+            "parentSlug": "jingan",
+            "parentLabel": "静安"
+          },
+          {
+            "slug": "caojiadu",
+            "id": "611100418",
+            "label": "曹家渡",
+            "parentSlug": "jingan",
+            "parentLabel": "静安"
+          },
+          {
+            "slug": "daning",
+            "id": "611900116",
+            "label": "大宁",
+            "parentSlug": "jingan",
+            "parentLabel": "静安"
+          },
+          {
+            "slug": "jiangninglu",
+            "id": "611100417",
+            "label": "江宁路",
+            "parentSlug": "jingan",
+            "parentLabel": "静安"
+          },
+          {
+            "slug": "jingansi",
+            "id": "613000289",
+            "label": "静安寺",
+            "parentSlug": "jingan",
+            "parentLabel": "静安"
+          },
+          {
+            "slug": "nanjingxilu",
+            "id": "611100419",
+            "label": "南京西路",
+            "parentSlug": "jingan",
+            "parentLabel": "静安"
+          },
+          {
+            "slug": "pengpu",
+            "id": "611100430",
+            "label": "彭浦",
+            "parentSlug": "jingan",
+            "parentLabel": "静安"
+          },
+          {
+            "slug": "suhewan",
+            "id": "1100007605",
+            "label": "苏河湾",
+            "parentSlug": "jingan",
+            "parentLabel": "静安"
+          },
+          {
+            "slug": "xizangbeilu",
+            "id": "611900118",
+            "label": "西藏北路",
+            "parentSlug": "jingan",
+            "parentLabel": "静安"
+          },
+          {
+            "slug": "yonghe",
+            "id": "611900121",
+            "label": "永和",
+            "parentSlug": "jingan",
+            "parentLabel": "静安"
+          },
+          {
+            "slug": "yangcheng",
+            "id": "613000348",
+            "label": "阳城",
+            "parentSlug": "jingan",
+            "parentLabel": "静安"
+          },
+          {
+            "slug": "zhabeigongyuan",
+            "id": "613000349",
+            "label": "闸北公园",
+            "parentSlug": "jingan",
+            "parentLabel": "静安"
+          }
+        ],
+        "xuhui": [
+          {
+            "slug": "changqiao",
+            "id": "611900103",
+            "label": "长桥",
+            "parentSlug": "xuhui",
+            "parentLabel": "徐汇"
+          },
+          {
+            "slug": "caohejing",
+            "id": "613000342",
+            "label": "漕河泾",
+            "parentSlug": "xuhui",
+            "parentLabel": "徐汇"
+          },
+          {
+            "slug": "huajing",
+            "id": "611100124",
+            "label": "华泾",
+            "parentSlug": "xuhui",
+            "parentLabel": "徐汇"
+          },
+          {
+            "slug": "hengshanlu",
+            "id": "611900097",
+            "label": "衡山路",
+            "parentSlug": "xuhui",
+            "parentLabel": "徐汇"
+          },
+          {
+            "slug": "huadongligong",
+            "id": "611900104",
+            "label": "华东理工",
+            "parentSlug": "xuhui",
+            "parentLabel": "徐汇"
+          },
+          {
+            "slug": "jinhui",
+            "id": "611900067",
+            "label": "金汇",
+            "parentSlug": "xuhui",
+            "parentLabel": "徐汇"
+          },
+          {
+            "slug": "jianguoxilu",
+            "id": "611900099",
+            "label": "建国西路",
+            "parentSlug": "xuhui",
+            "parentLabel": "徐汇"
+          },
+          {
+            "slug": "kangjian",
+            "id": "613000343",
+            "label": "康健",
+            "parentSlug": "xuhui",
+            "parentLabel": "徐汇"
+          },
+          {
+            "slug": "longhua",
+            "id": "611100125",
+            "label": "龙华",
+            "parentSlug": "xuhui",
+            "parentLabel": "徐汇"
+          },
+          {
+            "slug": "shanghainanzhan",
+            "id": "613000344",
+            "label": "上海南站",
+            "parentSlug": "xuhui",
+            "parentLabel": "徐汇"
+          },
+          {
+            "slug": "tianlin",
+            "id": "611100127",
+            "label": "田林",
+            "parentSlug": "xuhui",
+            "parentLabel": "徐汇"
+          },
+          {
+            "slug": "wantiguan",
+            "id": "611900100",
+            "label": "万体馆",
+            "parentSlug": "xuhui",
+            "parentLabel": "徐汇"
+          },
+          {
+            "slug": "xuhuibinjiang",
+            "id": "611100128",
+            "label": "徐汇滨江",
+            "parentSlug": "xuhui",
+            "parentLabel": "徐汇"
+          },
+          {
+            "slug": "xietulu",
+            "id": "611900098",
+            "label": "斜土路",
+            "parentSlug": "xuhui",
+            "parentLabel": "徐汇"
+          },
+          {
+            "slug": "xujiahui",
+            "id": "613000345",
+            "label": "徐家汇",
+            "parentSlug": "xuhui",
+            "parentLabel": "徐汇"
+          },
+          {
+            "slug": "zhiwuyuan",
+            "id": "611900102",
+            "label": "植物园",
+            "parentSlug": "xuhui",
+            "parentLabel": "徐汇"
+          }
+        ],
+        "huangpu": [
+          {
+            "slug": "beiwaitan",
+            "id": "611900028",
+            "label": "北外滩",
+            "parentSlug": "huangpu",
+            "parentLabel": "黄浦"
+          },
+          {
+            "slug": "dapuqiao",
+            "id": "611100441",
+            "label": "打浦桥",
+            "parentSlug": "huangpu",
+            "parentLabel": "黄浦"
+          },
+          {
+            "slug": "dongjiadu",
+            "id": "611900038",
+            "label": "董家渡",
+            "parentSlug": "huangpu",
+            "parentLabel": "黄浦"
+          },
+          {
+            "slug": "huaihaizhonglu",
+            "id": "611900062",
+            "label": "淮海中路",
+            "parentSlug": "huangpu",
+            "parentLabel": "黄浦"
+          },
+          {
+            "slug": "huangpubinjiang",
+            "id": "613000265",
+            "label": "黄浦滨江",
+            "parentSlug": "huangpu",
+            "parentLabel": "黄浦"
+          },
+          {
+            "slug": "laoximen",
+            "id": "611100456",
+            "label": "老西门",
+            "parentSlug": "huangpu",
+            "parentLabel": "黄浦"
+          },
+          {
+            "slug": "nanjingdonglu",
+            "id": "611900036",
+            "label": "南京东路",
+            "parentSlug": "huangpu",
+            "parentLabel": "黄浦"
+          },
+          {
+            "slug": "penglaigongyuan",
+            "id": "611900037",
+            "label": "蓬莱公园",
+            "parentSlug": "huangpu",
+            "parentLabel": "黄浦"
+          },
+          {
+            "slug": "renminguangchang",
+            "id": "611100457",
+            "label": "人民广场",
+            "parentSlug": "huangpu",
+            "parentLabel": "黄浦"
+          },
+          {
+            "slug": "shibobinjiang",
+            "id": "611900063",
+            "label": "世博滨江",
+            "parentSlug": "huangpu",
+            "parentLabel": "黄浦"
+          },
+          {
+            "slug": "wuliqiao",
+            "id": "611900061",
+            "label": "五里桥",
+            "parentSlug": "huangpu",
+            "parentLabel": "黄浦"
+          },
+          {
+            "slug": "xintiandi",
+            "id": "611900060",
+            "label": "新天地",
+            "parentSlug": "huangpu",
+            "parentLabel": "黄浦"
+          },
+          {
+            "slug": "yuyuan",
+            "id": "611900039",
+            "label": "豫园",
+            "parentSlug": "huangpu",
+            "parentLabel": "黄浦"
+          }
+        ],
+        "changning": [
+          {
+            "slug": "beixinjing",
+            "id": "611900013",
+            "label": "北新泾",
+            "parentSlug": "changning",
+            "parentLabel": "长宁"
+          },
+          {
+            "slug": "caojiadu",
+            "id": "611100418",
+            "label": "曹家渡",
+            "parentSlug": "changning",
+            "parentLabel": "长宁"
+          },
+          {
+            "slug": "gubei",
+            "id": "611100407",
+            "label": "古北",
+            "parentSlug": "changning",
+            "parentLabel": "长宁"
+          },
+          {
+            "slug": "hongqiao1",
+            "id": "611100408",
+            "label": "虹桥",
+            "parentSlug": "changning",
+            "parentLabel": "长宁"
+          },
+          {
+            "slug": "hanghua",
+            "id": "611900069",
+            "label": "航华",
+            "parentSlug": "changning",
+            "parentLabel": "长宁"
+          },
+          {
+            "slug": "tianshan",
+            "id": "611900011",
+            "label": "天山",
+            "parentSlug": "changning",
+            "parentLabel": "长宁"
+          },
+          {
+            "slug": "xijiao",
+            "id": "611100409",
+            "label": "西郊",
+            "parentSlug": "changning",
+            "parentLabel": "长宁"
+          },
+          {
+            "slug": "xinhualu",
+            "id": "611100410",
+            "label": "新华路",
+            "parentSlug": "changning",
+            "parentLabel": "长宁"
+          },
+          {
+            "slug": "xianxia",
+            "id": "613000350",
+            "label": "仙霞",
+            "parentSlug": "changning",
+            "parentLabel": "长宁"
+          },
+          {
+            "slug": "zhongshangongyuan",
+            "id": "611100411",
+            "label": "中山公园",
+            "parentSlug": "changning",
+            "parentLabel": "长宁"
+          },
+          {
+            "slug": "zhenninglu",
+            "id": "611900014",
+            "label": "镇宁路",
+            "parentSlug": "changning",
+            "parentLabel": "长宁"
+          }
+        ],
+        "putuo": [
+          {
+            "slug": "caoyang",
+            "id": "611100369",
+            "label": "曹杨",
+            "parentSlug": "putuo",
+            "parentLabel": "普陀"
+          },
+          {
+            "slug": "changzheng",
+            "id": "611100370",
+            "label": "长征",
+            "parentSlug": "putuo",
+            "parentLabel": "普陀"
+          },
+          {
+            "slug": "changfeng1",
+            "id": "613000319",
+            "label": "长风",
+            "parentSlug": "putuo",
+            "parentLabel": "普陀"
+          },
+          {
+            "slug": "changshoulu",
+            "id": "613000320",
+            "label": "长寿路",
+            "parentSlug": "putuo",
+            "parentLabel": "普陀"
+          },
+          {
+            "slug": "guangxin",
+            "id": "611100415",
+            "label": "光新",
+            "parentSlug": "putuo",
+            "parentLabel": "普陀"
+          },
+          {
+            "slug": "ganquanyichuan",
+            "id": "613000318",
+            "label": "甘泉宜川",
+            "parentSlug": "putuo",
+            "parentLabel": "普陀"
+          },
+          {
+            "slug": "taopu",
+            "id": "611100373",
+            "label": "桃浦",
+            "parentSlug": "putuo",
+            "parentLabel": "普陀"
+          },
+          {
+            "slug": "wanli",
+            "id": "611100375",
+            "label": "万里",
+            "parentSlug": "putuo",
+            "parentLabel": "普陀"
+          },
+          {
+            "slug": "wuning",
+            "id": "611100416",
+            "label": "武宁",
+            "parentSlug": "putuo",
+            "parentLabel": "普陀"
+          },
+          {
+            "slug": "zhenru",
+            "id": "611100371",
+            "label": "真如",
+            "parentSlug": "putuo",
+            "parentLabel": "普陀"
+          },
+          {
+            "slug": "zhenguang",
+            "id": "613000321",
+            "label": "真光",
+            "parentSlug": "putuo",
+            "parentLabel": "普陀"
+          },
+          {
+            "slug": "zhongyuanliangwancheng",
+            "id": "613000322",
+            "label": "中远两湾城",
+            "parentSlug": "putuo",
+            "parentLabel": "普陀"
+          }
+        ],
+        "pudong": [
+          {
+            "slug": "beicai",
+            "id": "611900123",
+            "label": "北蔡",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "biyun",
+            "id": "613000290",
+            "label": "碧云",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "caolu",
+            "id": "613000291",
+            "label": "曹路",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "chuansha",
+            "id": "613000292",
+            "label": "川沙",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "datuanzhen",
+            "id": "613000293",
+            "label": "大团镇",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "gaodong",
+            "id": "613000294",
+            "label": "高东",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "gaohang",
+            "id": "613000295",
+            "label": "高行",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "geqing",
+            "id": "613000297",
+            "label": "合庆",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "huamu",
+            "id": "611900130",
+            "label": "花木",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "hangtou",
+            "id": "613000296",
+            "label": "航头",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "huinan",
+            "id": "613000298",
+            "label": "惠南",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "jinqiao",
+            "id": "611900131",
+            "label": "金桥",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "jinyang",
+            "id": "613000299",
+            "label": "金杨",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "kangqiao",
+            "id": "613000300",
+            "label": "康桥",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "lujiazui",
+            "id": "611900136",
+            "label": "陆家嘴",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "laogangzhen",
+            "id": "613000301",
+            "label": "老港镇",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "lianyang",
+            "id": "613000302",
+            "label": "联洋",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "lingangxincheng",
+            "id": "613000303",
+            "label": "临港新城",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "meiyuan1",
+            "id": "1100006286",
+            "label": "梅园",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "nanmatou",
+            "id": "613000304",
+            "label": "南码头",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "nichengzhen",
+            "id": "613000305",
+            "label": "泥城镇",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "sanlin",
+            "id": "611900138",
+            "label": "三林",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "shibo",
+            "id": "611900139",
+            "label": "世博",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "shuyuanzhen",
+            "id": "613000307",
+            "label": "书院镇",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "tangqiao",
+            "id": "611900141",
+            "label": "塘桥",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "tangzhen",
+            "id": "613000308",
+            "label": "唐镇",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "waigaoqiao",
+            "id": "611900143",
+            "label": "外高桥",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "wanxiangzhen",
+            "id": "613000309",
+            "label": "万祥镇",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "weifang",
+            "id": "613000310",
+            "label": "潍坊",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "xinchang",
+            "id": "613000311",
+            "label": "新场",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "xuanqiao",
+            "id": "613000312",
+            "label": "宣桥",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "yuqiao1",
+            "id": "611101108",
+            "label": "御桥",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "yangdong",
+            "id": "613000313",
+            "label": "杨东",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "yangjing",
+            "id": "613000314",
+            "label": "洋泾",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "yuanshen",
+            "id": "613000315",
+            "label": "源深",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "yangsiqiantan",
+            "id": "1100006285",
+            "label": "杨思前滩",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "zhangjiang",
+            "id": "611900148",
+            "label": "张江",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "zhoupu",
+            "id": "613000316",
+            "label": "周浦",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          },
+          {
+            "slug": "zhuqiao",
+            "id": "613000317",
+            "label": "祝桥",
+            "parentSlug": "pudong",
+            "parentLabel": "浦东"
+          }
+        ],
+        "baoshan": [
+          {
+            "slug": "dahua",
+            "id": "611100420",
+            "label": "大华",
+            "parentSlug": "baoshan",
+            "parentLabel": "宝山"
+          },
+          {
+            "slug": "dachangzhen",
+            "id": "613000245",
+            "label": "大场镇",
+            "parentSlug": "baoshan",
+            "parentLabel": "宝山"
+          },
+          {
+            "slug": "gongkang",
+            "id": "611900003",
+            "label": "共康",
+            "parentSlug": "baoshan",
+            "parentLabel": "宝山"
+          },
+          {
+            "slug": "gongfu",
+            "id": "611900008",
+            "label": "共富",
+            "parentSlug": "baoshan",
+            "parentLabel": "宝山"
+          },
+          {
+            "slug": "gaojing",
+            "id": "613000246",
+            "label": "高境",
+            "parentSlug": "baoshan",
+            "parentLabel": "宝山"
+          },
+          {
+            "slug": "gucun",
+            "id": "613000247",
+            "label": "顾村",
+            "parentSlug": "baoshan",
+            "parentLabel": "宝山"
+          },
+          {
+            "slug": "luodian",
+            "id": "613000248",
+            "label": "罗店",
+            "parentSlug": "baoshan",
+            "parentLabel": "宝山"
+          },
+          {
+            "slug": "luojing",
+            "id": "613000249",
+            "label": "罗泾",
+            "parentSlug": "baoshan",
+            "parentLabel": "宝山"
+          },
+          {
+            "slug": "songbao",
+            "id": "611100426",
+            "label": "淞宝",
+            "parentSlug": "baoshan",
+            "parentLabel": "宝山"
+          },
+          {
+            "slug": "shangda",
+            "id": "613000250",
+            "label": "上大",
+            "parentSlug": "baoshan",
+            "parentLabel": "宝山"
+          },
+          {
+            "slug": "songnan",
+            "id": "613000251",
+            "label": "淞南",
+            "parentSlug": "baoshan",
+            "parentLabel": "宝山"
+          },
+          {
+            "slug": "tonghe",
+            "id": "611900001",
+            "label": "通河",
+            "parentSlug": "baoshan",
+            "parentLabel": "宝山"
+          },
+          {
+            "slug": "yanghang",
+            "id": "613000252",
+            "label": "杨行",
+            "parentSlug": "baoshan",
+            "parentLabel": "宝山"
+          },
+          {
+            "slug": "yuepu",
+            "id": "613000253",
+            "label": "月浦",
+            "parentSlug": "baoshan",
+            "parentLabel": "宝山"
+          },
+          {
+            "slug": "zhangmiao",
+            "id": "613000254",
+            "label": "张庙",
+            "parentSlug": "baoshan",
+            "parentLabel": "宝山"
+          }
+        ],
+        "hongkou": [
+          {
+            "slug": "beiwaitan",
+            "id": "611900028",
+            "label": "北外滩",
+            "parentSlug": "hongkou",
+            "parentLabel": "虹口"
+          },
+          {
+            "slug": "jiangwanzhen",
+            "id": "613000263",
+            "label": "江湾镇",
+            "parentSlug": "hongkou",
+            "parentLabel": "虹口"
+          },
+          {
+            "slug": "liangcheng",
+            "id": "611900029",
+            "label": "凉城",
+            "parentSlug": "hongkou",
+            "parentLabel": "虹口"
+          },
+          {
+            "slug": "linpinglu",
+            "id": "611900031",
+            "label": "临平路",
+            "parentSlug": "hongkou",
+            "parentLabel": "虹口"
+          },
+          {
+            "slug": "luxungongyuan",
+            "id": "613000264",
+            "label": "鲁迅公园",
+            "parentSlug": "hongkou",
+            "parentLabel": "虹口"
+          },
+          {
+            "slug": "quyang",
+            "id": "611900033",
+            "label": "曲阳",
+            "parentSlug": "hongkou",
+            "parentLabel": "虹口"
+          },
+          {
+            "slug": "sichuanbeilu",
+            "id": "611900030",
+            "label": "四川北路",
+            "parentSlug": "hongkou",
+            "parentLabel": "虹口"
+          }
+        ],
+        "yangpu": [
+          {
+            "slug": "anshan",
+            "id": "611900108",
+            "label": "鞍山",
+            "parentSlug": "yangpu",
+            "parentLabel": "杨浦"
+          },
+          {
+            "slug": "dongwaitan",
+            "id": "611900106",
+            "label": "东外滩",
+            "parentSlug": "yangpu",
+            "parentLabel": "杨浦"
+          },
+          {
+            "slug": "huangxinggongyuan",
+            "id": "611900107",
+            "label": "黄兴公园",
+            "parentSlug": "yangpu",
+            "parentLabel": "杨浦"
+          },
+          {
+            "slug": "kongjianglu",
+            "id": "613000346",
+            "label": "控江路",
+            "parentSlug": "yangpu",
+            "parentLabel": "杨浦"
+          },
+          {
+            "slug": "wujiaochang",
+            "id": "611900110",
+            "label": "五角场",
+            "parentSlug": "yangpu",
+            "parentLabel": "杨浦"
+          },
+          {
+            "slug": "xinjiangwancheng",
+            "id": "611900111",
+            "label": "新江湾城",
+            "parentSlug": "yangpu",
+            "parentLabel": "杨浦"
+          },
+          {
+            "slug": "zhoujiazuilu",
+            "id": "611900109",
+            "label": "周家嘴路",
+            "parentSlug": "yangpu",
+            "parentLabel": "杨浦"
+          },
+          {
+            "slug": "zhongyuan1",
+            "id": "611900112",
+            "label": "中原",
+            "parentSlug": "yangpu",
+            "parentLabel": "杨浦"
+          }
+        ],
+        "minhang": [
+          {
+            "slug": "chunshen",
+            "id": "611900064",
+            "label": "春申",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "caohejing",
+            "id": "613000342",
+            "label": "漕河泾",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "gumei",
+            "id": "611900068",
+            "label": "古美",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "huacao",
+            "id": "611100113",
+            "label": "华漕",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "hanghua",
+            "id": "611900069",
+            "label": "航华",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "jinhongqiao",
+            "id": "611100115",
+            "label": "金虹桥",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "jinhui",
+            "id": "611900067",
+            "label": "金汇",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "jinganxincheng",
+            "id": "611900071",
+            "label": "静安新城",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "laominhang",
+            "id": "611900065",
+            "label": "老闵行",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "longbai",
+            "id": "611900073",
+            "label": "龙柏",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "maqiao",
+            "id": "611100116",
+            "label": "马桥",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "meilong",
+            "id": "611900070",
+            "label": "梅陇",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "minpu",
+            "id": "1100006843",
+            "label": "闵浦",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "pujiang1",
+            "id": "611100118",
+            "label": "浦江",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "qibao",
+            "id": "611100119",
+            "label": "七宝",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "wujing",
+            "id": "611100120",
+            "label": "吴泾",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "xinzhuangbeiguangchang",
+            "id": "611100121",
+            "label": "莘庄北广场",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "xinminbieshu",
+            "id": "613000334",
+            "label": "莘闵别墅",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "xinzhuangnanguangchang",
+            "id": "1100007475",
+            "label": "莘庄南广场",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          },
+          {
+            "slug": "zhuanqiao",
+            "id": "611100122",
+            "label": "颛桥",
+            "parentSlug": "minhang",
+            "parentLabel": "闵行"
+          }
+        ],
+        "jinshan": [
+          {
+            "slug": "jinshanxincheng",
+            "id": "613000280",
+            "label": "金山新城",
+            "parentSlug": "jinshan",
+            "parentLabel": "金山"
+          },
+          {
+            "slug": "jiaxing",
+            "id": "1100001087",
+            "label": "嘉兴",
+            "parentSlug": "jinshan",
+            "parentLabel": "金山"
+          },
+          {
+            "slug": "shanghaizhoubian2",
+            "id": "613000394",
+            "label": "上海周边",
+            "parentSlug": "jinshan",
+            "parentLabel": "金山"
+          }
+        ],
+        "jiading": [
+          {
+            "slug": "anting",
+            "id": "613000267",
+            "label": "安亭",
+            "parentSlug": "jiading",
+            "parentLabel": "嘉定"
+          },
+          {
+            "slug": "changzheng",
+            "id": "611100370",
+            "label": "长征",
+            "parentSlug": "jiading",
+            "parentLabel": "嘉定"
+          },
+          {
+            "slug": "fengzhuang",
+            "id": "613000268",
+            "label": "丰庄",
+            "parentSlug": "jiading",
+            "parentLabel": "嘉定"
+          },
+          {
+            "slug": "huating",
+            "id": "613000269",
+            "label": "华亭",
+            "parentSlug": "jiading",
+            "parentLabel": "嘉定"
+          },
+          {
+            "slug": "jiadingxincheng",
+            "id": "613000270",
+            "label": "嘉定新城",
+            "parentSlug": "jiading",
+            "parentLabel": "嘉定"
+          },
+          {
+            "slug": "jiadinglaocheng",
+            "id": "613000271",
+            "label": "嘉定老城",
+            "parentSlug": "jiading",
+            "parentLabel": "嘉定"
+          },
+          {
+            "slug": "jiangqiao",
+            "id": "613000272",
+            "label": "江桥",
+            "parentSlug": "jiading",
+            "parentLabel": "嘉定"
+          },
+          {
+            "slug": "juyuanxinqu",
+            "id": "613000273",
+            "label": "菊园新区",
+            "parentSlug": "jiading",
+            "parentLabel": "嘉定"
+          },
+          {
+            "slug": "malu",
+            "id": "613000274",
+            "label": "马陆",
+            "parentSlug": "jiading",
+            "parentLabel": "嘉定"
+          },
+          {
+            "slug": "nanxiang",
+            "id": "613000275",
+            "label": "南翔",
+            "parentSlug": "jiading",
+            "parentLabel": "嘉定"
+          },
+          {
+            "slug": "taicang212",
+            "id": "613000354",
+            "label": "太仓",
+            "parentSlug": "jiading",
+            "parentLabel": "嘉定"
+          },
+          {
+            "slug": "waigang",
+            "id": "613000276",
+            "label": "外冈",
+            "parentSlug": "jiading",
+            "parentLabel": "嘉定"
+          },
+          {
+            "slug": "xuxing",
+            "id": "613000278",
+            "label": "徐行",
+            "parentSlug": "jiading",
+            "parentLabel": "嘉定"
+          },
+          {
+            "slug": "xinchenglu1",
+            "id": "613000389",
+            "label": "新成路",
+            "parentSlug": "jiading",
+            "parentLabel": "嘉定"
+          }
+        ],
+        "chongming": [
+          {
+            "slug": "baozhen",
+            "id": "613000351",
+            "label": "堡镇",
+            "parentSlug": "chongming",
+            "parentLabel": "崇明"
+          },
+          {
+            "slug": "chenjiazhen",
+            "id": "613000357",
+            "label": "陈家镇",
+            "parentSlug": "chongming",
+            "parentLabel": "崇明"
+          },
+          {
+            "slug": "chongmingqita",
+            "id": "613000358",
+            "label": "崇明其它",
+            "parentSlug": "chongming",
+            "parentLabel": "崇明"
+          },
+          {
+            "slug": "chongmingxincheng",
+            "id": "613000359",
+            "label": "崇明新城",
+            "parentSlug": "chongming",
+            "parentLabel": "崇明"
+          },
+          {
+            "slug": "changxingdao21211",
+            "id": "613000360",
+            "label": "长兴岛",
+            "parentSlug": "chongming",
+            "parentLabel": "崇明"
+          },
+          {
+            "slug": "hengshadao",
+            "id": "1100000344",
+            "label": "横沙岛",
+            "parentSlug": "chongming",
+            "parentLabel": "崇明"
+          },
+          {
+            "slug": "qidong1",
+            "id": "613000355",
+            "label": "启东",
+            "parentSlug": "chongming",
+            "parentLabel": "崇明"
+          }
+        ],
+        "fengxian": [
+          {
+            "slug": "fengxianjinhui",
+            "id": "613000255",
+            "label": "奉贤金汇",
+            "parentSlug": "fengxian",
+            "parentLabel": "奉贤"
+          },
+          {
+            "slug": "fengcheng",
+            "id": "613000256",
+            "label": "奉城",
+            "parentSlug": "fengxian",
+            "parentLabel": "奉贤"
+          },
+          {
+            "slug": "haiwan",
+            "id": "613000257",
+            "label": "海湾",
+            "parentSlug": "fengxian",
+            "parentLabel": "奉贤"
+          },
+          {
+            "slug": "nanqiao",
+            "id": "613000258",
+            "label": "南桥",
+            "parentSlug": "fengxian",
+            "parentLabel": "奉贤"
+          },
+          {
+            "slug": "qingcun",
+            "id": "613000259",
+            "label": "青村",
+            "parentSlug": "fengxian",
+            "parentLabel": "奉贤"
+          },
+          {
+            "slug": "situan",
+            "id": "613000260",
+            "label": "四团",
+            "parentSlug": "fengxian",
+            "parentLabel": "奉贤"
+          },
+          {
+            "slug": "xidu",
+            "id": "611101107",
+            "label": "西渡",
+            "parentSlug": "fengxian",
+            "parentLabel": "奉贤"
+          },
+          {
+            "slug": "zhelin",
+            "id": "613000261",
+            "label": "柘林",
+            "parentSlug": "fengxian",
+            "parentLabel": "奉贤"
+          },
+          {
+            "slug": "zhuanghang",
+            "id": "613000262",
+            "label": "庄行",
+            "parentSlug": "fengxian",
+            "parentLabel": "奉贤"
+          }
+        ],
+        "songjiang": [
+          {
+            "slug": "chedun",
+            "id": "613000332",
+            "label": "车墩",
+            "parentSlug": "songjiang",
+            "parentLabel": "松江"
+          },
+          {
+            "slug": "dongjing2",
+            "id": "1100007224",
+            "label": "洞泾",
+            "parentSlug": "songjiang",
+            "parentLabel": "松江"
+          },
+          {
+            "slug": "jiuting",
+            "id": "611100449",
+            "label": "九亭",
+            "parentSlug": "songjiang",
+            "parentLabel": "松江"
+          },
+          {
+            "slug": "maogang",
+            "id": "613000333",
+            "label": "泖港",
+            "parentSlug": "songjiang",
+            "parentLabel": "松江"
+          },
+          {
+            "slug": "sheshan",
+            "id": "611100450",
+            "label": "佘山",
+            "parentSlug": "songjiang",
+            "parentLabel": "松江"
+          },
+          {
+            "slug": "songjiangxincheng",
+            "id": "611100452",
+            "label": "松江新城",
+            "parentSlug": "songjiang",
+            "parentLabel": "松江"
+          },
+          {
+            "slug": "shihudang",
+            "id": "613000335",
+            "label": "石湖荡",
+            "parentSlug": "songjiang",
+            "parentLabel": "松江"
+          },
+          {
+            "slug": "sijing",
+            "id": "613000336",
+            "label": "泗泾",
+            "parentSlug": "songjiang",
+            "parentLabel": "松江"
+          },
+          {
+            "slug": "songjiangdaxuecheng",
+            "id": "613000337",
+            "label": "松江大学城",
+            "parentSlug": "songjiang",
+            "parentLabel": "松江"
+          },
+          {
+            "slug": "songjianglaocheng",
+            "id": "613000338",
+            "label": "松江老城",
+            "parentSlug": "songjiang",
+            "parentLabel": "松江"
+          },
+          {
+            "slug": "xinqiao",
+            "id": "611100454",
+            "label": "新桥",
+            "parentSlug": "songjiang",
+            "parentLabel": "松江"
+          },
+          {
+            "slug": "xinminbieshu",
+            "id": "613000334",
+            "label": "莘闵别墅",
+            "parentSlug": "songjiang",
+            "parentLabel": "松江"
+          },
+          {
+            "slug": "xiaokunshan",
+            "id": "613000339",
+            "label": "小昆山",
+            "parentSlug": "songjiang",
+            "parentLabel": "松江"
+          },
+          {
+            "slug": "xinbang",
+            "id": "613000340",
+            "label": "新浜",
+            "parentSlug": "songjiang",
+            "parentLabel": "松江"
+          },
+          {
+            "slug": "yexie",
+            "id": "613000341",
+            "label": "叶榭",
+            "parentSlug": "songjiang",
+            "parentLabel": "松江"
+          }
+        ],
+        "qingpu": [
+          {
+            "slug": "baihe",
+            "id": "613000323",
+            "label": "白鹤",
+            "parentSlug": "qingpu",
+            "parentLabel": "青浦"
+          },
+          {
+            "slug": "chonggu",
+            "id": "613000330",
+            "label": "重固",
+            "parentSlug": "qingpu",
+            "parentLabel": "青浦"
+          },
+          {
+            "slug": "huaxin",
+            "id": "613000324",
+            "label": "华新",
+            "parentSlug": "qingpu",
+            "parentLabel": "青浦"
+          },
+          {
+            "slug": "jinze",
+            "id": "1100000696",
+            "label": "金泽",
+            "parentSlug": "qingpu",
+            "parentLabel": "青浦"
+          },
+          {
+            "slug": "kunshan1",
+            "id": "613000352",
+            "label": "昆山",
+            "parentSlug": "qingpu",
+            "parentLabel": "青浦"
+          },
+          {
+            "slug": "liantang1",
+            "id": "1100000693",
+            "label": "练塘",
+            "parentSlug": "qingpu",
+            "parentLabel": "青浦"
+          },
+          {
+            "slug": "xiayang",
+            "id": "613000325",
+            "label": "夏阳",
+            "parentSlug": "qingpu",
+            "parentLabel": "青浦"
+          },
+          {
+            "slug": "xianghuaqiao",
+            "id": "613000326",
+            "label": "香花桥",
+            "parentSlug": "qingpu",
+            "parentLabel": "青浦"
+          },
+          {
+            "slug": "xujing",
+            "id": "613000327",
+            "label": "徐泾",
+            "parentSlug": "qingpu",
+            "parentLabel": "青浦"
+          },
+          {
+            "slug": "yingpu",
+            "id": "613000328",
+            "label": "盈浦",
+            "parentSlug": "qingpu",
+            "parentLabel": "青浦"
+          },
+          {
+            "slug": "zhaoxiang",
+            "id": "613000329",
+            "label": "赵巷",
+            "parentSlug": "qingpu",
+            "parentLabel": "青浦"
+          },
+          {
+            "slug": "zhujiajiao",
+            "id": "613000331",
+            "label": "朱家角",
+            "parentSlug": "qingpu",
+            "parentLabel": "青浦"
+          }
+        ]
+      },
+      "flatOptions": [
+        {
+          "slug": "beiwaitan",
+          "id": "611900028",
+          "label": "北外滩",
+          "parentSlug": "jingan",
+          "parentLabel": "静安"
+        },
+        {
+          "slug": "buyecheng",
+          "id": "611900117",
+          "label": "不夜城",
+          "parentSlug": "jingan",
+          "parentLabel": "静安"
+        },
+        {
+          "slug": "caojiadu",
+          "id": "611100418",
+          "label": "曹家渡",
+          "parentSlug": "jingan",
+          "parentLabel": "静安"
+        },
+        {
+          "slug": "daning",
+          "id": "611900116",
+          "label": "大宁",
+          "parentSlug": "jingan",
+          "parentLabel": "静安"
+        },
+        {
+          "slug": "jiangninglu",
+          "id": "611100417",
+          "label": "江宁路",
+          "parentSlug": "jingan",
+          "parentLabel": "静安"
+        },
+        {
+          "slug": "jingansi",
+          "id": "613000289",
+          "label": "静安寺",
+          "parentSlug": "jingan",
+          "parentLabel": "静安"
+        },
+        {
+          "slug": "nanjingxilu",
+          "id": "611100419",
+          "label": "南京西路",
+          "parentSlug": "jingan",
+          "parentLabel": "静安"
+        },
+        {
+          "slug": "pengpu",
+          "id": "611100430",
+          "label": "彭浦",
+          "parentSlug": "jingan",
+          "parentLabel": "静安"
+        },
+        {
+          "slug": "suhewan",
+          "id": "1100007605",
+          "label": "苏河湾",
+          "parentSlug": "jingan",
+          "parentLabel": "静安"
+        },
+        {
+          "slug": "xizangbeilu",
+          "id": "611900118",
+          "label": "西藏北路",
+          "parentSlug": "jingan",
+          "parentLabel": "静安"
+        },
+        {
+          "slug": "yonghe",
+          "id": "611900121",
+          "label": "永和",
+          "parentSlug": "jingan",
+          "parentLabel": "静安"
+        },
+        {
+          "slug": "yangcheng",
+          "id": "613000348",
+          "label": "阳城",
+          "parentSlug": "jingan",
+          "parentLabel": "静安"
+        },
+        {
+          "slug": "zhabeigongyuan",
+          "id": "613000349",
+          "label": "闸北公园",
+          "parentSlug": "jingan",
+          "parentLabel": "静安"
+        },
+        {
+          "slug": "changqiao",
+          "id": "611900103",
+          "label": "长桥",
+          "parentSlug": "xuhui",
+          "parentLabel": "徐汇"
+        },
+        {
+          "slug": "caohejing",
+          "id": "613000342",
+          "label": "漕河泾",
+          "parentSlug": "xuhui",
+          "parentLabel": "徐汇"
+        },
+        {
+          "slug": "huajing",
+          "id": "611100124",
+          "label": "华泾",
+          "parentSlug": "xuhui",
+          "parentLabel": "徐汇"
+        },
+        {
+          "slug": "hengshanlu",
+          "id": "611900097",
+          "label": "衡山路",
+          "parentSlug": "xuhui",
+          "parentLabel": "徐汇"
+        },
+        {
+          "slug": "huadongligong",
+          "id": "611900104",
+          "label": "华东理工",
+          "parentSlug": "xuhui",
+          "parentLabel": "徐汇"
+        },
+        {
+          "slug": "jinhui",
+          "id": "611900067",
+          "label": "金汇",
+          "parentSlug": "xuhui",
+          "parentLabel": "徐汇"
+        },
+        {
+          "slug": "jianguoxilu",
+          "id": "611900099",
+          "label": "建国西路",
+          "parentSlug": "xuhui",
+          "parentLabel": "徐汇"
+        },
+        {
+          "slug": "kangjian",
+          "id": "613000343",
+          "label": "康健",
+          "parentSlug": "xuhui",
+          "parentLabel": "徐汇"
+        },
+        {
+          "slug": "longhua",
+          "id": "611100125",
+          "label": "龙华",
+          "parentSlug": "xuhui",
+          "parentLabel": "徐汇"
+        },
+        {
+          "slug": "shanghainanzhan",
+          "id": "613000344",
+          "label": "上海南站",
+          "parentSlug": "xuhui",
+          "parentLabel": "徐汇"
+        },
+        {
+          "slug": "tianlin",
+          "id": "611100127",
+          "label": "田林",
+          "parentSlug": "xuhui",
+          "parentLabel": "徐汇"
+        },
+        {
+          "slug": "wantiguan",
+          "id": "611900100",
+          "label": "万体馆",
+          "parentSlug": "xuhui",
+          "parentLabel": "徐汇"
+        },
+        {
+          "slug": "xuhuibinjiang",
+          "id": "611100128",
+          "label": "徐汇滨江",
+          "parentSlug": "xuhui",
+          "parentLabel": "徐汇"
+        },
+        {
+          "slug": "xietulu",
+          "id": "611900098",
+          "label": "斜土路",
+          "parentSlug": "xuhui",
+          "parentLabel": "徐汇"
+        },
+        {
+          "slug": "xujiahui",
+          "id": "613000345",
+          "label": "徐家汇",
+          "parentSlug": "xuhui",
+          "parentLabel": "徐汇"
+        },
+        {
+          "slug": "zhiwuyuan",
+          "id": "611900102",
+          "label": "植物园",
+          "parentSlug": "xuhui",
+          "parentLabel": "徐汇"
+        },
+        {
+          "slug": "beiwaitan",
+          "id": "611900028",
+          "label": "北外滩",
+          "parentSlug": "huangpu",
+          "parentLabel": "黄浦"
+        },
+        {
+          "slug": "dapuqiao",
+          "id": "611100441",
+          "label": "打浦桥",
+          "parentSlug": "huangpu",
+          "parentLabel": "黄浦"
+        },
+        {
+          "slug": "dongjiadu",
+          "id": "611900038",
+          "label": "董家渡",
+          "parentSlug": "huangpu",
+          "parentLabel": "黄浦"
+        },
+        {
+          "slug": "huaihaizhonglu",
+          "id": "611900062",
+          "label": "淮海中路",
+          "parentSlug": "huangpu",
+          "parentLabel": "黄浦"
+        },
+        {
+          "slug": "huangpubinjiang",
+          "id": "613000265",
+          "label": "黄浦滨江",
+          "parentSlug": "huangpu",
+          "parentLabel": "黄浦"
+        },
+        {
+          "slug": "laoximen",
+          "id": "611100456",
+          "label": "老西门",
+          "parentSlug": "huangpu",
+          "parentLabel": "黄浦"
+        },
+        {
+          "slug": "nanjingdonglu",
+          "id": "611900036",
+          "label": "南京东路",
+          "parentSlug": "huangpu",
+          "parentLabel": "黄浦"
+        },
+        {
+          "slug": "penglaigongyuan",
+          "id": "611900037",
+          "label": "蓬莱公园",
+          "parentSlug": "huangpu",
+          "parentLabel": "黄浦"
+        },
+        {
+          "slug": "renminguangchang",
+          "id": "611100457",
+          "label": "人民广场",
+          "parentSlug": "huangpu",
+          "parentLabel": "黄浦"
+        },
+        {
+          "slug": "shibobinjiang",
+          "id": "611900063",
+          "label": "世博滨江",
+          "parentSlug": "huangpu",
+          "parentLabel": "黄浦"
+        },
+        {
+          "slug": "wuliqiao",
+          "id": "611900061",
+          "label": "五里桥",
+          "parentSlug": "huangpu",
+          "parentLabel": "黄浦"
+        },
+        {
+          "slug": "xintiandi",
+          "id": "611900060",
+          "label": "新天地",
+          "parentSlug": "huangpu",
+          "parentLabel": "黄浦"
+        },
+        {
+          "slug": "yuyuan",
+          "id": "611900039",
+          "label": "豫园",
+          "parentSlug": "huangpu",
+          "parentLabel": "黄浦"
+        },
+        {
+          "slug": "beixinjing",
+          "id": "611900013",
+          "label": "北新泾",
+          "parentSlug": "changning",
+          "parentLabel": "长宁"
+        },
+        {
+          "slug": "caojiadu",
+          "id": "611100418",
+          "label": "曹家渡",
+          "parentSlug": "changning",
+          "parentLabel": "长宁"
+        },
+        {
+          "slug": "gubei",
+          "id": "611100407",
+          "label": "古北",
+          "parentSlug": "changning",
+          "parentLabel": "长宁"
+        },
+        {
+          "slug": "hongqiao1",
+          "id": "611100408",
+          "label": "虹桥",
+          "parentSlug": "changning",
+          "parentLabel": "长宁"
+        },
+        {
+          "slug": "hanghua",
+          "id": "611900069",
+          "label": "航华",
+          "parentSlug": "changning",
+          "parentLabel": "长宁"
+        },
+        {
+          "slug": "tianshan",
+          "id": "611900011",
+          "label": "天山",
+          "parentSlug": "changning",
+          "parentLabel": "长宁"
+        },
+        {
+          "slug": "xijiao",
+          "id": "611100409",
+          "label": "西郊",
+          "parentSlug": "changning",
+          "parentLabel": "长宁"
+        },
+        {
+          "slug": "xinhualu",
+          "id": "611100410",
+          "label": "新华路",
+          "parentSlug": "changning",
+          "parentLabel": "长宁"
+        },
+        {
+          "slug": "xianxia",
+          "id": "613000350",
+          "label": "仙霞",
+          "parentSlug": "changning",
+          "parentLabel": "长宁"
+        },
+        {
+          "slug": "zhongshangongyuan",
+          "id": "611100411",
+          "label": "中山公园",
+          "parentSlug": "changning",
+          "parentLabel": "长宁"
+        },
+        {
+          "slug": "zhenninglu",
+          "id": "611900014",
+          "label": "镇宁路",
+          "parentSlug": "changning",
+          "parentLabel": "长宁"
+        },
+        {
+          "slug": "caoyang",
+          "id": "611100369",
+          "label": "曹杨",
+          "parentSlug": "putuo",
+          "parentLabel": "普陀"
+        },
+        {
+          "slug": "changzheng",
+          "id": "611100370",
+          "label": "长征",
+          "parentSlug": "putuo",
+          "parentLabel": "普陀"
+        },
+        {
+          "slug": "changfeng1",
+          "id": "613000319",
+          "label": "长风",
+          "parentSlug": "putuo",
+          "parentLabel": "普陀"
+        },
+        {
+          "slug": "changshoulu",
+          "id": "613000320",
+          "label": "长寿路",
+          "parentSlug": "putuo",
+          "parentLabel": "普陀"
+        },
+        {
+          "slug": "guangxin",
+          "id": "611100415",
+          "label": "光新",
+          "parentSlug": "putuo",
+          "parentLabel": "普陀"
+        },
+        {
+          "slug": "ganquanyichuan",
+          "id": "613000318",
+          "label": "甘泉宜川",
+          "parentSlug": "putuo",
+          "parentLabel": "普陀"
+        },
+        {
+          "slug": "taopu",
+          "id": "611100373",
+          "label": "桃浦",
+          "parentSlug": "putuo",
+          "parentLabel": "普陀"
+        },
+        {
+          "slug": "wanli",
+          "id": "611100375",
+          "label": "万里",
+          "parentSlug": "putuo",
+          "parentLabel": "普陀"
+        },
+        {
+          "slug": "wuning",
+          "id": "611100416",
+          "label": "武宁",
+          "parentSlug": "putuo",
+          "parentLabel": "普陀"
+        },
+        {
+          "slug": "zhenru",
+          "id": "611100371",
+          "label": "真如",
+          "parentSlug": "putuo",
+          "parentLabel": "普陀"
+        },
+        {
+          "slug": "zhenguang",
+          "id": "613000321",
+          "label": "真光",
+          "parentSlug": "putuo",
+          "parentLabel": "普陀"
+        },
+        {
+          "slug": "zhongyuanliangwancheng",
+          "id": "613000322",
+          "label": "中远两湾城",
+          "parentSlug": "putuo",
+          "parentLabel": "普陀"
+        },
+        {
+          "slug": "beicai",
+          "id": "611900123",
+          "label": "北蔡",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "biyun",
+          "id": "613000290",
+          "label": "碧云",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "caolu",
+          "id": "613000291",
+          "label": "曹路",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "chuansha",
+          "id": "613000292",
+          "label": "川沙",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "datuanzhen",
+          "id": "613000293",
+          "label": "大团镇",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "gaodong",
+          "id": "613000294",
+          "label": "高东",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "gaohang",
+          "id": "613000295",
+          "label": "高行",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "geqing",
+          "id": "613000297",
+          "label": "合庆",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "huamu",
+          "id": "611900130",
+          "label": "花木",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "hangtou",
+          "id": "613000296",
+          "label": "航头",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "huinan",
+          "id": "613000298",
+          "label": "惠南",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "jinqiao",
+          "id": "611900131",
+          "label": "金桥",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "jinyang",
+          "id": "613000299",
+          "label": "金杨",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "kangqiao",
+          "id": "613000300",
+          "label": "康桥",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "lujiazui",
+          "id": "611900136",
+          "label": "陆家嘴",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "laogangzhen",
+          "id": "613000301",
+          "label": "老港镇",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "lianyang",
+          "id": "613000302",
+          "label": "联洋",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "lingangxincheng",
+          "id": "613000303",
+          "label": "临港新城",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "meiyuan1",
+          "id": "1100006286",
+          "label": "梅园",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "nanmatou",
+          "id": "613000304",
+          "label": "南码头",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "nichengzhen",
+          "id": "613000305",
+          "label": "泥城镇",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "sanlin",
+          "id": "611900138",
+          "label": "三林",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "shibo",
+          "id": "611900139",
+          "label": "世博",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "shuyuanzhen",
+          "id": "613000307",
+          "label": "书院镇",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "tangqiao",
+          "id": "611900141",
+          "label": "塘桥",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "tangzhen",
+          "id": "613000308",
+          "label": "唐镇",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "waigaoqiao",
+          "id": "611900143",
+          "label": "外高桥",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "wanxiangzhen",
+          "id": "613000309",
+          "label": "万祥镇",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "weifang",
+          "id": "613000310",
+          "label": "潍坊",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "xinchang",
+          "id": "613000311",
+          "label": "新场",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "xuanqiao",
+          "id": "613000312",
+          "label": "宣桥",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "yuqiao1",
+          "id": "611101108",
+          "label": "御桥",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "yangdong",
+          "id": "613000313",
+          "label": "杨东",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "yangjing",
+          "id": "613000314",
+          "label": "洋泾",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "yuanshen",
+          "id": "613000315",
+          "label": "源深",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "yangsiqiantan",
+          "id": "1100006285",
+          "label": "杨思前滩",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "zhangjiang",
+          "id": "611900148",
+          "label": "张江",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "zhoupu",
+          "id": "613000316",
+          "label": "周浦",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "zhuqiao",
+          "id": "613000317",
+          "label": "祝桥",
+          "parentSlug": "pudong",
+          "parentLabel": "浦东"
+        },
+        {
+          "slug": "dahua",
+          "id": "611100420",
+          "label": "大华",
+          "parentSlug": "baoshan",
+          "parentLabel": "宝山"
+        },
+        {
+          "slug": "dachangzhen",
+          "id": "613000245",
+          "label": "大场镇",
+          "parentSlug": "baoshan",
+          "parentLabel": "宝山"
+        },
+        {
+          "slug": "gongkang",
+          "id": "611900003",
+          "label": "共康",
+          "parentSlug": "baoshan",
+          "parentLabel": "宝山"
+        },
+        {
+          "slug": "gongfu",
+          "id": "611900008",
+          "label": "共富",
+          "parentSlug": "baoshan",
+          "parentLabel": "宝山"
+        },
+        {
+          "slug": "gaojing",
+          "id": "613000246",
+          "label": "高境",
+          "parentSlug": "baoshan",
+          "parentLabel": "宝山"
+        },
+        {
+          "slug": "gucun",
+          "id": "613000247",
+          "label": "顾村",
+          "parentSlug": "baoshan",
+          "parentLabel": "宝山"
+        },
+        {
+          "slug": "luodian",
+          "id": "613000248",
+          "label": "罗店",
+          "parentSlug": "baoshan",
+          "parentLabel": "宝山"
+        },
+        {
+          "slug": "luojing",
+          "id": "613000249",
+          "label": "罗泾",
+          "parentSlug": "baoshan",
+          "parentLabel": "宝山"
+        },
+        {
+          "slug": "songbao",
+          "id": "611100426",
+          "label": "淞宝",
+          "parentSlug": "baoshan",
+          "parentLabel": "宝山"
+        },
+        {
+          "slug": "shangda",
+          "id": "613000250",
+          "label": "上大",
+          "parentSlug": "baoshan",
+          "parentLabel": "宝山"
+        },
+        {
+          "slug": "songnan",
+          "id": "613000251",
+          "label": "淞南",
+          "parentSlug": "baoshan",
+          "parentLabel": "宝山"
+        },
+        {
+          "slug": "tonghe",
+          "id": "611900001",
+          "label": "通河",
+          "parentSlug": "baoshan",
+          "parentLabel": "宝山"
+        },
+        {
+          "slug": "yanghang",
+          "id": "613000252",
+          "label": "杨行",
+          "parentSlug": "baoshan",
+          "parentLabel": "宝山"
+        },
+        {
+          "slug": "yuepu",
+          "id": "613000253",
+          "label": "月浦",
+          "parentSlug": "baoshan",
+          "parentLabel": "宝山"
+        },
+        {
+          "slug": "zhangmiao",
+          "id": "613000254",
+          "label": "张庙",
+          "parentSlug": "baoshan",
+          "parentLabel": "宝山"
+        },
+        {
+          "slug": "beiwaitan",
+          "id": "611900028",
+          "label": "北外滩",
+          "parentSlug": "hongkou",
+          "parentLabel": "虹口"
+        },
+        {
+          "slug": "jiangwanzhen",
+          "id": "613000263",
+          "label": "江湾镇",
+          "parentSlug": "hongkou",
+          "parentLabel": "虹口"
+        },
+        {
+          "slug": "liangcheng",
+          "id": "611900029",
+          "label": "凉城",
+          "parentSlug": "hongkou",
+          "parentLabel": "虹口"
+        },
+        {
+          "slug": "linpinglu",
+          "id": "611900031",
+          "label": "临平路",
+          "parentSlug": "hongkou",
+          "parentLabel": "虹口"
+        },
+        {
+          "slug": "luxungongyuan",
+          "id": "613000264",
+          "label": "鲁迅公园",
+          "parentSlug": "hongkou",
+          "parentLabel": "虹口"
+        },
+        {
+          "slug": "quyang",
+          "id": "611900033",
+          "label": "曲阳",
+          "parentSlug": "hongkou",
+          "parentLabel": "虹口"
+        },
+        {
+          "slug": "sichuanbeilu",
+          "id": "611900030",
+          "label": "四川北路",
+          "parentSlug": "hongkou",
+          "parentLabel": "虹口"
+        },
+        {
+          "slug": "anshan",
+          "id": "611900108",
+          "label": "鞍山",
+          "parentSlug": "yangpu",
+          "parentLabel": "杨浦"
+        },
+        {
+          "slug": "dongwaitan",
+          "id": "611900106",
+          "label": "东外滩",
+          "parentSlug": "yangpu",
+          "parentLabel": "杨浦"
+        },
+        {
+          "slug": "huangxinggongyuan",
+          "id": "611900107",
+          "label": "黄兴公园",
+          "parentSlug": "yangpu",
+          "parentLabel": "杨浦"
+        },
+        {
+          "slug": "kongjianglu",
+          "id": "613000346",
+          "label": "控江路",
+          "parentSlug": "yangpu",
+          "parentLabel": "杨浦"
+        },
+        {
+          "slug": "wujiaochang",
+          "id": "611900110",
+          "label": "五角场",
+          "parentSlug": "yangpu",
+          "parentLabel": "杨浦"
+        },
+        {
+          "slug": "xinjiangwancheng",
+          "id": "611900111",
+          "label": "新江湾城",
+          "parentSlug": "yangpu",
+          "parentLabel": "杨浦"
+        },
+        {
+          "slug": "zhoujiazuilu",
+          "id": "611900109",
+          "label": "周家嘴路",
+          "parentSlug": "yangpu",
+          "parentLabel": "杨浦"
+        },
+        {
+          "slug": "zhongyuan1",
+          "id": "611900112",
+          "label": "中原",
+          "parentSlug": "yangpu",
+          "parentLabel": "杨浦"
+        },
+        {
+          "slug": "chunshen",
+          "id": "611900064",
+          "label": "春申",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "caohejing",
+          "id": "613000342",
+          "label": "漕河泾",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "gumei",
+          "id": "611900068",
+          "label": "古美",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "huacao",
+          "id": "611100113",
+          "label": "华漕",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "hanghua",
+          "id": "611900069",
+          "label": "航华",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "jinhongqiao",
+          "id": "611100115",
+          "label": "金虹桥",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "jinhui",
+          "id": "611900067",
+          "label": "金汇",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "jinganxincheng",
+          "id": "611900071",
+          "label": "静安新城",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "laominhang",
+          "id": "611900065",
+          "label": "老闵行",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "longbai",
+          "id": "611900073",
+          "label": "龙柏",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "maqiao",
+          "id": "611100116",
+          "label": "马桥",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "meilong",
+          "id": "611900070",
+          "label": "梅陇",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "minpu",
+          "id": "1100006843",
+          "label": "闵浦",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "pujiang1",
+          "id": "611100118",
+          "label": "浦江",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "qibao",
+          "id": "611100119",
+          "label": "七宝",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "wujing",
+          "id": "611100120",
+          "label": "吴泾",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "xinzhuangbeiguangchang",
+          "id": "611100121",
+          "label": "莘庄北广场",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "xinminbieshu",
+          "id": "613000334",
+          "label": "莘闵别墅",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "xinzhuangnanguangchang",
+          "id": "1100007475",
+          "label": "莘庄南广场",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "zhuanqiao",
+          "id": "611100122",
+          "label": "颛桥",
+          "parentSlug": "minhang",
+          "parentLabel": "闵行"
+        },
+        {
+          "slug": "jinshanxincheng",
+          "id": "613000280",
+          "label": "金山新城",
+          "parentSlug": "jinshan",
+          "parentLabel": "金山"
+        },
+        {
+          "slug": "jiaxing",
+          "id": "1100001087",
+          "label": "嘉兴",
+          "parentSlug": "jinshan",
+          "parentLabel": "金山"
+        },
+        {
+          "slug": "shanghaizhoubian2",
+          "id": "613000394",
+          "label": "上海周边",
+          "parentSlug": "jinshan",
+          "parentLabel": "金山"
+        },
+        {
+          "slug": "anting",
+          "id": "613000267",
+          "label": "安亭",
+          "parentSlug": "jiading",
+          "parentLabel": "嘉定"
+        },
+        {
+          "slug": "changzheng",
+          "id": "611100370",
+          "label": "长征",
+          "parentSlug": "jiading",
+          "parentLabel": "嘉定"
+        },
+        {
+          "slug": "fengzhuang",
+          "id": "613000268",
+          "label": "丰庄",
+          "parentSlug": "jiading",
+          "parentLabel": "嘉定"
+        },
+        {
+          "slug": "huating",
+          "id": "613000269",
+          "label": "华亭",
+          "parentSlug": "jiading",
+          "parentLabel": "嘉定"
+        },
+        {
+          "slug": "jiadingxincheng",
+          "id": "613000270",
+          "label": "嘉定新城",
+          "parentSlug": "jiading",
+          "parentLabel": "嘉定"
+        },
+        {
+          "slug": "jiadinglaocheng",
+          "id": "613000271",
+          "label": "嘉定老城",
+          "parentSlug": "jiading",
+          "parentLabel": "嘉定"
+        },
+        {
+          "slug": "jiangqiao",
+          "id": "613000272",
+          "label": "江桥",
+          "parentSlug": "jiading",
+          "parentLabel": "嘉定"
+        },
+        {
+          "slug": "juyuanxinqu",
+          "id": "613000273",
+          "label": "菊园新区",
+          "parentSlug": "jiading",
+          "parentLabel": "嘉定"
+        },
+        {
+          "slug": "malu",
+          "id": "613000274",
+          "label": "马陆",
+          "parentSlug": "jiading",
+          "parentLabel": "嘉定"
+        },
+        {
+          "slug": "nanxiang",
+          "id": "613000275",
+          "label": "南翔",
+          "parentSlug": "jiading",
+          "parentLabel": "嘉定"
+        },
+        {
+          "slug": "taicang212",
+          "id": "613000354",
+          "label": "太仓",
+          "parentSlug": "jiading",
+          "parentLabel": "嘉定"
+        },
+        {
+          "slug": "waigang",
+          "id": "613000276",
+          "label": "外冈",
+          "parentSlug": "jiading",
+          "parentLabel": "嘉定"
+        },
+        {
+          "slug": "xuxing",
+          "id": "613000278",
+          "label": "徐行",
+          "parentSlug": "jiading",
+          "parentLabel": "嘉定"
+        },
+        {
+          "slug": "xinchenglu1",
+          "id": "613000389",
+          "label": "新成路",
+          "parentSlug": "jiading",
+          "parentLabel": "嘉定"
+        },
+        {
+          "slug": "baozhen",
+          "id": "613000351",
+          "label": "堡镇",
+          "parentSlug": "chongming",
+          "parentLabel": "崇明"
+        },
+        {
+          "slug": "chenjiazhen",
+          "id": "613000357",
+          "label": "陈家镇",
+          "parentSlug": "chongming",
+          "parentLabel": "崇明"
+        },
+        {
+          "slug": "chongmingqita",
+          "id": "613000358",
+          "label": "崇明其它",
+          "parentSlug": "chongming",
+          "parentLabel": "崇明"
+        },
+        {
+          "slug": "chongmingxincheng",
+          "id": "613000359",
+          "label": "崇明新城",
+          "parentSlug": "chongming",
+          "parentLabel": "崇明"
+        },
+        {
+          "slug": "changxingdao21211",
+          "id": "613000360",
+          "label": "长兴岛",
+          "parentSlug": "chongming",
+          "parentLabel": "崇明"
+        },
+        {
+          "slug": "hengshadao",
+          "id": "1100000344",
+          "label": "横沙岛",
+          "parentSlug": "chongming",
+          "parentLabel": "崇明"
+        },
+        {
+          "slug": "qidong1",
+          "id": "613000355",
+          "label": "启东",
+          "parentSlug": "chongming",
+          "parentLabel": "崇明"
+        },
+        {
+          "slug": "fengxianjinhui",
+          "id": "613000255",
+          "label": "奉贤金汇",
+          "parentSlug": "fengxian",
+          "parentLabel": "奉贤"
+        },
+        {
+          "slug": "fengcheng",
+          "id": "613000256",
+          "label": "奉城",
+          "parentSlug": "fengxian",
+          "parentLabel": "奉贤"
+        },
+        {
+          "slug": "haiwan",
+          "id": "613000257",
+          "label": "海湾",
+          "parentSlug": "fengxian",
+          "parentLabel": "奉贤"
+        },
+        {
+          "slug": "nanqiao",
+          "id": "613000258",
+          "label": "南桥",
+          "parentSlug": "fengxian",
+          "parentLabel": "奉贤"
+        },
+        {
+          "slug": "qingcun",
+          "id": "613000259",
+          "label": "青村",
+          "parentSlug": "fengxian",
+          "parentLabel": "奉贤"
+        },
+        {
+          "slug": "situan",
+          "id": "613000260",
+          "label": "四团",
+          "parentSlug": "fengxian",
+          "parentLabel": "奉贤"
+        },
+        {
+          "slug": "xidu",
+          "id": "611101107",
+          "label": "西渡",
+          "parentSlug": "fengxian",
+          "parentLabel": "奉贤"
+        },
+        {
+          "slug": "zhelin",
+          "id": "613000261",
+          "label": "柘林",
+          "parentSlug": "fengxian",
+          "parentLabel": "奉贤"
+        },
+        {
+          "slug": "zhuanghang",
+          "id": "613000262",
+          "label": "庄行",
+          "parentSlug": "fengxian",
+          "parentLabel": "奉贤"
+        },
+        {
+          "slug": "chedun",
+          "id": "613000332",
+          "label": "车墩",
+          "parentSlug": "songjiang",
+          "parentLabel": "松江"
+        },
+        {
+          "slug": "dongjing2",
+          "id": "1100007224",
+          "label": "洞泾",
+          "parentSlug": "songjiang",
+          "parentLabel": "松江"
+        },
+        {
+          "slug": "jiuting",
+          "id": "611100449",
+          "label": "九亭",
+          "parentSlug": "songjiang",
+          "parentLabel": "松江"
+        },
+        {
+          "slug": "maogang",
+          "id": "613000333",
+          "label": "泖港",
+          "parentSlug": "songjiang",
+          "parentLabel": "松江"
+        },
+        {
+          "slug": "sheshan",
+          "id": "611100450",
+          "label": "佘山",
+          "parentSlug": "songjiang",
+          "parentLabel": "松江"
+        },
+        {
+          "slug": "songjiangxincheng",
+          "id": "611100452",
+          "label": "松江新城",
+          "parentSlug": "songjiang",
+          "parentLabel": "松江"
+        },
+        {
+          "slug": "shihudang",
+          "id": "613000335",
+          "label": "石湖荡",
+          "parentSlug": "songjiang",
+          "parentLabel": "松江"
+        },
+        {
+          "slug": "sijing",
+          "id": "613000336",
+          "label": "泗泾",
+          "parentSlug": "songjiang",
+          "parentLabel": "松江"
+        },
+        {
+          "slug": "songjiangdaxuecheng",
+          "id": "613000337",
+          "label": "松江大学城",
+          "parentSlug": "songjiang",
+          "parentLabel": "松江"
+        },
+        {
+          "slug": "songjianglaocheng",
+          "id": "613000338",
+          "label": "松江老城",
+          "parentSlug": "songjiang",
+          "parentLabel": "松江"
+        },
+        {
+          "slug": "xinqiao",
+          "id": "611100454",
+          "label": "新桥",
+          "parentSlug": "songjiang",
+          "parentLabel": "松江"
+        },
+        {
+          "slug": "xinminbieshu",
+          "id": "613000334",
+          "label": "莘闵别墅",
+          "parentSlug": "songjiang",
+          "parentLabel": "松江"
+        },
+        {
+          "slug": "xiaokunshan",
+          "id": "613000339",
+          "label": "小昆山",
+          "parentSlug": "songjiang",
+          "parentLabel": "松江"
+        },
+        {
+          "slug": "xinbang",
+          "id": "613000340",
+          "label": "新浜",
+          "parentSlug": "songjiang",
+          "parentLabel": "松江"
+        },
+        {
+          "slug": "yexie",
+          "id": "613000341",
+          "label": "叶榭",
+          "parentSlug": "songjiang",
+          "parentLabel": "松江"
+        },
+        {
+          "slug": "baihe",
+          "id": "613000323",
+          "label": "白鹤",
+          "parentSlug": "qingpu",
+          "parentLabel": "青浦"
+        },
+        {
+          "slug": "chonggu",
+          "id": "613000330",
+          "label": "重固",
+          "parentSlug": "qingpu",
+          "parentLabel": "青浦"
+        },
+        {
+          "slug": "huaxin",
+          "id": "613000324",
+          "label": "华新",
+          "parentSlug": "qingpu",
+          "parentLabel": "青浦"
+        },
+        {
+          "slug": "jinze",
+          "id": "1100000696",
+          "label": "金泽",
+          "parentSlug": "qingpu",
+          "parentLabel": "青浦"
+        },
+        {
+          "slug": "kunshan1",
+          "id": "613000352",
+          "label": "昆山",
+          "parentSlug": "qingpu",
+          "parentLabel": "青浦"
+        },
+        {
+          "slug": "liantang1",
+          "id": "1100000693",
+          "label": "练塘",
+          "parentSlug": "qingpu",
+          "parentLabel": "青浦"
+        },
+        {
+          "slug": "xiayang",
+          "id": "613000325",
+          "label": "夏阳",
+          "parentSlug": "qingpu",
+          "parentLabel": "青浦"
+        },
+        {
+          "slug": "xianghuaqiao",
+          "id": "613000326",
+          "label": "香花桥",
+          "parentSlug": "qingpu",
+          "parentLabel": "青浦"
+        },
+        {
+          "slug": "xujing",
+          "id": "613000327",
+          "label": "徐泾",
+          "parentSlug": "qingpu",
+          "parentLabel": "青浦"
+        },
+        {
+          "slug": "yingpu",
+          "id": "613000328",
+          "label": "盈浦",
+          "parentSlug": "qingpu",
+          "parentLabel": "青浦"
+        },
+        {
+          "slug": "zhaoxiang",
+          "id": "613000329",
+          "label": "赵巷",
+          "parentSlug": "qingpu",
+          "parentLabel": "青浦"
+        },
+        {
+          "slug": "zhujiajiao",
+          "id": "613000331",
+          "label": "朱家角",
+          "parentSlug": "qingpu",
+          "parentLabel": "青浦"
+        }
+      ]
+    }
+  },
+  "recommendedPresets": {
+    "xuhuiFamilyRental": {
+      "label": "徐汇家庭租房：整租、三居及以上、10000以内、有电梯",
+      "district": "xuhui",
+      "tokens": [
+        "rt200600000001",
+        "l2",
+        "l3",
+        "brp0erp10000",
+        "ie1"
+      ],
+      "optionalTokens": [
+        "f100500000003",
+        "rmp2",
+        "ra4",
+        "ra5"
+      ],
+      "url": "https://sh.zu.ke.com/zufang/xuhui/rt200600000001l2l3brp0erp10000ie1/?showMore=1"
+    },
+    "xuhuiFamilyRentalStrict": {
+      "label": "徐汇家庭租房：整租、三居及以上、100平以上、10000以内、有电梯、南向、年租",
+      "district": "xuhui",
+      "tokens": [
+        "rt200600000001",
+        "l2",
+        "l3",
+        "brp0erp10000",
+        "ra4",
+        "ra5",
+        "ie1",
+        "f100500000003",
+        "rmp2"
+      ],
+      "url": "https://sh.zu.ke.com/zufang/xuhui/rt200600000001l2l3brp0erp10000ra4ra5ie1f100500000003rmp2/?showMore=1",
+      "note": "面积使用 ra4ra5，表示 100-120 平方米或 120 平方米以上。"
+    }
+  },
+  "sourceNotes": [
+    "Confirmed filters were extracted from https://sh.zu.ke.com/zufang/?showMore=1 and https://m.ke.com/chuzu/sh/zufang/?showMore=1 on 2026-05-08.",
+    "The exact area bucket labels for ra1-ra5 were not present in fetched HTML; they are stored with sourceConfidence=inferred.",
+    "Do not combine preset price token rp* with custom price token brp*erp* unless intentionally widening or testing Beike behavior.",
+    "Bizcircle filters were extracted from https://m.ke.com/chuzu/aj/config/filter?city_id=310000 on 2026-05-08."
+  ]
+}
