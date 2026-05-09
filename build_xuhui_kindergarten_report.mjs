@@ -8,6 +8,15 @@ const pdfSource = "本地PDF：/Users/caofengyang/Downloads/徐汇区幼儿园�
 const publicListSource = "上海本地宝《上海市徐汇区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://m.sh.bendibao.com/edu/284155.html";
 const privateListSource = "上海本地宝《上海市徐汇区民办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284155_2.shtm";
 const planSource = "上海本地宝《2026徐汇区幼儿园招生对口地段及招生计划班级数》，2026-04-15：https://m.sh.bendibao.com/edu/305291.html";
+const minhangPublicListSource = "上海本地宝《上海市闵行区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200.shtm";
+const minhangPrivateListSource = "上海本地宝《上海市闵行区民办幼儿园名单查询》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200_2.shtm";
+const pudongPublicListSource = "上海本地宝《浦东新区幼儿园名单+电话查询》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284151.shtm";
+const pudongPrivateListSource = "上海本地宝《浦东新区民办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284151_2.shtm";
+const shanghaiAdmissionPolicySource = "上海市教委《上海市教育委员会关于做好2026年上海市学前教育阶段适龄幼儿入园工作的通知》，2026-04-09：https://edu.sh.gov.cn/xxgk2_zdgz_rxgkyzs_01/20260409/9a3caeed9a0e41c898149e46af9d9203.html";
+const xuhuiOfficial2026Source = "上海市人民政府/徐汇区教育局《2026年徐汇区幼儿园招生工作方案》，2026-04-15：https://www.shanghai.gov.cn/xhqxqjy/20260421/c83b6efb6b4c43cb9071399f40215383.html";
+const xuhuiOfficial2025Source = "上海市人民政府/徐汇区教育局《2025年徐汇区幼儿园招生工作方案》，2025-04-15：https://www.shanghai.gov.cn/xhqxqjy/20250417/85cd0238c43d49d5ae72cfbe65544a0b.html";
+const minhangAdmissionPolicySource = "上观新闻/今日闵行《2026年闵行区学前教育阶段适龄幼儿入园工作各类问题解答》，2026-04-15：https://www.shobserver.cn/sgh/detail?id=1735182";
+const pudongAdmissionPolicySource = "浦东新区人民政府《浦东新区教育局关于2026年本区学前教育阶段适龄幼儿入园工作的实施方案》，2026-04-15：https://www.pudong.gov.cn/zwgk/xqjy-jyjzdgz/2026/105/354450.html";
 
 const schools = [
   { id: 1, name: "襄阳南路第一幼儿园", area: "衡复/湖南", toddler: "3", small: 4, committee: "慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中" },
@@ -159,6 +168,14 @@ try {
   beikeRentalSchema = JSON.parse(await fs.readFile(beikeRentalSchemaPath, "utf8"));
 } catch {
   beikeRentalSchema = {};
+}
+
+const districtLandingProfilesPath = path.join(process.cwd(), "data", "district_landing_profiles.json");
+let districtLandingProfiles = { profiles: [] };
+try {
+  districtLandingProfiles = JSON.parse(await fs.readFile(districtLandingProfilesPath, "utf8"));
+} catch {
+  districtLandingProfiles = { profiles: [] };
 }
 
 const amapItemKey = ({ nature, name, campus, address }) => [nature, name, campus, address].join("|");
@@ -345,9 +362,29 @@ const privateCampusRows = [
   { name: "吉的堡新汇幼儿园", level: "二级", address: "康健小区虹漕南路百花街18号、6号", phone: "54183331" },
 ];
 
+const externalCampusRows = [
+  { district: "闵行", name: "上海市闵行区莘庄幼儿园", campus: "芒市分园", nature: "公办", level: "示范园", category: "公办", area: "闵行/春申", address: "春申路3799弄100支弄84号", phone: "54152815", source: minhangPublicListSource, boardSlug: "chunshen" },
+  { district: "闵行", name: "上海市闵行区莘庄幼儿园", campus: "平阳分园", nature: "公办", level: "示范园", category: "公办", area: "闵行/古美", address: "古美西路628弄173号", phone: "54950008", source: minhangPublicListSource, boardSlug: "gumei" },
+  { district: "闵行", name: "上海市闵行区七宝幼儿园", campus: "本部", nature: "公办", level: "示范园", category: "公办", area: "闵行/七宝", address: "中谊路361号", phone: "021-64781061", source: minhangPublicListSource, boardSlug: "qibao" },
+  { district: "闵行", name: "上海市闵行区龙柏第二幼儿园", campus: "本部", nature: "公办", level: "示范园", category: "公办", area: "闵行/龙柏", address: "白樟路125号", phone: "34213243-1019", source: minhangPublicListSource, boardSlug: "longbai" },
+  { district: "闵行", name: "上海市闵行海丽达春申幼儿园", campus: "本部", nature: "民办", level: "一级", category: "民办", area: "闵行/春申", address: "畹町路100弄61号", phone: "021-54374943", source: minhangPrivateListSource, boardSlug: "chunshen" },
+  { district: "闵行", name: "上海市闵行区绿世界实验幼儿园", campus: "本部", nature: "民办", level: "一级", category: "民办", area: "闵行/莘庄", address: "报春路158号", phone: "64142739", source: minhangPrivateListSource, boardSlug: "xinzhuangnanguangchang" },
+  { district: "闵行", name: "上海市协和实验幼儿园", campus: "本部", nature: "民办", level: "一级", category: "民办", area: "闵行/虹桥", address: "虹桥镇莲花路2151弄62-1号", phone: "19822780903", source: minhangPrivateListSource, boardSlug: "jinhongqiao" },
+  { district: "闵行", name: "上海市金汇实验幼儿园", campus: "本部", nature: "民办", level: "一级", category: "民办", area: "闵行/金汇", address: "红松路81弄28号", phone: "64023113", source: minhangPrivateListSource, boardSlug: "jinhui" },
+  { district: "浦东", name: "上海市浦东新区东方幼儿园", campus: "联洋部", nature: "公办", level: "示范园", category: "公办", area: "浦东/联洋", address: "紫槐路30号", phone: "50333998", source: pudongPublicListSource, boardSlug: "lianyang" },
+  { district: "浦东", name: "上海市浦东新区东方幼儿园", campus: "仁恒部", nature: "公办", level: "示范园", category: "公办", area: "浦东/花木", address: "锦绣路50号", phone: "68568510", source: pudongPublicListSource, boardSlug: "huamu" },
+  { district: "浦东", name: "上海市浦东新区经纬幼儿园", campus: "鹤驰部", nature: "公办", level: "示范园", category: "公办", area: "浦东/周浦", address: "鹤驰路142号", phone: "20985959", source: pudongPublicListSource, boardSlug: "zhoupu" },
+  { district: "浦东", name: "上海市浦东新区东方幼儿园", campus: "唐城部", nature: "公办", level: "示范园", category: "公办", area: "浦东/唐镇", address: "齐爱路60号", phone: "58478913", source: pudongPublicListSource, boardSlug: "tangzhen" },
+  { district: "浦东", name: "上海浦东新区民办领世幼儿园", campus: "本部", nature: "民办", level: "二级", category: "民办", area: "浦东/花木", address: "花木路1108号", phone: "58833373", source: pudongPrivateListSource, boardSlug: "huamu" },
+  { district: "浦东", name: "上海浦东新区民办海富耀华幼儿园", campus: "本部", nature: "民办", level: "二级", category: "民办", area: "浦东/世博滨江", address: "耀华路550弄1号", phone: "021-58803988", source: pudongPrivateListSource, boardSlug: "shibo" },
+  { district: "浦东", name: "上海浦东新区民办博雅汇潼幼儿园", campus: "本部", nature: "民办", level: "二级", category: "民办", area: "浦东/洋泾", address: "博山路200弄9号", phone: "50933875", source: pudongPrivateListSource, boardSlug: "yangjing" },
+  { district: "浦东", name: "上海浦东德英乐周浦幼儿园有限公司", campus: "本部", nature: "民办", level: "二级", category: "民办", area: "浦东/周浦", address: "周康路408号", phone: "021-58111751", source: pudongPrivateListSource, boardSlug: "zhoupu" },
+];
+
 const byId = new Map(schools.map((school) => [school.id, school]));
-const mapSearch = (name, campus, address) => {
-  const query = `上海市徐汇区 ${name} ${campus} ${address}`;
+const mapSearch = (name, campus, address, district = "徐汇区") => {
+  const districtText = district.endsWith("区") || district.endsWith("新区") ? district : `${district}区`;
+  const query = `上海市${districtText} ${name} ${campus} ${address}`;
   return `https://ditu.amap.com/search?query=${encodeURIComponent(query)}`;
 };
 
@@ -404,6 +441,7 @@ const publicCampusItems = campusRows.map(([id, campus, address, confidence, note
 
   return {
     id,
+    district: "徐汇",
     nature: "公办",
     category: "公办",
     level: schoolLevel,
@@ -411,7 +449,7 @@ const publicCampusItems = campusRows.map(([id, campus, address, confidence, note
     area: school.area,
     campus,
     address,
-    mapUrl: mapSearch(school.name, campus, address),
+    mapUrl: mapSearch(school.name, campus, address, "徐汇区"),
     phone,
     officeDistance: amap.officeDistanceText || pendingAmapValue,
     amapPoiName: amap.poiName || pendingAmapValue,
@@ -453,6 +491,7 @@ const privateCampusItems = privateCampusRows.map((item, index) => {
 
   return {
     id,
+    district: "徐汇",
     nature: "民办",
     category: item.category || "民办（类型待核验）",
     level: item.level,
@@ -460,7 +499,7 @@ const privateCampusItems = privateCampusRows.map((item, index) => {
     area,
     campus,
     address: item.address,
-    mapUrl: mapSearch(item.name, campus, item.address),
+    mapUrl: mapSearch(item.name, campus, item.address, "徐汇区"),
     phone: item.phone,
     officeDistance: amap.officeDistanceText || pendingAmapValue,
     amapPoiName: amap.poiName || pendingAmapValue,
@@ -479,14 +518,65 @@ const privateCampusItems = privateCampusRows.map((item, index) => {
   };
 });
 
-const campusItems = [...publicCampusItems, ...privateCampusItems];
+const externalCampusItems = externalCampusRows.map((item, index) => {
+  const id = `${item.district === "闵行" ? "MH" : "PD"}${index + 1}`;
+  const amap = getAmapEnrichment({ nature: item.nature, name: item.name, campus: item.campus, address: item.address });
+  const admissionType = item.nature === "公办" ? "政策待核验" : "民办招生";
+  const searchText = [
+    id,
+    item.district,
+    item.nature,
+    item.category,
+    item.level,
+    item.name,
+    item.area,
+    item.campus,
+    item.address,
+    item.phone,
+    item.source,
+    admissionType,
+  ].join(" ");
+
+  return {
+    id,
+    district: item.district,
+    nature: item.nature,
+    category: item.category,
+    level: item.level,
+    name: item.name,
+    area: item.area,
+    campus: item.campus,
+    address: item.address,
+    mapUrl: mapSearch(item.name, item.campus, item.address, item.district === "浦东" ? "浦东新区" : `${item.district}区`),
+    phone: item.phone,
+    officeDistance: amap.officeDistanceText || pendingAmapValue,
+    amapPoiName: amap.poiName || pendingAmapValue,
+    amapPoiAddress: amap.poiAddress || pendingAmapValue,
+    amapLocation: amap.location || pendingAmapValue,
+    toddler: "待电话确认",
+    small: "待电话确认",
+    committee: item.nature === "公办" ? "非徐汇区对口/招生范围需按所在区当年政策和居住地址核验。" : "民办招生范围、托班、小班名额、收费和材料要求需电话确认。",
+    confidence: "B",
+    note: "首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。",
+    source: item.source,
+    admissionType,
+    toddlerMode: "待确认",
+    needsConfirm: true,
+    boardSlug: item.boardSlug,
+    searchText,
+  };
+});
+
+const campusItems = [...publicCampusItems, ...privateCampusItems, ...externalCampusItems];
 const amapMatchedCount = campusItems.filter((item) => item.officeDistance !== pendingAmapValue).length;
+const amapAddressGeocodeCount = campusItems.filter((item) => item.amapPoiName === "高德地址坐标（非POI精确匹配）").length;
 const amapUnmatchedItems = campusItems.filter((item) => item.officeDistance === pendingAmapValue);
 const amapMatchRate = `${Math.round((amapMatchedCount / campusItems.length) * 100)}%`;
 
-const campusHeader = ["编号", "性质", "办园类型", "办园等级", "幼儿园", "片区", "园区/分园", "地址", "高德POI名称", "高德POI地址", "高德经纬度", `距${officeLocation.name}`, "高德搜索链接", "联系电话", "托班计划", "小班计划", "对口居委/招生范围", "招生类型", "置信度", "备注", "主要来源"];
+const campusHeader = ["编号", "区", "性质", "办园类型", "办园等级", "幼儿园", "片区", "园区/分园", "地址", "高德POI名称", "高德POI地址", "高德经纬度", `距${officeLocation.name}`, "高德搜索链接", "联系电话", "托班计划", "小班计划", "对口居委/招生范围", "招生类型", "置信度", "备注", "主要来源"];
 const campusData = campusItems.map((item) => [
   item.id,
+  item.district,
   item.nature,
   item.category,
   item.level,
@@ -537,11 +627,12 @@ const areaStats = [...schools.reduce((map, school) => {
 
 const summaryRows = [
   ["指标", "值", "说明"],
-  ["公办招生主体数", schools.length, "来自2026 PDF。"],
+  ["徐汇公办招生主体数", schools.length, "来自2026 PDF。"],
   ["公办园区/分园点位数", publicCampusItems.length, "按公开园部地址拆分；少数历史变更项标B级。"],
   ["民办/私立点位数", privateCampusItems.length, "来自徐汇区民办幼儿园名单公开资料；招生条件、收费和名额需电话确认。"],
-  ["全部园区/点位数", campusData.length, "公办园区点位 + 民办/私立点位。"],
-  ["高德增强字段", `${amapMatchedCount}/${campusItems.length}`, "已批量补POI名称、经纬度和到网易上海西岸研发中心的高德直线距离；低置信匹配保留为待核验。"],
+  ["闵行/浦东候选点位数", externalCampusItems.length, "首版跨区候选池，来自公开名单；招生条件和距离需继续核验。"],
+  ["全部园区/点位数", campusData.length, "徐汇公办园区点位 + 徐汇民办/私立点位 + 闵行/浦东候选点位。"],
+  ["高德增强字段", `${amapMatchedCount}/${campusItems.length}`, `已批量补POI/地址坐标、经纬度和到网易上海西岸研发中心的高德直线距离；其中${amapAddressGeocodeCount}个为地址地理编码，非POI精确匹配。`],
   ["小班计划合计", schools.reduce((sum, s) => sum + s.small, 0), "PDF计划班级数合计。"],
   ["托班明确班级数合计", schools.reduce((sum, s) => sum + (/^\d+$/.test(s.toddler) ? Number(s.toddler) : 0), 0), "不含混龄式招生。"],
   ["混龄式招生主体数", schools.filter((s) => `${s.toddler}`.includes("混龄")).length, "混龄式招生不直接等同托班班级数。"],
@@ -554,7 +645,7 @@ const markdown = `# 徐汇区幼儿园园区位置与择园参考
 
 - 2026 PDF 共列出 ${schools.length} 个公办招生主体，拆分为 ${publicCampusItems.length} 个公办实际园区/分园点位。
 - 已补充 ${privateCampusItems.length} 个徐汇区民办/私立点位，包含级别、地址和联系电话；这些点位更适合作为当前暂无居住证情况下的兜底池。
-- 已通过高德服务批量增强 POI 名称、经纬度和到${officeLocation.name}的直线距离；未可靠匹配项保留为待核验。
+- 已通过高德服务批量增强 POI/地址坐标、经纬度和到${officeLocation.name}的直线距离；地址地理编码不等同于园所 POI 精确匹配，未可靠匹配项保留为待核验。
 - 小班计划合计 ${schools.reduce((sum, s) => sum + s.small, 0)} 个班；托班明确计划合计 ${schools.reduce((sum, s) => sum + (/^\d+$/.test(s.toddler) ? Number(s.toddler) : 0), 0)} 个班，另有 ${schools.filter((s) => `${s.toddler}`.includes("混龄")).length} 所为“混龄式招生”。
 - 园区数量与小班容量最集中的区域在田林/虹梅/康健/漕河泾、长桥/凌云/梅陇、龙华/滨江与衡复/湖南几条带状居住区。
 - 多园区幼儿园不能只搜园名，必须按“园区/分园 + 地址”在高德地图核验；表格中已为每个园区生成高德搜索链接。
@@ -594,12 +685,31 @@ const campusRef = (nature, name, campus, address) => campusLookup.get([nature, n
 const beikeDefaultTokens = ["rt200600000001", "brp0erp10000", "l2", "l3", "ra4", "ra5", "ie1"];
 const beikeBizcircleBySlug = new Map((beikeRentalSchema.filters?.bizcircle?.flatOptions || [])
   .map((option) => [option.slug, option]));
-const beikeAreaLabel = (slug) => slug === "xuhui" ? "徐汇全区" : (beikeBizcircleBySlug.get(slug)?.label || slug);
+const beikeDistrictSlugByName = new Map([
+  ["徐汇", "xuhui"],
+  ["闵行", "minhang"],
+  ["浦东", "pudong"],
+]);
+const beikeDistrictLabelBySlug = new Map([
+  ["xuhui", "徐汇全区"],
+  ["minhang", "闵行全区"],
+  ["pudong", "浦东全区"],
+]);
+const beikeAreaLabel = (slug) => beikeDistrictLabelBySlug.get(slug) || beikeBizcircleBySlug.get(slug)?.label || slug;
 const beikeRentalUrl = (slug = "xuhui") => {
   const safeSlug = slug || "xuhui";
   return `https://sh.zu.ke.com/zufang/${safeSlug}/${beikeDefaultTokens.join("")}/?showMore=1`;
 };
 const beikeRentalConditionText = "整租 / 0-10000元 / 三居或四居+ / 100㎡以上 / 有电梯";
+const districtProfiles = districtLandingProfiles.profiles || [];
+const districtCounts = campusItems.reduce((map, item) => {
+  const current = map.get(item.district) || { total: 0, public: 0, private: 0 };
+  current.total += 1;
+  if (item.nature === "公办") current.public += 1;
+  if (item.nature === "民办") current.private += 1;
+  map.set(item.district, current);
+  return map;
+}, new Map());
 const itemDistance = (item) => item?.officeDistance && item.officeDistance !== pendingAmapValue ? item.officeDistance : "高德未匹配，待电话/地图确认";
 const poiLine = (item) => item?.amapPoiName && item.amapPoiName !== pendingAmapValue
   ? `${item.amapPoiName}${item.amapPoiAddress && item.amapPoiAddress !== pendingAmapValue ? `；${item.amapPoiAddress}` : ""}`
@@ -803,6 +913,89 @@ const renderRentBoardCards = () => rentalBoards.map((board) => `
         </article>
 `).join("");
 
+const renderDistrictRouteCards = () => districtProfiles.map((profile) => {
+  const counts = districtCounts.get(profile.district) || { total: 0, public: 0, private: 0 };
+  return `
+        <article class="route-card">
+          <header><h3>${escapeHtml(profile.district)} · ${escapeHtml(profile.route)}</h3><span class="tag ${profile.district === "徐汇" ? "green" : profile.district === "闵行" ? "blue" : "amber"}">${escapeHtml(profile.priority)}</span></header>
+          <p class="reason">${escapeHtml(profile.summary)}</p>
+          <div class="route-metrics">
+            <span><b>${counts.total}</b>候选点位</span>
+            <span><b>${counts.public}</b>公办</span>
+            <span><b>${counts.private}</b>民办</span>
+          </div>
+          <p><strong>适合：</strong>${escapeHtml(profile.fit)}</p>
+          <p><strong>主要风险：</strong>${escapeHtml(profile.risks.join("；"))}</p>
+          <p><strong>放弃条件：</strong>${escapeHtml(profile.dropCondition)}</p>
+          <div class="rent-links">
+            ${profile.recommendedBoards.map((board) => `<a href="${escapeHtml(beikeRentalUrl(board.slug))}" target="_blank" rel="noopener">${escapeHtml(board.label)}房源</a>`).join("")}
+          </div>
+        </article>
+`;
+}).join("");
+
+const landingScoreItems = [
+  ["通勤", "高", "30-45分钟内优先，直线距离只做预筛。"],
+  ["幼儿园可落位", "高", "公办争取与民办兜底必须同步。"],
+  ["租房可执行", "极高", "能签、能搬、能放家具比理想小区更重要。"],
+  ["材料可办理", "极高", "房东配合居住登记/备案是硬条件。"],
+  ["居住品质", "中高", "避免过度压抑，但不追求一步到位。"],
+  ["社区亲子环境", "中高", "有孩子生态和老人接送便利优先。"],
+  ["预算压力", "高", "1万内、100㎡以上、电梯是硬筛选。"],
+  ["后续迁移弹性", "中", "当前房子是第一阶段，不是终身方案。"],
+];
+
+const renderLandingScoreCards = () => landingScoreItems.map(([name, weight, note]) => `
+        <article class="logic-card"><strong>${escapeHtml(name)} · ${escapeHtml(weight)}</strong><span>${escapeHtml(note)}</span></article>
+`).join("");
+
+const admissionHistoryItems = [
+  {
+    title: "徐汇 2025-2026 规则连续性",
+    level: "可用于概率分层",
+    text: "2025 和 2026 方案均体现相对就近、户籍优先、人户一致优先；外省市户籍在保障本区户籍基础上，按居住证、社保、居住情况等排序统筹。",
+    source: xuhuiOfficial2026Source,
+  },
+  {
+    title: "徐汇 2026 对口与计划",
+    level: "可用于容量判断",
+    text: "42 个公办招生主体、81 个公办园区点位、小班计划和对口居委用于判断板块容量，但不能直接换算为个人录取概率。",
+    source: planSource,
+  },
+  {
+    title: "闵行候选路线",
+    level: "需电话核验",
+    text: "闵行公开口径强调按报名条件排序、验证通过后进入录取阶段，溢出由区教育行政部门统筹分流；本页仅接入代表性候选池。",
+    source: minhangAdmissionPolicySource,
+  },
+  {
+    title: "浦东候选路线",
+    level: "需单独评估",
+    text: "浦东有按地段招生和全区招生口径，来沪人员随迁子女可按条件统筹；板块跨度大，必须同时验证通勤和招生类别。",
+    source: pudongAdmissionPolicySource,
+  },
+];
+
+const renderAdmissionHistoryCards = () => admissionHistoryItems.map((item) => `
+        <article class="logic-card">
+          <strong>${escapeHtml(item.title)} · ${escapeHtml(item.level)}</strong>
+          <span>${escapeHtml(item.text)}</span>
+          <a href="${escapeHtml(item.source.match(/https?:\/\/\S+/)?.[0] || "#")}" target="_blank" rel="noopener">查看来源</a>
+        </article>
+`).join("");
+
+const renderExternalCandidateCards = (district) => externalCampusItems
+  .filter((item) => item.district === district)
+  .slice(0, 6)
+  .map((item) => `
+        <article class="candidate-card">
+          <header><h3>${escapeHtml(item.name)}</h3><span class="tag ${item.nature === "公办" ? "green" : "amber"}">${escapeHtml(item.nature)} / ${escapeHtml(item.level)}</span></header>
+          <p>${escapeHtml(item.area)} · ${escapeHtml(item.address)}</p>
+          <p>${renderPhoneLinks(item.phone)}</p>
+          <div class="rent-links"><a href="${escapeHtml(beikeRentalUrl(item.boardSlug || beikeDistrictSlugByName.get(item.district)))}" target="_blank" rel="noopener">查看${escapeHtml(beikeAreaLabel(item.boardSlug || beikeDistrictSlugByName.get(item.district)))}房源</a><a href="${escapeHtml(beikeRentalUrl(beikeDistrictSlugByName.get(item.district) || "xuhui"))}" target="_blank" rel="noopener">${escapeHtml(item.district)}全区放宽查找</a><a href="${escapeHtml(item.mapUrl)}" target="_blank" rel="noopener">打开高德</a></div>
+        </article>
+`).join("");
+
 const unmatchedPreview = amapUnmatchedItems.slice(0, 12)
   .map((item) => `${item.nature}-${item.name}${item.campus === "本部" ? "" : ` ${item.campus}`}`)
   .join("、");
@@ -812,7 +1005,7 @@ const html = `<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>徐汇区幼儿园筛选方案</title>
+  <title>上海家庭第一阶段落地执行方案</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23235c9f'/%3E%3Cpath d='M16 42h32M20 42V24l12-8 12 8v18M28 42V30h8v12' stroke='white' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <style>
     :root {
@@ -833,6 +1026,7 @@ const html = `<!doctype html>
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
+      overflow-x: hidden;
       background: var(--bg);
       color: var(--ink);
       font: 14px/1.58 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
@@ -1292,6 +1486,50 @@ const html = `<!doctype html>
     .priority-card h3 { margin: 0; font-size: 17px; }
     .priority-card p { margin: 0; color: var(--soft); }
     .priority-card .reason { color: var(--ink); font-weight: 700; }
+    .route-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .route-card,
+    .candidate-card {
+      display: grid;
+      gap: 12px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .route-card header,
+    .candidate-card header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .route-card h3,
+    .candidate-card h3 { margin: 0; font-size: 18px; line-height: 1.25; }
+    .route-card p,
+    .candidate-card p { margin: 0; color: var(--soft); }
+    .route-card .reason { color: var(--ink); font-weight: 700; }
+    .route-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f9fbfd;
+      color: var(--soft);
+      font-size: 12px;
+    }
+    .route-metrics b { display: block; color: var(--ink); font-size: 20px; }
+    .candidate-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
     .rent-panel {
       background: var(--paper);
       border: 1px solid var(--line);
@@ -1491,7 +1729,7 @@ const html = `<!doctype html>
     }
     @media (max-width: 1100px) {
       .hero-grid, .workflow, .notice, .personal-grid { grid-template-columns: 1fr; }
-      .principles, .areas, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .principles, .areas, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .route-grid, .candidate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .school-decision-layout { grid-template-columns: 1fr; }
       .toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .source-list { grid-template-columns: 1fr; }
@@ -1502,7 +1740,7 @@ const html = `<!doctype html>
       .nav { overflow: auto; width: 100%; padding-bottom: 2px; }
       .hero-grid { padding: 38px 14px 34px; min-height: auto; }
       .scoreboard { padding: 14px; }
-      .principles, .areas, .matrix, .toolbar, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .card-meta { grid-template-columns: 1fr; }
+      .principles, .areas, .matrix, .toolbar, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .route-grid, .candidate-grid, .card-meta { grid-template-columns: 1fr; }
       .school-card header { display: grid; }
       .school-card header > strong { white-space: normal; }
       .rank-item { grid-template-columns: 34px 1fr; }
@@ -1515,10 +1753,12 @@ const html = `<!doctype html>
 <body>
   <header class="topbar">
     <div class="shell">
-      <div class="brand">徐汇区幼儿园筛选方案</div>
+      <div class="brand">上海家庭第一阶段落地执行方案</div>
       <nav class="nav" aria-label="页面导航">
-        <a href="#profile">基本情况</a>
-        <a href="#decision">推荐园所</a>
+        <a href="#mission">当前任务</a>
+        <a href="#routes">区域路线</a>
+        <a href="#decision">幼儿园执行</a>
+        <a href="#admission-history">招生概率</a>
         <a href="#rent">租房联动</a>
         <a href="#todos">入园待办</a>
         <a href="#query">详细查询</a>
@@ -1530,42 +1770,59 @@ const html = `<!doctype html>
   <section class="hero">
     <div class="shell hero-grid">
       <div>
-        <h1>先选幼儿园，再反推租房板块。</h1>
-        <p class="lead">基于你刚来上海、暂无居住证、办公点在西岸网易研发中心、需要 3 房 100 平以上租房的情况，页面主线改为 5 所公办争取 + 5 所民办兜底，并为每所园生成结构化贝壳租房入口。</p>
+        <h1>90 天内完成上海家庭落地。</h1>
+        <p class="lead">当前不是一次性决定 15 年教育路线，而是先完成幼儿园落位、租房签约、材料稳定、家具搬迁、通勤验证和家庭恢复运转。徐汇幼儿园是执行模块之一，首版同时比较徐汇、闵行、浦东三条落地路线。</p>
         <div class="hero-actions">
-          <a class="button primary" href="#decision">看推荐园所</a>
-          <a class="button" href="#rent">打开租房联动</a>
+          <a class="button primary" href="#routes">看区域路线</a>
+          <a class="button" href="#decision">看幼儿园执行</a>
           <a class="button" href="徐汇区幼儿园园区位置与择园参考.xlsx">打开 Excel 表</a>
         </div>
       </div>
       <aside class="scoreboard" aria-label="数据摘要">
-        <div class="score-row"><span>公办招生主体</span><strong>${schools.length}</strong></div>
+        <div class="score-row"><span>覆盖区域</span><strong>3</strong></div>
         <div class="score-row"><span>全部园区/点位</span><strong>${campusItems.length}</strong></div>
-        <div class="score-row"><span>高德可靠匹配</span><strong>${amapMatchedCount}</strong></div>
-        <div class="score-row"><span>小班计划合计</span><strong>${schools.reduce((sum, s) => sum + s.small, 0)}</strong></div>
-        <div class="score-row"><span>明确托班计划</span><strong>${schools.reduce((sum, s) => sum + (/^\\d+$/.test(s.toddler) ? Number(s.toddler) : 0), 0)}</strong></div>
+        <div class="score-row"><span>徐汇点位</span><strong>${publicCampusItems.length + privateCampusItems.length}</strong></div>
+        <div class="score-row"><span>闵行/浦东候选</span><strong>${externalCampusItems.length}</strong></div>
+        <div class="score-row"><span>高德坐标/POI</span><strong>${amapMatchedCount}</strong></div>
       </aside>
     </div>
   </section>
 
   <main class="shell">
-    <section id="profile">
+    <section id="mission">
       <div class="section-title">
-        <h2>基本情况</h2>
-        <p>这些条件是后续所有推荐的前提，尤其是居住证和租房材料链会直接影响公办报名顺位。</p>
+        <h2>当前任务</h2>
+        <p>第一阶段目标是让家庭进入稳定运行，而不是追求一步到位的终局方案。</p>
       </div>
       <div class="profile-grid">
-        <article class="profile-card"><strong>户籍/材料</strong><span>刚来上海，暂无居住证；需要先补居住登记、租赁合同/备案和居住证材料。</span></article>
-        <article class="profile-card"><strong>办公位置</strong><span>上海市徐汇区西岸网易研发中心，按龙耀路/云锦路/龙水南路附近估算通勤。</span></article>
-        <article class="profile-card"><strong>租房需求</strong><span>至少 3 房、100 平以上、预算 10000 以内，优先电梯、小区环境好、遛娃方便。</span></article>
-        <article class="profile-card"><strong>决策目标</strong><span>先选能办材料且通勤可接受的居住板块，再反查居委和可报名幼儿园。</span></article>
+        <article class="profile-card"><strong>90 天目标</strong><span>幼儿园落位、租房签约、材料稳定、家具搬迁、通勤验证、家庭恢复正常运转。</span></article>
+        <article class="profile-card"><strong>家庭约束</strong><span>暂无居住证；办公点在西岸网易研发中心；至少 3 房、100㎡以上、预算 10000 以内。</span></article>
+        <article class="profile-card"><strong>执行原则</strong><span>先解决“有”和“稳”，再谈长期最优；房东配合材料是租房硬门槛。</span></article>
+        <article class="profile-card"><strong>非当前目标</strong><span>不在本阶段一次性决定买房、小学初中路径或长期定居区域。</span></article>
+      </div>
+    </section>
+
+    <section id="routes">
+      <div class="section-title">
+        <h2>区域路线</h2>
+        <p>首版数据级扩展覆盖徐汇、闵行、浦东。首页先判断哪条路线最可执行，再进入幼儿园和租房细节。</p>
+      </div>
+      <div class="route-grid">
+${renderDistrictRouteCards()}
+      </div>
+      <div class="section-title">
+        <h2>落地评分模型</h2>
+        <p>权重服务于第一阶段执行，不服务于终身学区排序。</p>
+      </div>
+      <div class="logic-compact">
+${renderLandingScoreCards()}
       </div>
     </section>
 
     <section id="decision">
       <div class="section-title">
-        <h2>推荐园所</h2>
-        <p>先确定 5 所公办争取线和 5 所民办兜底线，再用推荐商圈房源链接反推小区和居住材料。</p>
+        <h2>幼儿园执行</h2>
+        <p>徐汇数据最完整，作为保守执行线；闵行、浦东先接入候选池，用于跨区路线比较和电话核验。</p>
       </div>
       <div class="summary-strip">
         <article class="summary-card urgent">
@@ -1573,12 +1830,12 @@ const html = `<!doctype html>
           <span>暂无居住证会明显影响公办报名材料完整性和录取顺位，公办小班概率当前偏低。</span>
         </article>
         <article class="summary-card">
-          <strong>主推荐</strong>
-          <span>公办争取以园南、徐汇实验、阳光、上海幼儿园、龙华幼儿园为主。</span>
+          <strong>首选路线</strong>
+          <span>徐汇南部 + 闵行边界，兼顾通勤、材料和居住体验。</span>
         </article>
         <article class="summary-card">
           <strong>备选</strong>
-          <span>民办兜底以汇城苑、胡姬港湾、牛牛、凯琴、杜鹃园并行联系。</span>
+          <span>浦东作为成长空间线，用于比较新社区和长期居住感。</span>
         </article>
         <article class="summary-card">
           <strong>第一行动</strong>
@@ -1588,22 +1845,34 @@ const html = `<!doctype html>
       <div class="notice">
         <article class="notice-card">
           <h3>最终建议</h3>
-          <p>先按“长桥/园南 + 汇城苑兜底”看房；如果更看重通勤，切到“华泾北/龙瑞路 + 凯琴兜底”；龙华/龙南只在出现 100㎡以上、1 万内、房东配合材料的房源时捡漏。</p>
+          <p>先按“徐汇南部保守执行 + 闵行生活平衡”双线看房；若徐汇房源压抑或材料不配合，及时切到闵行春申/古美/梅陇。浦东只在通勤验证通过后进入主线。</p>
         </article>
         <article class="notice-card">
           <h3>高德数据口径</h3>
-          <p>本页 ${amapMatchedCount}/${campusItems.length} 个点位已可靠匹配高德 POI，匹配率 ${amapMatchRate}；距离均为到网易上海西岸研发中心的直线距离，实际通勤仍需按步行/骑行/驾车路线复核。</p>
+          <p>本页 ${amapMatchedCount}/${campusItems.length} 个点位已写入高德 POI 或地址坐标，覆盖率 ${amapMatchRate}；其中 ${amapAddressGeocodeCount} 个为地址地理编码而非 POI 精确匹配。距离均为到网易上海西岸研发中心的直线距离，实际通勤仍需复核。</p>
         </article>
       </div>
       <div class="school-decision-layout">
         <div class="school-column">
-          <h3>公办争取线</h3>
+          <h3>徐汇公办争取线</h3>
 ${renderSchoolDecisionCards("公办")}
         </div>
         <div class="school-column">
-          <h3>民办兜底线</h3>
+          <h3>徐汇民办兜底线</h3>
 ${renderSchoolDecisionCards("民办")}
         </div>
+      </div>
+      <div class="section-title">
+        <h2>闵行/浦东候选池</h2>
+        <p>这些点位来自公开名单，用于跨区路线比较；距离、报名条件、名额和收费都需要下一轮高德与电话核验。</p>
+      </div>
+      <h3>闵行候选</h3>
+      <div class="candidate-grid">
+${renderExternalCandidateCards("闵行")}
+      </div>
+      <h3>浦东候选</h3>
+      <div class="candidate-grid">
+${renderExternalCandidateCards("浦东")}
       </div>
     </section>
 
@@ -1623,6 +1892,30 @@ ${renderSchoolDecisionCards("民办")}
         <article class="logic-card"><strong>民办层</strong><span>先问是否接受非沪籍/居住登记凭证、剩余名额、收费和开放日。</span></article>
         <article class="logic-card"><strong>便利层</strong><span>看实际园区地址和接送路线，不只看幼儿园总名。</span></article>
         <article class="logic-card"><strong>偏好层</strong><span>最后比较托班、小班容量、老人接送和遛娃空间。</span></article>
+      </div>
+    </section>
+
+    <section id="admission-history">
+      <div class="section-title">
+        <h2>招生概率与历年信息</h2>
+        <p>公开渠道通常不发布逐园录取概率；本页只把可追溯信息转成概率分层，不伪造精确录取率。</p>
+      </div>
+      <div class="notice">
+        <article class="notice-card">
+          <h3>当前判断</h3>
+          <p>暂无居住证时，公办园不能作为唯一方案；优先级应是“公办争取 + 民办兜底 + 材料先行”。</p>
+        </article>
+        <article class="notice-card">
+          <h3>能用的信息</h3>
+          <p>能用的是招生顺位、报名条件、对口居委、小班计划、民办名额电话核验和历年政策连续性。</p>
+        </article>
+        <article class="notice-card">
+          <h3>不能硬算的信息</h3>
+          <p>逐园报名人数、实际录取人数、统筹去向通常不公开，不能据此给出“百分比式概率”。</p>
+        </article>
+      </div>
+      <div class="logic-compact">
+${renderAdmissionHistoryCards()}
       </div>
     </section>
 
@@ -1689,6 +1982,12 @@ ${renderRentBoardCards()}
               ${[...new Set(campusItems.map((item) => item.area))].sort().map((area) => `<option>${escapeHtml(area)}</option>`).join("")}
             </select>
           </label>
+          <label>区
+            <select id="district">
+              <option value="">全部区</option>
+              ${[...new Set(campusItems.map((item) => item.district))].sort().map((district) => `<option>${escapeHtml(district)}</option>`).join("")}
+            </select>
+          </label>
           <label>招生类型
             <select id="admission">
               <option value="">全部类型</option>
@@ -1696,6 +1995,7 @@ ${renderRentBoardCards()}
               <option value="区域自主">区域自主</option>
               <option value="扩招">扩招</option>
               <option value="民办招生">民办招生</option>
+              <option value="政策待核验">政策待核验</option>
             </select>
           </label>
           <label>托班模式
@@ -1736,6 +2036,7 @@ ${renderRentBoardCards()}
           <thead>
             <tr>
               <th>幼儿园/园区</th>
+              <th>区</th>
               <th>性质</th>
               <th>办园类型</th>
               <th>办园等级</th>
@@ -1757,12 +2058,14 @@ ${renderRentBoardCards()}
             ${campusItems.map((item) => `
               <tr
                 data-area="${escapeHtml(item.area)}"
+                data-district="${escapeHtml(item.district)}"
                 data-confidence="${escapeHtml(item.confidence)}"
                 data-admission="${escapeHtml(item.admissionType)}"
                 data-toddler="${escapeHtml(item.toddlerMode)}"
                 data-confirm="${item.needsConfirm ? "yes" : "no"}"
                 data-text="${escapeHtml(item.searchText)}">
                 <td><div class="school-name">${escapeHtml(item.name)}</div><div class="sub">${escapeHtml(item.campus)}</div></td>
+                <td>${escapeHtml(item.district)}</td>
                 <td><span class="tag ${item.nature === "民办" ? "amber" : "green"}">${escapeHtml(item.nature)}</span></td>
                 <td>${escapeHtml(item.category)}</td>
                 <td>${escapeHtml(item.level)}</td>
@@ -1787,7 +2090,7 @@ ${renderRentBoardCards()}
 
     <section id="areas">
       <div class="section-title">
-        <h2>片区容量概览</h2>
+        <h2>徐汇片区容量概览</h2>
         <p>只展示前 12 个供给相对集中的片区，用于判断大方向；个人录取仍以居委、材料和当年政策为准。</p>
       </div>
       <div class="areas">
@@ -1820,10 +2123,25 @@ ${renderRentBoardCards()}
         </article>
         <article class="notice-card">
           <h3>高德匹配质量</h3>
-          <p>高德已可靠匹配 ${amapMatchedCount} 个点位；${amapUnmatchedItems.length} 个点位未写入 POI，主要是老地址、同名/近名园所或地图返回跨区结果。待核验示例：${escapeHtml(unmatchedPreview)}。</p>
+          <p>高德已写入 ${amapMatchedCount} 个 POI/地址坐标，其中 ${amapAddressGeocodeCount} 个为地址地理编码；${amapUnmatchedItems.length} 个点位未写入坐标，主要是老地址、同名/近名园所或地图返回跨区结果。待核验示例：${escapeHtml(unmatchedPreview)}。</p>
         </article>
       </div>
       <div class="source-list">
+        <article class="source-card">
+          <strong><a href="https://edu.sh.gov.cn/xxgk2_zdgz_rxgkyzs_01/20260409/9a3caeed9a0e41c898149e46af9d9203.html" target="_blank" rel="noopener">上海市 2026 学前教育入园通知</a></strong>
+          <span>来源：${escapeHtml(shanghaiAdmissionPolicySource)}</span>
+          <span>用途：作为三区招生流程、规范程序、一网通办和不得测试等共性政策底层依据。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://www.shanghai.gov.cn/xhqxqjy/20260421/c83b6efb6b4c43cb9071399f40215383.html" target="_blank" rel="noopener">2026 徐汇区幼儿园招生工作方案</a></strong>
+          <span>来源：${escapeHtml(xuhuiOfficial2026Source)}</span>
+          <span>用途：确认相对就近、户籍优先、人户一致优先、外省市户籍排序统筹和录取批次。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://www.shanghai.gov.cn/xhqxqjy/20250417/85cd0238c43d49d5ae72cfbe65544a0b.html" target="_blank" rel="noopener">2025 徐汇区幼儿园招生工作方案</a></strong>
+          <span>来源：${escapeHtml(xuhuiOfficial2025Source)}</span>
+          <span>用途：用于观察徐汇近两年政策连续性；只能支持顺位判断，不能推出逐园精确录取概率。</span>
+        </article>
         <article class="source-card">
           <strong>公办招生范围与计划班级数</strong>
           <span>来源：${escapeHtml(pdfSource)}</span>
@@ -1835,9 +2153,14 @@ ${renderRentBoardCards()}
           <span>用途：与本地 PDF 互相校验公办招生计划、对口地段和扩招/自主招生口径。</span>
         </article>
         <article class="source-card">
-          <strong><a href="https://sh.bendibao.com/news/2026415/305294.shtm" target="_blank" rel="noopener">2026 徐汇区幼儿园招生工作方案</a></strong>
-          <span>用途：判断户籍优先、外省市户籍排序、录取批次、报名验证和统筹规则。</span>
-          <span>置信度：政策规则以当年官方发布和报名系统要求为准，本页只做决策提示。</span>
+          <strong><a href="https://www.shobserver.cn/sgh/detail?id=1735182" target="_blank" rel="noopener">2026 闵行入园问答</a></strong>
+          <span>来源：${escapeHtml(minhangAdmissionPolicySource)}</span>
+          <span>用途：确认闵行报名、验证、梯队录取、溢出统筹和区级咨询渠道。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://www.pudong.gov.cn/zwgk/xqjy-jyjzdgz/2026/105/354450.html" target="_blank" rel="noopener">2026 浦东学前教育入园实施方案</a></strong>
+          <span>来源：${escapeHtml(pudongAdmissionPolicySource)}</span>
+          <span>用途：确认浦东按地段/全区招生、人户一致优先、来沪人员随迁子女条件和统筹口径。</span>
         </article>
         <article class="source-card">
           <strong><a href="https://m.sh.bendibao.com/edu/305384.html" target="_blank" rel="noopener">2026 徐汇幼儿园报名材料</a></strong>
@@ -1860,9 +2183,19 @@ ${renderRentBoardCards()}
           <span>用途：补充 46 个民办/私立点位的级别、地址和联系电话，作为公办概率偏低时的兜底池。</span>
         </article>
         <article class="source-card">
+          <strong>闵行幼儿园候选池</strong>
+          <span>来源：${escapeHtml(minhangPublicListSource)}；${escapeHtml(minhangPrivateListSource)}</span>
+          <span>用途：首版补充闵行公办/民办代表点位，用于徐汇南部以外的生活平衡路线比较。</span>
+        </article>
+        <article class="source-card">
+          <strong>浦东幼儿园候选池</strong>
+          <span>来源：${escapeHtml(pudongPublicListSource)}；${escapeHtml(pudongPrivateListSource)}</span>
+          <span>用途：首版补充浦东公办/民办代表点位，用于成长空间路线比较；不是浦东全量清单。</span>
+        </article>
+        <article class="source-card">
           <strong>高德地图 POI 与距离数据</strong>
           <span>来源：高德地图 MCP/API 查询结果，落地在 <code>data/amap_enrichment.json</code>。</span>
-          <span>用途：补充 POI 名称、POI 地址、经纬度，以及到${escapeHtml(officeLocation.name)}的直线距离；当前可靠匹配 ${amapMatchedCount}/${campusItems.length}，匹配率 ${amapMatchRate}。</span>
+          <span>用途：补充 POI/地址坐标、经纬度，以及到${escapeHtml(officeLocation.name)}的直线距离；当前覆盖 ${amapMatchedCount}/${campusItems.length}，覆盖率 ${amapMatchRate}，地址地理编码 ${amapAddressGeocodeCount} 个。</span>
         </article>
         <article class="source-card">
           <strong><a href="https://sh.zu.ke.com/" target="_blank" rel="noopener">贝壳上海租房结构化筛选</a></strong>
@@ -1895,6 +2228,7 @@ ${renderRentBoardCards()}
   <script>
     const search = document.querySelector("#search");
     const area = document.querySelector("#area");
+    const district = document.querySelector("#district");
     const admission = document.querySelector("#admission");
     const toddler = document.querySelector("#toddler");
     const confidence = document.querySelector("#confidence");
@@ -1909,18 +2243,19 @@ ${renderRentBoardCards()}
       for (const row of rows) {
         const okText = !q || row.dataset.text.toLowerCase().includes(q);
         const okArea = !area.value || row.dataset.area === area.value;
+        const okDistrict = !district.value || row.dataset.district === district.value;
         const okAdmission = !admission.value || row.dataset.admission === admission.value;
         const okToddler = !toddler.value || row.dataset.toddler === toddler.value;
         const okConfidence = !confidence.value || row.dataset.confidence === confidence.value;
         const okConfirm = !confirmSelect.value || row.dataset.confirm === confirmSelect.value;
-        const show = okText && okArea && okAdmission && okToddler && okConfidence && okConfirm;
+        const show = okText && okArea && okDistrict && okAdmission && okToddler && okConfidence && okConfirm;
         row.hidden = !show;
         if (show) visible += 1;
       }
       resultCount.textContent = visible;
     }
 
-    for (const control of [search, area, admission, toddler, confidence, confirmSelect]) {
+    for (const control of [search, area, district, admission, toddler, confidence, confirmSelect]) {
       control.addEventListener("input", applyFilters);
       control.addEventListener("change", applyFilters);
     }
@@ -1954,19 +2289,28 @@ const sourceSheet = workbook.worksheets.add("来源与核验规则");
 
 summary.getRange(`A1:C${summaryRows.length}`).values = summaryRows;
 schoolSheet.getRange(`A1:I${schoolData.length + 1}`).values = [schoolHeader, ...schoolData];
-campusSheet.getRange(`A1:U${campusData.length + 1}`).values = [campusHeader, ...campusData];
+campusSheet.getRange(`A1:V${campusData.length + 1}`).values = [campusHeader, ...campusData];
 areaSheet.getRange(`A1:F${areaStats.length + 1}`).values = [["片区", "招生主体数", "园区点位数", "小班计划数", "明确托班班级数", "混龄招生主体数"], ...areaStats];
 const sourceRows = [
   ["项目", "说明"],
   ["PDF主表", pdfSource],
   ["2026线上主表", planSource],
-  ["2026招生工作方案", "https://sh.bendibao.com/news/2026415/305294.shtm；用于判断户籍优先、外省市户籍排序、录取批次、报名验证和统筹规则。"],
+  ["上海市2026学前教育入园通知", shanghaiAdmissionPolicySource],
+  ["徐汇2026招生工作方案", `${xuhuiOfficial2026Source}；用于判断户籍优先、外省市户籍排序、录取批次、报名验证和统筹规则。`],
+  ["徐汇2025招生工作方案", `${xuhuiOfficial2025Source}；用于观察近两年政策连续性，不用于推导逐园精确录取概率。`],
+  ["闵行2026入园问答", `${minhangAdmissionPolicySource}；用于确认报名、验证、梯队录取、溢出统筹和咨询渠道。`],
+  ["浦东2026入园实施方案", `${pudongAdmissionPolicySource}；用于确认按地段/全区招生、人户一致优先、来沪人员条件和统筹口径。`],
   ["2026报名材料", "https://m.sh.bendibao.com/edu/305384.html；用于核对非沪籍幼儿、父母居住证、租赁合同、居住登记和地址一致性要求。"],
   ["上海居住证办理条件", "https://m.sh.bendibao.com/zffw/285087.html；用于确认居住登记、合法稳定住所、租赁合同/备案等材料链要求。"],
   ["公办园部地址主来源", publicListSource],
   ["民办/私立地址与电话来源", privateListSource],
-  ["高德MCP接入口径", `目标办公点：${officeLocation.name}；高德匹配为“网易上海西岸研发中心”。用关键词搜索和距离测量补齐高德POI、经纬度和距离。`],
-  ["高德增强落地数据", "data/amap_enrichment.json；用于补充POI名称、POI地址、经纬度、距公司直线距离。低置信匹配不写入推荐结论。"],
+  ["闵行公办地址与电话来源", minhangPublicListSource],
+  ["闵行民办地址与电话来源", minhangPrivateListSource],
+  ["浦东公办地址与电话来源", pudongPublicListSource],
+  ["浦东民办地址与电话来源", pudongPrivateListSource],
+  ["区域落地画像", "data/district_landing_profiles.json；用于维护徐汇、闵行、浦东三条第一阶段落地路线。"],
+  ["高德MCP/API接入口径", `目标办公点：${officeLocation.name}；高德匹配为“网易上海西岸研发中心”。用关键词搜索、地址地理编码和距离测量补齐高德POI/地址坐标、经纬度和距离。`],
+  ["高德增强落地数据", `data/amap_enrichment.json；用于补充POI名称/地址坐标、POI地址、经纬度、距公司直线距离。当前覆盖${amapMatchedCount}/${campusItems.length}，其中地址地理编码${amapAddressGeocodeCount}个。`],
   ["高德检索口径", "表格中的高德链接使用“上海市徐汇区 + 幼儿园名 + 园区名 + 地址”生成，用于逐点打开核验。"],
   ["贝壳租房参数", `data/beike_rental_filter_schema.json；用于生成徐汇及二级商圈结构化租房链接，固定token：${beikeDefaultTokens.join("")}。`],
   ["贝壳租房口径", "https://sh.zu.ke.com/；房源价格和库存实时变化，本页只保存查询条件和入口，不固化具体房源。"],
@@ -1998,19 +2342,20 @@ schoolSheet.getRange("H:I").format.columnWidthPx = 280;
 schoolSheet.getRange(`A1:I${schoolData.length + 1}`).format.wrapText = true;
 
 campusSheet.getRange("A:A").format.columnWidthPx = 54;
-campusSheet.getRange("B:D").format.columnWidthPx = 90;
-campusSheet.getRange("E:E").format.columnWidthPx = 190;
-campusSheet.getRange("F:F").format.columnWidthPx = 120;
-campusSheet.getRange("G:H").format.columnWidthPx = 150;
-campusSheet.getRange("I:J").format.columnWidthPx = 160;
-campusSheet.getRange("K:L").format.columnWidthPx = 120;
-campusSheet.getRange("M:M").format.columnWidthPx = 360;
-campusSheet.getRange("N:N").format.columnWidthPx = 120;
-campusSheet.getRange("O:P").format.columnWidthPx = 88;
-campusSheet.getRange("Q:Q").format.columnWidthPx = 520;
-campusSheet.getRange("R:S").format.columnWidthPx = 90;
-campusSheet.getRange("T:U").format.columnWidthPx = 360;
-campusSheet.getRange(`A1:U${campusData.length + 1}`).format.wrapText = true;
+campusSheet.getRange("B:B").format.columnWidthPx = 70;
+campusSheet.getRange("C:E").format.columnWidthPx = 90;
+campusSheet.getRange("F:F").format.columnWidthPx = 190;
+campusSheet.getRange("G:G").format.columnWidthPx = 120;
+campusSheet.getRange("H:I").format.columnWidthPx = 150;
+campusSheet.getRange("J:K").format.columnWidthPx = 160;
+campusSheet.getRange("L:M").format.columnWidthPx = 120;
+campusSheet.getRange("N:N").format.columnWidthPx = 360;
+campusSheet.getRange("O:O").format.columnWidthPx = 120;
+campusSheet.getRange("P:Q").format.columnWidthPx = 88;
+campusSheet.getRange("R:R").format.columnWidthPx = 520;
+campusSheet.getRange("S:T").format.columnWidthPx = 90;
+campusSheet.getRange("U:V").format.columnWidthPx = 360;
+campusSheet.getRange(`A1:V${campusData.length + 1}`).format.wrapText = true;
 campusSheet.freezePanes.freezeColumns(4);
 
 areaSheet.getRange("A:A").format.columnWidthPx = 160;

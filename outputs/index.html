@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>徐汇区幼儿园筛选方案</title>
+  <title>上海家庭第一阶段落地执行方案</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23235c9f'/%3E%3Cpath d='M16 42h32M20 42V24l12-8 12 8v18M28 42V30h8v12' stroke='white' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <style>
     :root {
@@ -24,6 +24,7 @@
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
+      overflow-x: hidden;
       background: var(--bg);
       color: var(--ink);
       font: 14px/1.58 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
@@ -483,6 +484,50 @@
     .priority-card h3 { margin: 0; font-size: 17px; }
     .priority-card p { margin: 0; color: var(--soft); }
     .priority-card .reason { color: var(--ink); font-weight: 700; }
+    .route-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .route-card,
+    .candidate-card {
+      display: grid;
+      gap: 12px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .route-card header,
+    .candidate-card header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .route-card h3,
+    .candidate-card h3 { margin: 0; font-size: 18px; line-height: 1.25; }
+    .route-card p,
+    .candidate-card p { margin: 0; color: var(--soft); }
+    .route-card .reason { color: var(--ink); font-weight: 700; }
+    .route-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f9fbfd;
+      color: var(--soft);
+      font-size: 12px;
+    }
+    .route-metrics b { display: block; color: var(--ink); font-size: 20px; }
+    .candidate-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
     .rent-panel {
       background: var(--paper);
       border: 1px solid var(--line);
@@ -682,7 +727,7 @@
     }
     @media (max-width: 1100px) {
       .hero-grid, .workflow, .notice, .personal-grid { grid-template-columns: 1fr; }
-      .principles, .areas, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .principles, .areas, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .route-grid, .candidate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .school-decision-layout { grid-template-columns: 1fr; }
       .toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .source-list { grid-template-columns: 1fr; }
@@ -693,7 +738,7 @@
       .nav { overflow: auto; width: 100%; padding-bottom: 2px; }
       .hero-grid { padding: 38px 14px 34px; min-height: auto; }
       .scoreboard { padding: 14px; }
-      .principles, .areas, .matrix, .toolbar, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .card-meta { grid-template-columns: 1fr; }
+      .principles, .areas, .matrix, .toolbar, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .route-grid, .candidate-grid, .card-meta { grid-template-columns: 1fr; }
       .school-card header { display: grid; }
       .school-card header > strong { white-space: normal; }
       .rank-item { grid-template-columns: 34px 1fr; }
@@ -706,10 +751,12 @@
 <body>
   <header class="topbar">
     <div class="shell">
-      <div class="brand">徐汇区幼儿园筛选方案</div>
+      <div class="brand">上海家庭第一阶段落地执行方案</div>
       <nav class="nav" aria-label="页面导航">
-        <a href="#profile">基本情况</a>
-        <a href="#decision">推荐园所</a>
+        <a href="#mission">当前任务</a>
+        <a href="#routes">区域路线</a>
+        <a href="#decision">幼儿园执行</a>
+        <a href="#admission-history">招生概率</a>
         <a href="#rent">租房联动</a>
         <a href="#todos">入园待办</a>
         <a href="#query">详细查询</a>
@@ -721,42 +768,123 @@
   <section class="hero">
     <div class="shell hero-grid">
       <div>
-        <h1>先选幼儿园，再反推租房板块。</h1>
-        <p class="lead">基于你刚来上海、暂无居住证、办公点在西岸网易研发中心、需要 3 房 100 平以上租房的情况，页面主线改为 5 所公办争取 + 5 所民办兜底，并为每所园生成结构化贝壳租房入口。</p>
+        <h1>90 天内完成上海家庭落地。</h1>
+        <p class="lead">当前不是一次性决定 15 年教育路线，而是先完成幼儿园落位、租房签约、材料稳定、家具搬迁、通勤验证和家庭恢复运转。徐汇幼儿园是执行模块之一，首版同时比较徐汇、闵行、浦东三条落地路线。</p>
         <div class="hero-actions">
-          <a class="button primary" href="#decision">看推荐园所</a>
-          <a class="button" href="#rent">打开租房联动</a>
+          <a class="button primary" href="#routes">看区域路线</a>
+          <a class="button" href="#decision">看幼儿园执行</a>
           <a class="button" href="徐汇区幼儿园园区位置与择园参考.xlsx">打开 Excel 表</a>
         </div>
       </div>
       <aside class="scoreboard" aria-label="数据摘要">
-        <div class="score-row"><span>公办招生主体</span><strong>42</strong></div>
-        <div class="score-row"><span>全部园区/点位</span><strong>127</strong></div>
-        <div class="score-row"><span>高德可靠匹配</span><strong>101</strong></div>
-        <div class="score-row"><span>小班计划合计</span><strong>149</strong></div>
-        <div class="score-row"><span>明确托班计划</span><strong>0</strong></div>
+        <div class="score-row"><span>覆盖区域</span><strong>3</strong></div>
+        <div class="score-row"><span>全部园区/点位</span><strong>143</strong></div>
+        <div class="score-row"><span>徐汇点位</span><strong>127</strong></div>
+        <div class="score-row"><span>闵行/浦东候选</span><strong>16</strong></div>
+        <div class="score-row"><span>高德坐标/POI</span><strong>139</strong></div>
       </aside>
     </div>
   </section>
 
   <main class="shell">
-    <section id="profile">
+    <section id="mission">
       <div class="section-title">
-        <h2>基本情况</h2>
-        <p>这些条件是后续所有推荐的前提，尤其是居住证和租房材料链会直接影响公办报名顺位。</p>
+        <h2>当前任务</h2>
+        <p>第一阶段目标是让家庭进入稳定运行，而不是追求一步到位的终局方案。</p>
       </div>
       <div class="profile-grid">
-        <article class="profile-card"><strong>户籍/材料</strong><span>刚来上海，暂无居住证；需要先补居住登记、租赁合同/备案和居住证材料。</span></article>
-        <article class="profile-card"><strong>办公位置</strong><span>上海市徐汇区西岸网易研发中心，按龙耀路/云锦路/龙水南路附近估算通勤。</span></article>
-        <article class="profile-card"><strong>租房需求</strong><span>至少 3 房、100 平以上、预算 10000 以内，优先电梯、小区环境好、遛娃方便。</span></article>
-        <article class="profile-card"><strong>决策目标</strong><span>先选能办材料且通勤可接受的居住板块，再反查居委和可报名幼儿园。</span></article>
+        <article class="profile-card"><strong>90 天目标</strong><span>幼儿园落位、租房签约、材料稳定、家具搬迁、通勤验证、家庭恢复正常运转。</span></article>
+        <article class="profile-card"><strong>家庭约束</strong><span>暂无居住证；办公点在西岸网易研发中心；至少 3 房、100㎡以上、预算 10000 以内。</span></article>
+        <article class="profile-card"><strong>执行原则</strong><span>先解决“有”和“稳”，再谈长期最优；房东配合材料是租房硬门槛。</span></article>
+        <article class="profile-card"><strong>非当前目标</strong><span>不在本阶段一次性决定买房、小学初中路径或长期定居区域。</span></article>
+      </div>
+    </section>
+
+    <section id="routes">
+      <div class="section-title">
+        <h2>区域路线</h2>
+        <p>首版数据级扩展覆盖徐汇、闵行、浦东。首页先判断哪条路线最可执行，再进入幼儿园和租房细节。</p>
+      </div>
+      <div class="route-grid">
+
+        <article class="route-card">
+          <header><h3>徐汇 · 保守执行线</h3><span class="tag green">保守首选</span></header>
+          <p class="reason">通勤近、教育密度高、已有数据最完整，适合先把入园和材料落地。</p>
+          <div class="route-metrics">
+            <span><b>127</b>候选点位</span>
+            <span><b>81</b>公办</span>
+            <span><b>46</b>民办</span>
+          </div>
+          <p><strong>适合：</strong>办公点在西岸、需要快速稳定、希望减少通勤不确定性的家庭。</p>
+          <p><strong>主要风险：</strong>核心区房龄老；大户型低预算选择少；公办顺位压力高</p>
+          <p><strong>放弃条件：</strong>如果连续看房发现100㎡以上、电梯、1万内房源质量明显不达标，就切到闵行边界。</p>
+          <div class="rent-links">
+            <a href="https://sh.zu.ke.com/zufang/changqiao/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">长桥房源</a><a href="https://sh.zu.ke.com/zufang/huajing/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">华泾房源</a><a href="https://sh.zu.ke.com/zufang/longhua/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">龙华房源</a>
+          </div>
+        </article>
+
+        <article class="route-card">
+          <header><h3>闵行 · 生活平衡线</h3><span class="tag blue">首选扩展</span></header>
+          <p class="reason">居住体验、亲子社区和房源空间更友好，适合作为徐汇南部的第一扩展方向。</p>
+          <div class="route-metrics">
+            <span><b>8</b>候选点位</span>
+            <span><b>4</b>公办</span>
+            <span><b>4</b>民办</span>
+          </div>
+          <p><strong>适合：</strong>愿意接受通勤略增加，换取更新小区、更好亲子环境和更可执行租房的家庭。</p>
+          <p><strong>主要风险：</strong>实际通勤需要早高峰验证；幼儿园政策需重新核验；跨区后徐汇公办路径不再适用</p>
+          <p><strong>放弃条件：</strong>如果通勤超过45分钟且接送无法稳定，就不作为90天落地首选。</p>
+          <div class="rent-links">
+            <a href="https://sh.zu.ke.com/zufang/chunshen/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">春申房源</a><a href="https://sh.zu.ke.com/zufang/gumei/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">古美房源</a><a href="https://sh.zu.ke.com/zufang/meilong/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">梅陇房源</a>
+          </div>
+        </article>
+
+        <article class="route-card">
+          <header><h3>浦东 · 成长空间线</h3><span class="tag amber">备选比较</span></header>
+          <p class="reason">新社区、空间感和成长型资源更强，但与西岸办公点的通勤和教育分化要重点评估。</p>
+          <div class="route-metrics">
+            <span><b>8</b>候选点位</span>
+            <span><b>4</b>公办</span>
+            <span><b>4</b>民办</span>
+          </div>
+          <p><strong>适合：</strong>更重视新社区、生活空间、长期成长环境，且能接受跨江通勤验证的家庭。</p>
+          <p><strong>主要风险：</strong>通勤不确定性更高；教育资源分化明显；短期落地复杂度高于徐汇/闵行</p>
+          <p><strong>放弃条件：</strong>如果跨江通勤和接送链路无法稳定，不进入第一阶段落地主线。</p>
+          <div class="rent-links">
+            <a href="https://sh.zu.ke.com/zufang/huamu/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">花木房源</a><a href="https://sh.zu.ke.com/zufang/lianyang/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">联洋房源</a><a href="https://sh.zu.ke.com/zufang/sanlin/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">三林房源</a>
+          </div>
+        </article>
+
+      </div>
+      <div class="section-title">
+        <h2>落地评分模型</h2>
+        <p>权重服务于第一阶段执行，不服务于终身学区排序。</p>
+      </div>
+      <div class="logic-compact">
+
+        <article class="logic-card"><strong>通勤 · 高</strong><span>30-45分钟内优先，直线距离只做预筛。</span></article>
+
+        <article class="logic-card"><strong>幼儿园可落位 · 高</strong><span>公办争取与民办兜底必须同步。</span></article>
+
+        <article class="logic-card"><strong>租房可执行 · 极高</strong><span>能签、能搬、能放家具比理想小区更重要。</span></article>
+
+        <article class="logic-card"><strong>材料可办理 · 极高</strong><span>房东配合居住登记/备案是硬条件。</span></article>
+
+        <article class="logic-card"><strong>居住品质 · 中高</strong><span>避免过度压抑，但不追求一步到位。</span></article>
+
+        <article class="logic-card"><strong>社区亲子环境 · 中高</strong><span>有孩子生态和老人接送便利优先。</span></article>
+
+        <article class="logic-card"><strong>预算压力 · 高</strong><span>1万内、100㎡以上、电梯是硬筛选。</span></article>
+
+        <article class="logic-card"><strong>后续迁移弹性 · 中</strong><span>当前房子是第一阶段，不是终身方案。</span></article>
+
       </div>
     </section>
 
     <section id="decision">
       <div class="section-title">
-        <h2>推荐园所</h2>
-        <p>先确定 5 所公办争取线和 5 所民办兜底线，再用推荐商圈房源链接反推小区和居住材料。</p>
+        <h2>幼儿园执行</h2>
+        <p>徐汇数据最完整，作为保守执行线；闵行、浦东先接入候选池，用于跨区路线比较和电话核验。</p>
       </div>
       <div class="summary-strip">
         <article class="summary-card urgent">
@@ -764,12 +892,12 @@
           <span>暂无居住证会明显影响公办报名材料完整性和录取顺位，公办小班概率当前偏低。</span>
         </article>
         <article class="summary-card">
-          <strong>主推荐</strong>
-          <span>公办争取以园南、徐汇实验、阳光、上海幼儿园、龙华幼儿园为主。</span>
+          <strong>首选路线</strong>
+          <span>徐汇南部 + 闵行边界，兼顾通勤、材料和居住体验。</span>
         </article>
         <article class="summary-card">
           <strong>备选</strong>
-          <span>民办兜底以汇城苑、胡姬港湾、牛牛、凯琴、杜鹃园并行联系。</span>
+          <span>浦东作为成长空间线，用于比较新社区和长期居住感。</span>
         </article>
         <article class="summary-card">
           <strong>第一行动</strong>
@@ -779,16 +907,16 @@
       <div class="notice">
         <article class="notice-card">
           <h3>最终建议</h3>
-          <p>先按“长桥/园南 + 汇城苑兜底”看房；如果更看重通勤，切到“华泾北/龙瑞路 + 凯琴兜底”；龙华/龙南只在出现 100㎡以上、1 万内、房东配合材料的房源时捡漏。</p>
+          <p>先按“徐汇南部保守执行 + 闵行生活平衡”双线看房；若徐汇房源压抑或材料不配合，及时切到闵行春申/古美/梅陇。浦东只在通勤验证通过后进入主线。</p>
         </article>
         <article class="notice-card">
           <h3>高德数据口径</h3>
-          <p>本页 101/127 个点位已可靠匹配高德 POI，匹配率 80%；距离均为到网易上海西岸研发中心的直线距离，实际通勤仍需按步行/骑行/驾车路线复核。</p>
+          <p>本页 139/143 个点位已写入高德 POI 或地址坐标，覆盖率 97%；其中 8 个为地址地理编码而非 POI 精确匹配。距离均为到网易上海西岸研发中心的直线距离，实际通勤仍需复核。</p>
         </article>
       </div>
       <div class="school-decision-layout">
         <div class="school-column">
-          <h3>公办争取线</h3>
+          <h3>徐汇公办争取线</h3>
 
       <article class="school-card">
         <header>
@@ -922,7 +1050,7 @@
 
         </div>
         <div class="school-column">
-          <h3>民办兜底线</h3>
+          <h3>徐汇民办兜底线</h3>
 
       <article class="school-card">
         <header>
@@ -1056,6 +1184,102 @@
 
         </div>
       </div>
+      <div class="section-title">
+        <h2>闵行/浦东候选池</h2>
+        <p>这些点位来自公开名单，用于跨区路线比较；距离、报名条件、名额和收费都需要下一轮高德与电话核验。</p>
+      </div>
+      <h3>闵行候选</h3>
+      <div class="candidate-grid">
+
+        <article class="candidate-card">
+          <header><h3>上海市闵行区莘庄幼儿园</h3><span class="tag green">公办 / 示范园</span></header>
+          <p>闵行/春申 · 春申路3799弄100支弄84号</p>
+          <p><a class="phone-link" href="tel:54152815">54152815</a></p>
+          <div class="rent-links"><a href="https://sh.zu.ke.com/zufang/chunshen/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">查看春申房源</a><a href="https://sh.zu.ke.com/zufang/minhang/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">闵行全区放宽查找</a><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%E8%8E%98%E5%BA%84%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E8%8A%92%E5%B8%82%E5%88%86%E5%9B%AD%20%E6%98%A5%E7%94%B3%E8%B7%AF3799%E5%BC%84100%E6%94%AF%E5%BC%8484%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></div>
+        </article>
+
+        <article class="candidate-card">
+          <header><h3>上海市闵行区莘庄幼儿园</h3><span class="tag green">公办 / 示范园</span></header>
+          <p>闵行/古美 · 古美西路628弄173号</p>
+          <p><a class="phone-link" href="tel:54950008">54950008</a></p>
+          <div class="rent-links"><a href="https://sh.zu.ke.com/zufang/gumei/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">查看古美房源</a><a href="https://sh.zu.ke.com/zufang/minhang/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">闵行全区放宽查找</a><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%E8%8E%98%E5%BA%84%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%B9%B3%E9%98%B3%E5%88%86%E5%9B%AD%20%E5%8F%A4%E7%BE%8E%E8%A5%BF%E8%B7%AF628%E5%BC%84173%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></div>
+        </article>
+
+        <article class="candidate-card">
+          <header><h3>上海市闵行区七宝幼儿园</h3><span class="tag green">公办 / 示范园</span></header>
+          <p>闵行/七宝 · 中谊路361号</p>
+          <p><a class="phone-link" href="tel:02164781061">021-64781061</a></p>
+          <div class="rent-links"><a href="https://sh.zu.ke.com/zufang/qibao/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">查看七宝房源</a><a href="https://sh.zu.ke.com/zufang/minhang/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">闵行全区放宽查找</a><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%E4%B8%83%E5%AE%9D%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E4%B8%AD%E8%B0%8A%E8%B7%AF361%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></div>
+        </article>
+
+        <article class="candidate-card">
+          <header><h3>上海市闵行区龙柏第二幼儿园</h3><span class="tag green">公办 / 示范园</span></header>
+          <p>闵行/龙柏 · 白樟路125号</p>
+          <p><a class="phone-link" href="tel:342132431019">34213243-1019</a></p>
+          <div class="rent-links"><a href="https://sh.zu.ke.com/zufang/longbai/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">查看龙柏房源</a><a href="https://sh.zu.ke.com/zufang/minhang/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">闵行全区放宽查找</a><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%E9%BE%99%E6%9F%8F%E7%AC%AC%E4%BA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E7%99%BD%E6%A8%9F%E8%B7%AF125%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></div>
+        </article>
+
+        <article class="candidate-card">
+          <header><h3>上海市闵行海丽达春申幼儿园</h3><span class="tag amber">民办 / 一级</span></header>
+          <p>闵行/春申 · 畹町路100弄61号</p>
+          <p><a class="phone-link" href="tel:02154374943">021-54374943</a></p>
+          <div class="rent-links"><a href="https://sh.zu.ke.com/zufang/chunshen/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">查看春申房源</a><a href="https://sh.zu.ke.com/zufang/minhang/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">闵行全区放宽查找</a><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E6%B5%B7%E4%B8%BD%E8%BE%BE%E6%98%A5%E7%94%B3%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E7%95%B9%E7%94%BA%E8%B7%AF100%E5%BC%8461%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></div>
+        </article>
+
+        <article class="candidate-card">
+          <header><h3>上海市闵行区绿世界实验幼儿园</h3><span class="tag amber">民办 / 一级</span></header>
+          <p>闵行/莘庄 · 报春路158号</p>
+          <p><a class="phone-link" href="tel:64142739">64142739</a></p>
+          <div class="rent-links"><a href="https://sh.zu.ke.com/zufang/xinzhuangnanguangchang/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">查看莘庄南广场房源</a><a href="https://sh.zu.ke.com/zufang/minhang/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">闵行全区放宽查找</a><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%E7%BB%BF%E4%B8%96%E7%95%8C%E5%AE%9E%E9%AA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E6%8A%A5%E6%98%A5%E8%B7%AF158%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></div>
+        </article>
+
+      </div>
+      <h3>浦东候选</h3>
+      <div class="candidate-grid">
+
+        <article class="candidate-card">
+          <header><h3>上海市浦东新区东方幼儿园</h3><span class="tag green">公办 / 示范园</span></header>
+          <p>浦东/联洋 · 紫槐路30号</p>
+          <p><a class="phone-link" href="tel:50333998">50333998</a></p>
+          <div class="rent-links"><a href="https://sh.zu.ke.com/zufang/lianyang/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">查看联洋房源</a><a href="https://sh.zu.ke.com/zufang/pudong/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">浦东全区放宽查找</a><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%E4%B8%9C%E6%96%B9%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E8%81%94%E6%B4%8B%E9%83%A8%20%E7%B4%AB%E6%A7%90%E8%B7%AF30%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></div>
+        </article>
+
+        <article class="candidate-card">
+          <header><h3>上海市浦东新区东方幼儿园</h3><span class="tag green">公办 / 示范园</span></header>
+          <p>浦东/花木 · 锦绣路50号</p>
+          <p><a class="phone-link" href="tel:68568510">68568510</a></p>
+          <div class="rent-links"><a href="https://sh.zu.ke.com/zufang/huamu/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">查看花木房源</a><a href="https://sh.zu.ke.com/zufang/pudong/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">浦东全区放宽查找</a><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%E4%B8%9C%E6%96%B9%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E4%BB%81%E6%81%92%E9%83%A8%20%E9%94%A6%E7%BB%A3%E8%B7%AF50%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></div>
+        </article>
+
+        <article class="candidate-card">
+          <header><h3>上海市浦东新区经纬幼儿园</h3><span class="tag green">公办 / 示范园</span></header>
+          <p>浦东/周浦 · 鹤驰路142号</p>
+          <p><a class="phone-link" href="tel:20985959">20985959</a></p>
+          <div class="rent-links"><a href="https://sh.zu.ke.com/zufang/zhoupu/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">查看周浦房源</a><a href="https://sh.zu.ke.com/zufang/pudong/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">浦东全区放宽查找</a><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%E7%BB%8F%E7%BA%AC%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E9%B9%A4%E9%A9%B0%E9%83%A8%20%E9%B9%A4%E9%A9%B0%E8%B7%AF142%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></div>
+        </article>
+
+        <article class="candidate-card">
+          <header><h3>上海市浦东新区东方幼儿园</h3><span class="tag green">公办 / 示范园</span></header>
+          <p>浦东/唐镇 · 齐爱路60号</p>
+          <p><a class="phone-link" href="tel:58478913">58478913</a></p>
+          <div class="rent-links"><a href="https://sh.zu.ke.com/zufang/tangzhen/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">查看唐镇房源</a><a href="https://sh.zu.ke.com/zufang/pudong/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">浦东全区放宽查找</a><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%E4%B8%9C%E6%96%B9%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%94%90%E5%9F%8E%E9%83%A8%20%E9%BD%90%E7%88%B1%E8%B7%AF60%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></div>
+        </article>
+
+        <article class="candidate-card">
+          <header><h3>上海浦东新区民办领世幼儿园</h3><span class="tag amber">民办 / 二级</span></header>
+          <p>浦东/花木 · 花木路1108号</p>
+          <p><a class="phone-link" href="tel:58833373">58833373</a></p>
+          <div class="rent-links"><a href="https://sh.zu.ke.com/zufang/huamu/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">查看花木房源</a><a href="https://sh.zu.ke.com/zufang/pudong/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">浦东全区放宽查找</a><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%E6%B0%91%E5%8A%9E%E9%A2%86%E4%B8%96%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E8%8A%B1%E6%9C%A8%E8%B7%AF1108%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></div>
+        </article>
+
+        <article class="candidate-card">
+          <header><h3>上海浦东新区民办海富耀华幼儿园</h3><span class="tag amber">民办 / 二级</span></header>
+          <p>浦东/世博滨江 · 耀华路550弄1号</p>
+          <p><a class="phone-link" href="tel:02158803988">021-58803988</a></p>
+          <div class="rent-links"><a href="https://sh.zu.ke.com/zufang/shibo/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">查看世博房源</a><a href="https://sh.zu.ke.com/zufang/pudong/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">浦东全区放宽查找</a><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%E6%B0%91%E5%8A%9E%E6%B5%B7%E5%AF%8C%E8%80%80%E5%8D%8E%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E8%80%80%E5%8D%8E%E8%B7%AF550%E5%BC%841%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></div>
+        </article>
+
+      </div>
     </section>
 
     <section id="judgement">
@@ -1074,6 +1298,54 @@
         <article class="logic-card"><strong>民办层</strong><span>先问是否接受非沪籍/居住登记凭证、剩余名额、收费和开放日。</span></article>
         <article class="logic-card"><strong>便利层</strong><span>看实际园区地址和接送路线，不只看幼儿园总名。</span></article>
         <article class="logic-card"><strong>偏好层</strong><span>最后比较托班、小班容量、老人接送和遛娃空间。</span></article>
+      </div>
+    </section>
+
+    <section id="admission-history">
+      <div class="section-title">
+        <h2>招生概率与历年信息</h2>
+        <p>公开渠道通常不发布逐园录取概率；本页只把可追溯信息转成概率分层，不伪造精确录取率。</p>
+      </div>
+      <div class="notice">
+        <article class="notice-card">
+          <h3>当前判断</h3>
+          <p>暂无居住证时，公办园不能作为唯一方案；优先级应是“公办争取 + 民办兜底 + 材料先行”。</p>
+        </article>
+        <article class="notice-card">
+          <h3>能用的信息</h3>
+          <p>能用的是招生顺位、报名条件、对口居委、小班计划、民办名额电话核验和历年政策连续性。</p>
+        </article>
+        <article class="notice-card">
+          <h3>不能硬算的信息</h3>
+          <p>逐园报名人数、实际录取人数、统筹去向通常不公开，不能据此给出“百分比式概率”。</p>
+        </article>
+      </div>
+      <div class="logic-compact">
+
+        <article class="logic-card">
+          <strong>徐汇 2025-2026 规则连续性 · 可用于概率分层</strong>
+          <span>2025 和 2026 方案均体现相对就近、户籍优先、人户一致优先；外省市户籍在保障本区户籍基础上，按居住证、社保、居住情况等排序统筹。</span>
+          <a href="https://www.shanghai.gov.cn/xhqxqjy/20260421/c83b6efb6b4c43cb9071399f40215383.html" target="_blank" rel="noopener">查看来源</a>
+        </article>
+
+        <article class="logic-card">
+          <strong>徐汇 2026 对口与计划 · 可用于容量判断</strong>
+          <span>42 个公办招生主体、81 个公办园区点位、小班计划和对口居委用于判断板块容量，但不能直接换算为个人录取概率。</span>
+          <a href="https://m.sh.bendibao.com/edu/305291.html" target="_blank" rel="noopener">查看来源</a>
+        </article>
+
+        <article class="logic-card">
+          <strong>闵行候选路线 · 需电话核验</strong>
+          <span>闵行公开口径强调按报名条件排序、验证通过后进入录取阶段，溢出由区教育行政部门统筹分流；本页仅接入代表性候选池。</span>
+          <a href="https://www.shobserver.cn/sgh/detail?id=1735182" target="_blank" rel="noopener">查看来源</a>
+        </article>
+
+        <article class="logic-card">
+          <strong>浦东候选路线 · 需单独评估</strong>
+          <span>浦东有按地段招生和全区招生口径，来沪人员随迁子女可按条件统筹；板块跨度大，必须同时验证通勤和招生类别。</span>
+          <a href="https://www.pudong.gov.cn/zwgk/xqjy-jyjzdgz/2026/105/354450.html" target="_blank" rel="noopener">查看来源</a>
+        </article>
+
       </div>
     </section>
 
@@ -1179,7 +1451,13 @@
           <label>片区
             <select id="area">
               <option value="">全部片区</option>
-              <option>凌云/梅陇</option><option>华泾</option><option>华泾/罗秀</option><option>华泾/龙吴</option><option>南站/石龙</option><option>康健/南站</option><option>康健/桂林</option><option>康健/漕河泾</option><option>徐家汇/交大</option><option>徐家汇/天平</option><option>徐家汇/枫林</option><option>徐家汇/田林</option><option>徐家汇/虹桥</option><option>徐家汇/虹桥路</option><option>枫林/宛南</option><option>枫林/斜土</option><option>漕河泾/虹梅</option><option>漕溪/龙漕</option><option>田林/康健</option><option>田林/漕河泾</option><option>田林/虹桥</option><option>田林/虹梅</option><option>衡复/湖南</option><option>衡复/湖南/滨江</option><option>长桥</option><option>长桥/凌云</option><option>长桥/园南</option><option>长桥/梅陇</option><option>长桥/汇成</option><option>龙华/滨江</option><option>龙华/西岸</option>
+              <option>凌云/梅陇</option><option>华泾</option><option>华泾/罗秀</option><option>华泾/龙吴</option><option>南站/石龙</option><option>康健/南站</option><option>康健/桂林</option><option>康健/漕河泾</option><option>徐家汇/交大</option><option>徐家汇/天平</option><option>徐家汇/枫林</option><option>徐家汇/田林</option><option>徐家汇/虹桥</option><option>徐家汇/虹桥路</option><option>枫林/宛南</option><option>枫林/斜土</option><option>浦东/世博滨江</option><option>浦东/周浦</option><option>浦东/唐镇</option><option>浦东/洋泾</option><option>浦东/联洋</option><option>浦东/花木</option><option>漕河泾/虹梅</option><option>漕溪/龙漕</option><option>田林/康健</option><option>田林/漕河泾</option><option>田林/虹桥</option><option>田林/虹梅</option><option>衡复/湖南</option><option>衡复/湖南/滨江</option><option>长桥</option><option>长桥/凌云</option><option>长桥/园南</option><option>长桥/梅陇</option><option>长桥/汇成</option><option>闵行/七宝</option><option>闵行/古美</option><option>闵行/春申</option><option>闵行/莘庄</option><option>闵行/虹桥</option><option>闵行/金汇</option><option>闵行/龙柏</option><option>龙华/滨江</option><option>龙华/西岸</option>
+            </select>
+          </label>
+          <label>区
+            <select id="district">
+              <option value="">全部区</option>
+              <option>徐汇</option><option>浦东</option><option>闵行</option>
             </select>
           </label>
           <label>招生类型
@@ -1189,6 +1467,7 @@
               <option value="区域自主">区域自主</option>
               <option value="扩招">扩招</option>
               <option value="民办招生">民办招生</option>
+              <option value="政策待核验">政策待核验</option>
             </select>
           </label>
           <label>托班模式
@@ -1215,7 +1494,7 @@
           </label>
         </div>
         <div class="result-bar">
-          <div class="result-count"><strong id="resultCount">127</strong> 个园区匹配</div>
+          <div class="result-count"><strong id="resultCount">143</strong> 个园区匹配</div>
           <div class="chips">
             <span class="chip">先搜居委</span>
             <span class="chip">再看园区地址</span>
@@ -1229,6 +1508,7 @@
           <thead>
             <tr>
               <th>幼儿园/园区</th>
+              <th>区</th>
               <th>性质</th>
               <th>办园类型</th>
               <th>办园等级</th>
@@ -1250,12 +1530,14 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="1 公办 一级 襄阳南路第一幼儿园 衡复/湖南 复中园 复兴中路1260弄2号 021-64335881 高德直线约 6.29 km 3 4 慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中 A  固定对口 明确托班">
                 <td><div class="school-name">襄阳南路第一幼儿园</div><div class="sub">复中园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -1275,12 +1557,14 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="1 公办 一级 襄阳南路第一幼儿园 衡复/湖南 南园 襄阳南路317号 021-64335881 高德直线约 5.80 km 3 4 慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中 A  固定对口 明确托班">
                 <td><div class="school-name">襄阳南路第一幼儿园</div><div class="sub">南园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -1300,12 +1584,14 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="1 公办 一级 襄阳南路第一幼儿园 衡复/湖南 陕南园 陕西南路540号 021-64335881 高德直线约 5.85 km 3 4 慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中 A  固定对口 明确托班">
                 <td><div class="school-name">襄阳南路第一幼儿园</div><div class="sub">陕南园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -1325,12 +1611,14 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="1 公办 一级 襄阳南路第一幼儿园 衡复/湖南 北园 襄阳南路207号 64335881 高德直线约 6.16 km 3 4 慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中 A  固定对口 明确托班">
                 <td><div class="school-name">襄阳南路第一幼儿园</div><div class="sub">北园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -1350,12 +1638,14 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="2 公办 示范园 五原路幼儿园 衡复/湖南 永嘉园 永嘉路420号 64759122 高德直线约 5.67 km 3 4 上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康 A  固定对口 明确托班">
                 <td><div class="school-name">五原路幼儿园</div><div class="sub">永嘉园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -1375,12 +1665,14 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="2 公办 示范园 五原路幼儿园 衡复/湖南 武康园 五原路400号 54035366 高德直线约 6.41 km 3 4 上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康 A  固定对口 明确托班">
                 <td><div class="school-name">五原路幼儿园</div><div class="sub">武康园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -1400,12 +1692,14 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="2 公办 示范园 五原路幼儿园 衡复/湖南 兴国园 武康路280弄24号 64360627 高德直线约 5.67 km 3 4 上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康 A  固定对口 明确托班">
                 <td><div class="school-name">五原路幼儿园</div><div class="sub">兴国园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -1425,12 +1719,14 @@
             
               <tr
                 data-area="徐家汇/天平"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="3 公办 一级 汇星幼儿园 徐家汇/天平 南园 宛平南路19弄3号 021-64689142 高德直线约 4.64 km 1 3 天平、高安、康平、吴兴、宛平、余庆、广元、安亭、徐汇新村、张家浜肇谨、零陵、科汇、启明、沈马、王家堂、南赵巷、殷家角、汇翠、名园、德昌 A  固定对口 明确托班">
                 <td><div class="school-name">汇星幼儿园</div><div class="sub">南园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -1450,12 +1746,14 @@
             
               <tr
                 data-area="徐家汇/天平"
+                data-district="徐汇"
                 data-confidence="B"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="3 公办 一级 汇星幼儿园 徐家汇/天平 北园 康平路200号 021-64689142 高德直线约 5.31 km 1 3 天平、高安、康平、吴兴、宛平、余庆、广元、安亭、徐汇新村、张家浜肇谨、零陵、科汇、启明、沈马、王家堂、南赵巷、殷家角、汇翠、名园、德昌 B 2024公办名单写康平路200号；2024招生简章/部分旧资料写华山路1815号，建议电话确认当前小班实际园区。 固定对口 明确托班">
                 <td><div class="school-name">汇星幼儿园</div><div class="sub">北园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -1475,12 +1773,14 @@
             
               <tr
                 data-area="徐家汇/交大"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="4 公办 二级 乐山幼儿园 徐家汇/交大 本部 乐山路18号 64072867 高德直线约 5.16 km 1 3 乐山一村、乐山二三村、乐山四五村、乐山六七村、乐山八九村、文定、汇站、交大、豪庭 A  固定对口 明确托班">
                 <td><div class="school-name">乐山幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>二级</td>
@@ -1500,12 +1800,14 @@
             
               <tr
                 data-area="徐家汇/虹桥路"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="5 公办 二级 汇家幼儿园 徐家汇/虹桥路 北园 番禺路800弄24号 62837361 高德直线约 5.46 km 1 3 番禺、南丹、柿子湾、潘家宅、陈家宅、虹二、虹交、西塘、东塘 A  固定对口 明确托班">
                 <td><div class="school-name">汇家幼儿园</div><div class="sub">北园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>二级</td>
@@ -1525,12 +1827,14 @@
             
               <tr
                 data-area="徐家汇/虹桥路"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="5 公办 二级 汇家幼儿园 徐家汇/虹桥路 南园 番禺路1188号 64860098 高德直线约 5.07 km 1 3 番禺、南丹、柿子湾、潘家宅、陈家宅、虹二、虹交、西塘、东塘 A  固定对口 明确托班">
                 <td><div class="school-name">汇家幼儿园</div><div class="sub">南园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>二级</td>
@@ -1550,12 +1854,14 @@
             
               <tr
                 data-area="枫林/斜土"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="6 公办 二级 枫林幼儿园 枫林/斜土 本部 小木桥路440弄30号 64035845 高德直线约 4.22 km 1 2 日新、日二、日五、日六第一、日六第二、大三、大四、康巨、茶陵、景泰、恒益、西木南、西木北、江南 A  固定对口 明确托班">
                 <td><div class="school-name">枫林幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>二级</td>
@@ -1575,12 +1881,14 @@
             
               <tr
                 data-area="枫林/斜土"
+                data-district="徐汇"
                 data-confidence="B"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="7 公办 二级 复旦大学附属徐汇实验幼儿园 枫林/斜土 托小班部 平江路17号 64034223 高德直线约 4.94 km 1 4 平江、肇一、上影、日七、大五、医清、四季园、肇清、医学院 B 2024年7月由原平江路幼儿园与原复旦大学医学院幼儿园合并组建；2025/公开资料显示新小班启用平江路32号，需确认2026实际安排。 固定对口 明确托班">
                 <td><div class="school-name">复旦大学附属徐汇实验幼儿园</div><div class="sub">托小班部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>二级</td>
@@ -1600,12 +1908,14 @@
             
               <tr
                 data-area="枫林/斜土"
+                data-district="徐汇"
                 data-confidence="B"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="7 公办 二级 复旦大学附属徐汇实验幼儿园 枫林/斜土 中大班部/新小班候选 平江路32号 64034223 高德直线约 4.94 km 1 4 平江、肇一、上影、日七、大五、医清、四季园、肇清、医学院 B 公开资料显示办学地址为平江路32号、17号；原复旦医学院幼儿园东安路50弄10号为历史/合并相关地址。 固定对口 明确托班">
                 <td><div class="school-name">复旦大学附属徐汇实验幼儿园</div><div class="sub">中大班部/新小班候选</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>二级</td>
@@ -1625,12 +1935,14 @@
             
               <tr
                 data-area="枫林/斜土"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="8 公办 二级 东安一村幼儿园 枫林/斜土 零陵园 零陵路250弄33号 64041758 高德直线约 3.91 km 1 2 东安一村北、东安一村南、安康、振兴、张东、爱华、汇园、东安二村、沈家里、东安四村、谨斜、东安苑、枫林新村、南康 A  固定对口 明确托班">
                 <td><div class="school-name">东安一村幼儿园</div><div class="sub">零陵园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>二级</td>
@@ -1650,12 +1962,14 @@
             
               <tr
                 data-area="枫林/斜土"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="8 公办 二级 东安一村幼儿园 枫林/斜土 东安园 东安一村39号 64175625 高德直线约 3.91 km 1 2 东安一村北、东安一村南、安康、振兴、张东、爱华、汇园、东安二村、沈家里、东安四村、谨斜、东安苑、枫林新村、南康 A 公办名单列出东安一村39号及零陵路250弄33号。 固定对口 明确托班">
                 <td><div class="school-name">东安一村幼儿园</div><div class="sub">东安园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>二级</td>
@@ -1675,12 +1989,14 @@
             
               <tr
                 data-area="枫林/宛南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="9 公办 一级 龙山幼儿园 枫林/宛南 一分园 宛南四村16号 64383244 高德直线约 2.92 km 1 4 天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑 A  固定对口 明确托班">
                 <td><div class="school-name">龙山幼儿园</div><div class="sub">一分园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -1700,12 +2016,14 @@
             
               <tr
                 data-area="枫林/宛南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="9 公办 一级 龙山幼儿园 枫林/宛南 二分园 中山南二路999弄5号 64869504 高德直线约 3.00 km 1 4 天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑 A  固定对口 明确托班">
                 <td><div class="school-name">龙山幼儿园</div><div class="sub">二分园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -1725,12 +2043,14 @@
             
               <tr
                 data-area="枫林/宛南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="9 公办 一级 龙山幼儿园 枫林/宛南 本部 天钥新村90号 64383295 高德直线约 3.43 km 1 4 天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑 A  固定对口 明确托班">
                 <td><div class="school-name">龙山幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -1750,20 +2070,22 @@
             
               <tr
                 data-area="龙华/西岸"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="10 公办 一级 龙华幼儿园 龙华/西岸 丰谷园 丰谷路205弄34号 64280780 待高德MCP查询 2 5 上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园 A  固定对口 明确托班">
+                data-text="10 公办 一级 龙华幼儿园 龙华/西岸 丰谷园 丰谷路205弄34号 64280780 高德直线约 1.27 km 2 5 上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园 A  固定对口 明确托班">
                 <td><div class="school-name">龙华幼儿园</div><div class="sub">丰谷园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
                 <td>龙华/西岸</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>丰谷路205弄34号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>丰谷路205弄34号</div><div class="sub">丰谷路与龙兰路交叉口东北200米</div></td>
+                <td>高德直线约 1.27 km</td>
                 <td><a class="phone-link" href="tel:64280780">64280780</a></td>
                 <td><span class="tag blue">2</span></td>
                 <td>5 班</td>
@@ -1775,12 +2097,14 @@
             
               <tr
                 data-area="龙华/西岸"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="10 公办 一级 龙华幼儿园 龙华/西岸 龙恒园 龙华西路31弄15号 64576761 高德直线约 1.63 km 2 5 上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园 A  固定对口 明确托班">
                 <td><div class="school-name">龙华幼儿园</div><div class="sub">龙恒园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -1800,12 +2124,14 @@
             
               <tr
                 data-area="龙华/西岸"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="10 公办 一级 龙华幼儿园 龙华/西岸 龙华园 龙华西路285弄14号 64571589 高德直线约 2.18 km 2 5 上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园 A  固定对口 明确托班">
                 <td><div class="school-name">龙华幼儿园</div><div class="sub">龙华园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -1825,12 +2151,14 @@
             
               <tr
                 data-area="田林/虹桥"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="11 公办 一级 汇霖幼儿园 田林/虹桥 吴中园 吴中东路500弄67号 62196848 高德直线约 5.21 km 1 4 古宜、长春、吴中、桂林苑、虹南、虹星、怡桂苑、钦北、华悦家园、鑫耀 A  固定对口 明确托班">
                 <td><div class="school-name">汇霖幼儿园</div><div class="sub">吴中园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -1850,12 +2178,14 @@
             
               <tr
                 data-area="田林/虹桥"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="11 公办 一级 汇霖幼儿园 田林/虹桥 钦州园 钦州北路898号 64668657 高德直线约 5.22 km 1 4 古宜、长春、吴中、桂林苑、虹南、虹星、怡桂苑、钦北、华悦家园、鑫耀 A  固定对口 明确托班">
                 <td><div class="school-name">汇霖幼儿园</div><div class="sub">钦州园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -1875,12 +2205,14 @@
             
               <tr
                 data-area="龙华/滨江"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="12 公办 二级 阳光幼儿园 龙华/滨江 中大班部 天钥桥南路1249弄11号 54095768 高德直线约 0.54 km 1 3 龙南三四、龙南五、龙南六、龙南七、滨江、樟树苑、东泉、张家园 A  固定对口 明确托班">
                 <td><div class="school-name">阳光幼儿园</div><div class="sub">中大班部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>二级</td>
@@ -1900,12 +2232,14 @@
             
               <tr
                 data-area="龙华/滨江"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="12 公办 二级 阳光幼儿园 龙华/滨江 小班部 龙水南路龙南三村7号 021-34604160 高德直线约 0.17 km 1 3 龙南三四、龙南五、龙南六、龙南七、滨江、樟树苑、东泉、张家园 A  固定对口 明确托班">
                 <td><div class="school-name">阳光幼儿园</div><div class="sub">小班部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>二级</td>
@@ -1925,12 +2259,14 @@
             
               <tr
                 data-area="漕溪/龙漕"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="13 公办 二级 漕溪新村幼儿园 漕溪/龙漕 中大班部 龙漕路139号 64823976 高德直线约 2.34 km 1 3 金谷园、南一村一、南一村二、漕溪四村双号、凯翔、龙漕、嘉萱苑、漕东 A  固定对口 明确托班">
                 <td><div class="school-name">漕溪新村幼儿园</div><div class="sub">中大班部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>二级</td>
@@ -1950,12 +2286,14 @@
             
               <tr
                 data-area="漕溪/龙漕"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="13 公办 二级 漕溪新村幼儿园 漕溪/龙漕 小班部 漕东路193号 34616320 高德直线约 2.69 km 1 3 金谷园、南一村一、南一村二、漕溪四村双号、凯翔、龙漕、嘉萱苑、漕东 A  固定对口 明确托班">
                 <td><div class="school-name">漕溪新村幼儿园</div><div class="sub">小班部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>二级</td>
@@ -1975,12 +2313,14 @@
             
               <tr
                 data-area="康健/南站"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="14 公办 示范园 望德幼儿园 康健/南站 冠生园 冠生园路28号 64751426 高德直线约 2.66 km 4 8 康健路、习勤、薛家宅、科苑、九弄、中海、梓树园、月河、宾阳、馨汇南苑、公园道 A  固定对口 明确托班">
                 <td><div class="school-name">望德幼儿园</div><div class="sub">冠生园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -2000,20 +2340,22 @@
             
               <tr
                 data-area="康健/南站"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
-                data-text="14 公办 示范园 望德幼儿园 康健/南站 南宁园 南宁路636号 64751426 待高德MCP查询 4 8 康健路、习勤、薛家宅、科苑、九弄、中海、梓树园、月河、宾阳、馨汇南苑、公园道 A  固定对口 明确托班">
+                data-text="14 公办 示范园 望德幼儿园 康健/南站 南宁园 南宁路636号 64751426 高德直线约 1.94 km 4 8 康健路、习勤、薛家宅、科苑、九弄、中海、梓树园、月河、宾阳、馨汇南苑、公园道 A  固定对口 明确托班">
                 <td><div class="school-name">望德幼儿园</div><div class="sub">南宁园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
                 <td>康健/南站</td>
                 <td><span class="tag green">固定对口</span></td>
                 <td>南宁路636号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>望徳幼儿园</div><div class="sub">南宁路636号</div></td>
+                <td>高德直线约 1.94 km</td>
                 <td><a class="phone-link" href="tel:64751426">64751426</a></td>
                 <td><span class="tag blue">4</span></td>
                 <td>8 班</td>
@@ -2025,12 +2367,14 @@
             
               <tr
                 data-area="长桥/汇成"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="15 公办 一级 瑞德幼儿园 长桥/汇成 楼园园 老沪闵路706弄37号 021-64234155 高德直线约 3.48 km 2 3 汇成一村、汇成二村、汇成三村、汇成四村、华东二、楼园、金牛、挹翠苑、罗城、光华、汇澜苑、金塘 A  固定对口 明确托班">
                 <td><div class="school-name">瑞德幼儿园</div><div class="sub">楼园园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2050,12 +2394,14 @@
             
               <tr
                 data-area="长桥/汇成"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="15 公办 一级 瑞德幼儿园 长桥/汇成 金塘园 老沪闵路333弄70号 54963078 高德直线约 3.48 km 2 3 汇成一村、汇成二村、汇成三村、汇成四村、华东二、楼园、金牛、挹翠苑、罗城、光华、汇澜苑、金塘 A  固定对口 明确托班">
                 <td><div class="school-name">瑞德幼儿园</div><div class="sub">金塘园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2075,12 +2421,14 @@
             
               <tr
                 data-area="田林/漕河泾"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="16 公办 一级 益思幼儿园 田林/漕河泾 东园 田林九村6号 64361935 高德直线约 3.98 km 1 2 田林一二村、田林五六七村、田林八九十村、田林十三村、田林十一村、千鹤三、爱建园、万科华尔兹、新苑一二、新苑三四、新苑五六七、田林十四村第一、田林十四村第二 A  固定对口 明确托班">
                 <td><div class="school-name">益思幼儿园</div><div class="sub">东园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2100,12 +2448,14 @@
             
               <tr
                 data-area="田林/漕河泾"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="16 公办 一级 益思幼儿园 田林/漕河泾 西园 宜山路701弄53号 64361935 高德直线约 4.29 km 1 2 田林一二村、田林五六七村、田林八九十村、田林十三村、田林十一村、千鹤三、爱建园、万科华尔兹、新苑一二、新苑三四、新苑五六七、田林十四村第一、田林十四村第二 A  固定对口 明确托班">
                 <td><div class="school-name">益思幼儿园</div><div class="sub">西园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2125,12 +2475,14 @@
             
               <tr
                 data-area="康健/桂林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="17 公办 一级 樱花园幼儿园 康健/桂林 南园 百花街398号 021-54181491 待高德MCP查询 2 3 月季百藤、樱花园、茶花桂花、丁香迎春、玉兰园、寿益坊（海上华庭）、紫鹃园、紫薇园（牡丹园、玫瑰园）、金桂苑、紫荆党校 A  固定对口 明确托班">
                 <td><div class="school-name">樱花园幼儿园</div><div class="sub">南园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2150,12 +2502,14 @@
             
               <tr
                 data-area="康健/桂林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="17 公办 一级 樱花园幼儿园 康健/桂林 北园 虹漕南路杨家桥88号 54362050 高德直线约 4.61 km 2 3 月季百藤、樱花园、茶花桂花、丁香迎春、玉兰园、寿益坊（海上华庭）、紫鹃园、紫薇园（牡丹园、玫瑰园）、金桂苑、紫荆党校 A  固定对口 明确托班">
                 <td><div class="school-name">樱花园幼儿园</div><div class="sub">北园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2175,12 +2529,14 @@
             
               <tr
                 data-area="康健/桂林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="混龄式招生"
                 data-confirm="no"
                 data-text="18 公办 二级 长海幼儿园 康健/桂林 本部 桂林西街15弄2号 54208285 高德直线约 4.11 km 混龄式招生 2 长顺海、长虹坊、长青坊、长丰坊、长兴坊、师大新村、桂康 A  固定对口 混龄式招生">
                 <td><div class="school-name">长海幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>二级</td>
@@ -2200,12 +2556,14 @@
             
               <tr
                 data-area="康健/桂林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="混龄式招生"
                 data-confirm="no"
                 data-text="19 公办 二级 康沁幼儿园 康健/桂林 本部 桂林西街151弄20号甲 54363105 高德直线约 3.59 km 混龄式招生 2 寿昌山、寿祥坊、寿益坊（寿益坊、桂林西街101弄）、康乐、桂二、冠生园、康宁馨、康强海（康强坊） A  固定对口 混龄式招生">
                 <td><div class="school-name">康沁幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>二级</td>
@@ -2225,12 +2583,14 @@
             
               <tr
                 data-area="长桥"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="混龄式招生"
                 data-confirm="no"
                 data-text="20 公办 一级 长桥第一幼儿园 长桥 本部 长桥一村56号 64100149 高德直线约 3.01 km 混龄式招生 2 长桥一村、长桥五村（书香逸居、长桥五村）、闵朱、舒城 A  固定对口 混龄式招生">
                 <td><div class="school-name">长桥第一幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2250,12 +2610,14 @@
             
               <tr
                 data-area="长桥/凌云"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="21 公办 一级 长桥第二幼儿园 长桥/凌云 凌云园 梅陇十一村97号 34318987 高德直线约 4.09 km 2 4 长桥新村一、长桥新二村、长桥七村、兴荣苑、和平、龙州、梅陇十一第一、梅陇十一第二、陇南、闵秀 A  固定对口 明确托班">
                 <td><div class="school-name">长桥第二幼儿园</div><div class="sub">凌云园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2275,12 +2637,14 @@
             
               <tr
                 data-area="长桥/凌云"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="21 公办 一级 长桥第二幼儿园 长桥/凌云 长桥园 长桥二村34号 64102557 高德直线约 2.72 km 2 4 长桥新村一、长桥新二村、长桥七村、兴荣苑、和平、龙州、梅陇十一第一、梅陇十一第二、陇南、闵秀 A  固定对口 明确托班">
                 <td><div class="school-name">长桥第二幼儿园</div><div class="sub">长桥园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2300,12 +2664,14 @@
             
               <tr
                 data-area="长桥"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="22 公办 一级 长桥第三幼儿园 长桥 长桥园 长桥三村124号 64102397 高德直线约 2.97 km 2 5 长桥三村一、长桥三村二（长桥三村东区）、长桥八村、平福、长桥四村 A  固定对口 明确托班">
                 <td><div class="school-name">长桥第三幼儿园</div><div class="sub">长桥园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2325,12 +2691,14 @@
             
               <tr
                 data-area="长桥"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="22 公办 一级 长桥第三幼儿园 长桥 平福园 上中路483弄32号 64102397 高德直线约 2.09 km 2 5 长桥三村一、长桥三村二（长桥三村东区）、长桥八村、平福、长桥四村 A  固定对口 明确托班">
                 <td><div class="school-name">长桥第三幼儿园</div><div class="sub">平福园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2350,12 +2718,14 @@
             
               <tr
                 data-area="长桥/园南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="23 公办 一级 园南幼儿园 长桥/园南 本部 龙川北路园南一村27号 64763190 高德直线约 2.47 km 1 3 园南一村、园南二村、园南三村、汇成五村、华东一 A  固定对口 明确托班">
                 <td><div class="school-name">园南幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2375,12 +2745,14 @@
             
               <tr
                 data-area="凌云/梅陇"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="24 公办 示范园 梅陇幼儿园 凌云/梅陇 嘉川园 梅陇四村56号甲 64100015 高德直线约 4.18 km 2 5 梅三、梅六、梅苑一、梅苑二、凌云、梅四、理工一、理工二、华理苑、书香苑、家乐苑、阳光（阳光新景） A  固定对口 明确托班">
                 <td><div class="school-name">梅陇幼儿园</div><div class="sub">嘉川园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -2400,12 +2772,14 @@
             
               <tr
                 data-area="凌云/梅陇"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="24 公办 示范园 梅陇幼儿园 凌云/梅陇 梅陇园 梅陇六村65号 64100015 高德直线约 4.56 km 2 5 梅三、梅六、梅苑一、梅苑二、凌云、梅四、理工一、理工二、华理苑、书香苑、家乐苑、阳光（阳光新景） A  固定对口 明确托班">
                 <td><div class="school-name">梅陇幼儿园</div><div class="sub">梅陇园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -2425,12 +2799,14 @@
             
               <tr
                 data-area="凌云/梅陇"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="混龄式招生"
                 data-confirm="no"
                 data-text="25 公办 二级 梅陇第二幼儿园 凌云/梅陇 本部 梅陇五村54号 64775092 高德直线约 4.26 km 混龄式招生 2 梅陇五村、梅陇七村、梅陇八村、梅陇十村、梅陇九村、阳光（阳光绿园）、长陇苑 A  固定对口 混龄式招生">
                 <td><div class="school-name">梅陇第二幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>二级</td>
@@ -2450,12 +2826,14 @@
             
               <tr
                 data-area="华泾"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="26 公办 一级 华建幼儿园 华泾 本部 老沪闵路1300号 2164548743 高德直线约 4.54 km 1 3 华建、建华村、北杨村 A  固定对口 明确托班">
                 <td><div class="school-name">华建幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2475,12 +2853,14 @@
             
               <tr
                 data-area="华泾"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="27 公办 一级 位育幼儿园 华泾 本部 建华路102号 64960505 高德直线约 4.06 km 2 2 华泾四村、华泾五村、漓江山水、联合居委 A  固定对口 明确托班">
                 <td><div class="school-name">位育幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2500,12 +2880,14 @@
             
               <tr
                 data-area="华泾"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="28 公办 示范园 果果幼儿园 华泾 华欣园 龙吴路2422号 54829893 高德直线约 4.18 km 1 4 华欣家园、华发、馨宁、大桥、明丰新纪苑、名苑、华臻 A  固定对口 明确托班">
                 <td><div class="school-name">果果幼儿园</div><div class="sub">华欣园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -2525,12 +2907,14 @@
             
               <tr
                 data-area="华泾"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="28 公办 示范园 果果幼儿园 华泾 华发园 华发路100弄22号 54829893 高德直线约 3.21 km 1 4 华欣家园、华发、馨宁、大桥、明丰新纪苑、名苑、华臻 A  固定对口 明确托班">
                 <td><div class="school-name">果果幼儿园</div><div class="sub">华发园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -2550,12 +2934,14 @@
             
               <tr
                 data-area="华泾/罗秀"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="29 公办 一级 星辰幼儿园 华泾/罗秀 本部 罗秀路11号 54010448 高德直线约 2.52 km 1 2 徐汇新城、罗秀三村、华滨家园、华沁家园、罗秀、罗秀二村 A  固定对口 明确托班">
                 <td><div class="school-name">星辰幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2575,12 +2961,14 @@
             
               <tr
                 data-area="华泾/罗秀"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="30 公办 一级 徐汇实验幼儿园 华泾/罗秀 本部 龙瑞路135号 54045192 高德直线约 2.03 km 1 2 中海瀛台、百龙、港口 A  固定对口 明确托班">
                 <td><div class="school-name">徐汇实验幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2600,12 +2988,14 @@
             
               <tr
                 data-area="华泾"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="31 公办 一级 印象幼儿园 华泾 本部 望月路882号 64960096 高德直线约 4.43 km 1 2 印象、华阳、沙家浜 A  固定对口 明确托班">
                 <td><div class="school-name">印象幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2625,12 +3015,14 @@
             
               <tr
                 data-area="南站/石龙"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="32 公办 一级 科技逸夫幼儿园 南站/石龙 本部 石龙路818弄8号 64400295 高德直线约 2.79 km 1 1 正南、东荡、南站居委（临） A  固定对口 明确托班">
                 <td><div class="school-name">科技逸夫幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2650,12 +3042,14 @@
             
               <tr
                 data-area="华泾"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="33 公办 一级 盛华幼儿园 华泾 本部 望月路401号 021-54852338 高德直线约 5.46 km 1 3 盛华、华泾绿苑、光华绿苑 A  固定对口 明确托班">
                 <td><div class="school-name">盛华幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2675,12 +3069,14 @@
             
               <tr
                 data-area="徐家汇/田林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="扩招"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="34 公办 一级 艺树幼儿园 徐家汇/田林 本部 古井路160号 64388770 高德直线约 5.46 km 2 3 锦馨苑、千鹤第六、小安桥、华鼎广场、千鹤五、尚汇豪庭、千鹤一、千鹤二；另向徐家汇街道、田林街道扩招 A  扩招 明确托班">
                 <td><div class="school-name">艺树幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2700,12 +3096,14 @@
             
               <tr
                 data-area="漕河泾/虹梅"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="固定对口"
                 data-toddler="明确托班"
                 data-confirm="no"
                 data-text="35 公办 一级 桂平幼儿园 漕河泾/虹梅 本部 桂平路260弄14号 64031921 高德直线约 4.80 km 2 1 联莘、欣园 A  固定对口 明确托班">
                 <td><div class="school-name">桂平幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2725,12 +3123,14 @@
             
               <tr
                 data-area="田林/虹梅"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="扩招"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="36 公办 一级 田林第六幼儿园 田林/虹梅 本部 田林十二村40号 64366380 高德直线约 3.35 km 3 5 田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招 A  扩招 明确托班">
                 <td><div class="school-name">田林第六幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2750,12 +3150,14 @@
             
               <tr
                 data-area="田林/虹梅"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="扩招"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="36 公办 一级 田林第六幼儿园 田林/虹梅 贝贝分园 田林四村18号 64367248 高德直线约 3.78 km 3 5 田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招 A  扩招 明确托班">
                 <td><div class="school-name">田林第六幼儿园</div><div class="sub">贝贝分园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2775,12 +3177,14 @@
             
               <tr
                 data-area="田林/虹梅"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="扩招"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="36 公办 一级 田林第六幼儿园 田林/虹梅 东兰分园 古美路1107弄65号 64707260 高德直线约 5.75 km 3 5 田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招 A  扩招 明确托班">
                 <td><div class="school-name">田林第六幼儿园</div><div class="sub">东兰分园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>一级</td>
@@ -2800,12 +3204,14 @@
             
               <tr
                 data-area="康健/漕河泾"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="37 公办 示范园 紫薇实验幼儿园 康健/漕河泾 桂平园 桂平路123弄23号 54217515 高德直线约 4.66 km 5 6 紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">紫薇实验幼儿园</div><div class="sub">桂平园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -2825,12 +3231,14 @@
             
               <tr
                 data-area="康健/漕河泾"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="37 公办 示范园 紫薇实验幼儿园 康健/漕河泾 浦北园 浦北路173号 64830788 高德直线约 3.21 km 5 6 紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">紫薇实验幼儿园</div><div class="sub">浦北园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -2850,12 +3258,14 @@
             
               <tr
                 data-area="康健/漕河泾"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="37 公办 示范园 紫薇实验幼儿园 康健/漕河泾 全州园 宜州路26号 54500996 高德直线约 4.92 km 5 6 紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">紫薇实验幼儿园</div><div class="sub">全州园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -2875,12 +3285,14 @@
             
               <tr
                 data-area="长桥/凌云"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="扩招"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="38 公办 示范园 上海幼儿园 长桥/凌云 凌云园 上中西路378号 64106663 / 64100564 / 64250961 高德直线约 4.13 km 2 5 体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招 A  扩招 明确托班">
                 <td><div class="school-name">上海幼儿园</div><div class="sub">凌云园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -2900,12 +3312,14 @@
             
               <tr
                 data-area="长桥/凌云"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="扩招"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="38 公办 示范园 上海幼儿园 长桥/凌云 冠军园 老沪闵路729弄41号乙 64250961 高德直线约 3.11 km 2 5 体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招 A  扩招 明确托班">
                 <td><div class="school-name">上海幼儿园</div><div class="sub">冠军园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -2925,12 +3339,14 @@
             
               <tr
                 data-area="长桥/凌云"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="扩招"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="38 公办 示范园 上海幼儿园 长桥/凌云 上中园 上中路402号 64106663 / 64100564 / 64250961 高德直线约 2.69 km 2 5 体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招 A  扩招 明确托班">
                 <td><div class="school-name">上海幼儿园</div><div class="sub">上中园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -2950,12 +3366,14 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="39 公办 示范园 乌鲁木齐南路幼儿园 衡复/湖南 本部 乌鲁木齐南路14号 64319939 高德直线约 5.80 km 3 4 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">乌鲁木齐南路幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -2975,12 +3393,14 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="39 公办 示范园 乌鲁木齐南路幼儿园 衡复/湖南 境内部 淮海路1788号 64319939 高德直线约 5.75 km 3 4 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">乌鲁木齐南路幼儿园</div><div class="sub">境内部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -3000,20 +3420,22 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
-                data-text="39 公办 示范园 乌鲁木齐南路幼儿园 衡复/湖南 境外部 淮海中路1480号 64330160 待高德MCP查询 3 4 区域内自主招生 A  区域自主 明确托班">
+                data-text="39 公办 示范园 乌鲁木齐南路幼儿园 衡复/湖南 境外部 淮海中路1480号 64330160 高德直线约 6.06 km 3 4 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">乌鲁木齐南路幼儿园</div><div class="sub">境外部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag blue">区域自主</span></td>
                 <td>淮海中路1480号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>上海乌南幼儿园境外部</div><div class="sub">淮海中路1480号(上海图书馆地铁站2号口步行230米)</div></td>
+                <td>高德直线约 6.06 km</td>
                 <td><a class="phone-link" href="tel:64330160">64330160</a></td>
                 <td><span class="tag blue">3</span></td>
                 <td>4 班</td>
@@ -3025,12 +3447,14 @@
             
               <tr
                 data-area="徐家汇/田林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="40 公办 示范园 科技幼儿园 徐家汇/田林 宜山园1部 宜山路655弄1号 64854450 / 64362975 高德直线约 4.00 km 3 9 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">科技幼儿园</div><div class="sub">宜山园1部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -3050,12 +3474,14 @@
             
               <tr
                 data-area="徐家汇/田林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="40 公办 示范园 科技幼儿园 徐家汇/田林 嘉陵园 嘉陵路28号 54363003 高德直线约 2.97 km 3 9 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">科技幼儿园</div><div class="sub">嘉陵园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -3075,12 +3501,14 @@
             
               <tr
                 data-area="徐家汇/田林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="40 公办 示范园 科技幼儿园 徐家汇/田林 文定园 文定路476号 64221181 高德直线约 3.98 km 3 9 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">科技幼儿园</div><div class="sub">文定园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -3100,12 +3528,14 @@
             
               <tr
                 data-area="徐家汇/田林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="40 公办 示范园 科技幼儿园 徐家汇/田林 宜山园10部 宜山路655弄10号 64854450 / 64362975 高德直线约 3.75 km 3 9 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">科技幼儿园</div><div class="sub">宜山园10部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -3125,12 +3555,14 @@
             
               <tr
                 data-area="龙华/滨江"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="41 公办 示范园 宛南实验幼儿园 龙华/滨江 瑞宁部 瑞宁路816号 64363606 高德直线约 2.84 km 6 6 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">宛南实验幼儿园</div><div class="sub">瑞宁部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -3150,12 +3582,14 @@
             
               <tr
                 data-area="龙华/滨江"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="41 公办 示范园 宛南实验幼儿园 龙华/滨江 滨江部 瑞宁路851号 64161261 高德直线约 2.77 km 6 6 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">宛南实验幼儿园</div><div class="sub">滨江部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -3175,12 +3609,14 @@
             
               <tr
                 data-area="龙华/滨江"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="41 公办 示范园 宛南实验幼儿园 龙华/滨江 大木桥部 大木桥路323号 64168714 高德直线约 4.57 km 6 6 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">宛南实验幼儿园</div><div class="sub">大木桥部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -3200,12 +3636,14 @@
             
               <tr
                 data-area="衡复/湖南/滨江"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="42 公办 示范园 机关建国幼儿园 衡复/湖南/滨江 建国园 建国西路570号 64372841 高德直线约 5.24 km 2 6 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">机关建国幼儿园</div><div class="sub">建国园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -3225,12 +3663,14 @@
             
               <tr
                 data-area="衡复/湖南/滨江"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="42 公办 示范园 机关建国幼儿园 衡复/湖南/滨江 安亭园 安亭路112号 64333332 高德直线约 5.24 km 2 6 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">机关建国幼儿园</div><div class="sub">安亭园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -3250,12 +3690,14 @@
             
               <tr
                 data-area="衡复/湖南/滨江"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="区域自主"
                 data-toddler="明确托班"
                 data-confirm="yes"
                 data-text="42 公办 示范园 机关建国幼儿园 衡复/湖南/滨江 滨江园 云锦路183弄30号 54252106 高德直线约 1.87 km 2 6 区域内自主招生 A  区域自主 明确托班">
                 <td><div class="school-name">机关建国幼儿园</div><div class="sub">滨江园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag green">公办</span></td>
                 <td>公办</td>
                 <td>示范园</td>
@@ -3275,12 +3717,14 @@
             
               <tr
                 data-area="田林/康健"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M1 民办 民办（类型待核验） 一级 杜鹃园幼稚园 田林/康健 本部 桂林西街9弄57号 021-54202188 高德直线约 3.88 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">杜鹃园幼稚园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>一级</td>
@@ -3300,12 +3744,14 @@
             
               <tr
                 data-area="龙华/滨江"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M2 民办 民办（类型待核验） 一级 胡姬港湾幼儿园 龙华/滨江 本部 丰谷路205弄35号 64560614 高德直线约 1.92 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">胡姬港湾幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>一级</td>
@@ -3325,12 +3771,14 @@
             
               <tr
                 data-area="长桥/梅陇"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M3 民办 普惠民办 一级 汇城苑幼稚园 长桥/梅陇 本部 百色路汇城五村75号 64235119 高德直线约 2.71 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">汇城苑幼稚园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>普惠民办</td>
                 <td>一级</td>
@@ -3350,20 +3798,22 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M4 民办 民办（类型待核验） 二级 维亚幼儿园 衡复/湖南 本部 华亭路71弄1号 54036901 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M4 民办 民办（类型待核验） 二级 维亚幼儿园 衡复/湖南 本部 华亭路71弄1号 54036901 高德直线约 6.50 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">维亚幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>华亭路71弄1号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>上海徐汇区民办维多利亚幼儿园</div><div class="sub">华亭路71弄1号(常熟路地铁站1号口步行130米)</div></td>
+                <td>高德直线约 6.50 km</td>
                 <td><a class="phone-link" href="tel:54036901">54036901</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3375,12 +3825,14 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M5 民办 民办（类型待核验） 二级 四季方馨幼儿园 衡复/湖南 本部 五原路112号 021-54036603 高德直线约 6.44 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">四季方馨幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -3400,20 +3852,22 @@
             
               <tr
                 data-area="龙华/滨江"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M6 民办 民办（类型待核验） 二级 滨江幼儿园 龙华/滨江 本部 云锦路80弄10号 64380700 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M6 民办 民办（类型待核验） 二级 滨江幼儿园 龙华/滨江 本部 云锦路80弄10号 64380700 高德直线约 1.92 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">滨江幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>龙华/滨江</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>云锦路80弄10号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>上海徐汇区民办胡姬港湾幼儿园</div><div class="sub">云锦路80弄10号(龙华地铁站5号口步行3分钟)</div></td>
+                <td>高德直线约 1.92 km</td>
                 <td><a class="phone-link" href="tel:64380700">64380700</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3425,12 +3879,14 @@
             
               <tr
                 data-area="徐家汇/枫林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M7 民办 民办（类型待核验） 二级 汇宝幼儿园 徐家汇/枫林 本部 宛平南路592号 64690445 高德直线约 3.72 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">汇宝幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -3450,20 +3906,22 @@
             
               <tr
                 data-area="徐家汇/枫林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M8 民办 民办（类型待核验） 二级 蒙世学堂幼儿园 徐家汇/枫林 本部 斜土路2421号 021-64686261*8103 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M8 民办 民办（类型待核验） 二级 蒙世学堂幼儿园 徐家汇/枫林 本部 斜土路2421号 021-64686261*8103 高德直线约 4.10 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">蒙世学堂幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>徐家汇/枫林</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>斜土路2421号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>高德地址坐标（非POI精确匹配）</div><div class="sub">上海市徐汇区斜土路2421号</div></td>
+                <td>高德直线约 4.10 km</td>
                 <td><a class="phone-link" href="tel:021646862618103">021-64686261*8103</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3475,20 +3933,22 @@
             
               <tr
                 data-area="田林/康健"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M9 民办 民办（类型待核验） 二级 樱花园幼稚园 田林/康健 本部 百花街380号 54185106 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M9 民办 民办（类型待核验） 二级 樱花园幼稚园 田林/康健 本部 百花街380号 54185106 高德直线约 4.60 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">樱花园幼稚园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>田林/康健</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>百花街380号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>樱花园幼儿园北园(暂停营业)</div><div class="sub">虹漕南路杨家桥88号</div></td>
+                <td>高德直线约 4.60 km</td>
                 <td><a class="phone-link" href="tel:54185106">54185106</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3500,20 +3960,22 @@
             
               <tr
                 data-area="田林/康健"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M10 民办 民办（类型待核验） 二级 新宜幼稚园 田林/康健 本部 古宜路170弄7号 64684874 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M10 民办 民办（类型待核验） 二级 新宜幼稚园 田林/康健 本部 古宜路170弄7号 64684874 高德直线约 4.62 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">新宜幼稚园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>田林/康健</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>古宜路170弄7号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>上海市徐汇区新宜幼稚园</div><div class="sub">古宜路170弄7号(宜山路地铁站10号口步行290米)</div></td>
+                <td>高德直线约 4.62 km</td>
                 <td><a class="phone-link" href="tel:64684874">64684874</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3525,20 +3987,22 @@
             
               <tr
                 data-area="徐家汇/枫林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M11 民办 民办（类型待核验） 二级 蓓蕾幼稚园 徐家汇/枫林 本部 蒲江塘路50号玉兰花苑6幢 64647491 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M11 民办 民办（类型待核验） 二级 蓓蕾幼稚园 徐家汇/枫林 本部 蒲江塘路50号玉兰花苑6幢 64647491 高德直线约 3.94 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">蓓蕾幼稚园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>徐家汇/枫林</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>蒲江塘路50号玉兰花苑6幢</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>上海市徐汇区蓓蕾幼稚园</div><div class="sub">蒲汇塘路50号6幢(上海体育馆地铁站8号口步行400米)</div></td>
+                <td>高德直线约 3.94 km</td>
                 <td><a class="phone-link" href="tel:64647491">64647491</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3550,12 +4014,14 @@
             
               <tr
                 data-area="徐家汇/枫林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M12 民办 民办（类型待核验） 二级 蓓蕾幼稚园 徐家汇/枫林 分园 天钥桥路380弄11号 64647491 高德直线约 3.95 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">蓓蕾幼稚园</div><div class="sub">分园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -3575,12 +4041,14 @@
             
               <tr
                 data-area="田林/康健"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M13 民办 民办（类型待核验） 二级 淇莲幼儿园 田林/康健 本部 浦北路50号 54669909 高德直线约 3.16 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">淇莲幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -3600,20 +4068,22 @@
             
               <tr
                 data-area="田林/康健"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M14 民办 民办（类型待核验） 二级 田林街道中心幼儿园 田林/康健 本部 田林六村10号 64705223 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M14 民办 民办（类型待核验） 二级 田林街道中心幼儿园 田林/康健 本部 田林六村10号 64705223 高德直线约 4.13 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">田林街道中心幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>田林/康健</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>田林六村10号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>高德地址坐标（非POI精确匹配）</div><div class="sub">上海市徐汇区田林六村10号</div></td>
+                <td>高德直线约 4.13 km</td>
                 <td><a class="phone-link" href="tel:64705223">64705223</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3625,12 +4095,14 @@
             
               <tr
                 data-area="田林/康健"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M15 民办 民办（类型待核验） 二级 胡姬港湾新汇幼儿园 田林/康健 本部 浦北路21弄42号 54669810 高德直线约 3.09 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">胡姬港湾新汇幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -3650,20 +4122,22 @@
             
               <tr
                 data-area="华泾/龙吴"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M16 民办 普惠民办 二级 小神童幼儿园 华泾/龙吴 本部 龙吴路988弄25号 021-54360296 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M16 民办 普惠民办 二级 小神童幼儿园 华泾/龙吴 本部 龙吴路988弄25号 021-54360296 高德直线约 1.07 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">小神童幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>普惠民办</td>
                 <td>二级</td>
                 <td>华泾/龙吴</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>龙吴路988弄25号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>高德地址坐标（非POI精确匹配）</div><div class="sub">上海市徐汇区龙吴路988弄25号</div></td>
+                <td>高德直线约 1.07 km</td>
                 <td><a class="phone-link" href="tel:02154360296">021-54360296</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3675,20 +4149,22 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M17 民办 民办（类型待核验） 二级 安琪曈幼稚园 衡复/湖南 本部 衡山路9弄2号 64665309 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M17 民办 民办（类型待核验） 二级 安琪曈幼稚园 衡复/湖南 本部 衡山路9弄2号 64665309 高德直线约 5.78 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">安琪曈幼稚园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>衡山路9弄2号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>上海徐汇区民办安淇儿幼稚园</div><div class="sub">衡山路9弄2号(衡山路地铁站4号口步行460米)</div></td>
+                <td>高德直线约 5.78 km</td>
                 <td><a class="phone-link" href="tel:64665309">64665309</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3700,12 +4176,14 @@
             
               <tr
                 data-area="龙华/滨江"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M18 民办 民办（类型待核验） 二级 鲁浦幼儿园 龙华/滨江 本部 宛南一村23号 64384206 高德直线约 3.17 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">鲁浦幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -3725,20 +4203,22 @@
             
               <tr
                 data-area="龙华/滨江"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M19 民办 民办（类型待核验） 二级 鲁浦幼儿园 龙华/滨江 分园 宛南五村1号 64384206 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M19 民办 民办（类型待核验） 二级 鲁浦幼儿园 龙华/滨江 分园 宛南五村1号 64384206 高德直线约 2.97 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">鲁浦幼儿园</div><div class="sub">分园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>龙华/滨江</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>宛南五村1号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>高德地址坐标（非POI精确匹配）</div><div class="sub">上海市徐汇区宛南五村1号</div></td>
+                <td>高德直线约 2.97 km</td>
                 <td><a class="phone-link" href="tel:64384206">64384206</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3750,20 +4230,22 @@
             
               <tr
                 data-area="龙华/滨江"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M20 民办 民办（类型待核验） 二级 康文云锦幼儿园 龙华/滨江 本部 龙兰路398号 64282682 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M20 民办 民办（类型待核验） 二级 康文云锦幼儿园 龙华/滨江 本部 龙兰路398号 64282682 高德直线约 1.14 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">康文云锦幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>龙华/滨江</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>龙兰路398号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>康童幼儿园</div><div class="sub">龙兰路398号</div></td>
+                <td>高德直线约 1.14 km</td>
                 <td><a class="phone-link" href="tel:64282682">64282682</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3775,12 +4257,14 @@
             
               <tr
                 data-area="徐家汇/虹桥"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M21 民办 民办（类型待核验） 二级 爱文幼儿园 徐家汇/虹桥 本部 古羊路160号1幢 021-62090135 高德直线约 5.69 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">爱文幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -3800,12 +4284,14 @@
             
               <tr
                 data-area="徐家汇/虹桥"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M22 民办 民办（类型待核验） 二级 童稻幼儿园 徐家汇/虹桥 本部 淮海西路365弄2号楼、3号楼 52668270 高德直线约 5.63 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">童稻幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -3825,12 +4311,14 @@
             
               <tr
                 data-area="徐家汇/枫林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M23 民办 民办（类型待核验） 二级 嘉宝幼儿园 徐家汇/枫林 本部 吴兴路75号 64373773 高德直线约 5.44 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">嘉宝幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -3850,12 +4338,14 @@
             
               <tr
                 data-area="华泾/龙吴"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M24 民办 民办（类型待核验） 二级 金贝贝幼儿园 华泾/龙吴 本部 龙吟路300号 54820000 高德直线约 4.65 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">金贝贝幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -3875,20 +4365,22 @@
             
               <tr
                 data-area="徐家汇/枫林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M25 民办 民办（类型待核验） 二级 世纪昂立幼儿园 徐家汇/枫林 本部 龙山新村115号（近零陵路） 54890979 / 64382277 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M25 民办 民办（类型待核验） 二级 世纪昂立幼儿园 徐家汇/枫林 本部 龙山新村115号（近零陵路） 54890979 / 64382277 高德直线约 3.40 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">世纪昂立幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>徐家汇/枫林</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>龙山新村115号（近零陵路）</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>上海汇莲幼儿园</div><div class="sub">龙山新村115号(上海体育场地铁站3号口步行210米)</div></td>
+                <td>高德直线约 3.40 km</td>
                 <td><a class="phone-link" href="tel:54890979">54890979</a><span class="phone-separator"> / </span><a class="phone-link" href="tel:64382277">64382277</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3900,12 +4392,14 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M26 民办 民办（类型待核验） 二级 爱菊幼儿园 衡复/湖南 本部 复兴西路70号 64043162 高德直线约 6.25 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">爱菊幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -3925,12 +4419,14 @@
             
               <tr
                 data-area="长桥/梅陇"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M27 民办 民办（类型待核验） 二级 培蕾幼稚园 长桥/梅陇 本部 梅陇三村49号 64768480 高德直线约 4.57 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">培蕾幼稚园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -3950,20 +4446,22 @@
             
               <tr
                 data-area="长桥/梅陇"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M28 民办 民办（类型待核验） 二级 培蕾幼稚园 长桥/梅陇 分园 梅陇六村41号 64767077 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M28 民办 民办（类型待核验） 二级 培蕾幼稚园 长桥/梅陇 分园 梅陇六村41号 64767077 高德直线约 4.55 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">培蕾幼稚园</div><div class="sub">分园</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>长桥/梅陇</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>梅陇六村41号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>上海市徐汇区梅陇幼儿园(梅陇园)</div><div class="sub">梅陇六村65号</div></td>
+                <td>高德直线约 4.55 km</td>
                 <td><a class="phone-link" href="tel:64767077">64767077</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -3975,12 +4473,14 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M29 民办 民办（类型待核验） 二级 枫叶交响幼儿园 衡复/湖南 本部 太原路87号 64730053 高德直线约 5.73 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">枫叶交响幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -4000,12 +4500,14 @@
             
               <tr
                 data-area="田林/康健"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M30 民办 民办（类型待核验） 二级 泰宁田林幼儿园 田林/康健 本部 田林十一村36号 64755118-804 高德直线约 3.51 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">泰宁田林幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -4025,12 +4527,14 @@
             
               <tr
                 data-area="田林/康健"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M31 民办 民办（类型待核验） 二级 田林东方幼儿园 田林/康健 本部 宜山路田林十四村27号 021-64085912 高德直线约 4.00 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">田林东方幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -4050,12 +4554,14 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M32 民办 民办（类型待核验） 二级 澳宝幼儿园 衡复/湖南 本部 永嘉路356弄31号 64720200 高德直线约 5.90 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">澳宝幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -4075,20 +4581,22 @@
             
               <tr
                 data-area="田林/康健"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M33 民办 民办（类型待核验） 二级 吉的堡小蜻蜓幼儿园 田林/康健 本部 虹梅路1035弄30号 64368108 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M33 民办 民办（类型待核验） 二级 吉的堡小蜻蜓幼儿园 田林/康健 本部 虹梅路1035弄30号 64368108 高德直线约 5.34 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">吉的堡小蜻蜓幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>田林/康健</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>虹梅路1035弄30号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>高德地址坐标（非POI精确匹配）</div><div class="sub">上海市徐汇区虹梅路1035弄30号</div></td>
+                <td>高德直线约 5.34 km</td>
                 <td><a class="phone-link" href="tel:64368108">64368108</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -4100,12 +4608,14 @@
             
               <tr
                 data-area="龙华/滨江"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M34 民办 民办（类型待核验） 二级 东泉大地幼儿园 龙华/滨江 本部 东泉路65弄9号 54084130 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">东泉大地幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -4125,12 +4635,14 @@
             
               <tr
                 data-area="徐家汇/枫林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M35 民办 民办（类型待核验） 二级 吉的堡新徐汇幼儿园 徐家汇/枫林 本部 小木桥路101弄20号 021-54245100 高德直线约 4.79 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">吉的堡新徐汇幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -4150,20 +4662,22 @@
             
               <tr
                 data-area="长桥/梅陇"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M36 民办 民办（类型待核验） 二级 爱悠小红花幼儿园 长桥/梅陇 本部 梅陇路130号1幢、2幢 021-54333289 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M36 民办 民办（类型待核验） 二级 爱悠小红花幼儿园 长桥/梅陇 本部 梅陇路130号1幢、2幢 021-54333289 高德直线约 4.13 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">爱悠小红花幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>长桥/梅陇</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>梅陇路130号1幢、2幢</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>爱悠幼儿园(徐汇店)</div><div class="sub">梅陇路130号1幢</div></td>
+                <td>高德直线约 4.13 km</td>
                 <td><a class="phone-link" href="tel:02154333289">021-54333289</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -4175,12 +4689,14 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M37 民办 民办（类型待核验） 二级 中山幼儿园 衡复/湖南 本部 桃江路42号 021-33565515 高德直线约 6.00 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">中山幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -4200,20 +4716,22 @@
             
               <tr
                 data-area="田林/康健"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M38 民办 民办（类型待核验） 二级 创意幼儿园 田林/康健 本部 柳州路田林十村6号 64828813 / 64820881 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M38 民办 民办（类型待核验） 二级 创意幼儿园 田林/康健 本部 柳州路田林十村6号 64828813 / 64820881 高德直线约 4.08 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">创意幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>田林/康健</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>柳州路田林十村6号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>上海市徐汇区创意幼儿园(南门)柳州路田林十村6号</div><div class="sub">创意幼儿园(南门)柳州路田林十村6号</div></td>
+                <td>高德直线约 4.08 km</td>
                 <td><a class="phone-link" href="tel:64828813">64828813</a><span class="phone-separator"> / </span><a class="phone-link" href="tel:64820881">64820881</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -4225,12 +4743,14 @@
             
               <tr
                 data-area="长桥/梅陇"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M39 民办 民办（类型待核验） 二级 牛牛幼稚园 长桥/梅陇 本部 罗城路700弄95号 54115988 高德直线约 2.55 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">牛牛幼稚园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -4250,20 +4770,22 @@
             
               <tr
                 data-area="徐家汇/枫林"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M40 民办 民办（类型待核验） 二级 领幼幼儿园 徐家汇/枫林 本部 天钥桥路1057弄3号 64458520 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M40 民办 民办（类型待核验） 二级 领幼幼儿园 徐家汇/枫林 本部 天钥桥路1057弄3号 64458520 高德直线约 2.91 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">领幼幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>徐家汇/枫林</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>天钥桥路1057弄3号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>徐汇区领幼托育园</div><div class="sub">天钥桥路1057弄3号(上海游泳馆地铁站3号口步行300米)</div></td>
+                <td>高德直线约 2.91 km</td>
                 <td><a class="phone-link" href="tel:64458520">64458520</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -4275,12 +4797,14 @@
             
               <tr
                 data-area="漕溪/龙漕"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M41 民办 民办（类型待核验） 二级 漕河泾新汇幼儿园 漕溪/龙漕 本部 漕泾一村30号 64364348 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">漕河泾新汇幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -4300,12 +4824,14 @@
             
               <tr
                 data-area="华泾/龙吴"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M42 民办 普惠民办 二级 凯琴数码幼儿园 华泾/龙吴 本部 华泾路995号 54822626 高德直线约 4.48 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">凯琴数码幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>普惠民办</td>
                 <td>二级</td>
@@ -4325,20 +4851,22 @@
             
               <tr
                 data-area="长桥/梅陇"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M43 民办 民办（类型待核验） 二级 陇龙幼稚园 长桥/梅陇 本部 梅陇十一村96号 64549910 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M43 民办 民办（类型待核验） 二级 陇龙幼稚园 长桥/梅陇 本部 梅陇十一村96号 64549910 高德直线约 4.15 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">陇龙幼稚园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>长桥/梅陇</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>梅陇十一村96号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>上海市徐汇区陇龙幼稚园</div><div class="sub">梅陇十一村96号</div></td>
+                <td>高德直线约 4.15 km</td>
                 <td><a class="phone-link" href="tel:64549910">64549910</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -4350,20 +4878,22 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M44 民办 民办（类型待核验） 二级 世蒙幼儿园 衡复/湖南 本部 东湖路21号 021-54038979 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M44 民办 民办（类型待核验） 二级 世蒙幼儿园 衡复/湖南 本部 东湖路21号 021-54038979 高德直线约 6.70 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">世蒙幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>东湖路21号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>上海徐汇区民办世蒙幼儿园</div><div class="sub">东湖路21号</div></td>
+                <td>高德直线约 6.70 km</td>
                 <td><a class="phone-link" href="tel:02154038979">021-54038979</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -4375,20 +4905,22 @@
             
               <tr
                 data-area="衡复/湖南"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
-                data-text="M45 民办 民办（类型待核验） 二级 蒂伊幼稚园 衡复/湖南 本部 永嘉路383号 64749388 待高德MCP查询 民办招生 待确认 民办招生范围需电话确认">
+                data-text="M45 民办 民办（类型待核验） 二级 蒂伊幼稚园 衡复/湖南 本部 永嘉路383号 64749388 高德直线约 5.76 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">蒂伊幼稚园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
                 <td>衡复/湖南</td>
                 <td><span class="tag amber">民办招生</span></td>
                 <td>永嘉路383号</td>
-                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
-                <td>待高德MCP查询</td>
+                <td><div>高德地址坐标（非POI精确匹配）</div><div class="sub">上海市徐汇区永嘉路383号</div></td>
+                <td>高德直线约 5.76 km</td>
                 <td><a class="phone-link" href="tel:64749388">64749388</a></td>
                 <td><span class="tag blue">待电话确认</span></td>
                 <td>待电话确认</td>
@@ -4400,12 +4932,14 @@
             
               <tr
                 data-area="田林/康健"
+                data-district="徐汇"
                 data-confidence="A"
                 data-admission="民办招生"
                 data-toddler="待确认"
                 data-confirm="yes"
                 data-text="M46 民办 民办（类型待核验） 二级 吉的堡新汇幼儿园 田林/康健 本部 康健小区虹漕南路百花街18号、6号 54183331 高德直线约 4.43 km 民办招生 待确认 民办招生范围需电话确认">
                 <td><div class="school-name">吉的堡新汇幼儿园</div><div class="sub">本部</div></td>
+                <td>徐汇</td>
                 <td><span class="tag amber">民办</span></td>
                 <td>民办（类型待核验）</td>
                 <td>二级</td>
@@ -4423,6 +4957,438 @@
                 <td>民办/私立招生条件、收费、名额每年可能变化，报名前必须电话核验。</td>
               </tr>
             
+              <tr
+                data-area="闵行/春申"
+                data-district="闵行"
+                data-confidence="B"
+                data-admission="政策待核验"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="MH1 闵行 公办 公办 示范园 上海市闵行区莘庄幼儿园 闵行/春申 芒市分园 春申路3799弄100支弄84号 54152815 上海本地宝《上海市闵行区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200.shtm 政策待核验">
+                <td><div class="school-name">上海市闵行区莘庄幼儿园</div><div class="sub">芒市分园</div></td>
+                <td>闵行</td>
+                <td><span class="tag green">公办</span></td>
+                <td>公办</td>
+                <td>示范园</td>
+                <td>闵行/春申</td>
+                <td><span class="tag blue">政策待核验</span></td>
+                <td>春申路3799弄100支弄84号</td>
+                <td><div>高德地址坐标（非POI精确匹配）</div><div class="sub">上海市闵行区春申路3799弄100支弄</div></td>
+                <td>高德直线约 9.34 km</td>
+                <td><a class="phone-link" href="tel:54152815">54152815</a></td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag red">B</span></td>
+                <td>非徐汇区对口/招生范围需按所在区当年政策和居住地址核验。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%E8%8E%98%E5%BA%84%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E8%8A%92%E5%B8%82%E5%88%86%E5%9B%AD%20%E6%98%A5%E7%94%B3%E8%B7%AF3799%E5%BC%84100%E6%94%AF%E5%BC%8484%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="闵行/古美"
+                data-district="闵行"
+                data-confidence="B"
+                data-admission="政策待核验"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="MH2 闵行 公办 公办 示范园 上海市闵行区莘庄幼儿园 闵行/古美 平阳分园 古美西路628弄173号 54950008 上海本地宝《上海市闵行区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200.shtm 政策待核验">
+                <td><div class="school-name">上海市闵行区莘庄幼儿园</div><div class="sub">平阳分园</div></td>
+                <td>闵行</td>
+                <td><span class="tag green">公办</span></td>
+                <td>公办</td>
+                <td>示范园</td>
+                <td>闵行/古美</td>
+                <td><span class="tag blue">政策待核验</span></td>
+                <td>古美西路628弄173号</td>
+                <td><div>莘庄幼儿园平阳部</div><div class="sub">古美西路628弄173号</div></td>
+                <td>高德直线约 7.01 km</td>
+                <td><a class="phone-link" href="tel:54950008">54950008</a></td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag red">B</span></td>
+                <td>非徐汇区对口/招生范围需按所在区当年政策和居住地址核验。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%E8%8E%98%E5%BA%84%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%B9%B3%E9%98%B3%E5%88%86%E5%9B%AD%20%E5%8F%A4%E7%BE%8E%E8%A5%BF%E8%B7%AF628%E5%BC%84173%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="闵行/七宝"
+                data-district="闵行"
+                data-confidence="B"
+                data-admission="政策待核验"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="MH3 闵行 公办 公办 示范园 上海市闵行区七宝幼儿园 闵行/七宝 本部 中谊路361号 021-64781061 上海本地宝《上海市闵行区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200.shtm 政策待核验">
+                <td><div class="school-name">上海市闵行区七宝幼儿园</div><div class="sub">本部</div></td>
+                <td>闵行</td>
+                <td><span class="tag green">公办</span></td>
+                <td>公办</td>
+                <td>示范园</td>
+                <td>闵行/七宝</td>
+                <td><span class="tag blue">政策待核验</span></td>
+                <td>中谊路361号</td>
+                <td><div>七宝幼儿园</div><div class="sub">中谊路361号</div></td>
+                <td>高德直线约 9.01 km</td>
+                <td><a class="phone-link" href="tel:02164781061">021-64781061</a></td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag red">B</span></td>
+                <td>非徐汇区对口/招生范围需按所在区当年政策和居住地址核验。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%E4%B8%83%E5%AE%9D%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E4%B8%AD%E8%B0%8A%E8%B7%AF361%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="闵行/龙柏"
+                data-district="闵行"
+                data-confidence="B"
+                data-admission="政策待核验"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="MH4 闵行 公办 公办 示范园 上海市闵行区龙柏第二幼儿园 闵行/龙柏 本部 白樟路125号 34213243-1019 上海本地宝《上海市闵行区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200.shtm 政策待核验">
+                <td><div class="school-name">上海市闵行区龙柏第二幼儿园</div><div class="sub">本部</div></td>
+                <td>闵行</td>
+                <td><span class="tag green">公办</span></td>
+                <td>公办</td>
+                <td>示范园</td>
+                <td>闵行/龙柏</td>
+                <td><span class="tag blue">政策待核验</span></td>
+                <td>白樟路125号</td>
+                <td><div>闵行区龙柏第二幼儿园(白樟路)</div><div class="sub">虹桥镇白樟路125号(龙柏新村地铁站4号口步行420米)</div></td>
+                <td>高德直线约 8.94 km</td>
+                <td><a class="phone-link" href="tel:342132431019">34213243-1019</a></td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag red">B</span></td>
+                <td>非徐汇区对口/招生范围需按所在区当年政策和居住地址核验。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%E9%BE%99%E6%9F%8F%E7%AC%AC%E4%BA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E7%99%BD%E6%A8%9F%E8%B7%AF125%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="闵行/春申"
+                data-district="闵行"
+                data-confidence="B"
+                data-admission="民办招生"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="MH5 闵行 民办 民办 一级 上海市闵行海丽达春申幼儿园 闵行/春申 本部 畹町路100弄61号 021-54374943 上海本地宝《上海市闵行区民办幼儿园名单查询》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200_2.shtm 民办招生">
+                <td><div class="school-name">上海市闵行海丽达春申幼儿园</div><div class="sub">本部</div></td>
+                <td>闵行</td>
+                <td><span class="tag amber">民办</span></td>
+                <td>民办</td>
+                <td>一级</td>
+                <td>闵行/春申</td>
+                <td><span class="tag amber">民办招生</span></td>
+                <td>畹町路100弄61号</td>
+                <td><div>海丽达春申幼儿园</div><div class="sub">春申万科假日风畹町路100弄A院内</div></td>
+                <td>高德直线约 7.64 km</td>
+                <td><a class="phone-link" href="tel:02154374943">021-54374943</a></td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag red">B</span></td>
+                <td>民办招生范围、托班、小班名额、收费和材料要求需电话确认。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E6%B5%B7%E4%B8%BD%E8%BE%BE%E6%98%A5%E7%94%B3%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E7%95%B9%E7%94%BA%E8%B7%AF100%E5%BC%8461%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="闵行/莘庄"
+                data-district="闵行"
+                data-confidence="B"
+                data-admission="民办招生"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="MH6 闵行 民办 民办 一级 上海市闵行区绿世界实验幼儿园 闵行/莘庄 本部 报春路158号 64142739 上海本地宝《上海市闵行区民办幼儿园名单查询》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200_2.shtm 民办招生">
+                <td><div class="school-name">上海市闵行区绿世界实验幼儿园</div><div class="sub">本部</div></td>
+                <td>闵行</td>
+                <td><span class="tag amber">民办</span></td>
+                <td>民办</td>
+                <td>一级</td>
+                <td>闵行/莘庄</td>
+                <td><span class="tag amber">民办招生</span></td>
+                <td>报春路158号</td>
+                <td><div>绿世界实验幼儿园</div><div class="sub">报春路158号</div></td>
+                <td>高德直线约 7.16 km</td>
+                <td><a class="phone-link" href="tel:64142739">64142739</a></td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag red">B</span></td>
+                <td>民办招生范围、托班、小班名额、收费和材料要求需电话确认。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%E7%BB%BF%E4%B8%96%E7%95%8C%E5%AE%9E%E9%AA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E6%8A%A5%E6%98%A5%E8%B7%AF158%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="闵行/虹桥"
+                data-district="闵行"
+                data-confidence="B"
+                data-admission="民办招生"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="MH7 闵行 民办 民办 一级 上海市协和实验幼儿园 闵行/虹桥 本部 虹桥镇莲花路2151弄62-1号 19822780903 上海本地宝《上海市闵行区民办幼儿园名单查询》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200_2.shtm 民办招生">
+                <td><div class="school-name">上海市协和实验幼儿园</div><div class="sub">本部</div></td>
+                <td>闵行</td>
+                <td><span class="tag amber">民办</span></td>
+                <td>民办</td>
+                <td>一级</td>
+                <td>闵行/虹桥</td>
+                <td><span class="tag amber">民办招生</span></td>
+                <td>虹桥镇莲花路2151弄62-1号</td>
+                <td><div>协和实验幼儿园</div><div class="sub">莲花路2151弄62号-1</div></td>
+                <td>高德直线约 7.03 km</td>
+                <td><a class="phone-link" href="tel:19822780903">19822780903</a></td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag red">B</span></td>
+                <td>民办招生范围、托班、小班名额、收费和材料要求需电话确认。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E5%8D%8F%E5%92%8C%E5%AE%9E%E9%AA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E8%99%B9%E6%A1%A5%E9%95%87%E8%8E%B2%E8%8A%B1%E8%B7%AF2151%E5%BC%8462-1%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="闵行/金汇"
+                data-district="闵行"
+                data-confidence="B"
+                data-admission="民办招生"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="MH8 闵行 民办 民办 一级 上海市金汇实验幼儿园 闵行/金汇 本部 红松路81弄28号 64023113 上海本地宝《上海市闵行区民办幼儿园名单查询》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200_2.shtm 民办招生">
+                <td><div class="school-name">上海市金汇实验幼儿园</div><div class="sub">本部</div></td>
+                <td>闵行</td>
+                <td><span class="tag amber">民办</span></td>
+                <td>民办</td>
+                <td>一级</td>
+                <td>闵行/金汇</td>
+                <td><span class="tag amber">民办招生</span></td>
+                <td>红松路81弄28号</td>
+                <td><div>金汇实验幼儿园</div><div class="sub">金汇花园红松路81弄28号(金汇实验学校旁)</div></td>
+                <td>高德直线约 8.31 km</td>
+                <td><a class="phone-link" href="tel:64023113">64023113</a></td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag red">B</span></td>
+                <td>民办招生范围、托班、小班名额、收费和材料要求需电话确认。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%97%B5%E8%A1%8C%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E9%87%91%E6%B1%87%E5%AE%9E%E9%AA%8C%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E7%BA%A2%E6%9D%BE%E8%B7%AF81%E5%BC%8428%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="浦东/联洋"
+                data-district="浦东"
+                data-confidence="B"
+                data-admission="政策待核验"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="PD9 浦东 公办 公办 示范园 上海市浦东新区东方幼儿园 浦东/联洋 联洋部 紫槐路30号 50333998 上海本地宝《浦东新区幼儿园名单+电话查询》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284151.shtm 政策待核验">
+                <td><div class="school-name">上海市浦东新区东方幼儿园</div><div class="sub">联洋部</div></td>
+                <td>浦东</td>
+                <td><span class="tag green">公办</span></td>
+                <td>公办</td>
+                <td>示范园</td>
+                <td>浦东/联洋</td>
+                <td><span class="tag blue">政策待核验</span></td>
+                <td>紫槐路30号</td>
+                <td><div>上海市浦东新区东方幼儿园联洋部</div><div class="sub">紫槐路30号</div></td>
+                <td>高德直线约 12.56 km</td>
+                <td><a class="phone-link" href="tel:50333998">50333998</a></td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag red">B</span></td>
+                <td>非徐汇区对口/招生范围需按所在区当年政策和居住地址核验。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%E4%B8%9C%E6%96%B9%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E8%81%94%E6%B4%8B%E9%83%A8%20%E7%B4%AB%E6%A7%90%E8%B7%AF30%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="浦东/花木"
+                data-district="浦东"
+                data-confidence="B"
+                data-admission="政策待核验"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="PD10 浦东 公办 公办 示范园 上海市浦东新区东方幼儿园 浦东/花木 仁恒部 锦绣路50号 68568510 上海本地宝《浦东新区幼儿园名单+电话查询》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284151.shtm 政策待核验">
+                <td><div class="school-name">上海市浦东新区东方幼儿园</div><div class="sub">仁恒部</div></td>
+                <td>浦东</td>
+                <td><span class="tag green">公办</span></td>
+                <td>公办</td>
+                <td>示范园</td>
+                <td>浦东/花木</td>
+                <td><span class="tag blue">政策待核验</span></td>
+                <td>锦绣路50号</td>
+                <td><div>上海市浦东新区东方幼儿园仁恒部</div><div class="sub">锦绣路50号</div></td>
+                <td>高德直线约 13.13 km</td>
+                <td><a class="phone-link" href="tel:68568510">68568510</a></td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag red">B</span></td>
+                <td>非徐汇区对口/招生范围需按所在区当年政策和居住地址核验。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%E4%B8%9C%E6%96%B9%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E4%BB%81%E6%81%92%E9%83%A8%20%E9%94%A6%E7%BB%A3%E8%B7%AF50%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="浦东/周浦"
+                data-district="浦东"
+                data-confidence="B"
+                data-admission="政策待核验"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="PD11 浦东 公办 公办 示范园 上海市浦东新区经纬幼儿园 浦东/周浦 鹤驰部 鹤驰路142号 20985959 上海本地宝《浦东新区幼儿园名单+电话查询》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284151.shtm 政策待核验">
+                <td><div class="school-name">上海市浦东新区经纬幼儿园</div><div class="sub">鹤驰部</div></td>
+                <td>浦东</td>
+                <td><span class="tag green">公办</span></td>
+                <td>公办</td>
+                <td>示范园</td>
+                <td>浦东/周浦</td>
+                <td><span class="tag blue">政策待核验</span></td>
+                <td>鹤驰路142号</td>
+                <td><div>上海市浦东新区经纬幼儿园</div><div class="sub">鹤驰路142号</div></td>
+                <td>高德直线约 15.33 km</td>
+                <td><a class="phone-link" href="tel:20985959">20985959</a></td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag red">B</span></td>
+                <td>非徐汇区对口/招生范围需按所在区当年政策和居住地址核验。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%E7%BB%8F%E7%BA%AC%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E9%B9%A4%E9%A9%B0%E9%83%A8%20%E9%B9%A4%E9%A9%B0%E8%B7%AF142%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="浦东/唐镇"
+                data-district="浦东"
+                data-confidence="B"
+                data-admission="政策待核验"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="PD12 浦东 公办 公办 示范园 上海市浦东新区东方幼儿园 浦东/唐镇 唐城部 齐爱路60号 58478913 上海本地宝《浦东新区幼儿园名单+电话查询》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284151.shtm 政策待核验">
+                <td><div class="school-name">上海市浦东新区东方幼儿园</div><div class="sub">唐城部</div></td>
+                <td>浦东</td>
+                <td><span class="tag green">公办</span></td>
+                <td>公办</td>
+                <td>示范园</td>
+                <td>浦东/唐镇</td>
+                <td><span class="tag blue">政策待核验</span></td>
+                <td>齐爱路60号</td>
+                <td><div>东方幼儿园唐城部</div><div class="sub">齐爱路60号</div></td>
+                <td>高德直线约 19.86 km</td>
+                <td><a class="phone-link" href="tel:58478913">58478913</a></td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag red">B</span></td>
+                <td>非徐汇区对口/招生范围需按所在区当年政策和居住地址核验。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%E4%B8%9C%E6%96%B9%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E5%94%90%E5%9F%8E%E9%83%A8%20%E9%BD%90%E7%88%B1%E8%B7%AF60%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="浦东/花木"
+                data-district="浦东"
+                data-confidence="B"
+                data-admission="民办招生"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="PD13 浦东 民办 民办 二级 上海浦东新区民办领世幼儿园 浦东/花木 本部 花木路1108号 58833373 上海本地宝《浦东新区民办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284151_2.shtm 民办招生">
+                <td><div class="school-name">上海浦东新区民办领世幼儿园</div><div class="sub">本部</div></td>
+                <td>浦东</td>
+                <td><span class="tag amber">民办</span></td>
+                <td>民办</td>
+                <td>二级</td>
+                <td>浦东/花木</td>
+                <td><span class="tag amber">民办招生</span></td>
+                <td>花木路1108号</td>
+                <td><div>高德地址坐标（非POI精确匹配）</div><div class="sub">上海市浦东新区花木路1108号</div></td>
+                <td>高德直线约 11.18 km</td>
+                <td><a class="phone-link" href="tel:58833373">58833373</a></td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag red">B</span></td>
+                <td>民办招生范围、托班、小班名额、收费和材料要求需电话确认。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%E6%B0%91%E5%8A%9E%E9%A2%86%E4%B8%96%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E8%8A%B1%E6%9C%A8%E8%B7%AF1108%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="浦东/世博滨江"
+                data-district="浦东"
+                data-confidence="B"
+                data-admission="民办招生"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="PD14 浦东 民办 民办 二级 上海浦东新区民办海富耀华幼儿园 浦东/世博滨江 本部 耀华路550弄1号 021-58803988 上海本地宝《浦东新区民办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284151_2.shtm 民办招生">
+                <td><div class="school-name">上海浦东新区民办海富耀华幼儿园</div><div class="sub">本部</div></td>
+                <td>浦东</td>
+                <td><span class="tag amber">民办</span></td>
+                <td>民办</td>
+                <td>二级</td>
+                <td>浦东/世博滨江</td>
+                <td><span class="tag amber">民办招生</span></td>
+                <td>耀华路550弄1号</td>
+                <td><div>待高德MCP查询</div><div class="sub">待高德MCP查询</div></td>
+                <td>待高德MCP查询</td>
+                <td><a class="phone-link" href="tel:02158803988">021-58803988</a></td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag red">B</span></td>
+                <td>民办招生范围、托班、小班名额、收费和材料要求需电话确认。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%E6%B0%91%E5%8A%9E%E6%B5%B7%E5%AF%8C%E8%80%80%E5%8D%8E%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E8%80%80%E5%8D%8E%E8%B7%AF550%E5%BC%841%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="浦东/洋泾"
+                data-district="浦东"
+                data-confidence="B"
+                data-admission="民办招生"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="PD15 浦东 民办 民办 二级 上海浦东新区民办博雅汇潼幼儿园 浦东/洋泾 本部 博山路200弄9号 50933875 上海本地宝《浦东新区民办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284151_2.shtm 民办招生">
+                <td><div class="school-name">上海浦东新区民办博雅汇潼幼儿园</div><div class="sub">本部</div></td>
+                <td>浦东</td>
+                <td><span class="tag amber">民办</span></td>
+                <td>民办</td>
+                <td>二级</td>
+                <td>浦东/洋泾</td>
+                <td><span class="tag amber">民办招生</span></td>
+                <td>博山路200弄9号</td>
+                <td><div>上海浦东新区民办博雅汇潼幼儿园</div><div class="sub"></div></td>
+                <td>高德直线约 13.15 km</td>
+                <td><a class="phone-link" href="tel:50933875">50933875</a></td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag red">B</span></td>
+                <td>民办招生范围、托班、小班名额、收费和材料要求需电话确认。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%E6%B0%91%E5%8A%9E%E5%8D%9A%E9%9B%85%E6%B1%87%E6%BD%BC%E5%B9%BC%E5%84%BF%E5%9B%AD%20%E6%9C%AC%E9%83%A8%20%E5%8D%9A%E5%B1%B1%E8%B7%AF200%E5%BC%849%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。</td>
+              </tr>
+            
+              <tr
+                data-area="浦东/周浦"
+                data-district="浦东"
+                data-confidence="B"
+                data-admission="民办招生"
+                data-toddler="待确认"
+                data-confirm="yes"
+                data-text="PD16 浦东 民办 民办 二级 上海浦东德英乐周浦幼儿园有限公司 浦东/周浦 本部 周康路408号 021-58111751 上海本地宝《浦东新区民办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284151_2.shtm 民办招生">
+                <td><div class="school-name">上海浦东德英乐周浦幼儿园有限公司</div><div class="sub">本部</div></td>
+                <td>浦东</td>
+                <td><span class="tag amber">民办</span></td>
+                <td>民办</td>
+                <td>二级</td>
+                <td>浦东/周浦</td>
+                <td><span class="tag amber">民办招生</span></td>
+                <td>周康路408号</td>
+                <td><div>上海浦东德英乐周浦幼儿园</div><div class="sub">周浦镇周康路408号(繁荣路地铁站1号口步行340米)</div></td>
+                <td>高德直线约 12.30 km</td>
+                <td><a class="phone-link" href="tel:02158111751">021-58111751</a></td>
+                <td><span class="tag blue">待电话确认</span></td>
+                <td>待电话确认</td>
+                <td><span class="tag red">B</span></td>
+                <td>民办招生范围、托班、小班名额、收费和材料要求需电话确认。</td>
+                <td><a href="https://ditu.amap.com/search?query=%E4%B8%8A%E6%B5%B7%E5%B8%82%E6%B5%A6%E4%B8%9C%E6%96%B0%E5%8C%BA%20%E4%B8%8A%E6%B5%B7%E6%B5%A6%E4%B8%9C%E5%BE%B7%E8%8B%B1%E4%B9%90%E5%91%A8%E6%B5%A6%E5%B9%BC%E5%84%BF%E5%9B%AD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%20%E6%9C%AC%E9%83%A8%20%E5%91%A8%E5%BA%B7%E8%B7%AF408%E5%8F%B7" target="_blank" rel="noopener">打开高德</a></td>
+                <td>首版跨区候选池；地址和电话来自公开名单，距公司与实际招生条件需继续用高德和电话核验。</td>
+              </tr>
+            
           </tbody>
         </table>
       </div>
@@ -4430,7 +5396,7 @@
 
     <section id="areas">
       <div class="section-title">
-        <h2>片区容量概览</h2>
+        <h2>徐汇片区容量概览</h2>
         <p>只展示前 12 个供给相对集中的片区，用于判断大方向；个人录取仍以居委、材料和当年政策为准。</p>
       </div>
       <div class="areas">
@@ -4562,10 +5528,25 @@
         </article>
         <article class="notice-card">
           <h3>高德匹配质量</h3>
-          <p>高德已可靠匹配 101 个点位；26 个点位未写入 POI，主要是老地址、同名/近名园所或地图返回跨区结果。待核验示例：公办-龙华幼儿园 丰谷园、公办-望德幼儿园 南宁园、公办-樱花园幼儿园 南园、公办-乌鲁木齐南路幼儿园 境外部、民办-维亚幼儿园、民办-滨江幼儿园、民办-蒙世学堂幼儿园、民办-樱花园幼稚园、民办-新宜幼稚园、民办-蓓蕾幼稚园、民办-田林街道中心幼儿园、民办-小神童幼儿园。</p>
+          <p>高德已写入 139 个 POI/地址坐标，其中 8 个为地址地理编码；4 个点位未写入坐标，主要是老地址、同名/近名园所或地图返回跨区结果。待核验示例：公办-樱花园幼儿园 南园、民办-东泉大地幼儿园、民办-漕河泾新汇幼儿园、民办-上海浦东新区民办海富耀华幼儿园。</p>
         </article>
       </div>
       <div class="source-list">
+        <article class="source-card">
+          <strong><a href="https://edu.sh.gov.cn/xxgk2_zdgz_rxgkyzs_01/20260409/9a3caeed9a0e41c898149e46af9d9203.html" target="_blank" rel="noopener">上海市 2026 学前教育入园通知</a></strong>
+          <span>来源：上海市教委《上海市教育委员会关于做好2026年上海市学前教育阶段适龄幼儿入园工作的通知》，2026-04-09：https://edu.sh.gov.cn/xxgk2_zdgz_rxgkyzs_01/20260409/9a3caeed9a0e41c898149e46af9d9203.html</span>
+          <span>用途：作为三区招生流程、规范程序、一网通办和不得测试等共性政策底层依据。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://www.shanghai.gov.cn/xhqxqjy/20260421/c83b6efb6b4c43cb9071399f40215383.html" target="_blank" rel="noopener">2026 徐汇区幼儿园招生工作方案</a></strong>
+          <span>来源：上海市人民政府/徐汇区教育局《2026年徐汇区幼儿园招生工作方案》，2026-04-15：https://www.shanghai.gov.cn/xhqxqjy/20260421/c83b6efb6b4c43cb9071399f40215383.html</span>
+          <span>用途：确认相对就近、户籍优先、人户一致优先、外省市户籍排序统筹和录取批次。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://www.shanghai.gov.cn/xhqxqjy/20250417/85cd0238c43d49d5ae72cfbe65544a0b.html" target="_blank" rel="noopener">2025 徐汇区幼儿园招生工作方案</a></strong>
+          <span>来源：上海市人民政府/徐汇区教育局《2025年徐汇区幼儿园招生工作方案》，2025-04-15：https://www.shanghai.gov.cn/xhqxqjy/20250417/85cd0238c43d49d5ae72cfbe65544a0b.html</span>
+          <span>用途：用于观察徐汇近两年政策连续性；只能支持顺位判断，不能推出逐园精确录取概率。</span>
+        </article>
         <article class="source-card">
           <strong>公办招生范围与计划班级数</strong>
           <span>来源：本地PDF：/Users/caofengyang/Downloads/徐汇区幼儿园对口地区.pdf（2026年徐汇区公办幼儿园对口居委一览表及计划班级数）</span>
@@ -4577,9 +5558,14 @@
           <span>用途：与本地 PDF 互相校验公办招生计划、对口地段和扩招/自主招生口径。</span>
         </article>
         <article class="source-card">
-          <strong><a href="https://sh.bendibao.com/news/2026415/305294.shtm" target="_blank" rel="noopener">2026 徐汇区幼儿园招生工作方案</a></strong>
-          <span>用途：判断户籍优先、外省市户籍排序、录取批次、报名验证和统筹规则。</span>
-          <span>置信度：政策规则以当年官方发布和报名系统要求为准，本页只做决策提示。</span>
+          <strong><a href="https://www.shobserver.cn/sgh/detail?id=1735182" target="_blank" rel="noopener">2026 闵行入园问答</a></strong>
+          <span>来源：上观新闻/今日闵行《2026年闵行区学前教育阶段适龄幼儿入园工作各类问题解答》，2026-04-15：https://www.shobserver.cn/sgh/detail?id=1735182</span>
+          <span>用途：确认闵行报名、验证、梯队录取、溢出统筹和区级咨询渠道。</span>
+        </article>
+        <article class="source-card">
+          <strong><a href="https://www.pudong.gov.cn/zwgk/xqjy-jyjzdgz/2026/105/354450.html" target="_blank" rel="noopener">2026 浦东学前教育入园实施方案</a></strong>
+          <span>来源：浦东新区人民政府《浦东新区教育局关于2026年本区学前教育阶段适龄幼儿入园工作的实施方案》，2026-04-15：https://www.pudong.gov.cn/zwgk/xqjy-jyjzdgz/2026/105/354450.html</span>
+          <span>用途：确认浦东按地段/全区招生、人户一致优先、来沪人员随迁子女条件和统筹口径。</span>
         </article>
         <article class="source-card">
           <strong><a href="https://m.sh.bendibao.com/edu/305384.html" target="_blank" rel="noopener">2026 徐汇幼儿园报名材料</a></strong>
@@ -4602,9 +5588,19 @@
           <span>用途：补充 46 个民办/私立点位的级别、地址和联系电话，作为公办概率偏低时的兜底池。</span>
         </article>
         <article class="source-card">
+          <strong>闵行幼儿园候选池</strong>
+          <span>来源：上海本地宝《上海市闵行区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200.shtm；上海本地宝《上海市闵行区民办幼儿园名单查询》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200_2.shtm</span>
+          <span>用途：首版补充闵行公办/民办代表点位，用于徐汇南部以外的生活平衡路线比较。</span>
+        </article>
+        <article class="source-card">
+          <strong>浦东幼儿园候选池</strong>
+          <span>来源：上海本地宝《浦东新区幼儿园名单+电话查询》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284151.shtm；上海本地宝《浦东新区民办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284151_2.shtm</span>
+          <span>用途：首版补充浦东公办/民办代表点位，用于成长空间路线比较；不是浦东全量清单。</span>
+        </article>
+        <article class="source-card">
           <strong>高德地图 POI 与距离数据</strong>
           <span>来源：高德地图 MCP/API 查询结果，落地在 <code>data/amap_enrichment.json</code>。</span>
-          <span>用途：补充 POI 名称、POI 地址、经纬度，以及到西岸网易研发中心的直线距离；当前可靠匹配 101/127，匹配率 80%。</span>
+          <span>用途：补充 POI/地址坐标、经纬度，以及到西岸网易研发中心的直线距离；当前覆盖 139/143，覆盖率 97%，地址地理编码 8 个。</span>
         </article>
         <article class="source-card">
           <strong><a href="https://sh.zu.ke.com/" target="_blank" rel="noopener">贝壳上海租房结构化筛选</a></strong>
@@ -4637,6 +5633,7 @@
   <script>
     const search = document.querySelector("#search");
     const area = document.querySelector("#area");
+    const district = document.querySelector("#district");
     const admission = document.querySelector("#admission");
     const toddler = document.querySelector("#toddler");
     const confidence = document.querySelector("#confidence");
@@ -4651,18 +5648,19 @@
       for (const row of rows) {
         const okText = !q || row.dataset.text.toLowerCase().includes(q);
         const okArea = !area.value || row.dataset.area === area.value;
+        const okDistrict = !district.value || row.dataset.district === district.value;
         const okAdmission = !admission.value || row.dataset.admission === admission.value;
         const okToddler = !toddler.value || row.dataset.toddler === toddler.value;
         const okConfidence = !confidence.value || row.dataset.confidence === confidence.value;
         const okConfirm = !confirmSelect.value || row.dataset.confirm === confirmSelect.value;
-        const show = okText && okArea && okAdmission && okToddler && okConfidence && okConfirm;
+        const show = okText && okArea && okDistrict && okAdmission && okToddler && okConfidence && okConfirm;
         row.hidden = !show;
         if (show) visible += 1;
       }
       resultCount.textContent = visible;
     }
 
-    for (const control of [search, area, admission, toddler, confidence, confirmSelect]) {
+    for (const control of [search, area, district, admission, toddler, confidence, confirmSelect]) {
       control.addEventListener("input", applyFilters);
       control.addEventListener("change", applyFilters);
     }
