@@ -495,6 +495,13 @@ const nextActionForItem = (item) => {
   if (item.needsConfirm) return "结合当年简章和园所电话复核。";
   return "可进入租房、地图路线和实地接送复核。";
 };
+const districtTagClass = (district) => district === "徐汇" ? "green" : district === "闵行" ? "blue" : "amber";
+const levelTagClass = (level = "") => level.includes("示范") || level.includes("一级") ? "green" : level.includes("二级") ? "blue" : "neutral";
+const actionTagClass = (item) => {
+  if (item.officeDistance === pendingAmapValue || item.needsConfirm || item.confidence === "B") return "red";
+  if (item.nature === "民办" || item.admissionType === "区域自主" || item.admissionType === "扩招") return "amber";
+  return "green";
+};
 
 const campusHeader = ["编号", "区", "性质", "办园类型", "办园等级", "幼儿园", "片区", "园区/分园", "地址", "高德POI名称", "高德POI地址", "高德经纬度", `距${officeLocation.name}`, "高德搜索链接", "联系电话", "托班计划", "小班计划", "对口居委/招生范围", "招生类型", "置信度", "下一步动作", "备注", "主要来源"];
 const campusData = campusItems.map((item) => [
@@ -1281,16 +1288,7 @@ ${renderConstraintControl(group)}
 
 const renderScoreModel = () => `
         <div class="score-model" data-score-model>
-          <div class="weight-panel">
-            ${scoreDimensions.map((item) => `
-              <label class="weight-row">
-                <span><b>${escapeHtml(item.label)}</b><small>${escapeHtml(item.note)}</small></span>
-                <input type="range" min="0" max="40" step="1" value="${item.defaultWeight}" data-score-weight="${escapeHtml(item.key)}">
-                <em data-score-value="${escapeHtml(item.key)}">${item.defaultWeight}</em>
-              </label>
-            `).join("")}
-          </div>
-          <div class="score-results">
+          <div class="score-results" aria-label="分区评分结果">
             ${kindergartenDistrictOrder.map((district) => `
               <article class="score-result-card" data-score-result-card data-score-district="${escapeHtml(district)}">
                 <header><h3><span data-score-rank="${escapeHtml(district)}">-</span>${escapeHtml(district)}</h3><strong data-score-total="${escapeHtml(district)}">0</strong></header>
@@ -1298,6 +1296,19 @@ const renderScoreModel = () => `
                 <p data-score-summary="${escapeHtml(district)}"></p>
                 <div class="score-breakdown" data-score-breakdown="${escapeHtml(district)}"></div>
               </article>
+            `).join("")}
+          </div>
+          <div class="weight-panel">
+            <header class="weight-head">
+              <h3>评分模型权重</h3>
+              <span>拖动权重会即时重算推荐顺序</span>
+            </header>
+            ${scoreDimensions.map((item) => `
+              <label class="weight-row">
+                <span><b>${escapeHtml(item.label)}</b><small>${escapeHtml(item.note)}</small></span>
+                <input type="range" min="0" max="40" step="1" value="${item.defaultWeight}" data-score-weight="${escapeHtml(item.key)}">
+                <em data-score-value="${escapeHtml(item.key)}">${item.defaultWeight}</em>
+              </label>
             `).join("")}
           </div>
         </div>
@@ -3878,6 +3889,231 @@ const html = `<!doctype html>
     .beike-chip-list.compact select {
       min-width: 180px;
     }
+    /* Strategy-tool visual optimization: result-first hierarchy, compact constraints, scan-friendly table. */
+    .module-content {
+      padding-top: 24px;
+    }
+    .profile-grid {
+      margin-top: 14px;
+    }
+    .score-model {
+      grid-template-columns: minmax(360px, 0.92fr) minmax(0, 1.08fr);
+      align-items: start;
+      margin-bottom: 14px;
+    }
+    .score-results {
+      gap: 10px;
+    }
+    .score-result-card {
+      position: relative;
+      overflow: hidden;
+      padding: 17px;
+    }
+    .score-result-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: transparent;
+    }
+    .score-result-card.top::before {
+      background: linear-gradient(180deg, var(--green), var(--blue));
+    }
+    .score-result-card header {
+      margin-bottom: 10px;
+    }
+    .score-result-card strong {
+      font-size: 34px;
+      font-variant-numeric: tabular-nums;
+    }
+    .score-breakdown {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px 8px;
+    }
+    .score-breakdown span {
+      border-top: 0;
+      border-radius: 8px;
+      background: var(--rail);
+      padding: 5px 7px;
+    }
+    .weight-panel {
+      gap: 8px;
+      padding: 14px;
+    }
+    .weight-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .weight-head h3 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 15px;
+    }
+    .weight-head span {
+      color: var(--soft);
+      font-size: 12px;
+      text-align: right;
+    }
+    .weight-row {
+      grid-template-columns: minmax(150px, 1fr) minmax(120px, 180px) 34px;
+      gap: 10px;
+      padding: 6px 0;
+    }
+    .weight-row b {
+      font-size: 13px;
+    }
+    .weight-row small {
+      line-height: 1.35;
+    }
+    .constraint-panel {
+      gap: 12px;
+      margin-top: 14px;
+      padding: 14px;
+      box-shadow: none;
+    }
+    .constraint-head {
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    .constraint-head h3 {
+      font-size: 16px;
+    }
+    .constraint-head p {
+      max-width: 720px;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .constraint-active {
+      min-width: 260px;
+      background: var(--cyan-soft);
+      border: 1px solid var(--cyan-border);
+      color: var(--blue);
+      text-align: left;
+    }
+    .constraint-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .constraint-group {
+      padding: 10px 12px 12px;
+      background: rgba(148, 163, 184, 0.045);
+    }
+    .constraint-group legend {
+      font-size: 13px;
+    }
+    .constraint-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+    .constraint-option {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+    }
+    .constraint-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 1px;
+      height: 1px;
+      min-height: 0;
+    }
+    .constraint-option span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 34px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--rail);
+      color: var(--soft);
+    }
+    .constraint-option b {
+      color: inherit;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .constraint-option small {
+      max-width: 220px;
+      overflow: hidden;
+      color: inherit;
+      font-size: 11px;
+      line-height: 1.2;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .constraint-option:has(input:checked) span {
+      border-color: var(--cyan-border);
+      background: var(--cyan-soft);
+      color: var(--blue);
+    }
+    .constraint-option.switch {
+      display: flex;
+      min-height: 34px;
+    }
+    .constraint-option.switch span {
+      min-height: 38px;
+    }
+    .constraint-number {
+      grid-template-columns: minmax(0, 1fr) 88px auto;
+      padding: 8px;
+      background: var(--rail);
+    }
+    .constraint-impact span {
+      background: var(--metric-bg);
+      border: 1px solid var(--line);
+      color: var(--tag-text);
+    }
+    .tag.neutral {
+      color: var(--tag-text);
+      background: var(--rail);
+      border-color: var(--line);
+    }
+    .table-box {
+      max-height: 78vh;
+    }
+    table {
+      min-width: 1840px;
+    }
+    th,
+    td {
+      padding: 10px 11px;
+    }
+    th:first-child,
+    td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      min-width: 220px;
+      max-width: 280px;
+      background: var(--table-bg);
+      box-shadow: 1px 0 0 var(--line);
+    }
+    th:first-child {
+      z-index: 4;
+      background: var(--th-bg);
+    }
+    tbody tr:hover td {
+      background: rgba(34, 211, 238, 0.055);
+    }
+    tbody tr:hover td:first-child {
+      background: var(--table-bg);
+    }
+    .action-note {
+      max-width: 280px;
+      margin-top: 5px;
+      line-height: 1.35;
+    }
     footer {
       display: none;
     }
@@ -3946,6 +4182,19 @@ const html = `<!doctype html>
       .constraint-active {
         min-width: 0;
         text-align: left;
+        overflow-wrap: anywhere;
+      }
+      .constraint-option span {
+        max-width: 100%;
+      }
+      .constraint-option small {
+        display: none;
+      }
+      .constraint-number {
+        grid-template-columns: 1fr;
+      }
+      .score-breakdown {
+        grid-template-columns: 1fr;
       }
       .weight-row,
       .beike-filter-row {
@@ -3990,8 +4239,9 @@ const html = `<!doctype html>
     <div class="module-content">
     <section id="mission" data-module-section="strategy">
       <div class="section-title">
-        <h2>一、家庭基本情况</h2>
+        <h2>一、策略结果与家庭约束</h2>
       </div>
+${renderScoreModel()}
       <div class="profile-grid">
         <article class="profile-card"><strong>90 天目标</strong><span>幼儿园落位、租房签约、材料稳定、家具搬迁、通勤验证、家庭恢复正常运转。</span></article>
         <article class="profile-card"><strong>家庭约束</strong><span>材料、通勤、住房和入园偏好改为可选配置，会参与下方评分模型计算。</span></article>
@@ -4076,11 +4326,7 @@ ${renderArchitectureReviewCards()}
 
     <section id="routes" data-module-section="strategy">
       <div class="section-title">
-        <h2>二、幼儿园/租房评分模型</h2>
-      </div>
-${renderScoreModel()}
-      <div class="section-title">
-        <h2>三、基于评分模型的分区推荐策略</h2>
+        <h2>二、基于评分模型的分区推荐策略</h2>
       </div>
       <div class="route-grid">
 ${renderDistrictRouteCards()}
@@ -4089,7 +4335,7 @@ ${renderDistrictRouteCards()}
 ${renderDistrictKindergartenStrategyCards()}
       </div>
       <div class="section-title">
-        <h2>四、按区推荐样例</h2>
+        <h2>三、按区推荐样例</h2>
         <p>推荐样例按区维护在 <code>data/strategy_model.json</code>，只作为电话核验和看房排序入口，不把任何单一区域当作固定答案。</p>
       </div>
       <div class="school-decision-layout">
@@ -4362,10 +4608,10 @@ ${renderRentBoardCards()}
                 data-confirm="${item.needsConfirm ? "yes" : "no"}"
                 data-text="${escapeHtml(item.searchText)}">
                 <td><div class="school-name">${escapeHtml(item.name)}</div><div class="sub">${escapeHtml(item.campus)}</div></td>
-                <td>${escapeHtml(item.district)}</td>
+                <td><span class="tag ${districtTagClass(item.district)}">${escapeHtml(item.district)}</span></td>
                 <td><span class="tag ${item.nature === "民办" ? "amber" : "green"}">${escapeHtml(item.nature)}</span></td>
                 <td>${escapeHtml(item.category)}</td>
-                <td>${escapeHtml(item.level)}</td>
+                <td><span class="tag ${levelTagClass(item.level)}">${escapeHtml(item.level || "待确认")}</span></td>
                 <td>${escapeHtml(item.area)}</td>
                 <td><span class="tag ${item.admissionType === "固定对口" ? "green" : item.admissionType === "扩招" || item.admissionType === "民办招生" ? "amber" : "blue"}">${escapeHtml(item.admissionType)}</span></td>
                 <td>${escapeHtml(item.address)}</td>
@@ -4374,8 +4620,8 @@ ${renderRentBoardCards()}
                 <td>${renderPhoneLinks(item.phone)}</td>
                 <td><span class="tag ${item.toddlerMode === "混龄式招生" ? "amber" : "blue"}">${escapeHtml(item.toddler)}</span></td>
                 <td>${Number.isFinite(Number(item.small)) ? escapeHtml(item.small) + " 班" : escapeHtml(item.small)}</td>
-                <td><span class="tag ${item.confidence === "B" ? "red" : "green"}">${escapeHtml(item.confidence)}</span></td>
-                <td>${escapeHtml(nextActionForItem(item))}</td>
+                <td><span class="tag ${item.confidence === "B" ? "red" : "green"}">置信 ${escapeHtml(item.confidence)}</span></td>
+                <td><span class="tag ${actionTagClass(item)}">下一步</span><div class="sub action-note">${escapeHtml(nextActionForItem(item))}</div></td>
                 <td>${escapeHtml(item.committee)}</td>
                 <td><a href="${escapeHtml(item.mapUrl)}" target="_blank" rel="noopener">打开高德</a></td>
                 <td>${escapeHtml(item.note) || (item.needsConfirm ? "建议结合当年简章或电话确认。" : '<span class="sub">-</span>')}</td>
