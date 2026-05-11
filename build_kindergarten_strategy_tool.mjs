@@ -1027,12 +1027,26 @@ const renderSchoolDecisionCards = (district) => decisionRecommendations
       </article>
 `).join("");
 
-const renderDistrictDecisionSections = () => kindergartenDistrictOrder.map((district) => `
-      <section class="school-column">
-        <h3>${escapeHtml(district)}推荐样例</h3>
-        ${renderSchoolDecisionCards(district) || `<article class="school-card"><p>该区暂无推荐样例，先使用数据查询和租房入口做基础核验。</p></article>`}
-      </section>
-`).join("");
+const renderDistrictDecisionTabs = () => `
+      <div class="district-tab-shell">
+${renderDistrictTabs("samples", "按区切换推荐样例")}
+        <div class="district-tab-panels">
+          ${kindergartenDistrictOrder.map((district) => {
+            const active = district === defaultActiveDistrict;
+            return `
+          <section class="district-tab-panel${active ? " active" : ""}" role="tabpanel" data-district-panel-scope="samples" data-district-panel="${escapeHtml(district)}"${active ? "" : " hidden"}>
+            <div class="school-decision-layout single">
+              <section class="school-column">
+                <h3>${escapeHtml(district)}推荐样例</h3>
+                ${renderSchoolDecisionCards(district) || `<article class="school-card"><p>该区暂无推荐样例，先使用数据查询和租房入口做基础核验。</p></article>`}
+              </section>
+            </div>
+          </section>
+`;
+          }).join("")}
+        </div>
+      </div>
+`;
 
 const renderRentBoardCards = () => rentalBoards.map((board) => `
         <article class="rent-board-card">
@@ -1229,6 +1243,7 @@ const defaultStrategyDecision = calculateDistrictScores({
   constraintGroups: familyConstraintGroups,
   selections: defaultConstraintSelectionValues,
 });
+const defaultActiveDistrict = defaultStrategyDecision.districtScores[0]?.districtName || kindergartenDistrictOrder[0] || "";
 
 const renderConstraintControl = (group) => {
   if (group.type === "number") {
@@ -1366,7 +1381,17 @@ const renderArchitectureReviewCards = () => architectureReview.modules.map((item
         </article>
 `).join("");
 
-const renderDistrictRouteCards = () => districtProfiles.map((profile) => {
+const renderDistrictTabs = (scope, label) => `
+        <div class="district-tab-bar" role="tablist" aria-label="${escapeHtml(label)}">
+          ${kindergartenDistrictOrder.map((district) => {
+            const active = district === defaultActiveDistrict;
+            const counts = districtCounts.get(district) || { total: 0 };
+            return `<button type="button" class="district-tab${active ? " active" : ""}" role="tab" aria-selected="${active ? "true" : "false"}" data-district-tab-scope="${escapeHtml(scope)}" data-district-tab="${escapeHtml(district)}"><strong>${escapeHtml(district)}</strong><span>${counts.total} 点位</span></button>`;
+          }).join("")}
+        </div>
+`;
+
+const renderDistrictRouteCard = (profile) => {
   const counts = districtCounts.get(profile.district) || { total: 0, public: 0, private: 0 };
   return `
         <article class="route-card">
@@ -1385,7 +1410,7 @@ const renderDistrictRouteCards = () => districtProfiles.map((profile) => {
           </div>
         </article>
 `;
-}).join("");
+};
 
 const districtKindergartenStrategyItems = [
   {
@@ -1414,7 +1439,7 @@ const districtKindergartenStrategyItems = [
   },
 ];
 
-const renderDistrictKindergartenStrategyCards = () => districtKindergartenStrategyItems.map((item) => {
+const renderDistrictKindergartenStrategyCard = (item) => {
   const counts = districtCounts.get(item.district) || { total: 0, public: 0, private: 0 };
   return `
         <article class="route-card">
@@ -1432,7 +1457,34 @@ const renderDistrictKindergartenStrategyCards = () => districtKindergartenStrate
           </div>
         </article>
 `;
-}).join("");
+};
+
+const renderDistrictStrategyTabs = () => `
+      <div class="district-tab-shell">
+${renderDistrictTabs("strategy", "按区切换推荐策略")}
+        <div class="district-tab-panels">
+          ${kindergartenDistrictOrder.map((district) => {
+            const active = district === defaultActiveDistrict;
+            const profileCards = districtProfiles
+              .filter((profile) => profile.district === district)
+              .map(renderDistrictRouteCard)
+              .join("");
+            const strategyCards = districtKindergartenStrategyItems
+              .filter((item) => item.district === district)
+              .map(renderDistrictKindergartenStrategyCard)
+              .join("");
+            return `
+          <section class="district-tab-panel${active ? " active" : ""}" role="tabpanel" data-district-panel-scope="strategy" data-district-panel="${escapeHtml(district)}"${active ? "" : " hidden"}>
+            <div class="district-panel-grid">
+${profileCards || `<article class="route-card"><p>该区暂无路线画像，先补充区级落地画像数据。</p></article>`}
+${strategyCards || `<article class="route-card"><p>该区暂无择园策略，先使用数据查询和租房入口做基础核验。</p></article>`}
+            </div>
+          </section>
+`;
+          }).join("")}
+        </div>
+      </div>
+`;
 
 const landingScoreItems = [
   ["通勤", "高", "30-45分钟内优先，直线距离只做预筛。"],
@@ -4114,6 +4166,74 @@ const html = `<!doctype html>
       margin-top: 5px;
       line-height: 1.35;
     }
+    .district-tab-shell {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .district-tab-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--rail);
+      scrollbar-width: thin;
+    }
+    .district-tab {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      background: transparent;
+      color: var(--soft);
+      font: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .district-tab strong {
+      color: inherit;
+      font-size: 13px;
+    }
+    .district-tab span {
+      color: inherit;
+      font-size: 12px;
+      opacity: 0.78;
+    }
+    .district-tab:hover {
+      color: var(--ink);
+      background: var(--paper);
+    }
+    .district-tab.active {
+      border-color: var(--cyan-border);
+      background: var(--paper);
+      color: var(--blue);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+    }
+    .district-tab-panels {
+      min-width: 0;
+    }
+    .district-tab-panel[hidden] {
+      display: none !important;
+    }
+    .district-panel-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+    }
+    .school-decision-layout.single {
+      grid-template-columns: minmax(0, 1fr);
+      margin-top: 0;
+    }
+    .school-decision-layout.single .school-column {
+      max-width: none;
+    }
     footer {
       display: none;
     }
@@ -4195,6 +4315,14 @@ const html = `<!doctype html>
       }
       .score-breakdown {
         grid-template-columns: 1fr;
+      }
+      .district-panel-grid {
+        grid-template-columns: 1fr;
+      }
+      .district-tab-bar {
+        margin-right: -14px;
+        padding-right: 14px;
+        border-radius: 10px 0 0 10px;
       }
       .weight-row,
       .beike-filter-row {
@@ -4328,19 +4456,12 @@ ${renderArchitectureReviewCards()}
       <div class="section-title">
         <h2>二、基于评分模型的分区推荐策略</h2>
       </div>
-      <div class="route-grid">
-${renderDistrictRouteCards()}
-      </div>
-      <div class="route-grid">
-${renderDistrictKindergartenStrategyCards()}
-      </div>
+${renderDistrictStrategyTabs()}
       <div class="section-title">
         <h2>三、按区推荐样例</h2>
         <p>推荐样例按区维护在 <code>data/strategy_model.json</code>，只作为电话核验和看房排序入口，不把任何单一区域当作固定答案。</p>
       </div>
-      <div class="school-decision-layout">
-${renderDistrictDecisionSections()}
-      </div>
+${renderDistrictDecisionTabs()}
       <div class="rental-result-grid">
 ${renderRentalSnapshotCards()}
       </div>
@@ -4383,16 +4504,12 @@ ${renderRentalSnapshotCards()}
         <h2>三区择园策略</h2>
         <p>先判断区域是否可执行，再在区内选择公办争取线和民办兜底线。</p>
       </div>
-      <div class="route-grid">
-${renderDistrictKindergartenStrategyCards()}
-      </div>
+${renderDistrictStrategyTabs()}
       <div class="section-title">
         <h2>按区推荐样例</h2>
         <p>每个区都维护推荐样例，用作“路线如何落到园所和租房板块”的示范；完整点位在详细查询里按区筛选。</p>
       </div>
-      <div class="school-decision-layout">
-${renderDistrictDecisionSections()}
-      </div>
+${renderDistrictDecisionTabs()}
       <div class="section-title">
         <h2>闵行/浦东基础数据</h2>
         <p>完整点位在底部详细查询表中按区、性质和关键词筛选；这里每区只展示 6 个样例，便于先进入对应租房板块和高德核验。</p>
@@ -4813,6 +4930,8 @@ ${strategyEngineClientScript}
     const themeButtons = Array.from(document.querySelectorAll("[data-theme-choice]"));
     const modulePageTitle = document.querySelector("#modulePageTitle");
     const modulePageSubtitle = document.querySelector("#modulePageSubtitle");
+    const districtTabButtons = Array.from(document.querySelectorAll("[data-district-tab]"));
+    const districtTabPanels = Array.from(document.querySelectorAll("[data-district-panel]"));
     const moduleCopy = {
       strategy: {
         title: "幼儿园选择策略",
@@ -4831,6 +4950,23 @@ ${strategyEngineClientScript}
         subtitle: "追溯幼儿园名单、POI 坐标、租房参数、架构文档和置信度边界。"
       }
     };
+
+    function activateDistrictTabs(districtName) {
+      if (!districtName) return;
+      for (const button of districtTabButtons) {
+        const active = button.dataset.districtTab === districtName;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-selected", active ? "true" : "false");
+      }
+      for (const panel of districtTabPanels) {
+        panel.hidden = panel.dataset.districtPanel !== districtName;
+        panel.classList.toggle("active", !panel.hidden);
+      }
+    }
+
+    for (const button of districtTabButtons) {
+      button.addEventListener("click", () => activateDistrictTabs(button.dataset.districtTab));
+    }
 
     function currentThemePreference() {
       try {
@@ -5107,6 +5243,7 @@ ${strategyEngineClientScript}
     }
     populateKindergartenAreas();
     updateScoreModel();
+    activateDistrictTabs(${JSON.stringify(defaultActiveDistrict)});
     applyFilters();
     updateRentUrl();
     setActiveModule(moduleFromHash(), false);

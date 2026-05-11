@@ -2605,6 +2605,74 @@
       margin-top: 5px;
       line-height: 1.35;
     }
+    .district-tab-shell {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .district-tab-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--rail);
+      scrollbar-width: thin;
+    }
+    .district-tab {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      background: transparent;
+      color: var(--soft);
+      font: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .district-tab strong {
+      color: inherit;
+      font-size: 13px;
+    }
+    .district-tab span {
+      color: inherit;
+      font-size: 12px;
+      opacity: 0.78;
+    }
+    .district-tab:hover {
+      color: var(--ink);
+      background: var(--paper);
+    }
+    .district-tab.active {
+      border-color: var(--cyan-border);
+      background: var(--paper);
+      color: var(--blue);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+    }
+    .district-tab-panels {
+      min-width: 0;
+    }
+    .district-tab-panel[hidden] {
+      display: none !important;
+    }
+    .district-panel-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+    }
+    .school-decision-layout.single {
+      grid-template-columns: minmax(0, 1fr);
+      margin-top: 0;
+    }
+    .school-decision-layout.single .school-column {
+      max-width: none;
+    }
     footer {
       display: none;
     }
@@ -2686,6 +2754,14 @@
       }
       .score-breakdown {
         grid-template-columns: 1fr;
+      }
+      .district-panel-grid {
+        grid-template-columns: 1fr;
+      }
+      .district-tab-bar {
+        margin-right: -14px;
+        padding-right: 14px;
+        border-radius: 10px 0 0 10px;
       }
       .weight-row,
       .beike-filter-row {
@@ -3092,7 +3168,17 @@
       <div class="section-title">
         <h2>二、基于评分模型的分区推荐策略</h2>
       </div>
-      <div class="route-grid">
+
+      <div class="district-tab-shell">
+
+        <div class="district-tab-bar" role="tablist" aria-label="按区切换推荐策略">
+          <button type="button" class="district-tab" role="tab" aria-selected="false" data-district-tab-scope="strategy" data-district-tab="徐汇"><strong>徐汇</strong><span>127 点位</span></button><button type="button" class="district-tab active" role="tab" aria-selected="true" data-district-tab-scope="strategy" data-district-tab="闵行"><strong>闵行</strong><span>258 点位</span></button><button type="button" class="district-tab" role="tab" aria-selected="false" data-district-tab-scope="strategy" data-district-tab="浦东"><strong>浦东</strong><span>545 点位</span></button>
+        </div>
+
+        <div class="district-tab-panels">
+          
+          <section class="district-tab-panel" role="tabpanel" data-district-panel-scope="strategy" data-district-panel="徐汇" hidden>
+            <div class="district-panel-grid">
 
         <article class="route-card">
           <header><h3>徐汇 · 保守执行线</h3><span class="tag green">保守首选</span></header>
@@ -3110,6 +3196,28 @@
           </div>
         </article>
 
+
+        <article class="route-card">
+          <header><h3>徐汇怎么选</h3><span class="tag green">通勤保守线</span></header>
+          <div class="route-metrics">
+            <span><b>127</b>点位</span>
+            <span><b>81</b>公办</span>
+            <span><b>46</b>民办</span>
+          </div>
+          <p><strong>公办策略：</strong>公办按居委和材料顺位争取，优先验证南部板块、区域自主和扩招口径。</p>
+          <p><strong>民办策略：</strong>民办/普惠民办作为同步兜底，重点联系长桥、龙华、华泾、康健方向。</p>
+          <p><strong>下一步：</strong>看房前确认居委和房东材料配合；看房后用居委反查公办园，再电话确认目标园。</p>
+          <div class="rent-links">
+            <a href="https://sh.zu.ke.com/zufang/changqiao/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">长桥房源</a><a href="https://sh.zu.ke.com/zufang/huajing/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">华泾房源</a><a href="https://sh.zu.ke.com/zufang/longhua/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">龙华房源</a>
+          </div>
+        </article>
+
+            </div>
+          </section>
+
+          <section class="district-tab-panel active" role="tabpanel" data-district-panel-scope="strategy" data-district-panel="闵行">
+            <div class="district-panel-grid">
+
         <article class="route-card">
           <header><h3>闵行 · 生活平衡线</h3><span class="tag blue">首选扩展</span></header>
           <p class="reason">居住体验、亲子社区和房源空间更友好，适合作为通勤与居住平衡的扩展方向。</p>
@@ -3125,6 +3233,28 @@
             <a href="https://sh.zu.ke.com/zufang/chunshen/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">春申房源</a><a href="https://sh.zu.ke.com/zufang/gumei/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">古美房源</a><a href="https://sh.zu.ke.com/zufang/meilong/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">梅陇房源</a>
           </div>
         </article>
+
+
+        <article class="route-card">
+          <header><h3>闵行怎么选</h3><span class="tag blue">生活平衡线</span></header>
+          <div class="route-metrics">
+            <span><b>258</b>点位</span>
+            <span><b>166</b>公办</span>
+            <span><b>91</b>民办</span>
+          </div>
+          <p><strong>公办策略：</strong>公办先按租房地址所在街镇和当年梯队排序核验，不把近公司距离当作录取依据。</p>
+          <p><strong>民办策略：</strong>民办和中外合作点位数量更适合做兜底池，但年度名单和收费必须电话确认。</p>
+          <p><strong>下一步：</strong>优先比较春申、古美、梅陇、颛桥，筛 100㎡以上电梯房源，再按小区所属居委反查园所。</p>
+          <div class="rent-links">
+            <a href="https://sh.zu.ke.com/zufang/chunshen/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">春申房源</a><a href="https://sh.zu.ke.com/zufang/gumei/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">古美房源</a><a href="https://sh.zu.ke.com/zufang/meilong/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">梅陇房源</a>
+          </div>
+        </article>
+
+            </div>
+          </section>
+
+          <section class="district-tab-panel" role="tabpanel" data-district-panel-scope="strategy" data-district-panel="浦东" hidden>
+            <div class="district-panel-grid">
 
         <article class="route-card">
           <header><h3>浦东 · 成长空间线</h3><span class="tag amber">备选比较</span></header>
@@ -3142,38 +3272,6 @@
           </div>
         </article>
 
-      </div>
-      <div class="route-grid">
-
-        <article class="route-card">
-          <header><h3>徐汇怎么选</h3><span class="tag green">通勤保守线</span></header>
-          <div class="route-metrics">
-            <span><b>127</b>点位</span>
-            <span><b>81</b>公办</span>
-            <span><b>46</b>民办</span>
-          </div>
-          <p><strong>公办策略：</strong>公办按居委和材料顺位争取，优先验证南部板块、区域自主和扩招口径。</p>
-          <p><strong>民办策略：</strong>民办/普惠民办作为同步兜底，重点联系长桥、龙华、华泾、康健方向。</p>
-          <p><strong>下一步：</strong>看房前确认居委和房东材料配合；看房后用居委反查公办园，再电话确认目标园。</p>
-          <div class="rent-links">
-            <a href="https://sh.zu.ke.com/zufang/changqiao/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">长桥房源</a><a href="https://sh.zu.ke.com/zufang/huajing/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">华泾房源</a><a href="https://sh.zu.ke.com/zufang/longhua/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">龙华房源</a>
-          </div>
-        </article>
-
-        <article class="route-card">
-          <header><h3>闵行怎么选</h3><span class="tag blue">生活平衡线</span></header>
-          <div class="route-metrics">
-            <span><b>258</b>点位</span>
-            <span><b>166</b>公办</span>
-            <span><b>91</b>民办</span>
-          </div>
-          <p><strong>公办策略：</strong>公办先按租房地址所在街镇和当年梯队排序核验，不把近公司距离当作录取依据。</p>
-          <p><strong>民办策略：</strong>民办和中外合作点位数量更适合做兜底池，但年度名单和收费必须电话确认。</p>
-          <p><strong>下一步：</strong>优先比较春申、古美、梅陇、颛桥，筛 100㎡以上电梯房源，再按小区所属居委反查园所。</p>
-          <div class="rent-links">
-            <a href="https://sh.zu.ke.com/zufang/chunshen/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">春申房源</a><a href="https://sh.zu.ke.com/zufang/gumei/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">古美房源</a><a href="https://sh.zu.ke.com/zufang/meilong/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">梅陇房源</a>
-          </div>
-        </article>
 
         <article class="route-card">
           <header><h3>浦东怎么选</h3><span class="tag amber">成长空间线</span></header>
@@ -3190,16 +3288,30 @@
           </div>
         </article>
 
+            </div>
+          </section>
+
+        </div>
       </div>
+
       <div class="section-title">
         <h2>三、按区推荐样例</h2>
         <p>推荐样例按区维护在 <code>data/strategy_model.json</code>，只作为电话核验和看房排序入口，不把任何单一区域当作固定答案。</p>
       </div>
-      <div class="school-decision-layout">
 
-      <section class="school-column">
-        <h3>徐汇推荐样例</h3>
-        
+      <div class="district-tab-shell">
+
+        <div class="district-tab-bar" role="tablist" aria-label="按区切换推荐样例">
+          <button type="button" class="district-tab" role="tab" aria-selected="false" data-district-tab-scope="samples" data-district-tab="徐汇"><strong>徐汇</strong><span>127 点位</span></button><button type="button" class="district-tab active" role="tab" aria-selected="true" data-district-tab-scope="samples" data-district-tab="闵行"><strong>闵行</strong><span>258 点位</span></button><button type="button" class="district-tab" role="tab" aria-selected="false" data-district-tab-scope="samples" data-district-tab="浦东"><strong>浦东</strong><span>545 点位</span></button>
+        </div>
+
+        <div class="district-tab-panels">
+          
+          <section class="district-tab-panel" role="tabpanel" data-district-panel-scope="samples" data-district-panel="徐汇" hidden>
+            <div class="school-decision-layout single">
+              <section class="school-column">
+                <h3>徐汇推荐样例</h3>
+                
       <article class="school-card">
         <header>
           <div>
@@ -3460,11 +3572,15 @@
 
       </article>
 
-      </section>
+              </section>
+            </div>
+          </section>
 
-      <section class="school-column">
-        <h3>闵行推荐样例</h3>
-        
+          <section class="district-tab-panel active" role="tabpanel" data-district-panel-scope="samples" data-district-panel="闵行">
+            <div class="school-decision-layout single">
+              <section class="school-column">
+                <h3>闵行推荐样例</h3>
+                
       <article class="school-card">
         <header>
           <div>
@@ -3517,11 +3633,15 @@
 
       </article>
 
-      </section>
+              </section>
+            </div>
+          </section>
 
-      <section class="school-column">
-        <h3>浦东推荐样例</h3>
-        
+          <section class="district-tab-panel" role="tabpanel" data-district-panel-scope="samples" data-district-panel="浦东" hidden>
+            <div class="school-decision-layout single">
+              <section class="school-column">
+                <h3>浦东推荐样例</h3>
+                
       <article class="school-card">
         <header>
           <div>
@@ -3574,9 +3694,13 @@
 
       </article>
 
-      </section>
+              </section>
+            </div>
+          </section>
 
+        </div>
       </div>
+
       <div class="rental-result-grid">
 
         <article class="rental-result-card">
@@ -3661,7 +3785,34 @@
         <h2>三区择园策略</h2>
         <p>先判断区域是否可执行，再在区内选择公办争取线和民办兜底线。</p>
       </div>
-      <div class="route-grid">
+
+      <div class="district-tab-shell">
+
+        <div class="district-tab-bar" role="tablist" aria-label="按区切换推荐策略">
+          <button type="button" class="district-tab" role="tab" aria-selected="false" data-district-tab-scope="strategy" data-district-tab="徐汇"><strong>徐汇</strong><span>127 点位</span></button><button type="button" class="district-tab active" role="tab" aria-selected="true" data-district-tab-scope="strategy" data-district-tab="闵行"><strong>闵行</strong><span>258 点位</span></button><button type="button" class="district-tab" role="tab" aria-selected="false" data-district-tab-scope="strategy" data-district-tab="浦东"><strong>浦东</strong><span>545 点位</span></button>
+        </div>
+
+        <div class="district-tab-panels">
+          
+          <section class="district-tab-panel" role="tabpanel" data-district-panel-scope="strategy" data-district-panel="徐汇" hidden>
+            <div class="district-panel-grid">
+
+        <article class="route-card">
+          <header><h3>徐汇 · 保守执行线</h3><span class="tag green">保守首选</span></header>
+          <p class="reason">通勤近、教育密度高、已有数据最完整，适合先把入园和材料落地。</p>
+          <div class="route-metrics">
+            <span><b>127</b>基础点位</span>
+            <span><b>81</b>公办</span>
+            <span><b>46</b>民办</span>
+          </div>
+          <p><strong>适合：</strong>办公点在西岸、需要快速稳定、希望减少通勤不确定性的家庭。</p>
+          <p><strong>主要风险：</strong>核心区房龄老；大户型低预算选择少；公办顺位压力高</p>
+          <p><strong>放弃条件：</strong>如果连续看房发现100㎡以上、电梯、1万内房源质量明显不达标，就切到闵行边界。</p>
+          <div class="rent-links">
+            <a href="https://sh.zu.ke.com/zufang/changqiao/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">长桥房源</a><a href="https://sh.zu.ke.com/zufang/huajing/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">华泾房源</a><a href="https://sh.zu.ke.com/zufang/longhua/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">龙华房源</a>
+          </div>
+        </article>
+
 
         <article class="route-card">
           <header><h3>徐汇怎么选</h3><span class="tag green">通勤保守线</span></header>
@@ -3678,6 +3829,29 @@
           </div>
         </article>
 
+            </div>
+          </section>
+
+          <section class="district-tab-panel active" role="tabpanel" data-district-panel-scope="strategy" data-district-panel="闵行">
+            <div class="district-panel-grid">
+
+        <article class="route-card">
+          <header><h3>闵行 · 生活平衡线</h3><span class="tag blue">首选扩展</span></header>
+          <p class="reason">居住体验、亲子社区和房源空间更友好，适合作为通勤与居住平衡的扩展方向。</p>
+          <div class="route-metrics">
+            <span><b>258</b>基础点位</span>
+            <span><b>166</b>公办</span>
+            <span><b>91</b>民办</span>
+          </div>
+          <p><strong>适合：</strong>愿意接受通勤略增加，换取更新小区、更好亲子环境和更可执行租房的家庭。</p>
+          <p><strong>主要风险：</strong>实际通勤需要早高峰验证；幼儿园政策需重新核验；跨区后徐汇公办路径不再适用</p>
+          <p><strong>放弃条件：</strong>如果通勤超过45分钟且接送无法稳定，就不作为90天落地首选。</p>
+          <div class="rent-links">
+            <a href="https://sh.zu.ke.com/zufang/chunshen/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">春申房源</a><a href="https://sh.zu.ke.com/zufang/gumei/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">古美房源</a><a href="https://sh.zu.ke.com/zufang/meilong/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">梅陇房源</a>
+          </div>
+        </article>
+
+
         <article class="route-card">
           <header><h3>闵行怎么选</h3><span class="tag blue">生活平衡线</span></header>
           <div class="route-metrics">
@@ -3692,6 +3866,29 @@
             <a href="https://sh.zu.ke.com/zufang/chunshen/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">春申房源</a><a href="https://sh.zu.ke.com/zufang/gumei/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">古美房源</a><a href="https://sh.zu.ke.com/zufang/meilong/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">梅陇房源</a>
           </div>
         </article>
+
+            </div>
+          </section>
+
+          <section class="district-tab-panel" role="tabpanel" data-district-panel-scope="strategy" data-district-panel="浦东" hidden>
+            <div class="district-panel-grid">
+
+        <article class="route-card">
+          <header><h3>浦东 · 成长空间线</h3><span class="tag amber">备选比较</span></header>
+          <p class="reason">新社区、空间感和成长型资源更强，但与西岸办公点的通勤和教育分化要重点评估。</p>
+          <div class="route-metrics">
+            <span><b>545</b>基础点位</span>
+            <span><b>430</b>公办</span>
+            <span><b>114</b>民办</span>
+          </div>
+          <p><strong>适合：</strong>更重视新社区、生活空间、长期成长环境，且能接受跨江通勤验证的家庭。</p>
+          <p><strong>主要风险：</strong>通勤不确定性更高；教育资源分化明显；短期落地复杂度高于徐汇/闵行</p>
+          <p><strong>放弃条件：</strong>如果跨江通勤和接送链路无法稳定，不进入第一阶段落地主线。</p>
+          <div class="rent-links">
+            <a href="https://sh.zu.ke.com/zufang/huamu/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">花木房源</a><a href="https://sh.zu.ke.com/zufang/lianyang/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">联洋房源</a><a href="https://sh.zu.ke.com/zufang/sanlin/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">三林房源</a>
+          </div>
+        </article>
+
 
         <article class="route-card">
           <header><h3>浦东怎么选</h3><span class="tag amber">成长空间线</span></header>
@@ -3708,16 +3905,30 @@
           </div>
         </article>
 
+            </div>
+          </section>
+
+        </div>
       </div>
+
       <div class="section-title">
         <h2>按区推荐样例</h2>
         <p>每个区都维护推荐样例，用作“路线如何落到园所和租房板块”的示范；完整点位在详细查询里按区筛选。</p>
       </div>
-      <div class="school-decision-layout">
 
-      <section class="school-column">
-        <h3>徐汇推荐样例</h3>
-        
+      <div class="district-tab-shell">
+
+        <div class="district-tab-bar" role="tablist" aria-label="按区切换推荐样例">
+          <button type="button" class="district-tab" role="tab" aria-selected="false" data-district-tab-scope="samples" data-district-tab="徐汇"><strong>徐汇</strong><span>127 点位</span></button><button type="button" class="district-tab active" role="tab" aria-selected="true" data-district-tab-scope="samples" data-district-tab="闵行"><strong>闵行</strong><span>258 点位</span></button><button type="button" class="district-tab" role="tab" aria-selected="false" data-district-tab-scope="samples" data-district-tab="浦东"><strong>浦东</strong><span>545 点位</span></button>
+        </div>
+
+        <div class="district-tab-panels">
+          
+          <section class="district-tab-panel" role="tabpanel" data-district-panel-scope="samples" data-district-panel="徐汇" hidden>
+            <div class="school-decision-layout single">
+              <section class="school-column">
+                <h3>徐汇推荐样例</h3>
+                
       <article class="school-card">
         <header>
           <div>
@@ -3978,11 +4189,15 @@
 
       </article>
 
-      </section>
+              </section>
+            </div>
+          </section>
 
-      <section class="school-column">
-        <h3>闵行推荐样例</h3>
-        
+          <section class="district-tab-panel active" role="tabpanel" data-district-panel-scope="samples" data-district-panel="闵行">
+            <div class="school-decision-layout single">
+              <section class="school-column">
+                <h3>闵行推荐样例</h3>
+                
       <article class="school-card">
         <header>
           <div>
@@ -4035,11 +4250,15 @@
 
       </article>
 
-      </section>
+              </section>
+            </div>
+          </section>
 
-      <section class="school-column">
-        <h3>浦东推荐样例</h3>
-        
+          <section class="district-tab-panel" role="tabpanel" data-district-panel-scope="samples" data-district-panel="浦东" hidden>
+            <div class="school-decision-layout single">
+              <section class="school-column">
+                <h3>浦东推荐样例</h3>
+                
       <article class="school-card">
         <header>
           <div>
@@ -4092,9 +4311,13 @@
 
       </article>
 
-      </section>
+              </section>
+            </div>
+          </section>
 
+        </div>
       </div>
+
       <div class="section-title">
         <h2>闵行/浦东基础数据</h2>
         <p>完整点位在底部详细查询表中按区、性质和关键词筛选；这里每区只展示 6 个样例，便于先进入对应租房板块和高德核验。</p>
@@ -32201,6 +32424,8 @@ window.StrategyEngine = {
     const themeButtons = Array.from(document.querySelectorAll("[data-theme-choice]"));
     const modulePageTitle = document.querySelector("#modulePageTitle");
     const modulePageSubtitle = document.querySelector("#modulePageSubtitle");
+    const districtTabButtons = Array.from(document.querySelectorAll("[data-district-tab]"));
+    const districtTabPanels = Array.from(document.querySelectorAll("[data-district-panel]"));
     const moduleCopy = {
       strategy: {
         title: "幼儿园选择策略",
@@ -32219,6 +32444,23 @@ window.StrategyEngine = {
         subtitle: "追溯幼儿园名单、POI 坐标、租房参数、架构文档和置信度边界。"
       }
     };
+
+    function activateDistrictTabs(districtName) {
+      if (!districtName) return;
+      for (const button of districtTabButtons) {
+        const active = button.dataset.districtTab === districtName;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-selected", active ? "true" : "false");
+      }
+      for (const panel of districtTabPanels) {
+        panel.hidden = panel.dataset.districtPanel !== districtName;
+        panel.classList.toggle("active", !panel.hidden);
+      }
+    }
+
+    for (const button of districtTabButtons) {
+      button.addEventListener("click", () => activateDistrictTabs(button.dataset.districtTab));
+    }
 
     function currentThemePreference() {
       try {
@@ -32495,6 +32737,7 @@ window.StrategyEngine = {
     }
     populateKindergartenAreas();
     updateScoreModel();
+    activateDistrictTabs("闵行");
     applyFilters();
     updateRentUrl();
     setActiveModule(moduleFromHash(), false);
