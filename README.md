@@ -17,4 +17,4 @@ npm run validate
 
 ## GitHub Pages
 
-仓库已配置 `.github/workflows/pages.yml`。推送到 `main` 分支后，GitHub Actions 会先重新生成并校验数据，再把 `outputs/` 部署到 GitHub Pages。
+仓库已配置 `.github/workflows/pages.yml`。推送到 `main` 分支后，GitHub Actions 会先校验已生成的数据，再把 `outputs/` 部署到 GitHub Pages。
