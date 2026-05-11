@@ -70,20 +70,42 @@ for (const item of strategyModel.scoreDimensions || []) {
   }
 }
 const scoreDimensionKeys = new Set((strategyModel.scoreDimensions || []).map((item) => item.key));
+const validateAdjustmentKeys = (owner, effect = {}) => {
+  for (const key of Object.keys(effect.weightAdjustments || {})) {
+    if (!scoreDimensionKeys.has(key)) addError(`${owner} references unknown score dimension ${key}`);
+  }
+  for (const district of Object.keys(effect.districtAdjustments || {})) {
+    if (!allowedDistricts.has(district)) addError(`${owner} references unknown district ${district}`);
+  }
+};
+const isValidCondition = (condition = {}) => {
+  if (Array.isArray(condition.all)) return condition.all.every(isValidCondition);
+  if (Array.isArray(condition.any)) return condition.any.every(isValidCondition);
+  return Boolean(condition.operator) && condition.value !== undefined;
+};
 for (const group of strategyModel.constraintGroups || []) {
   if (!group.key) addError("constraint group missing key");
   if (!group.label) addError(`constraint group ${group.key} missing label`);
-  if (!Array.isArray(group.options) || group.options.length === 0) addError(`constraint group ${group.key} has no options`);
-  if (group.defaultOption && !group.options?.some((option) => option.key === group.defaultOption)) {
-    addError(`constraint group ${group.key} defaultOption not found`);
-  }
-  for (const option of group.options || []) {
-    if (!option.key) addError(`constraint group ${group.key} option missing key`);
-    for (const key of Object.keys(option.weightAdjustments || {})) {
-      if (!scoreDimensionKeys.has(key)) addError(`constraint option ${group.key}.${option.key} references unknown score dimension ${key}`);
+  if (!["choice", "number", "boolean", undefined].includes(group.type)) addError(`constraint group ${group.key} has invalid type`);
+  if (group.type === "number") {
+    if (!Number.isFinite(Number(group.defaultValue))) addError(`constraint group ${group.key} missing numeric defaultValue`);
+    if (!Array.isArray(group.impacts) || group.impacts.length === 0) addError(`constraint group ${group.key} has no impacts`);
+    for (const impact of group.impacts || []) {
+      if (!isValidCondition(impact.when)) addError(`constraint group ${group.key} impact missing condition`);
+      validateAdjustmentKeys(`constraint impact ${group.key}.${impact.key || "unnamed"}`, impact);
     }
-    for (const district of Object.keys(option.districtAdjustments || {})) {
-      if (!allowedDistricts.has(district)) addError(`constraint option ${group.key}.${option.key} references unknown district ${district}`);
+  } else if (group.type === "boolean") {
+    if (group.defaultValue !== true && group.defaultValue !== false) addError(`constraint group ${group.key} missing boolean defaultValue`);
+    validateAdjustmentKeys(`constraint boolean ${group.key}.whenTrue`, group.whenTrue);
+    validateAdjustmentKeys(`constraint boolean ${group.key}.whenFalse`, group.whenFalse);
+  } else {
+    if (!Array.isArray(group.options) || group.options.length === 0) addError(`constraint group ${group.key} has no options`);
+    if (group.defaultOption && !group.options?.some((option) => option.key === group.defaultOption)) {
+      addError(`constraint group ${group.key} defaultOption not found`);
+    }
+    for (const option of group.options || []) {
+      if (!option.key) addError(`constraint group ${group.key} option missing key`);
+      validateAdjustmentKeys(`constraint option ${group.key}.${option.key}`, option);
     }
   }
 }

@@ -6,7 +6,8 @@
   "scripts": {
     "build": "node build_kindergarten_strategy_tool.mjs",
     "validate": "node scripts/validate_dataset.mjs",
-    "check": "npm run build && npm run validate",
+    "test:strategy": "node scripts/test_strategy_engine.mjs",
+    "check": "npm run test:strategy && npm run build && npm run validate",
     "serve": "python3 -m http.server 8765 --directory outputs"
   }
 }

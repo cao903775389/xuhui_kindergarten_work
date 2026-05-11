@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { SpreadsheetFile, Workbook } from "@oai/artifact-tool";
+import { calculateDistrictScores, defaultConstraintSelections } from "./scripts/lib/strategy_engine.mjs";
 
 const outputDir = path.join(process.cwd(), "outputs");
 const reportBaseName = "上海幼儿园落地策略工具";
@@ -77,6 +78,15 @@ try {
 
 const strategyModelPath = path.join(process.cwd(), "data", "strategy_model.json");
 const strategyModel = await readJsonFile(strategyModelPath, { scoreDimensions: [], decisionRecommendations: [] });
+const strategyEngineSource = await fs.readFile(path.join(process.cwd(), "scripts", "lib", "strategy_engine.mjs"), "utf8");
+const strategyEngineClientScript = `${strategyEngineSource.replace(/^export /gm, "")}
+window.StrategyEngine = {
+  calculateDistrictScores,
+  collectConstraintEffects,
+  defaultConstraintSelections,
+  resolveConstraintOptionEffects,
+  adjustedWeights
+};`;
 
 const amapItemKey = ({ nature, name, campus, address }) => [nature, name, campus, address].join("|");
 const getAmapEnrichment = (item) => {
@@ -1123,20 +1133,38 @@ const fallbackScoreDimensions = [
 ];
 const scoreDimensions = strategyModel.scoreDimensions?.length ? strategyModel.scoreDimensions : fallbackScoreDimensions;
 const familyConstraintGroups = Array.isArray(strategyModel.constraintGroups) ? strategyModel.constraintGroups : [];
+const defaultConstraintSelectionValues = defaultConstraintSelections(familyConstraintGroups);
+const defaultStrategyDecision = calculateDistrictScores({
+  scoreDimensions,
+  districtNames: kindergartenDistrictOrder,
+  baseWeights: Object.fromEntries(scoreDimensions.map((item) => [item.key, item.defaultWeight])),
+  constraintGroups: familyConstraintGroups,
+  selections: defaultConstraintSelectionValues,
+});
 
-const renderFamilyConstraintSelector = () => `
-        <div class="constraint-panel" data-constraint-panel>
-          <div class="constraint-head">
-            <div>
-              <h3>可选家庭约束</h3>
-              <p>约束来自 <code>data/strategy_model.json</code>，每个选项会调整评分权重和区级加减分。</p>
-            </div>
-            <div class="constraint-active" data-constraint-active>等待选择</div>
-          </div>
-          <div class="constraint-grid">
-            ${familyConstraintGroups.map((group) => `
-              <fieldset class="constraint-group">
-                <legend>${escapeHtml(group.label)}</legend>
+const renderConstraintControl = (group) => {
+  if (group.type === "number") {
+    const value = Number(group.defaultValue ?? group.min ?? 0);
+    const min = Number(group.min ?? 0);
+    const max = Number(group.max ?? 100);
+    const step = Number(group.step ?? 1);
+    return `
+                <div class="constraint-number">
+                  <input type="range" min="${min}" max="${max}" step="${step}" value="${value}" data-constraint-number="${escapeHtml(group.key)}">
+                  <input type="number" min="${min}" max="${max}" step="${step}" value="${value}" data-constraint-number-value="${escapeHtml(group.key)}" aria-label="${escapeHtml(group.label)}">
+                  <span>${escapeHtml(group.unit || "")}</span>
+                </div>
+                <small data-constraint-value-label="${escapeHtml(group.key)}">${value}${escapeHtml(group.unit || "")}</small>`;
+  }
+  if (group.type === "boolean") {
+    const checked = group.defaultValue ? " checked" : "";
+    return `
+                <label class="constraint-option switch">
+                  <input type="checkbox" data-constraint-boolean="${escapeHtml(group.key)}"${checked}>
+                  <span><b>${escapeHtml(group.trueLabel || group.label)} / ${escapeHtml(group.falseLabel || "不启用")}</b><small>${escapeHtml(group.whenTrue?.summary || group.whenFalse?.summary || "")}</small></span>
+                </label>`;
+  }
+  return `
                 <div class="constraint-options">
                   ${(group.options || []).map((option) => {
                     const checked = option.key === group.defaultOption ? " checked" : "";
@@ -1146,7 +1174,23 @@ const renderFamilyConstraintSelector = () => `
                       <span><b>${escapeHtml(option.label)}</b><small>${escapeHtml(option.summary)}</small></span>
                     </label>`;
                   }).join("")}
-                </div>
+                </div>`;
+};
+
+const renderFamilyConstraintSelector = () => `
+        <div class="constraint-panel" data-constraint-panel>
+          <div class="constraint-head">
+            <div>
+              <h3>可选家庭约束</h3>
+              <p>约束来自 <code>data/strategy_model.json</code>，支持单选、数值和开关输入，并参与评分权重与区级加减分。</p>
+            </div>
+            <div class="constraint-active" data-constraint-active>${escapeHtml(defaultStrategyDecision.districtScores[0]?.districtName || "等待选择")} 默认领先</div>
+          </div>
+          <div class="constraint-grid">
+            ${familyConstraintGroups.map((group) => `
+              <fieldset class="constraint-group">
+                <legend>${escapeHtml(group.label)}</legend>
+${renderConstraintControl(group)}
               </fieldset>
             `).join("")}
           </div>
@@ -1677,6 +1721,45 @@ const html = `<!doctype html>
     .constraint-option span { display: grid; gap: 3px; min-width: 0; }
     .constraint-option b { color: var(--ink); }
     .constraint-option small { color: var(--soft); line-height: 1.45; }
+    .constraint-option.switch {
+      grid-template-columns: 42px minmax(0, 1fr);
+      align-items: center;
+      min-height: 76px;
+    }
+    .constraint-option.switch input {
+      width: 38px;
+      height: 22px;
+      margin: 0;
+    }
+    .constraint-number {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 92px auto;
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--rail);
+    }
+    .constraint-number input[type="range"] {
+      width: 100%;
+      accent-color: var(--blue);
+    }
+    .constraint-number input[type="number"] {
+      width: 100%;
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0 8px;
+      background: var(--paper);
+      color: var(--ink);
+    }
+    .constraint-number span,
+    [data-constraint-value-label] {
+      color: var(--soft);
+      font-size: 12px;
+      font-weight: 800;
+    }
     .constraint-impact {
       display: flex;
       flex-wrap: wrap;
@@ -4291,6 +4374,9 @@ ${renderDistrictCapacityOverview()}
   </footer>
 
   <script>
+${strategyEngineClientScript}
+  </script>
+  <script>
     const search = document.querySelector("#search");
     const area = document.querySelector("#area");
     const district = document.querySelector("#district");
@@ -4305,13 +4391,14 @@ ${renderDistrictCapacityOverview()}
     const beikeBizcircleOptionsByDistrict = ${JSON.stringify(beikeBizcircleOptionsByDistrict)};
     const scoreDimensions = ${JSON.stringify(scoreDimensions)};
     const constraintGroups = ${JSON.stringify(familyConstraintGroups)};
+    const districtNames = ${JSON.stringify(kindergartenDistrictOrder)};
     const rentDistrict = document.querySelector("#rentDistrict");
     const rentBizcircle = document.querySelector("#rentBizcircle");
     const rentMinPrice = document.querySelector("#rentMinPrice");
     const rentMaxPrice = document.querySelector("#rentMaxPrice");
     const rentControls = Array.from(document.querySelectorAll(".rent-builder input, .rent-builder select"));
     const scoreWeights = Array.from(document.querySelectorAll("[data-score-weight]"));
-    const constraintInputs = Array.from(document.querySelectorAll("[data-constraint-option]"));
+    const constraintInputs = Array.from(document.querySelectorAll("[data-constraint-option], [data-constraint-number], [data-constraint-number-value], [data-constraint-boolean]"));
     const constraintActive = document.querySelector("[data-constraint-active]");
     const constraintImpact = document.querySelector("[data-constraint-impact]");
     const rentUrlText = document.querySelector("#rentUrlText");
@@ -4471,31 +4558,33 @@ ${renderDistrictCapacityOverview()}
       }
     }
 
-    function selectedConstraintOptions() {
-      return constraintGroups.map((group) => {
-        const selectedKey = document.querySelector('input[name="constraint-' + group.key + '"]:checked')?.value || group.defaultOption;
-        const option = (group.options || []).find((item) => item.key === selectedKey) || (group.options || [])[0];
-        return option ? { group, option } : null;
-      }).filter(Boolean);
+    function syncConstraintNumberControl(input) {
+      const key = input.dataset.constraintNumber || input.dataset.constraintNumberValue;
+      if (!key) return;
+      const range = document.querySelector('[data-constraint-number="' + key + '"]');
+      const valueInput = document.querySelector('[data-constraint-number-value="' + key + '"]');
+      const nextValue = input.value;
+      if (range && range !== input) range.value = nextValue;
+      if (valueInput && valueInput !== input) valueInput.value = nextValue;
+      const label = document.querySelector('[data-constraint-value-label="' + key + '"]');
+      const group = constraintGroups.find((item) => item.key === key);
+      if (label) label.textContent = nextValue + (group?.unit || "");
     }
 
-    function collectConstraintEffects() {
-      const selected = selectedConstraintOptions();
-      const weightAdjustments = {};
-      const districtAdjustments = {};
-      const labels = [];
-      const summaries = [];
-      for (const row of selected) {
-        labels.push(row.option.label);
-        if (row.option.summary) summaries.push(row.option.summary);
-        for (const [key, value] of Object.entries(row.option.weightAdjustments || {})) {
-          weightAdjustments[key] = (weightAdjustments[key] || 0) + (Number(value) || 0);
-        }
-        for (const [districtName, value] of Object.entries(row.option.districtAdjustments || {})) {
-          districtAdjustments[districtName] = (districtAdjustments[districtName] || 0) + (Number(value) || 0);
+    function currentConstraintSelections() {
+      const selections = {};
+      for (const group of constraintGroups) {
+        if (group.type === "number") {
+          const input = document.querySelector('[data-constraint-number="' + group.key + '"]');
+          selections[group.key] = Number(input?.value ?? group.defaultValue ?? 0);
+        } else if (group.type === "boolean") {
+          const input = document.querySelector('[data-constraint-boolean="' + group.key + '"]');
+          selections[group.key] = Boolean(input?.checked);
+        } else {
+          selections[group.key] = document.querySelector('input[name="constraint-' + group.key + '"]:checked')?.value || group.defaultOption;
         }
       }
-      return { selected, weightAdjustments, districtAdjustments, labels, summaries };
+      return selections;
     }
 
     function updateConstraintSummary(effects) {
@@ -4519,23 +4608,23 @@ ${renderDistrictCapacityOverview()}
 
     function updateScoreModel() {
       if (!scoreWeights.length) return;
-      const effects = collectConstraintEffects();
       const baseWeights = Object.fromEntries(scoreWeights.map((input) => [input.dataset.scoreWeight, Number(input.value) || 0]));
-      const weights = Object.fromEntries(Object.entries(baseWeights).map(([key, value]) => [key, Math.max(0, value + (effects.weightAdjustments[key] || 0))]));
+      const decision = window.StrategyEngine.calculateDistrictScores({
+        scoreDimensions,
+        districtNames,
+        baseWeights,
+        constraintGroups,
+        selections: currentConstraintSelections(),
+      });
+      const effects = decision.effects;
+      const weights = decision.weights;
       for (const input of scoreWeights) {
         const valueLabel = document.querySelector('[data-score-value="' + input.dataset.scoreWeight + '"]');
         const adjustment = effects.weightAdjustments[input.dataset.scoreWeight] || 0;
         if (valueLabel) valueLabel.textContent = adjustment ? input.value + (adjustment > 0 ? " +" : " ") + adjustment : input.value;
       }
       updateConstraintSummary(effects);
-      const totalWeight = Object.values(weights).reduce((sum, value) => sum + value, 0) || 1;
-      const districtScores = ["徐汇", "闵行", "浦东"].map((districtName) => {
-        const raw = scoreDimensions.reduce((sum, item) => sum + ((item.scores[districtName] || 0) * (weights[item.key] || 0)), 0);
-        const constraintAdjustment = effects.districtAdjustments[districtName] || 0;
-        const score = Math.max(0, Math.min(100, Math.round((raw / totalWeight) + constraintAdjustment)));
-        return { districtName, score, constraintAdjustment };
-      }).sort((a, b) => b.score - a.score);
-      for (const [index, row] of districtScores.entries()) {
+      for (const [index, row] of decision.districtScores.entries()) {
         const card = document.querySelector('[data-score-result-card][data-score-district="' + row.districtName + '"]');
         const rank = document.querySelector('[data-score-rank="' + row.districtName + '"]');
         const total = document.querySelector('[data-score-total="' + row.districtName + '"]');
@@ -4554,13 +4643,7 @@ ${renderDistrictCapacityOverview()}
           summary.textContent = (row.score >= 85 ? "当前约束下优先级最高。" : row.score >= 78 ? "可作为强备选路线。" : "需要通勤或预算条件放宽后再进入主线。") + adjustmentText;
         }
         if (breakdown) {
-          const contributions = scoreDimensions
-            .map((item) => ({
-              label: item.label,
-              value: ((item.scores[row.districtName] || 0) * (weights[item.key] || 0)) / totalWeight,
-            }))
-            .sort((a, b) => b.value - a.value)
-            .slice(0, 3);
+          const contributions = row.contributions.slice(0, 3);
           if (row.constraintAdjustment) {
             contributions.push({ label: "约束修正", value: row.constraintAdjustment });
           }
@@ -4608,7 +4691,14 @@ ${renderDistrictCapacityOverview()}
       input.addEventListener("input", updateScoreModel);
     }
     for (const input of constraintInputs) {
-      input.addEventListener("change", updateScoreModel);
+      input.addEventListener("input", () => {
+        syncConstraintNumberControl(input);
+        updateScoreModel();
+      });
+      input.addEventListener("change", () => {
+        syncConstraintNumberControl(input);
+        updateScoreModel();
+      });
     }
     populateKindergartenAreas();
     updateScoreModel();

@@ -6,6 +6,7 @@
 
 ```bash
 npm run build
+npm run test:strategy
 npm run validate
 ```
 

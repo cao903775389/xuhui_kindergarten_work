@@ -6,6 +6,7 @@
     {
       "key": "materialStatus",
       "label": "材料状态",
+      "type": "choice",
       "defaultOption": "noPermit",
       "options": [
         {
@@ -34,6 +35,7 @@
     {
       "key": "commuteTolerance",
       "label": "通勤容忍度",
+      "type": "choice",
       "defaultOption": "conservative",
       "options": [
         {
@@ -62,6 +64,7 @@
     {
       "key": "housingPreference",
       "label": "住房偏好",
+      "type": "choice",
       "defaultOption": "familySpace",
       "options": [
         {
@@ -90,6 +93,7 @@
     {
       "key": "schoolPreference",
       "label": "入园策略",
+      "type": "choice",
       "defaultOption": "publicWithBackup",
       "options": [
         {
@@ -114,6 +118,96 @@
           "districtAdjustments": { "徐汇": 3, "闵行": 1, "浦东": -2 }
         }
       ]
+    },
+    {
+      "key": "budgetMax",
+      "label": "月租预算上限",
+      "type": "number",
+      "unit": "元/月",
+      "min": 7000,
+      "max": 16000,
+      "step": 500,
+      "defaultValue": 10000,
+      "impacts": [
+        {
+          "key": "tightBudget",
+          "label": "预算偏紧",
+          "summary": "低预算会放大房源质量和材料配合风险。",
+          "when": { "operator": "lte", "value": 9000 },
+          "weightAdjustments": { "budget": 8, "rental": 5 },
+          "districtAdjustments": { "徐汇": -6, "闵行": 4, "浦东": 3 }
+        },
+        {
+          "key": "standardBudget",
+          "label": "预算标准",
+          "summary": "预算可覆盖基础筛选，仍需看房源库存。",
+          "when": { "all": [{ "operator": "gt", "value": 9000 }, { "operator": "lt", "value": 13000 }] },
+          "weightAdjustments": { "rental": 2 },
+          "districtAdjustments": { "徐汇": 0, "闵行": 1, "浦东": 1 }
+        },
+        {
+          "key": "relaxedBudget",
+          "label": "预算放宽",
+          "summary": "预算放宽后近公司和核心板块可重新进入比较。",
+          "when": { "operator": "gte", "value": 13000 },
+          "weightAdjustments": { "commute": 2, "living": 2 },
+          "districtAdjustments": { "徐汇": 5, "闵行": 0, "浦东": 1 }
+        }
+      ]
+    },
+    {
+      "key": "minArea",
+      "label": "居住面积下限",
+      "type": "number",
+      "unit": "㎡",
+      "min": 70,
+      "max": 140,
+      "step": 5,
+      "defaultValue": 100,
+      "impacts": [
+        {
+          "key": "compactAccepted",
+          "label": "面积可压缩",
+          "summary": "面积要求降低时，近公司路线可重新比较。",
+          "when": { "operator": "lt", "value": 90 },
+          "weightAdjustments": { "commute": 4, "rental": -2 },
+          "districtAdjustments": { "徐汇": 4, "闵行": 0, "浦东": -1 }
+        },
+        {
+          "key": "familyArea",
+          "label": "家庭面积",
+          "summary": "100㎡左右会明显考验核心区房源库存。",
+          "when": { "all": [{ "operator": "gte", "value": 90 }, { "operator": "lt", "value": 120 }] },
+          "weightAdjustments": { "rental": 5, "living": 3 },
+          "districtAdjustments": { "徐汇": -4, "闵行": 4, "浦东": 3 }
+        },
+        {
+          "key": "largeArea",
+          "label": "大面积刚需",
+          "summary": "大面积刚需会进一步提高外围改善型板块权重。",
+          "when": { "operator": "gte", "value": 120 },
+          "weightAdjustments": { "rental": 4, "living": 4 },
+          "districtAdjustments": { "徐汇": -5, "闵行": 4, "浦东": 5 }
+        }
+      ]
+    },
+    {
+      "key": "elderPickup",
+      "label": "老人接送参与",
+      "type": "boolean",
+      "defaultValue": true,
+      "trueLabel": "需要老人接送",
+      "falseLabel": "主要父母接送",
+      "whenTrue": {
+        "summary": "老人接送要求降低跨江和长链路容错。",
+        "weightAdjustments": { "commute": 5, "community": 2 },
+        "districtAdjustments": { "徐汇": 3, "闵行": 2, "浦东": -4 }
+      },
+      "whenFalse": {
+        "summary": "父母接送为主时，跨区和长期空间可更积极比较。",
+        "weightAdjustments": { "flexibility": 3, "living": 2 },
+        "districtAdjustments": { "徐汇": -1, "闵行": 1, "浦东": 3 }
+      }
     }
   ],
   "scoreDimensions": [
