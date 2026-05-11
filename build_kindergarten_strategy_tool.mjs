@@ -87,6 +87,12 @@ window.StrategyEngine = {
   resolveConstraintOptionEffects,
   adjustedWeights
 };`;
+const privateCallChecksPath = path.join(process.cwd(), "data", "private_call_checks.json");
+const housingCandidatesPath = path.join(process.cwd(), "data", "housing_candidates.json");
+const commuteChecksPath = path.join(process.cwd(), "data", "commute_checks.json");
+const privateCallChecks = await readJsonFile(privateCallChecksPath, { records: [], recordFields: {} });
+const housingCandidates = await readJsonFile(housingCandidatesPath, { records: [], recordFields: {} });
+const commuteChecks = await readJsonFile(commuteChecksPath, { records: [], recordFields: {} });
 
 const amapItemKey = ({ nature, name, campus, address }) => [nature, name, campus, address].join("|");
 const getAmapEnrichment = (item) => {
@@ -915,11 +921,12 @@ const architectureReview = {
     "保留静态站发布路径，同时发布标准 JSON，外部工具可直接消费数据集。",
     "新增 data/strategy_model.json，把评分权重和按区推荐样例从页面代码中外置。",
     "新增电话核验、看房候选和通勤实测记录模块，为后续人工复核留出结构化入口。",
+    "把电话核验、看房候选和通勤实测记录接入来源模块，页面可直接展示记录数量、最近记录和字段模板。",
   ],
   nextSteps: [
     "继续把 HTML/CSS/JS 渲染从 build_kindergarten_strategy_tool.mjs 拆出，降低单文件维护成本。",
     "把高德增强脚本合并成固定 pipeline，记录 POI 匹配分数、地址编码比例和路线耗时。",
-    "把电话核验和看房候选记录接入页面，形成小区-居委-园所-材料闭环。",
+    "让电话核验、看房候选和通勤实测记录反向影响推荐排序，形成小区-居委-园所-材料闭环。",
     "后续扩展新区域时，先补区级源数据、贝壳板块、政策来源，再进入标准数据和推荐策略。",
   ],
 };
@@ -1120,6 +1127,80 @@ const renderDistrictCapacityOverview = () => districtAreaCapacityStats.map((dist
         </article>
 `;
 }).join("");
+
+const verificationModules = [
+  {
+    key: "private-call",
+    title: "电话核验",
+    file: "data/private_call_checks.json",
+    records: privateCallChecks.records || [],
+    fields: privateCallChecks.recordFields || {},
+    empty: "还没有电话记录。优先补民办名额、收费、材料接受度和保位节点。",
+    columns: ["checkedAt", "district", "name", "campus", "hasVacancy", "acceptsCurrentMaterial", "nextAction"],
+  },
+  {
+    key: "housing",
+    title: "看房候选",
+    file: "data/housing_candidates.json",
+    records: housingCandidates.records || [],
+    fields: housingCandidates.recordFields || {},
+    empty: "还没有看房候选。优先补小区、租金、面积、电梯、房东材料配合和所属居委。",
+    columns: ["createdAt", "district", "compound", "rentPrice", "areaSqm", "landlordSupportsMaterials", "matchedKindergarten"],
+  },
+  {
+    key: "commute",
+    title: "通勤实测",
+    file: "data/commute_checks.json",
+    records: commuteChecks.records || [],
+    fields: commuteChecks.recordFields || {},
+    empty: "还没有通勤实测。优先补工作日早高峰、雨天和老人接送友好度。",
+    columns: ["checkedAt", "from", "to", "mode", "durationMinutes", "caregiverFriendly", "nextAction"],
+  },
+];
+const verificationRecordCount = verificationModules.reduce((sum, item) => sum + item.records.length, 0);
+const verificationFieldCount = verificationModules.reduce((sum, item) => sum + Object.keys(item.fields).length, 0);
+const formatRecordValue = (value) => {
+  if (value === true) return "yes";
+  if (value === false) return "no";
+  if (value === undefined || value === "") return "-";
+  return String(value);
+};
+const renderVerificationRows = (module) => {
+  const rows = module.records.slice(-5).reverse();
+  if (!rows.length) {
+    const fieldPreview = Object.entries(module.fields).slice(0, 5).map(([key, description]) => `
+              <li><code>${escapeHtml(key)}</code><span>${escapeHtml(description)}</span></li>
+`).join("");
+    return `
+          <div class="verification-empty">
+            <p>${escapeHtml(module.empty)}</p>
+            <ul>${fieldPreview}</ul>
+          </div>
+`;
+  }
+  return `
+          <div class="verification-table">
+            <table>
+              <thead><tr>${module.columns.map((key) => `<th>${escapeHtml(key)}</th>`).join("")}</tr></thead>
+              <tbody>
+                ${rows.map((row) => `<tr>${module.columns.map((key) => `<td>${escapeHtml(formatRecordValue(row[key]))}</td>`).join("")}</tr>`).join("")}
+              </tbody>
+            </table>
+          </div>
+`;
+};
+const renderVerificationModules = () => verificationModules.map((module) => `
+        <article class="verification-card">
+          <header>
+            <div>
+              <h3>${escapeHtml(module.title)}</h3>
+              <span>${module.records.length} 条记录 / ${Object.keys(module.fields).length} 个字段</span>
+            </div>
+            <a href="${escapeHtml(module.file)}" target="_blank" rel="noopener">查看 JSON</a>
+          </header>
+${renderVerificationRows(module)}
+        </article>
+`).join("");
 
 const fallbackScoreDimensions = [
   { key: "commute", label: "通勤距离", defaultWeight: 22, note: "到西岸网易研发中心的可验证通勤时间。", scores: { "徐汇": 95, "闵行": 78, "浦东": 58 } },
@@ -2410,6 +2491,77 @@ const html = `<!doctype html>
     }
     .notice-card h3 { margin: 0 0 8px; font-size: 16px; }
     .notice-card p { margin: 0; }
+    .verification-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .verification-card {
+      display: grid;
+      gap: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      padding: 16px;
+      min-width: 0;
+    }
+    .verification-card header {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .verification-card h3 {
+      margin: 0 0 4px;
+      font-size: 17px;
+    }
+    .verification-card span,
+    .verification-empty p,
+    .verification-empty span {
+      color: var(--soft);
+      font-size: 12px;
+    }
+    .verification-empty {
+      display: grid;
+      gap: 10px;
+    }
+    .verification-empty p { margin: 0; }
+    .verification-empty ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 7px;
+    }
+    .verification-empty li {
+      display: grid;
+      gap: 2px;
+      padding-top: 7px;
+      border-top: 1px dashed var(--line);
+    }
+    .verification-empty code {
+      color: var(--ink);
+      font-weight: 800;
+    }
+    .verification-table {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    .verification-table table {
+      min-width: 680px;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .verification-table th,
+    .verification-table td {
+      padding: 9px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
     .module-stream {
       display: grid;
       gap: 12px;
@@ -2803,7 +2955,7 @@ const html = `<!doctype html>
       .rent-builder-grid, .rental-result-grid, .chart-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .module-item { grid-template-columns: 110px minmax(0, 1fr); }
       .module-status { grid-column: 2; justify-items: start; }
-      .principles, .areas, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .route-grid, .candidate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .principles, .areas, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .route-grid, .candidate-grid, .verification-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .school-decision-layout { grid-template-columns: 1fr; }
       .toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .source-list { grid-template-columns: 1fr; }
@@ -2817,7 +2969,7 @@ const html = `<!doctype html>
       .module-item { grid-template-columns: 1fr; }
       .module-status { grid-column: auto; justify-items: start; }
       .scoreboard { padding: 14px; }
-      .principles, .areas, .matrix, .toolbar, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .route-grid, .candidate-grid, .card-meta { grid-template-columns: 1fr; }
+      .principles, .areas, .matrix, .toolbar, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .route-grid, .candidate-grid, .card-meta, .verification-grid { grid-template-columns: 1fr; }
       .school-card header { display: grid; }
       .school-card header > strong { white-space: normal; }
       .rank-item { grid-template-columns: 34px 1fr; }
@@ -4261,6 +4413,13 @@ ${renderDistrictCapacityOverview()}
           <h3>高德匹配质量</h3>
           <p>高德已写入 ${amapMatchedCount} 个 POI/地址坐标，其中 ${amapAddressGeocodeCount} 个为地址地理编码；${amapUnmatchedItems.length} 个点位未写入坐标，主要是老地址、同名/近名园所或地图返回跨区结果。待核验示例：${escapeHtml(unmatchedPreview)}。</p>
         </article>
+      </div>
+      <div class="section-title">
+        <h2>核验闭环</h2>
+        <p>电话核验、看房候选和通勤实测会作为人工反馈层沉淀。当前共 ${verificationRecordCount} 条记录，字段模板 ${verificationFieldCount} 项。</p>
+      </div>
+      <div class="verification-grid">
+${renderVerificationModules()}
       </div>
       <div class="source-list">
         <article class="source-card">

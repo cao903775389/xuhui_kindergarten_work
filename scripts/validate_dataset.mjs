@@ -8,6 +8,9 @@ const root = process.cwd();
 const datasetPath = path.join(root, "data", "kindergartens", "kindergarten_dataset.json");
 const byDistrictDir = path.join(root, "data", "kindergartens", "by_district");
 const strategyModelPath = path.join(root, "data", "strategy_model.json");
+const privateCallChecksPath = path.join(root, "data", "private_call_checks.json");
+const housingCandidatesPath = path.join(root, "data", "housing_candidates.json");
+const commuteChecksPath = path.join(root, "data", "commute_checks.json");
 const outputIndexPath = path.join(root, "outputs", "index.html");
 
 const readJson = async (filePath) => JSON.parse(await fs.readFile(filePath, "utf8"));
@@ -18,11 +21,16 @@ const fail = (message, details = {}) => {
 
 const dataset = await readJson(datasetPath);
 const strategyModel = await readJson(strategyModelPath);
+const privateCallChecks = await readJson(privateCallChecksPath);
+const housingCandidates = await readJson(housingCandidatesPath);
+const commuteChecks = await readJson(commuteChecksPath);
 const rows = Array.isArray(dataset.rows) ? dataset.rows : [];
 const requiredTopLevelFields = ["district", "area", "name", "campus", "nature", "category", "level", "address", "phone", "source"];
 const allowedDistricts = new Set(["徐汇", "闵行", "浦东"]);
 const allowedNature = new Set(["公办", "民办", "中外合作"]);
 const allowedConfidence = new Set(["A", "B", "C"]);
+const yesNoUnknown = new Set(["yes", "no", "unknown"]);
+const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 
 const errors = [];
 const warnings = [];
@@ -113,6 +121,35 @@ for (const item of strategyModel.decisionRecommendations || []) {
   const ref = item.itemRef || {};
   const key = [ref.nature, ref.name, ref.campus, ref.address].join("|");
   if (!strategyKeys.has(key)) addError(`strategy itemRef not found: ${key}`);
+}
+
+const validateRecordFile = (name, file, requiredFields = []) => {
+  if (file.schemaVersion !== "1.0") addError(`${name}.schemaVersion must be 1.0`);
+  if (!Array.isArray(file.records)) addError(`${name}.records must be an array`);
+  if (!file.recordFields || typeof file.recordFields !== "object") addError(`${name}.recordFields is missing`);
+  for (const field of requiredFields) {
+    if (!file.recordFields?.[field]) addError(`${name}.recordFields missing ${field}`);
+  }
+};
+validateRecordFile("private_call_checks", privateCallChecks, ["checkedAt", "district", "name", "hasVacancy", "acceptsCurrentMaterial", "nextAction"]);
+for (const record of privateCallChecks.records || []) {
+  if (!datePattern.test(record.checkedAt || "")) addError("private_call_checks record checkedAt must be YYYY-MM-DD");
+  if (!allowedDistricts.has(record.district)) addError(`private_call_checks record invalid district: ${record.district}`);
+  if (!yesNoUnknown.has(record.hasVacancy)) addError("private_call_checks record invalid hasVacancy");
+  if (!yesNoUnknown.has(record.acceptsCurrentMaterial)) addError("private_call_checks record invalid acceptsCurrentMaterial");
+}
+validateRecordFile("housing_candidates", housingCandidates, ["createdAt", "district", "compound", "landlordSupportsMaterials", "nextAction"]);
+for (const record of housingCandidates.records || []) {
+  if (!datePattern.test(record.createdAt || "")) addError("housing_candidates record createdAt must be YYYY-MM-DD");
+  if (!allowedDistricts.has(record.district)) addError(`housing_candidates record invalid district: ${record.district}`);
+  if (record.hasElevator && !yesNoUnknown.has(record.hasElevator)) addError("housing_candidates record invalid hasElevator");
+  if (!yesNoUnknown.has(record.landlordSupportsMaterials)) addError("housing_candidates record invalid landlordSupportsMaterials");
+}
+validateRecordFile("commute_checks", commuteChecks, ["checkedAt", "from", "to", "mode", "durationMinutes", "caregiverFriendly", "nextAction"]);
+for (const record of commuteChecks.records || []) {
+  if (!datePattern.test(record.checkedAt || "")) addError("commute_checks record checkedAt must be YYYY-MM-DD");
+  if (record.caregiverFriendly && !yesNoUnknown.has(record.caregiverFriendly)) addError("commute_checks record invalid caregiverFriendly");
+  if (record.durationMinutes !== undefined && !Number.isFinite(Number(record.durationMinutes))) addError("commute_checks record durationMinutes must be numeric");
 }
 
 try {

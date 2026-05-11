@@ -993,6 +993,77 @@
     }
     .notice-card h3 { margin: 0 0 8px; font-size: 16px; }
     .notice-card p { margin: 0; }
+    .verification-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .verification-card {
+      display: grid;
+      gap: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      padding: 16px;
+      min-width: 0;
+    }
+    .verification-card header {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .verification-card h3 {
+      margin: 0 0 4px;
+      font-size: 17px;
+    }
+    .verification-card span,
+    .verification-empty p,
+    .verification-empty span {
+      color: var(--soft);
+      font-size: 12px;
+    }
+    .verification-empty {
+      display: grid;
+      gap: 10px;
+    }
+    .verification-empty p { margin: 0; }
+    .verification-empty ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 7px;
+    }
+    .verification-empty li {
+      display: grid;
+      gap: 2px;
+      padding-top: 7px;
+      border-top: 1px dashed var(--line);
+    }
+    .verification-empty code {
+      color: var(--ink);
+      font-weight: 800;
+    }
+    .verification-table {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    .verification-table table {
+      min-width: 680px;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .verification-table th,
+    .verification-table td {
+      padding: 9px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
     .module-stream {
       display: grid;
       gap: 12px;
@@ -1386,7 +1457,7 @@
       .rent-builder-grid, .rental-result-grid, .chart-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .module-item { grid-template-columns: 110px minmax(0, 1fr); }
       .module-status { grid-column: 2; justify-items: start; }
-      .principles, .areas, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .route-grid, .candidate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .principles, .areas, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .route-grid, .candidate-grid, .verification-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .school-decision-layout { grid-template-columns: 1fr; }
       .toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .source-list { grid-template-columns: 1fr; }
@@ -1400,7 +1471,7 @@
       .module-item { grid-template-columns: 1fr; }
       .module-status { grid-column: auto; justify-items: start; }
       .scoreboard { padding: 14px; }
-      .principles, .areas, .matrix, .toolbar, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .route-grid, .candidate-grid, .card-meta { grid-template-columns: 1fr; }
+      .principles, .areas, .matrix, .toolbar, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .route-grid, .candidate-grid, .card-meta, .verification-grid { grid-template-columns: 1fr; }
       .school-card header { display: grid; }
       .school-card header > strong { white-space: normal; }
       .rank-item { grid-template-columns: 34px 1fr; }
@@ -31530,6 +31601,91 @@
           <h3>高德匹配质量</h3>
           <p>高德已写入 930 个 POI/地址坐标，其中 281 个为地址地理编码；0 个点位未写入坐标，主要是老地址、同名/近名园所或地图返回跨区结果。待核验示例：。</p>
         </article>
+      </div>
+      <div class="section-title">
+        <h2>核验闭环</h2>
+        <p>电话核验、看房候选和通勤实测会作为人工反馈层沉淀。当前共 0 条记录，字段模板 38 项。</p>
+      </div>
+      <div class="verification-grid">
+
+        <article class="verification-card">
+          <header>
+            <div>
+              <h3>电话核验</h3>
+              <span>0 条记录 / 12 个字段</span>
+            </div>
+            <a href="data/private_call_checks.json" target="_blank" rel="noopener">查看 JSON</a>
+          </header>
+
+          <div class="verification-empty">
+            <p>还没有电话记录。优先补民办名额、收费、材料接受度和保位节点。</p>
+            <ul>
+              <li><code>checkedAt</code><span>核验日期，YYYY-MM-DD。</span></li>
+
+              <li><code>district</code><span>行政区。</span></li>
+
+              <li><code>name</code><span>幼儿园名称。</span></li>
+
+              <li><code>campus</code><span>园区或本部。</span></li>
+
+              <li><code>phone</code><span>拨打号码。</span></li>
+</ul>
+          </div>
+
+        </article>
+
+        <article class="verification-card">
+          <header>
+            <div>
+              <h3>看房候选</h3>
+              <span>0 条记录 / 15 个字段</span>
+            </div>
+            <a href="data/housing_candidates.json" target="_blank" rel="noopener">查看 JSON</a>
+          </header>
+
+          <div class="verification-empty">
+            <p>还没有看房候选。优先补小区、租金、面积、电梯、房东材料配合和所属居委。</p>
+            <ul>
+              <li><code>createdAt</code><span>记录日期，YYYY-MM-DD。</span></li>
+
+              <li><code>district</code><span>行政区。</span></li>
+
+              <li><code>boardSlug</code><span>贝壳商圈 slug。</span></li>
+
+              <li><code>compound</code><span>小区名称。</span></li>
+
+              <li><code>address</code><span>房源地址或小区地址。</span></li>
+</ul>
+          </div>
+
+        </article>
+
+        <article class="verification-card">
+          <header>
+            <div>
+              <h3>通勤实测</h3>
+              <span>0 条记录 / 11 个字段</span>
+            </div>
+            <a href="data/commute_checks.json" target="_blank" rel="noopener">查看 JSON</a>
+          </header>
+
+          <div class="verification-empty">
+            <p>还没有通勤实测。优先补工作日早高峰、雨天和老人接送友好度。</p>
+            <ul>
+              <li><code>checkedAt</code><span>实测日期，YYYY-MM-DD。</span></li>
+
+              <li><code>from</code><span>小区、园所或办公点。</span></li>
+
+              <li><code>to</code><span>小区、园所或办公点。</span></li>
+
+              <li><code>mode</code><span>步行/骑行/驾车/公共交通/混合。</span></li>
+
+              <li><code>timeWindow</code><span>实测时段，例如工作日早高峰。</span></li>
+</ul>
+          </div>
+
+        </article>
+
       </div>
       <div class="source-list">
         <article class="source-card">
