@@ -2404,50 +2404,740 @@ const html = `<!doctype html>
       .section-title { display: block; }
       .section-title p { margin-top: 8px; }
     }
+
+    /* AIHOT clone pass: fixed sidebar, right-side module page, timeline-like cards, system theme aware. */
+    :root {
+      color-scheme: light;
+      --bg: #f6f8fb;
+      --paper: rgba(255, 255, 255, 0.94);
+      --ink: #111827;
+      --soft: #64748b;
+      --line: rgba(15, 23, 42, 0.10);
+      --blue: #0891b2;
+      --green: #047857;
+      --amber: #b45309;
+      --red: #be123c;
+      --rail: rgba(15, 23, 42, 0.06);
+      --shadow: 0 22px 70px rgba(15, 23, 42, 0.08);
+      --surface-0: #f7f9fc;
+      --surface-1: #ffffff;
+      --surface-2: #eef3f8;
+      --surface-3: #e5eef6;
+      --border-strong: rgba(15, 23, 42, 0.16);
+      --cyan-soft: rgba(8, 145, 178, 0.11);
+      --cyan-border: rgba(8, 145, 178, 0.34);
+      --emerald-soft: rgba(4, 120, 87, 0.10);
+      --app-bg:
+        radial-gradient(circle at 25% -10%, rgba(8, 145, 178, 0.14), transparent 34rem),
+        radial-gradient(circle at 92% 0%, rgba(14, 165, 233, 0.09), transparent 28rem),
+        linear-gradient(180deg, #f8fbff 0%, #f3f7fb 42%, #eef3f8 100%);
+      --sidebar-bg:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(242, 247, 252, 0.96)),
+        var(--surface-0);
+      --brand-bg: linear-gradient(180deg, rgba(8,145,178,0.08), rgba(255,255,255,0.72));
+      --page-head-bg:
+        linear-gradient(90deg, rgba(8, 145, 178, 0.11), rgba(255,255,255,0.70)),
+        rgba(255, 255, 255, 0.86);
+      --section-bg:
+        linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.78)),
+        rgba(255, 255, 255, 0.86);
+      --card-bg: rgba(255, 255, 255, 0.72);
+      --metric-bg: rgba(241, 245, 249, 0.74);
+      --table-bg: rgba(255, 255, 255, 0.62);
+      --th-bg: #eef4f8;
+      --td-color: #243041;
+      --control-bg: rgba(255, 255, 255, 0.84);
+      --muted-strong: #52657d;
+      --link-soft: #0e7490;
+      --tag-text: #475569;
+      --font-display: "Noto Serif SC", "Songti SC", serif;
+      --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #070b14;
+        --paper: rgba(18, 24, 38, 0.92);
+        --ink: #f1f5f9;
+        --soft: #8b9bb2;
+        --line: rgba(255, 255, 255, 0.08);
+        --blue: #22d3ee;
+        --green: #34d399;
+        --amber: #fbbf24;
+        --red: #fb7185;
+        --rail: rgba(148, 163, 184, 0.11);
+        --shadow: 0 22px 70px rgba(0, 0, 0, 0.34);
+        --surface-0: #070b14;
+        --surface-1: #0b1020;
+        --surface-2: #111827;
+        --surface-3: #151c2f;
+        --border-strong: rgba(255, 255, 255, 0.14);
+        --cyan-soft: rgba(34, 211, 238, 0.14);
+        --cyan-border: rgba(34, 211, 238, 0.44);
+        --emerald-soft: rgba(52, 211, 153, 0.12);
+        --app-bg:
+          radial-gradient(circle at 25% -10%, rgba(34, 211, 238, 0.16), transparent 34rem),
+          radial-gradient(circle at 92% 0%, rgba(56, 189, 248, 0.08), transparent 28rem),
+          linear-gradient(180deg, #080d18 0%, #060914 42%, #050812 100%);
+        --sidebar-bg:
+          linear-gradient(180deg, rgba(13, 18, 31, 0.94), rgba(6, 10, 19, 0.96)),
+          var(--surface-0);
+        --brand-bg: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+        --page-head-bg:
+          linear-gradient(90deg, rgba(34, 211, 238, 0.08), rgba(255,255,255,0.03)),
+          rgba(18, 24, 38, 0.72);
+        --section-bg:
+          linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015)),
+          rgba(17, 24, 39, 0.86);
+        --card-bg: rgba(15, 23, 42, 0.62);
+        --metric-bg: rgba(7, 11, 20, 0.42);
+        --table-bg: rgba(7, 11, 20, 0.42);
+        --th-bg: #101827;
+        --td-color: #d7e2ee;
+        --control-bg: rgba(7, 11, 20, 0.76);
+        --muted-strong: #9fb3ca;
+        --link-soft: #7dd3fc;
+        --tag-text: #b8c7db;
+      }
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #070b14;
+      --paper: rgba(18, 24, 38, 0.92);
+      --ink: #f1f5f9;
+      --soft: #8b9bb2;
+      --line: rgba(255, 255, 255, 0.08);
+      --blue: #22d3ee;
+      --green: #34d399;
+      --amber: #fbbf24;
+      --red: #fb7185;
+      --rail: rgba(148, 163, 184, 0.11);
+      --shadow: 0 22px 70px rgba(0, 0, 0, 0.34);
+      --surface-0: #070b14;
+      --surface-1: #0b1020;
+      --surface-2: #111827;
+      --surface-3: #151c2f;
+      --border-strong: rgba(255, 255, 255, 0.14);
+      --cyan-soft: rgba(34, 211, 238, 0.14);
+      --cyan-border: rgba(34, 211, 238, 0.44);
+      --emerald-soft: rgba(52, 211, 153, 0.12);
+      --app-bg:
+        radial-gradient(circle at 25% -10%, rgba(34, 211, 238, 0.16), transparent 34rem),
+        radial-gradient(circle at 92% 0%, rgba(56, 189, 248, 0.08), transparent 28rem),
+        linear-gradient(180deg, #080d18 0%, #060914 42%, #050812 100%);
+      --sidebar-bg:
+        linear-gradient(180deg, rgba(13, 18, 31, 0.94), rgba(6, 10, 19, 0.96)),
+        var(--surface-0);
+      --brand-bg: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+      --page-head-bg:
+        linear-gradient(90deg, rgba(34, 211, 238, 0.08), rgba(255,255,255,0.03)),
+        rgba(18, 24, 38, 0.72);
+      --section-bg:
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015)),
+        rgba(17, 24, 39, 0.86);
+      --card-bg: rgba(15, 23, 42, 0.62);
+      --metric-bg: rgba(7, 11, 20, 0.42);
+      --table-bg: rgba(7, 11, 20, 0.42);
+      --th-bg: #101827;
+      --td-color: #d7e2ee;
+      --control-bg: rgba(7, 11, 20, 0.76);
+      --muted-strong: #9fb3ca;
+      --link-soft: #7dd3fc;
+      --tag-text: #b8c7db;
+    }
+    html {
+      background: var(--surface-0);
+    }
+    body {
+      background: var(--app-bg);
+      color: var(--ink);
+      font: 14px/1.55 var(--font-sans);
+      min-height: 100vh;
+    }
+    a {
+      color: var(--blue);
+    }
+    .topbar,
+    .hero {
+      display: none !important;
+    }
+    .shell.app-layout {
+      width: 100%;
+      max-width: none;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 0;
+      align-items: stretch;
+    }
+    .module-sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      max-height: none;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 18px 12px 14px;
+      border-right: 1px solid var(--line);
+      background: var(--sidebar-bg);
+    }
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 72px;
+      padding: 14px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 18px;
+      color: var(--ink);
+      letter-spacing: 0.16em;
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 800;
+      text-decoration: none;
+      background: var(--brand-bg);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+      margin-bottom: 10px;
+    }
+    .sidebar-brand:hover {
+      text-decoration: none;
+      border-color: var(--cyan-border);
+    }
+    .brand-hot {
+      color: var(--blue);
+    }
+    .side-module {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 5px;
+      min-height: 42px;
+      padding: 11px 12px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      background: transparent;
+      color: var(--soft);
+      box-shadow: none;
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    .side-module strong {
+      color: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+    .side-module span,
+    .side-module small {
+      display: none;
+    }
+    .side-module::before {
+      content: "";
+      width: 16px;
+      height: 16px;
+      position: absolute;
+      left: 12px;
+      top: 13px;
+      border: 1.5px solid currentColor;
+      border-radius: 5px;
+      opacity: .72;
+    }
+    .side-module strong {
+      padding-left: 26px;
+    }
+    .side-module:hover {
+      background: rgba(34, 211, 238, 0.08);
+      border-color: rgba(34, 211, 238, 0.28);
+      color: #d8faff;
+      text-decoration: none;
+    }
+    .side-module.active {
+      background: rgba(34, 211, 238, 0.13);
+      border-color: rgba(34, 211, 238, 0.44);
+      color: var(--blue);
+      box-shadow: inset 0 0 24px rgba(34, 211, 238, 0.04);
+    }
+    .side-module.active strong {
+      color: var(--blue);
+    }
+    .sidebar-meta {
+      margin-top: auto;
+      display: grid;
+      gap: 7px;
+      padding: 12px 14px;
+      color: var(--soft);
+      font-size: 12px;
+      border-top: 1px solid var(--line);
+    }
+    .sidebar-meta a {
+      color: var(--link-soft);
+      font-weight: 700;
+    }
+    .theme-switcher {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      margin-top: 8px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--rail);
+    }
+    .theme-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      min-height: 28px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--soft);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      cursor: pointer;
+    }
+    .theme-button:hover {
+      color: var(--ink);
+    }
+    .theme-button.active {
+      background: var(--cyan-soft);
+      color: var(--blue);
+      box-shadow: inset 0 0 0 1px var(--cyan-border);
+    }
+    .module-content {
+      min-width: 0;
+      padding: 24px 28px 72px;
+      display: grid;
+      gap: 12px;
+    }
+    .module-page-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 18px;
+      padding: 20px 18px 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--page-head-bg);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .module-page-head h1 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 26px;
+      line-height: 1.18;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+    .module-page-head p {
+      margin: 6px 0 0;
+      color: var(--soft);
+      font-size: 13px;
+    }
+    .module-page-tools {
+      display: grid;
+      justify-items: end;
+      gap: 3px;
+      color: var(--soft);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+    .module-page-tools strong {
+      color: var(--blue);
+      font-size: 12px;
+    }
+    .module-content > section {
+      padding: 16px 18px 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--section-bg);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .module-content > section:first-child {
+      padding-top: 16px;
+    }
+    .section-title {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      margin: 0 0 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .section-title::before {
+      content: "模块";
+      grid-row: 1 / span 2;
+      color: #64748b;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      line-height: 1.4;
+      padding-top: 5px;
+    }
+    .section-title h2 {
+      grid-column: 2;
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-size: 20px;
+      line-height: 1.3;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+    .section-title p {
+      grid-column: 2;
+      color: var(--soft);
+      font-size: 13px;
+      max-width: 820px;
+    }
+    .profile-grid,
+    .summary-strip,
+    .route-grid,
+    .school-decision-layout,
+    .candidate-grid,
+    .judgement-grid,
+    .logic-compact,
+    .rent-board-grid,
+    .todo-board,
+    .source-list,
+    .areas,
+    .chart-grid,
+    .rental-result-grid,
+    .module-stream {
+      gap: 12px;
+      border-top: 0;
+    }
+    .profile-card,
+    .summary-card,
+    .route-card,
+    .candidate-card,
+    .school-card,
+    .judgement-card,
+    .logic-card,
+    .rent-board-card,
+    .todo-column,
+    .source-card,
+    .area-card,
+    .chart-card,
+    .rental-result-card,
+    .module-item,
+    .rent-panel,
+    .rent-builder,
+    .filter-panel,
+    .notice-card,
+    .decision-card,
+    .matrix-card,
+    .steps,
+    .principle,
+    .rank-item,
+    .priority-card,
+    .action-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--card-bg);
+      box-shadow: none;
+      color: var(--ink);
+    }
+    .profile-card,
+    .summary-card,
+    .route-card,
+    .candidate-card,
+    .school-card,
+    .judgement-card,
+    .logic-card,
+    .rent-board-card,
+    .todo-column,
+    .source-card,
+    .area-card,
+    .chart-card,
+    .decision-card,
+    .matrix-card,
+    .steps,
+    .principle,
+    .rank-item,
+    .priority-card,
+    .action-card {
+      padding: 14px 16px;
+    }
+    .module-item {
+      grid-template-columns: 76px minmax(0, 1fr) auto;
+      padding: 14px 16px;
+    }
+    .profile-card strong,
+    .summary-card strong,
+    .route-card h3,
+    .candidate-card h3,
+    .school-card h3,
+    .judgement-card h3,
+    .logic-card strong,
+    .rent-board-card h3,
+    .todo-column h3,
+    .source-card strong,
+    .area-card strong,
+    .module-body h3 {
+      color: var(--ink);
+    }
+    .route-card p,
+    .candidate-card p,
+    .school-card p,
+    .rent-board-card p,
+    .rental-result-body p,
+    .profile-card span,
+    .summary-card span,
+    .judgement-card p,
+    .logic-card span,
+    .source-card span,
+    .area-metrics,
+    .module-body p,
+    .module-time,
+    .sub,
+    label {
+      color: var(--soft);
+    }
+    .school-card header,
+    .route-card header,
+    .candidate-card header,
+    .rent-board-card header,
+    .rental-result-body header {
+      border-bottom-color: var(--line);
+    }
+    .summary-card.urgent,
+    .notice-card,
+    .risk-box,
+    .verdict {
+      background: rgba(251, 191, 36, 0.08);
+      border-color: rgba(251, 191, 36, 0.22);
+      color: #fde68a;
+    }
+    .summary-card.urgent span,
+    .notice-card p,
+    .risk-box span,
+    .verdict span {
+      color: #d6b86a;
+    }
+    .tag,
+    .chip,
+    .data-pill,
+    .rental-meta span {
+      min-height: 22px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--rail);
+      color: var(--tag-text);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .tag.green { color: var(--green); background: var(--emerald-soft); border-color: rgba(52, 211, 153, 0.24); }
+    .tag.blue { color: var(--blue); background: var(--cyan-soft); border-color: rgba(34, 211, 238, 0.24); }
+    .tag.amber { color: var(--amber); background: rgba(251, 191, 36, 0.10); border-color: rgba(251, 191, 36, 0.24); }
+    .tag.red { color: var(--red); background: rgba(251, 113, 133, 0.10); border-color: rgba(251, 113, 133, 0.24); }
+    .route-metrics,
+    .card-meta div {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--metric-bg);
+    }
+    .route-metrics b,
+    .card-meta b,
+    .area-metrics b,
+    .result-count strong,
+    .school-name {
+      color: var(--ink);
+    }
+    .rank-number,
+    .action-card::before,
+    .step-number {
+      background: var(--cyan-soft);
+      color: var(--blue);
+      border: 1px solid var(--cyan-border);
+    }
+    .rent-links a,
+    .rent-board-card a,
+    .rental-result-body a,
+    .button {
+      border: 1px solid rgba(34, 211, 238, 0.28);
+      border-radius: 9px;
+      background: rgba(34, 211, 238, 0.10);
+      color: #bff6ff;
+      min-height: 31px;
+      box-shadow: none;
+      font-weight: 750;
+    }
+    .button.primary {
+      background: rgba(34, 211, 238, 0.18);
+      border-color: var(--cyan-border);
+      color: var(--blue);
+    }
+    input,
+    select {
+      min-height: 38px;
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      background: var(--control-bg);
+      color: var(--ink);
+    }
+    input::placeholder {
+      color: #64748b;
+    }
+    option {
+      background: #0b1020;
+      color: var(--ink);
+    }
+    .rent-builder,
+    .filter-panel {
+      padding: 14px 16px;
+      margin: 0 0 12px;
+    }
+    .rent-url-preview,
+    .result-bar,
+    .module-body .module-reason,
+    .todo-item,
+    .score-row,
+    .step,
+    th,
+    td {
+      border-color: var(--line);
+    }
+    .rent-url-preview code {
+      color: var(--muted-strong);
+    }
+    .table-box,
+    .recommendation-table {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--table-bg);
+      box-shadow: none;
+    }
+    table {
+      color: var(--ink);
+    }
+    th {
+      background: var(--th-bg);
+      color: #a7b7ca;
+    }
+    td {
+      color: var(--td-color);
+    }
+    .bar-track {
+      background: rgba(148, 163, 184, 0.14);
+    }
+    .bar-track i {
+      background: linear-gradient(90deg, #22d3ee, #34d399);
+    }
+    .rental-photo {
+      border-radius: 13px 13px 0 0;
+      background:
+        linear-gradient(180deg, rgba(8,13,24,0.05), rgba(8,13,24,0.88)),
+        linear-gradient(135deg, #164e63, #0f766e 52%, #78350f);
+    }
+    .phone-link {
+      color: var(--blue);
+    }
+    footer {
+      display: none;
+    }
+    @media (max-width: 900px) {
+      .shell.app-layout {
+        grid-template-columns: 1fr;
+      }
+      .module-sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        height: auto;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(120px, 1fr));
+        overflow-x: auto;
+        padding: 10px 12px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .sidebar-brand,
+      .sidebar-meta {
+        display: none;
+      }
+      .theme-switcher {
+        display: none;
+      }
+      .module-content {
+        padding: 16px 14px 42px;
+      }
+      .module-page-head {
+        grid-template-columns: 1fr;
+      }
+      .module-page-tools {
+        justify-items: start;
+      }
+      .section-title {
+        display: block;
+      }
+      .section-title::before {
+        display: none;
+      }
+      .section-title p {
+        margin-top: 8px;
+      }
+      .module-item {
+        grid-template-columns: 1fr;
+      }
+      .module-status {
+        justify-items: start;
+      }
+    }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="shell">
-      <div class="brand">上海家庭第一阶段落地执行方案</div>
-      <nav class="nav" aria-label="页面导航">
-        <a href="#strategy" data-module-link="strategy">策略</a>
-        <a href="#data" data-module-link="data">数据</a>
-        <a href="#rent-page" data-module-link="rent">租房</a>
-        <a href="#sources-page" data-module-link="sources">来源</a>
-      </nav>
-    </div>
-  </header>
-
-  <section class="hero">
-    <div class="shell hero-grid">
-      <div>
-        <h1>90 天内完成上海家庭落地。</h1>
-        <p class="lead">当前不是一次性决定 15 年教育路线，而是先完成幼儿园落位、租房签约、材料稳定、家具搬迁、通勤验证和家庭恢复运转。徐汇幼儿园是执行模块之一，现已把闵行、浦东公开名单纳入同一套落地路线比较。</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#strategy" data-module-link="strategy">看选择策略</a>
-          <a class="button" href="#data" data-module-link="data">查幼儿园数据</a>
-          <a class="button" href="徐汇区幼儿园园区位置与择园参考.xlsx">打开 Excel 表</a>
-        </div>
-      </div>
-      <aside class="scoreboard" aria-label="数据摘要">
-        <div class="score-row"><span>覆盖区域</span><strong>3</strong></div>
-        <div class="score-row"><span>全部园区/点位</span><strong>${campusItems.length}</strong></div>
-        <div class="score-row"><span>徐汇点位</span><strong>${publicCampusItems.length + privateCampusItems.length}</strong></div>
-        <div class="score-row"><span>闵行/浦东基础点位</span><strong>${externalCampusItems.length}</strong></div>
-        <div class="score-row"><span>高德坐标/POI</span><strong>${amapMatchedCount}</strong></div>
-      </aside>
-    </div>
-  </section>
-
+  <script>
+    (() => {
+      try {
+        const savedTheme = localStorage.getItem("landing-theme");
+        if (savedTheme === "dark" || savedTheme === "light") {
+          document.documentElement.dataset.theme = savedTheme;
+        }
+      } catch (error) {}
+    })();
+  </script>
   <main class="shell app-layout">
     <aside class="module-sidebar" aria-label="模块导航">
+      <a class="sidebar-brand" href="#strategy" data-module-link="strategy" aria-label="返回策略首页">
+        <span class="brand-main">90D</span>
+        <span class="brand-hot">上海落地</span>
+      </a>
       <a class="side-module" href="#strategy" data-module-link="strategy"><strong>幼儿园选择策略</strong><span>家庭情况、短期/长期目标、三区择园策略、入园待办。</span><small>查看方案推荐</small></a>
       <a class="side-module" href="#data" data-module-link="data"><strong>幼儿园数据查询</strong><span>查询基础数据源，按区、性质、等级、招生口径筛选。</span><small>查 930 条点位</small></a>
       <a class="side-module" href="#rent-page" data-module-link="rent"><strong>租房查询</strong><span>选择贝壳筛选参数，生成实时查询入口和看房方向。</span><small>生成房源链接</small></a>
       <a class="side-module" href="#sources-page" data-module-link="sources"><strong>数据来源参考</strong><span>查看数据集、采集来源、POI、贝壳参数和置信度说明。</span><small>追溯来源</small></a>
+      <div class="sidebar-meta">
+        <span>三区数据 ${campusItems.length} 条</span>
+        <span>高德坐标 ${amapMatchedCount} 条</span>
+        <a href="徐汇区幼儿园园区位置与择园参考.xlsx">下载 Excel</a>
+      </div>
+      <div class="theme-switcher" aria-label="主题切换">
+        <button class="theme-button" type="button" data-theme-choice="system" aria-label="跟随系统主题">系统</button>
+        <button class="theme-button" type="button" data-theme-choice="light" aria-label="浅色主题">浅色</button>
+        <button class="theme-button" type="button" data-theme-choice="dark" aria-label="深色主题">深色</button>
+      </div>
     </aside>
     <div class="module-content">
+    <div class="module-page-head" aria-live="polite">
+      <div>
+        <h1 id="modulePageTitle">幼儿园选择策略</h1>
+        <p id="modulePageSubtitle">家庭基本情况、短期长期目标、三区择园策略和入园待办。</p>
+      </div>
+      <div class="module-page-tools">
+        <span>上海家庭第一阶段</span>
+        <strong>90 天落地执行</strong>
+      </div>
+    </div>
     <section id="mission" data-module-section="strategy">
       <div class="section-title">
         <h2>当前任务</h2>
@@ -3067,6 +3757,56 @@ ${renderBarChart(areaCapacityStats)}
     const rentUrlLink = document.querySelector("#rentUrlLink");
     const moduleLinks = Array.from(document.querySelectorAll("[data-module-link]"));
     const moduleSections = Array.from(document.querySelectorAll("[data-module-section]"));
+    const themeButtons = Array.from(document.querySelectorAll("[data-theme-choice]"));
+    const modulePageTitle = document.querySelector("#modulePageTitle");
+    const modulePageSubtitle = document.querySelector("#modulePageSubtitle");
+    const moduleCopy = {
+      strategy: {
+        title: "幼儿园选择策略",
+        subtitle: "家庭基本情况、短期长期目标、三区择园策略和入园待办。"
+      },
+      data: {
+        title: "幼儿园数据查询",
+        subtitle: "统一数据集中的徐汇、闵行、浦东园所信息，可按区、性质、等级、招生口径筛选。"
+      },
+      rent: {
+        title: "租房查询",
+        subtitle: "基于贝壳结构化参数生成徐汇、闵行、浦东整租入口，并保留当前预算和户型条件。"
+      },
+      sources: {
+        title: "数据来源参考",
+        subtitle: "追溯幼儿园名单、POI 坐标、租房参数、架构文档和置信度边界。"
+      }
+    };
+
+    function currentThemePreference() {
+      try {
+        const savedTheme = localStorage.getItem("landing-theme");
+        return savedTheme === "dark" || savedTheme === "light" ? savedTheme : "system";
+      } catch (error) {
+        return "system";
+      }
+    }
+
+    function applyThemePreference(theme) {
+      const nextTheme = theme === "dark" || theme === "light" ? theme : "system";
+      if (nextTheme === "system") {
+        document.documentElement.removeAttribute("data-theme");
+        try { localStorage.removeItem("landing-theme"); } catch (error) {}
+      } else {
+        document.documentElement.dataset.theme = nextTheme;
+        try { localStorage.setItem("landing-theme", nextTheme); } catch (error) {}
+      }
+      for (const button of themeButtons) {
+        button.classList.toggle("active", button.dataset.themeChoice === nextTheme);
+        button.setAttribute("aria-pressed", button.dataset.themeChoice === nextTheme ? "true" : "false");
+      }
+    }
+
+    for (const button of themeButtons) {
+      button.addEventListener("click", () => applyThemePreference(button.dataset.themeChoice));
+    }
+    applyThemePreference(currentThemePreference());
 
     function setActiveModule(moduleName, pushHash = true) {
       const nextModule = moduleName || "strategy";
@@ -3075,6 +3815,11 @@ ${renderBarChart(areaCapacityStats)}
       }
       for (const link of moduleLinks) {
         link.classList.toggle("active", link.dataset.moduleLink === nextModule);
+      }
+      if (modulePageTitle && modulePageSubtitle) {
+        const copy = moduleCopy[nextModule] || moduleCopy.strategy;
+        modulePageTitle.textContent = copy.title;
+        modulePageSubtitle.textContent = copy.subtitle;
       }
       if (pushHash) {
         const targetHash = nextModule === "rent" ? "#rent-page" : nextModule === "sources" ? "#sources-page" : "#" + nextModule;
