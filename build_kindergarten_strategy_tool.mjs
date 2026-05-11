@@ -1122,6 +1122,37 @@ const fallbackScoreDimensions = [
   { key: "flexibility", label: "后续迁移弹性", defaultWeight: 2, note: "第一阶段住址未来切换到长期方案的空间。", scores: { "徐汇": 70, "闵行": 82, "浦东": 86 } },
 ];
 const scoreDimensions = strategyModel.scoreDimensions?.length ? strategyModel.scoreDimensions : fallbackScoreDimensions;
+const familyConstraintGroups = Array.isArray(strategyModel.constraintGroups) ? strategyModel.constraintGroups : [];
+
+const renderFamilyConstraintSelector = () => `
+        <div class="constraint-panel" data-constraint-panel>
+          <div class="constraint-head">
+            <div>
+              <h3>可选家庭约束</h3>
+              <p>约束来自 <code>data/strategy_model.json</code>，每个选项会调整评分权重和区级加减分。</p>
+            </div>
+            <div class="constraint-active" data-constraint-active>等待选择</div>
+          </div>
+          <div class="constraint-grid">
+            ${familyConstraintGroups.map((group) => `
+              <fieldset class="constraint-group">
+                <legend>${escapeHtml(group.label)}</legend>
+                <div class="constraint-options">
+                  ${(group.options || []).map((option) => {
+                    const checked = option.key === group.defaultOption ? " checked" : "";
+                    return `
+                    <label class="constraint-option">
+                      <input type="radio" name="constraint-${escapeHtml(group.key)}" value="${escapeHtml(option.key)}" data-constraint-option="${escapeHtml(group.key)}"${checked}>
+                      <span><b>${escapeHtml(option.label)}</b><small>${escapeHtml(option.summary)}</small></span>
+                    </label>`;
+                  }).join("")}
+                </div>
+              </fieldset>
+            `).join("")}
+          </div>
+          <div class="constraint-impact" data-constraint-impact></div>
+        </div>
+`;
 
 const renderScoreModel = () => `
         <div class="score-model" data-score-model>
@@ -1136,8 +1167,8 @@ const renderScoreModel = () => `
           </div>
           <div class="score-results">
             ${kindergartenDistrictOrder.map((district) => `
-              <article class="score-result-card" data-score-district="${escapeHtml(district)}">
-                <header><h3>${escapeHtml(district)}</h3><strong data-score-total="${escapeHtml(district)}">0</strong></header>
+              <article class="score-result-card" data-score-result-card data-score-district="${escapeHtml(district)}">
+                <header><h3><span data-score-rank="${escapeHtml(district)}">-</span>${escapeHtml(district)}</h3><strong data-score-total="${escapeHtml(district)}">0</strong></header>
                 <div class="score-meter"><i data-score-meter="${escapeHtml(district)}"></i></div>
                 <p data-score-summary="${escapeHtml(district)}"></p>
                 <div class="score-breakdown" data-score-breakdown="${escapeHtml(district)}"></div>
@@ -1579,6 +1610,89 @@ const html = `<!doctype html>
     .decision-card p { margin: 0 0 14px; color: var(--soft); }
     .decision-card ul { margin: 0; padding-left: 18px; }
     .decision-card li { margin: 7px 0; }
+    .constraint-panel {
+      display: grid;
+      gap: 16px;
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    .constraint-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: start;
+    }
+    .constraint-head h3 { margin: 0 0 6px; font-size: 18px; }
+    .constraint-head p { margin: 0; color: var(--soft); }
+    .constraint-active {
+      min-width: 180px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: var(--rail);
+      color: var(--ink);
+      font-weight: 800;
+      text-align: right;
+    }
+    .constraint-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .constraint-group {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      min-width: 0;
+    }
+    .constraint-group legend {
+      padding: 0 4px;
+      color: var(--ink);
+      font-weight: 900;
+    }
+    .constraint-options {
+      display: grid;
+      gap: 8px;
+    }
+    .constraint-option {
+      display: grid;
+      grid-template-columns: 18px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--rail);
+      cursor: pointer;
+    }
+    .constraint-option:has(input:checked) {
+      border-color: rgba(37, 99, 235, 0.45);
+      background: rgba(37, 99, 235, 0.08);
+    }
+    .constraint-option input { margin-top: 3px; accent-color: var(--blue); }
+    .constraint-option span { display: grid; gap: 3px; min-width: 0; }
+    .constraint-option b { color: var(--ink); }
+    .constraint-option small { color: var(--soft); line-height: 1.45; }
+    .constraint-impact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .constraint-impact span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: var(--rail);
+      color: var(--soft);
+      font-size: 12px;
+      font-weight: 800;
+    }
     .verdict {
       display: grid;
       gap: 12px;
@@ -3359,6 +3473,31 @@ const html = `<!doctype html>
       gap: 12px;
       margin-bottom: 12px;
     }
+    .score-result-card h3 {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .score-result-card h3 span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: var(--rail);
+      color: var(--soft);
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .score-result-card.top {
+      border-color: rgba(4, 120, 87, 0.45);
+      box-shadow: 0 14px 36px rgba(4, 120, 87, 0.12);
+    }
+    .score-result-card.top h3 span {
+      background: rgba(4, 120, 87, 0.12);
+      color: var(--green);
+    }
     .score-result-card strong,
     .capacity-card strong {
       color: var(--blue);
@@ -3562,8 +3701,16 @@ const html = `<!doctype html>
         justify-items: start;
       }
       .score-model,
-      .capacity-overview {
+      .capacity-overview,
+      .constraint-grid {
         grid-template-columns: 1fr;
+      }
+      .constraint-head {
+        display: grid;
+      }
+      .constraint-active {
+        min-width: 0;
+        text-align: left;
       }
       .weight-row,
       .beike-filter-row {
@@ -3612,10 +3759,11 @@ const html = `<!doctype html>
       </div>
       <div class="profile-grid">
         <article class="profile-card"><strong>90 天目标</strong><span>幼儿园落位、租房签约、材料稳定、家具搬迁、通勤验证、家庭恢复正常运转。</span></article>
-        <article class="profile-card"><strong>家庭约束</strong><span>暂无居住证；办公点在西岸网易研发中心；至少 3 房、100㎡以上、预算 10000 以内。</span></article>
+        <article class="profile-card"><strong>家庭约束</strong><span>材料、通勤、住房和入园偏好改为可选配置，会参与下方评分模型计算。</span></article>
         <article class="profile-card"><strong>执行原则</strong><span>先解决“有”和“稳”，再谈长期最优；房东配合材料是租房硬门槛。</span></article>
         <article class="profile-card"><strong>非当前目标</strong><span>不在本阶段一次性决定买房、小学初中路径或长期定居区域。</span></article>
       </div>
+${renderFamilyConstraintSelector()}
     </section>
 
     <section id="modules" data-module-section="sources">
@@ -4156,12 +4304,16 @@ ${renderDistrictCapacityOverview()}
     const kindergartenAreasByDistrict = ${JSON.stringify(kindergartenAreaOptionsByDistrict)};
     const beikeBizcircleOptionsByDistrict = ${JSON.stringify(beikeBizcircleOptionsByDistrict)};
     const scoreDimensions = ${JSON.stringify(scoreDimensions)};
+    const constraintGroups = ${JSON.stringify(familyConstraintGroups)};
     const rentDistrict = document.querySelector("#rentDistrict");
     const rentBizcircle = document.querySelector("#rentBizcircle");
     const rentMinPrice = document.querySelector("#rentMinPrice");
     const rentMaxPrice = document.querySelector("#rentMaxPrice");
     const rentControls = Array.from(document.querySelectorAll(".rent-builder input, .rent-builder select"));
     const scoreWeights = Array.from(document.querySelectorAll("[data-score-weight]"));
+    const constraintInputs = Array.from(document.querySelectorAll("[data-constraint-option]"));
+    const constraintActive = document.querySelector("[data-constraint-active]");
+    const constraintImpact = document.querySelector("[data-constraint-impact]");
     const rentUrlText = document.querySelector("#rentUrlText");
     const rentUrlLink = document.querySelector("#rentUrlLink");
     const moduleLinks = Array.from(document.querySelectorAll("[data-module-link]"));
@@ -4319,26 +4471,88 @@ ${renderDistrictCapacityOverview()}
       }
     }
 
+    function selectedConstraintOptions() {
+      return constraintGroups.map((group) => {
+        const selectedKey = document.querySelector('input[name="constraint-' + group.key + '"]:checked')?.value || group.defaultOption;
+        const option = (group.options || []).find((item) => item.key === selectedKey) || (group.options || [])[0];
+        return option ? { group, option } : null;
+      }).filter(Boolean);
+    }
+
+    function collectConstraintEffects() {
+      const selected = selectedConstraintOptions();
+      const weightAdjustments = {};
+      const districtAdjustments = {};
+      const labels = [];
+      const summaries = [];
+      for (const row of selected) {
+        labels.push(row.option.label);
+        if (row.option.summary) summaries.push(row.option.summary);
+        for (const [key, value] of Object.entries(row.option.weightAdjustments || {})) {
+          weightAdjustments[key] = (weightAdjustments[key] || 0) + (Number(value) || 0);
+        }
+        for (const [districtName, value] of Object.entries(row.option.districtAdjustments || {})) {
+          districtAdjustments[districtName] = (districtAdjustments[districtName] || 0) + (Number(value) || 0);
+        }
+      }
+      return { selected, weightAdjustments, districtAdjustments, labels, summaries };
+    }
+
+    function updateConstraintSummary(effects) {
+      if (constraintActive) {
+        constraintActive.textContent = effects.labels.length ? effects.labels.join(" / ") : "未设置约束";
+      }
+      if (constraintImpact) {
+        const weightItems = Object.entries(effects.weightAdjustments)
+          .filter(([, value]) => value)
+          .map(([key, value]) => {
+            const label = scoreDimensions.find((item) => item.key === key)?.label || key;
+            return '<span>' + label + (value > 0 ? ' +' : ' ') + value + '</span>';
+          });
+        const districtItems = Object.entries(effects.districtAdjustments)
+          .filter(([, value]) => value)
+          .map(([districtName, value]) => '<span>' + districtName + (value > 0 ? ' +' : ' ') + value + '</span>');
+        const summaryItems = effects.summaries.slice(0, 2).map((item) => '<span>' + item + '</span>');
+        constraintImpact.innerHTML = [...weightItems, ...districtItems, ...summaryItems].join("");
+      }
+    }
+
     function updateScoreModel() {
       if (!scoreWeights.length) return;
-      const weights = Object.fromEntries(scoreWeights.map((input) => [input.dataset.scoreWeight, Number(input.value) || 0]));
+      const effects = collectConstraintEffects();
+      const baseWeights = Object.fromEntries(scoreWeights.map((input) => [input.dataset.scoreWeight, Number(input.value) || 0]));
+      const weights = Object.fromEntries(Object.entries(baseWeights).map(([key, value]) => [key, Math.max(0, value + (effects.weightAdjustments[key] || 0))]));
       for (const input of scoreWeights) {
         const valueLabel = document.querySelector('[data-score-value="' + input.dataset.scoreWeight + '"]');
-        if (valueLabel) valueLabel.textContent = input.value;
+        const adjustment = effects.weightAdjustments[input.dataset.scoreWeight] || 0;
+        if (valueLabel) valueLabel.textContent = adjustment ? input.value + (adjustment > 0 ? " +" : " ") + adjustment : input.value;
       }
+      updateConstraintSummary(effects);
       const totalWeight = Object.values(weights).reduce((sum, value) => sum + value, 0) || 1;
       const districtScores = ["徐汇", "闵行", "浦东"].map((districtName) => {
         const raw = scoreDimensions.reduce((sum, item) => sum + ((item.scores[districtName] || 0) * (weights[item.key] || 0)), 0);
-        return { districtName, score: Math.round(raw / totalWeight) };
+        const constraintAdjustment = effects.districtAdjustments[districtName] || 0;
+        const score = Math.max(0, Math.min(100, Math.round((raw / totalWeight) + constraintAdjustment)));
+        return { districtName, score, constraintAdjustment };
       }).sort((a, b) => b.score - a.score);
-      for (const row of districtScores) {
+      for (const [index, row] of districtScores.entries()) {
+        const card = document.querySelector('[data-score-result-card][data-score-district="' + row.districtName + '"]');
+        const rank = document.querySelector('[data-score-rank="' + row.districtName + '"]');
         const total = document.querySelector('[data-score-total="' + row.districtName + '"]');
         const meter = document.querySelector('[data-score-meter="' + row.districtName + '"]');
         const summary = document.querySelector('[data-score-summary="' + row.districtName + '"]');
         const breakdown = document.querySelector('[data-score-breakdown="' + row.districtName + '"]');
+        if (card) {
+          card.style.order = index;
+          card.classList.toggle("top", index === 0);
+        }
+        if (rank) rank.textContent = "#" + (index + 1);
         if (total) total.textContent = row.score;
         if (meter) meter.style.width = Math.max(5, Math.min(100, row.score)) + "%";
-        if (summary) summary.textContent = row.score >= 85 ? "当前权重下优先级最高。" : row.score >= 78 ? "可作为强备选路线。" : "需要通勤或预算条件放宽后再进入主线。";
+        if (summary) {
+          const adjustmentText = row.constraintAdjustment ? " 约束修正 " + (row.constraintAdjustment > 0 ? "+" : "") + row.constraintAdjustment + "。" : "";
+          summary.textContent = (row.score >= 85 ? "当前约束下优先级最高。" : row.score >= 78 ? "可作为强备选路线。" : "需要通勤或预算条件放宽后再进入主线。") + adjustmentText;
+        }
         if (breakdown) {
           const contributions = scoreDimensions
             .map((item) => ({
@@ -4347,7 +4561,10 @@ ${renderDistrictCapacityOverview()}
             }))
             .sort((a, b) => b.value - a.value)
             .slice(0, 3);
-          breakdown.innerHTML = contributions.map((item) => '<span><b>' + item.label + '</b><em>+' + item.value.toFixed(1) + '</em></span>').join("");
+          if (row.constraintAdjustment) {
+            contributions.push({ label: "约束修正", value: row.constraintAdjustment });
+          }
+          breakdown.innerHTML = contributions.map((item) => '<span><b>' + item.label + '</b><em>' + (item.value > 0 ? '+' : '') + item.value.toFixed(1) + '</em></span>').join("");
         }
       }
     }
@@ -4389,6 +4606,9 @@ ${renderDistrictCapacityOverview()}
     }
     for (const input of scoreWeights) {
       input.addEventListener("input", updateScoreModel);
+    }
+    for (const input of constraintInputs) {
+      input.addEventListener("change", updateScoreModel);
     }
     populateKindergartenAreas();
     updateScoreModel();

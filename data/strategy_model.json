@@ -2,6 +2,120 @@
   "schemaVersion": "1.0",
   "updatedAt": "2026-05-11",
   "description": "家庭落地方案的评分维度和按区推荐配置。生成脚本优先读取本文件，避免策略权重和推荐项只存在于页面代码中。",
+  "constraintGroups": [
+    {
+      "key": "materialStatus",
+      "label": "材料状态",
+      "defaultOption": "noPermit",
+      "options": [
+        {
+          "key": "noPermit",
+          "label": "暂无居住证",
+          "summary": "公办顺位和材料完整性压力最大，必须同步民办兜底。",
+          "weightAdjustments": { "material": 8, "kindergarten": 4 },
+          "districtAdjustments": { "徐汇": -6, "闵行": 1, "浦东": 0 }
+        },
+        {
+          "key": "registrationReady",
+          "label": "可办居住登记",
+          "summary": "先看房东配合度，公办争取线可以保留但不能单押。",
+          "weightAdjustments": { "material": 4, "rental": 3 },
+          "districtAdjustments": { "徐汇": -2, "闵行": 2, "浦东": 1 }
+        },
+        {
+          "key": "stableDocuments",
+          "label": "材料稳定",
+          "summary": "材料阻力下降，可以提高公办和通勤权重。",
+          "weightAdjustments": { "kindergarten": 4, "commute": 2 },
+          "districtAdjustments": { "徐汇": 3, "闵行": 1, "浦东": 1 }
+        }
+      ]
+    },
+    {
+      "key": "commuteTolerance",
+      "label": "通勤容忍度",
+      "defaultOption": "conservative",
+      "options": [
+        {
+          "key": "conservative",
+          "label": "保守通勤",
+          "summary": "优先减少早高峰和接送链路的不确定性。",
+          "weightAdjustments": { "commute": 8, "flexibility": -1 },
+          "districtAdjustments": { "徐汇": 6, "闵行": 0, "浦东": -7 }
+        },
+        {
+          "key": "balanced",
+          "label": "通勤平衡",
+          "summary": "接受一定通勤增加，换取居住空间和社区质量。",
+          "weightAdjustments": { "commute": 2, "living": 3, "rental": 2 },
+          "districtAdjustments": { "徐汇": 0, "闵行": 4, "浦东": -1 }
+        },
+        {
+          "key": "flexible",
+          "label": "可接受跨江",
+          "summary": "通勤不作为硬约束，允许长期空间优先。",
+          "weightAdjustments": { "living": 5, "community": 3, "flexibility": 4, "commute": -5 },
+          "districtAdjustments": { "徐汇": -2, "闵行": 2, "浦东": 5 }
+        }
+      ]
+    },
+    {
+      "key": "housingPreference",
+      "label": "住房偏好",
+      "defaultOption": "familySpace",
+      "options": [
+        {
+          "key": "familySpace",
+          "label": "三房/100㎡优先",
+          "summary": "户型和面积是硬门槛，租房可执行性权重上升。",
+          "weightAdjustments": { "rental": 8, "living": 3 },
+          "districtAdjustments": { "徐汇": -5, "闵行": 5, "浦东": 3 }
+        },
+        {
+          "key": "budgetFirst",
+          "label": "预算优先",
+          "summary": "压低租金波动和房源质量风险，扩大候选区。",
+          "weightAdjustments": { "budget": 8, "rental": 4 },
+          "districtAdjustments": { "徐汇": -4, "闵行": 4, "浦东": 3 }
+        },
+        {
+          "key": "nearOffice",
+          "label": "近公司优先",
+          "summary": "牺牲部分房源空间，换取通勤和突发接送稳定性。",
+          "weightAdjustments": { "commute": 6, "rental": -2 },
+          "districtAdjustments": { "徐汇": 5, "闵行": 0, "浦东": -5 }
+        }
+      ]
+    },
+    {
+      "key": "schoolPreference",
+      "label": "入园策略",
+      "defaultOption": "publicWithBackup",
+      "options": [
+        {
+          "key": "publicWithBackup",
+          "label": "公办争取 + 民办兜底",
+          "summary": "保持公办目标，但必须同步电话确认民办名额。",
+          "weightAdjustments": { "kindergarten": 5, "material": 4 },
+          "districtAdjustments": { "徐汇": 1, "闵行": 2, "浦东": 1 }
+        },
+        {
+          "key": "privateAcceptable",
+          "label": "民办可接受",
+          "summary": "降低公办顺位压力，更看重名额、收费和接送。",
+          "weightAdjustments": { "kindergarten": 2, "rental": 3, "material": -2 },
+          "districtAdjustments": { "徐汇": 1, "闵行": 3, "浦东": 4 }
+        },
+        {
+          "key": "publicStrict",
+          "label": "强公办导向",
+          "summary": "需要更严格地反查居委、材料和当年招生顺位。",
+          "weightAdjustments": { "kindergarten": 8, "material": 6, "rental": -2 },
+          "districtAdjustments": { "徐汇": 3, "闵行": 1, "浦东": -2 }
+        }
+      ]
+    }
+  ],
   "scoreDimensions": [
     {
       "key": "commute",

@@ -237,6 +237,89 @@
     .decision-card p { margin: 0 0 14px; color: var(--soft); }
     .decision-card ul { margin: 0; padding-left: 18px; }
     .decision-card li { margin: 7px 0; }
+    .constraint-panel {
+      display: grid;
+      gap: 16px;
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    .constraint-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: start;
+    }
+    .constraint-head h3 { margin: 0 0 6px; font-size: 18px; }
+    .constraint-head p { margin: 0; color: var(--soft); }
+    .constraint-active {
+      min-width: 180px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: var(--rail);
+      color: var(--ink);
+      font-weight: 800;
+      text-align: right;
+    }
+    .constraint-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .constraint-group {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      min-width: 0;
+    }
+    .constraint-group legend {
+      padding: 0 4px;
+      color: var(--ink);
+      font-weight: 900;
+    }
+    .constraint-options {
+      display: grid;
+      gap: 8px;
+    }
+    .constraint-option {
+      display: grid;
+      grid-template-columns: 18px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--rail);
+      cursor: pointer;
+    }
+    .constraint-option:has(input:checked) {
+      border-color: rgba(37, 99, 235, 0.45);
+      background: rgba(37, 99, 235, 0.08);
+    }
+    .constraint-option input { margin-top: 3px; accent-color: var(--blue); }
+    .constraint-option span { display: grid; gap: 3px; min-width: 0; }
+    .constraint-option b { color: var(--ink); }
+    .constraint-option small { color: var(--soft); line-height: 1.45; }
+    .constraint-impact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .constraint-impact span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: var(--rail);
+      color: var(--soft);
+      font-size: 12px;
+      font-weight: 800;
+    }
     .verdict {
       display: grid;
       gap: 12px;
@@ -2017,6 +2100,31 @@
       gap: 12px;
       margin-bottom: 12px;
     }
+    .score-result-card h3 {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .score-result-card h3 span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: var(--rail);
+      color: var(--soft);
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .score-result-card.top {
+      border-color: rgba(4, 120, 87, 0.45);
+      box-shadow: 0 14px 36px rgba(4, 120, 87, 0.12);
+    }
+    .score-result-card.top h3 span {
+      background: rgba(4, 120, 87, 0.12);
+      color: var(--green);
+    }
     .score-result-card strong,
     .capacity-card strong {
       color: var(--blue);
@@ -2220,8 +2328,16 @@
         justify-items: start;
       }
       .score-model,
-      .capacity-overview {
+      .capacity-overview,
+      .constraint-grid {
         grid-template-columns: 1fr;
+      }
+      .constraint-head {
+        display: grid;
+      }
+      .constraint-active {
+        min-width: 0;
+        text-align: left;
       }
       .weight-row,
       .beike-filter-row {
@@ -2270,10 +2386,101 @@
       </div>
       <div class="profile-grid">
         <article class="profile-card"><strong>90 天目标</strong><span>幼儿园落位、租房签约、材料稳定、家具搬迁、通勤验证、家庭恢复正常运转。</span></article>
-        <article class="profile-card"><strong>家庭约束</strong><span>暂无居住证；办公点在西岸网易研发中心；至少 3 房、100㎡以上、预算 10000 以内。</span></article>
+        <article class="profile-card"><strong>家庭约束</strong><span>材料、通勤、住房和入园偏好改为可选配置，会参与下方评分模型计算。</span></article>
         <article class="profile-card"><strong>执行原则</strong><span>先解决“有”和“稳”，再谈长期最优；房东配合材料是租房硬门槛。</span></article>
         <article class="profile-card"><strong>非当前目标</strong><span>不在本阶段一次性决定买房、小学初中路径或长期定居区域。</span></article>
       </div>
+
+        <div class="constraint-panel" data-constraint-panel>
+          <div class="constraint-head">
+            <div>
+              <h3>可选家庭约束</h3>
+              <p>约束来自 <code>data/strategy_model.json</code>，每个选项会调整评分权重和区级加减分。</p>
+            </div>
+            <div class="constraint-active" data-constraint-active>等待选择</div>
+          </div>
+          <div class="constraint-grid">
+            
+              <fieldset class="constraint-group">
+                <legend>材料状态</legend>
+                <div class="constraint-options">
+                  
+                    <label class="constraint-option">
+                      <input type="radio" name="constraint-materialStatus" value="noPermit" data-constraint-option="materialStatus" checked>
+                      <span><b>暂无居住证</b><small>公办顺位和材料完整性压力最大，必须同步民办兜底。</small></span>
+                    </label>
+                    <label class="constraint-option">
+                      <input type="radio" name="constraint-materialStatus" value="registrationReady" data-constraint-option="materialStatus">
+                      <span><b>可办居住登记</b><small>先看房东配合度，公办争取线可以保留但不能单押。</small></span>
+                    </label>
+                    <label class="constraint-option">
+                      <input type="radio" name="constraint-materialStatus" value="stableDocuments" data-constraint-option="materialStatus">
+                      <span><b>材料稳定</b><small>材料阻力下降，可以提高公办和通勤权重。</small></span>
+                    </label>
+                </div>
+              </fieldset>
+            
+              <fieldset class="constraint-group">
+                <legend>通勤容忍度</legend>
+                <div class="constraint-options">
+                  
+                    <label class="constraint-option">
+                      <input type="radio" name="constraint-commuteTolerance" value="conservative" data-constraint-option="commuteTolerance" checked>
+                      <span><b>保守通勤</b><small>优先减少早高峰和接送链路的不确定性。</small></span>
+                    </label>
+                    <label class="constraint-option">
+                      <input type="radio" name="constraint-commuteTolerance" value="balanced" data-constraint-option="commuteTolerance">
+                      <span><b>通勤平衡</b><small>接受一定通勤增加，换取居住空间和社区质量。</small></span>
+                    </label>
+                    <label class="constraint-option">
+                      <input type="radio" name="constraint-commuteTolerance" value="flexible" data-constraint-option="commuteTolerance">
+                      <span><b>可接受跨江</b><small>通勤不作为硬约束，允许长期空间优先。</small></span>
+                    </label>
+                </div>
+              </fieldset>
+            
+              <fieldset class="constraint-group">
+                <legend>住房偏好</legend>
+                <div class="constraint-options">
+                  
+                    <label class="constraint-option">
+                      <input type="radio" name="constraint-housingPreference" value="familySpace" data-constraint-option="housingPreference" checked>
+                      <span><b>三房/100㎡优先</b><small>户型和面积是硬门槛，租房可执行性权重上升。</small></span>
+                    </label>
+                    <label class="constraint-option">
+                      <input type="radio" name="constraint-housingPreference" value="budgetFirst" data-constraint-option="housingPreference">
+                      <span><b>预算优先</b><small>压低租金波动和房源质量风险，扩大候选区。</small></span>
+                    </label>
+                    <label class="constraint-option">
+                      <input type="radio" name="constraint-housingPreference" value="nearOffice" data-constraint-option="housingPreference">
+                      <span><b>近公司优先</b><small>牺牲部分房源空间，换取通勤和突发接送稳定性。</small></span>
+                    </label>
+                </div>
+              </fieldset>
+            
+              <fieldset class="constraint-group">
+                <legend>入园策略</legend>
+                <div class="constraint-options">
+                  
+                    <label class="constraint-option">
+                      <input type="radio" name="constraint-schoolPreference" value="publicWithBackup" data-constraint-option="schoolPreference" checked>
+                      <span><b>公办争取 + 民办兜底</b><small>保持公办目标，但必须同步电话确认民办名额。</small></span>
+                    </label>
+                    <label class="constraint-option">
+                      <input type="radio" name="constraint-schoolPreference" value="privateAcceptable" data-constraint-option="schoolPreference">
+                      <span><b>民办可接受</b><small>降低公办顺位压力，更看重名额、收费和接送。</small></span>
+                    </label>
+                    <label class="constraint-option">
+                      <input type="radio" name="constraint-schoolPreference" value="publicStrict" data-constraint-option="schoolPreference">
+                      <span><b>强公办导向</b><small>需要更严格地反查居委、材料和当年招生顺位。</small></span>
+                    </label>
+                </div>
+              </fieldset>
+            
+          </div>
+          <div class="constraint-impact" data-constraint-impact></div>
+        </div>
+
     </section>
 
     <section id="modules" data-module-section="sources">
@@ -2474,22 +2681,22 @@
           </div>
           <div class="score-results">
             
-              <article class="score-result-card" data-score-district="徐汇">
-                <header><h3>徐汇</h3><strong data-score-total="徐汇">0</strong></header>
+              <article class="score-result-card" data-score-result-card data-score-district="徐汇">
+                <header><h3><span data-score-rank="徐汇">-</span>徐汇</h3><strong data-score-total="徐汇">0</strong></header>
                 <div class="score-meter"><i data-score-meter="徐汇"></i></div>
                 <p data-score-summary="徐汇"></p>
                 <div class="score-breakdown" data-score-breakdown="徐汇"></div>
               </article>
             
-              <article class="score-result-card" data-score-district="闵行">
-                <header><h3>闵行</h3><strong data-score-total="闵行">0</strong></header>
+              <article class="score-result-card" data-score-result-card data-score-district="闵行">
+                <header><h3><span data-score-rank="闵行">-</span>闵行</h3><strong data-score-total="闵行">0</strong></header>
                 <div class="score-meter"><i data-score-meter="闵行"></i></div>
                 <p data-score-summary="闵行"></p>
                 <div class="score-breakdown" data-score-breakdown="闵行"></div>
               </article>
             
-              <article class="score-result-card" data-score-district="浦东">
-                <header><h3>浦东</h3><strong data-score-total="浦东">0</strong></header>
+              <article class="score-result-card" data-score-result-card data-score-district="浦东">
+                <header><h3><span data-score-rank="浦东">-</span>浦东</h3><strong data-score-total="浦东">0</strong></header>
                 <div class="score-meter"><i data-score-meter="浦东"></i></div>
                 <p data-score-summary="浦东"></p>
                 <div class="score-breakdown" data-score-breakdown="浦东"></div>
@@ -31375,12 +31582,16 @@
     const kindergartenAreasByDistrict = {"徐汇":["滨江","漕河泾","漕溪","枫林","桂林","衡复","虹梅","虹桥","虹桥路","湖南","华泾","汇成","交大","康健","凌云","龙漕","龙华","龙吴","罗秀","梅陇","南站","石龙","天平","田林","宛南","西岸","斜土","徐家汇","园南","长桥"],"闵行":["待归类","古美路街道","虹桥镇","华漕镇","江川路街道","马桥镇","梅陇镇","浦江镇","浦锦街道","七宝镇","莘庄工业区","莘庄镇","吴泾镇","新虹街道","颛桥镇"],"浦东":["北蔡","曹路","川沙","大团","待归类","东明","高东","高桥","航头","沪东","花木","惠南","金桥","金杨","康桥","老港","临港","六灶","南汇","南码头","泥城","三林","上钢","世博","书院","唐镇","塘桥","潍坊","新场","杨思","张江","周浦","祝桥"]};
     const beikeBizcircleOptionsByDistrict = {"xuhui":[{"slug":"changqiao","id":"611900103","label":"长桥","parentSlug":"xuhui","parentLabel":"徐汇"},{"slug":"caohejing","id":"613000342","label":"漕河泾","parentSlug":"xuhui","parentLabel":"徐汇"},{"slug":"huajing","id":"611100124","label":"华泾","parentSlug":"xuhui","parentLabel":"徐汇"},{"slug":"hengshanlu","id":"611900097","label":"衡山路","parentSlug":"xuhui","parentLabel":"徐汇"},{"slug":"huadongligong","id":"611900104","label":"华东理工","parentSlug":"xuhui","parentLabel":"徐汇"},{"slug":"jinhui","id":"611900067","label":"金汇","parentSlug":"xuhui","parentLabel":"徐汇"},{"slug":"jianguoxilu","id":"611900099","label":"建国西路","parentSlug":"xuhui","parentLabel":"徐汇"},{"slug":"kangjian","id":"613000343","label":"康健","parentSlug":"xuhui","parentLabel":"徐汇"},{"slug":"longhua","id":"611100125","label":"龙华","parentSlug":"xuhui","parentLabel":"徐汇"},{"slug":"shanghainanzhan","id":"613000344","label":"上海南站","parentSlug":"xuhui","parentLabel":"徐汇"},{"slug":"tianlin","id":"611100127","label":"田林","parentSlug":"xuhui","parentLabel":"徐汇"},{"slug":"wantiguan","id":"611900100","label":"万体馆","parentSlug":"xuhui","parentLabel":"徐汇"},{"slug":"xuhuibinjiang","id":"611100128","label":"徐汇滨江","parentSlug":"xuhui","parentLabel":"徐汇"},{"slug":"xietulu","id":"611900098","label":"斜土路","parentSlug":"xuhui","parentLabel":"徐汇"},{"slug":"xujiahui","id":"613000345","label":"徐家汇","parentSlug":"xuhui","parentLabel":"徐汇"},{"slug":"zhiwuyuan","id":"611900102","label":"植物园","parentSlug":"xuhui","parentLabel":"徐汇"}],"minhang":[{"slug":"chunshen","id":"611900064","label":"春申","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"caohejing","id":"613000342","label":"漕河泾","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"gumei","id":"611900068","label":"古美","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"huacao","id":"611100113","label":"华漕","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"hanghua","id":"611900069","label":"航华","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"jinhongqiao","id":"611100115","label":"金虹桥","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"jinhui","id":"611900067","label":"金汇","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"jinganxincheng","id":"611900071","label":"静安新城","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"laominhang","id":"611900065","label":"老闵行","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"longbai","id":"611900073","label":"龙柏","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"maqiao","id":"611100116","label":"马桥","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"meilong","id":"611900070","label":"梅陇","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"minpu","id":"1100006843","label":"闵浦","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"pujiang1","id":"611100118","label":"浦江","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"qibao","id":"611100119","label":"七宝","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"wujing","id":"611100120","label":"吴泾","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"xinzhuangbeiguangchang","id":"611100121","label":"莘庄北广场","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"xinminbieshu","id":"613000334","label":"莘闵别墅","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"xinzhuangnanguangchang","id":"1100007475","label":"莘庄南广场","parentSlug":"minhang","parentLabel":"闵行"},{"slug":"zhuanqiao","id":"611100122","label":"颛桥","parentSlug":"minhang","parentLabel":"闵行"}],"pudong":[{"slug":"beicai","id":"611900123","label":"北蔡","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"biyun","id":"613000290","label":"碧云","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"caolu","id":"613000291","label":"曹路","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"chuansha","id":"613000292","label":"川沙","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"datuanzhen","id":"613000293","label":"大团镇","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"gaodong","id":"613000294","label":"高东","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"gaohang","id":"613000295","label":"高行","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"geqing","id":"613000297","label":"合庆","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"huamu","id":"611900130","label":"花木","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"hangtou","id":"613000296","label":"航头","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"huinan","id":"613000298","label":"惠南","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"jinqiao","id":"611900131","label":"金桥","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"jinyang","id":"613000299","label":"金杨","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"kangqiao","id":"613000300","label":"康桥","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"lujiazui","id":"611900136","label":"陆家嘴","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"laogangzhen","id":"613000301","label":"老港镇","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"lianyang","id":"613000302","label":"联洋","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"lingangxincheng","id":"613000303","label":"临港新城","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"meiyuan1","id":"1100006286","label":"梅园","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"nanmatou","id":"613000304","label":"南码头","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"nichengzhen","id":"613000305","label":"泥城镇","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"sanlin","id":"611900138","label":"三林","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"shibo","id":"611900139","label":"世博","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"shuyuanzhen","id":"613000307","label":"书院镇","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"tangqiao","id":"611900141","label":"塘桥","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"tangzhen","id":"613000308","label":"唐镇","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"waigaoqiao","id":"611900143","label":"外高桥","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"wanxiangzhen","id":"613000309","label":"万祥镇","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"weifang","id":"613000310","label":"潍坊","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"xinchang","id":"613000311","label":"新场","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"xuanqiao","id":"613000312","label":"宣桥","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"yuqiao1","id":"611101108","label":"御桥","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"yangdong","id":"613000313","label":"杨东","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"yangjing","id":"613000314","label":"洋泾","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"yuanshen","id":"613000315","label":"源深","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"yangsiqiantan","id":"1100006285","label":"杨思前滩","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"zhangjiang","id":"611900148","label":"张江","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"zhoupu","id":"613000316","label":"周浦","parentSlug":"pudong","parentLabel":"浦东"},{"slug":"zhuqiao","id":"613000317","label":"祝桥","parentSlug":"pudong","parentLabel":"浦东"}]};
     const scoreDimensions = [{"key":"commute","label":"通勤距离","defaultWeight":22,"note":"到西岸网易研发中心的可验证通勤时间。","scores":{"徐汇":95,"闵行":78,"浦东":58}},{"key":"kindergarten","label":"幼儿园可落位","defaultWeight":18,"note":"公办等级、园所密度、民办兜底池和电话可核验性。","scores":{"徐汇":88,"闵行":82,"浦东":76}},{"key":"rental","label":"租房可执行","defaultWeight":20,"note":"100㎡以上、三居/四居+、1万元内、有电梯的可找房程度。","scores":{"徐汇":68,"闵行":88,"浦东":82}},{"key":"material","label":"材料可办理","defaultWeight":18,"note":"房东配合居住登记、租赁材料和地址一致性。","scores":{"徐汇":74,"闵行":84,"浦东":78}},{"key":"living","label":"居住体验","defaultWeight":10,"note":"小区环境、电梯、老人接送和收纳空间。","scores":{"徐汇":66,"闵行":88,"浦东":86}},{"key":"community","label":"亲子社区","defaultWeight":6,"note":"公园、遛娃空间、家庭密度和生活配套。","scores":{"徐汇":72,"闵行":86,"浦东":84}},{"key":"budget","label":"预算压力","defaultWeight":4,"note":"预算越稳，执行阻力越低。","scores":{"徐汇":60,"闵行":82,"浦东":78}},{"key":"flexibility","label":"后续迁移弹性","defaultWeight":2,"note":"第一阶段住址未来切换到长期方案的空间。","scores":{"徐汇":70,"闵行":82,"浦东":86}}];
+    const constraintGroups = [{"key":"materialStatus","label":"材料状态","defaultOption":"noPermit","options":[{"key":"noPermit","label":"暂无居住证","summary":"公办顺位和材料完整性压力最大，必须同步民办兜底。","weightAdjustments":{"material":8,"kindergarten":4},"districtAdjustments":{"徐汇":-6,"闵行":1,"浦东":0}},{"key":"registrationReady","label":"可办居住登记","summary":"先看房东配合度，公办争取线可以保留但不能单押。","weightAdjustments":{"material":4,"rental":3},"districtAdjustments":{"徐汇":-2,"闵行":2,"浦东":1}},{"key":"stableDocuments","label":"材料稳定","summary":"材料阻力下降，可以提高公办和通勤权重。","weightAdjustments":{"kindergarten":4,"commute":2},"districtAdjustments":{"徐汇":3,"闵行":1,"浦东":1}}]},{"key":"commuteTolerance","label":"通勤容忍度","defaultOption":"conservative","options":[{"key":"conservative","label":"保守通勤","summary":"优先减少早高峰和接送链路的不确定性。","weightAdjustments":{"commute":8,"flexibility":-1},"districtAdjustments":{"徐汇":6,"闵行":0,"浦东":-7}},{"key":"balanced","label":"通勤平衡","summary":"接受一定通勤增加，换取居住空间和社区质量。","weightAdjustments":{"commute":2,"living":3,"rental":2},"districtAdjustments":{"徐汇":0,"闵行":4,"浦东":-1}},{"key":"flexible","label":"可接受跨江","summary":"通勤不作为硬约束，允许长期空间优先。","weightAdjustments":{"living":5,"community":3,"flexibility":4,"commute":-5},"districtAdjustments":{"徐汇":-2,"闵行":2,"浦东":5}}]},{"key":"housingPreference","label":"住房偏好","defaultOption":"familySpace","options":[{"key":"familySpace","label":"三房/100㎡优先","summary":"户型和面积是硬门槛，租房可执行性权重上升。","weightAdjustments":{"rental":8,"living":3},"districtAdjustments":{"徐汇":-5,"闵行":5,"浦东":3}},{"key":"budgetFirst","label":"预算优先","summary":"压低租金波动和房源质量风险，扩大候选区。","weightAdjustments":{"budget":8,"rental":4},"districtAdjustments":{"徐汇":-4,"闵行":4,"浦东":3}},{"key":"nearOffice","label":"近公司优先","summary":"牺牲部分房源空间，换取通勤和突发接送稳定性。","weightAdjustments":{"commute":6,"rental":-2},"districtAdjustments":{"徐汇":5,"闵行":0,"浦东":-5}}]},{"key":"schoolPreference","label":"入园策略","defaultOption":"publicWithBackup","options":[{"key":"publicWithBackup","label":"公办争取 + 民办兜底","summary":"保持公办目标，但必须同步电话确认民办名额。","weightAdjustments":{"kindergarten":5,"material":4},"districtAdjustments":{"徐汇":1,"闵行":2,"浦东":1}},{"key":"privateAcceptable","label":"民办可接受","summary":"降低公办顺位压力，更看重名额、收费和接送。","weightAdjustments":{"kindergarten":2,"rental":3,"material":-2},"districtAdjustments":{"徐汇":1,"闵行":3,"浦东":4}},{"key":"publicStrict","label":"强公办导向","summary":"需要更严格地反查居委、材料和当年招生顺位。","weightAdjustments":{"kindergarten":8,"material":6,"rental":-2},"districtAdjustments":{"徐汇":3,"闵行":1,"浦东":-2}}]}];
     const rentDistrict = document.querySelector("#rentDistrict");
     const rentBizcircle = document.querySelector("#rentBizcircle");
     const rentMinPrice = document.querySelector("#rentMinPrice");
     const rentMaxPrice = document.querySelector("#rentMaxPrice");
     const rentControls = Array.from(document.querySelectorAll(".rent-builder input, .rent-builder select"));
     const scoreWeights = Array.from(document.querySelectorAll("[data-score-weight]"));
+    const constraintInputs = Array.from(document.querySelectorAll("[data-constraint-option]"));
+    const constraintActive = document.querySelector("[data-constraint-active]");
+    const constraintImpact = document.querySelector("[data-constraint-impact]");
     const rentUrlText = document.querySelector("#rentUrlText");
     const rentUrlLink = document.querySelector("#rentUrlLink");
     const moduleLinks = Array.from(document.querySelectorAll("[data-module-link]"));
@@ -31538,26 +31749,88 @@
       }
     }
 
+    function selectedConstraintOptions() {
+      return constraintGroups.map((group) => {
+        const selectedKey = document.querySelector('input[name="constraint-' + group.key + '"]:checked')?.value || group.defaultOption;
+        const option = (group.options || []).find((item) => item.key === selectedKey) || (group.options || [])[0];
+        return option ? { group, option } : null;
+      }).filter(Boolean);
+    }
+
+    function collectConstraintEffects() {
+      const selected = selectedConstraintOptions();
+      const weightAdjustments = {};
+      const districtAdjustments = {};
+      const labels = [];
+      const summaries = [];
+      for (const row of selected) {
+        labels.push(row.option.label);
+        if (row.option.summary) summaries.push(row.option.summary);
+        for (const [key, value] of Object.entries(row.option.weightAdjustments || {})) {
+          weightAdjustments[key] = (weightAdjustments[key] || 0) + (Number(value) || 0);
+        }
+        for (const [districtName, value] of Object.entries(row.option.districtAdjustments || {})) {
+          districtAdjustments[districtName] = (districtAdjustments[districtName] || 0) + (Number(value) || 0);
+        }
+      }
+      return { selected, weightAdjustments, districtAdjustments, labels, summaries };
+    }
+
+    function updateConstraintSummary(effects) {
+      if (constraintActive) {
+        constraintActive.textContent = effects.labels.length ? effects.labels.join(" / ") : "未设置约束";
+      }
+      if (constraintImpact) {
+        const weightItems = Object.entries(effects.weightAdjustments)
+          .filter(([, value]) => value)
+          .map(([key, value]) => {
+            const label = scoreDimensions.find((item) => item.key === key)?.label || key;
+            return '<span>' + label + (value > 0 ? ' +' : ' ') + value + '</span>';
+          });
+        const districtItems = Object.entries(effects.districtAdjustments)
+          .filter(([, value]) => value)
+          .map(([districtName, value]) => '<span>' + districtName + (value > 0 ? ' +' : ' ') + value + '</span>');
+        const summaryItems = effects.summaries.slice(0, 2).map((item) => '<span>' + item + '</span>');
+        constraintImpact.innerHTML = [...weightItems, ...districtItems, ...summaryItems].join("");
+      }
+    }
+
     function updateScoreModel() {
       if (!scoreWeights.length) return;
-      const weights = Object.fromEntries(scoreWeights.map((input) => [input.dataset.scoreWeight, Number(input.value) || 0]));
+      const effects = collectConstraintEffects();
+      const baseWeights = Object.fromEntries(scoreWeights.map((input) => [input.dataset.scoreWeight, Number(input.value) || 0]));
+      const weights = Object.fromEntries(Object.entries(baseWeights).map(([key, value]) => [key, Math.max(0, value + (effects.weightAdjustments[key] || 0))]));
       for (const input of scoreWeights) {
         const valueLabel = document.querySelector('[data-score-value="' + input.dataset.scoreWeight + '"]');
-        if (valueLabel) valueLabel.textContent = input.value;
+        const adjustment = effects.weightAdjustments[input.dataset.scoreWeight] || 0;
+        if (valueLabel) valueLabel.textContent = adjustment ? input.value + (adjustment > 0 ? " +" : " ") + adjustment : input.value;
       }
+      updateConstraintSummary(effects);
       const totalWeight = Object.values(weights).reduce((sum, value) => sum + value, 0) || 1;
       const districtScores = ["徐汇", "闵行", "浦东"].map((districtName) => {
         const raw = scoreDimensions.reduce((sum, item) => sum + ((item.scores[districtName] || 0) * (weights[item.key] || 0)), 0);
-        return { districtName, score: Math.round(raw / totalWeight) };
+        const constraintAdjustment = effects.districtAdjustments[districtName] || 0;
+        const score = Math.max(0, Math.min(100, Math.round((raw / totalWeight) + constraintAdjustment)));
+        return { districtName, score, constraintAdjustment };
       }).sort((a, b) => b.score - a.score);
-      for (const row of districtScores) {
+      for (const [index, row] of districtScores.entries()) {
+        const card = document.querySelector('[data-score-result-card][data-score-district="' + row.districtName + '"]');
+        const rank = document.querySelector('[data-score-rank="' + row.districtName + '"]');
         const total = document.querySelector('[data-score-total="' + row.districtName + '"]');
         const meter = document.querySelector('[data-score-meter="' + row.districtName + '"]');
         const summary = document.querySelector('[data-score-summary="' + row.districtName + '"]');
         const breakdown = document.querySelector('[data-score-breakdown="' + row.districtName + '"]');
+        if (card) {
+          card.style.order = index;
+          card.classList.toggle("top", index === 0);
+        }
+        if (rank) rank.textContent = "#" + (index + 1);
         if (total) total.textContent = row.score;
         if (meter) meter.style.width = Math.max(5, Math.min(100, row.score)) + "%";
-        if (summary) summary.textContent = row.score >= 85 ? "当前权重下优先级最高。" : row.score >= 78 ? "可作为强备选路线。" : "需要通勤或预算条件放宽后再进入主线。";
+        if (summary) {
+          const adjustmentText = row.constraintAdjustment ? " 约束修正 " + (row.constraintAdjustment > 0 ? "+" : "") + row.constraintAdjustment + "。" : "";
+          summary.textContent = (row.score >= 85 ? "当前约束下优先级最高。" : row.score >= 78 ? "可作为强备选路线。" : "需要通勤或预算条件放宽后再进入主线。") + adjustmentText;
+        }
         if (breakdown) {
           const contributions = scoreDimensions
             .map((item) => ({
@@ -31566,7 +31839,10 @@
             }))
             .sort((a, b) => b.value - a.value)
             .slice(0, 3);
-          breakdown.innerHTML = contributions.map((item) => '<span><b>' + item.label + '</b><em>+' + item.value.toFixed(1) + '</em></span>').join("");
+          if (row.constraintAdjustment) {
+            contributions.push({ label: "约束修正", value: row.constraintAdjustment });
+          }
+          breakdown.innerHTML = contributions.map((item) => '<span><b>' + item.label + '</b><em>' + (item.value > 0 ? '+' : '') + item.value.toFixed(1) + '</em></span>').join("");
         }
       }
     }
@@ -31608,6 +31884,9 @@
     }
     for (const input of scoreWeights) {
       input.addEventListener("input", updateScoreModel);
+    }
+    for (const input of constraintInputs) {
+      input.addEventListener("change", updateScoreModel);
     }
     populateKindergartenAreas();
     updateScoreModel();

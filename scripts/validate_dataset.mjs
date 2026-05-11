@@ -69,6 +69,24 @@ for (const item of strategyModel.scoreDimensions || []) {
     if (!Number.isFinite(Number(item.scores?.[district]))) addError(`score dimension ${item.key} missing ${district} score`);
   }
 }
+const scoreDimensionKeys = new Set((strategyModel.scoreDimensions || []).map((item) => item.key));
+for (const group of strategyModel.constraintGroups || []) {
+  if (!group.key) addError("constraint group missing key");
+  if (!group.label) addError(`constraint group ${group.key} missing label`);
+  if (!Array.isArray(group.options) || group.options.length === 0) addError(`constraint group ${group.key} has no options`);
+  if (group.defaultOption && !group.options?.some((option) => option.key === group.defaultOption)) {
+    addError(`constraint group ${group.key} defaultOption not found`);
+  }
+  for (const option of group.options || []) {
+    if (!option.key) addError(`constraint group ${group.key} option missing key`);
+    for (const key of Object.keys(option.weightAdjustments || {})) {
+      if (!scoreDimensionKeys.has(key)) addError(`constraint option ${group.key}.${option.key} references unknown score dimension ${key}`);
+    }
+    for (const district of Object.keys(option.districtAdjustments || {})) {
+      if (!allowedDistricts.has(district)) addError(`constraint option ${group.key}.${option.key} references unknown district ${district}`);
+    }
+  }
+}
 for (const item of strategyModel.decisionRecommendations || []) {
   const ref = item.itemRef || {};
   const key = [ref.nature, ref.name, ref.campus, ref.address].join("|");
