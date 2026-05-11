@@ -111,6 +111,35 @@
     .score-row strong { font-size: 28px; line-height: 1; }
     main { padding: 28px 0 56px; }
     section { scroll-margin-top: 82px; }
+    .app-layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+    .module-sidebar {
+      position: sticky;
+      top: 82px;
+      display: grid;
+      gap: 10px;
+      max-height: calc(100vh - 100px);
+      overflow: auto;
+      padding: 4px 0;
+    }
+    .side-module {
+      display: grid;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      padding: 14px;
+      color: var(--ink);
+    }
+    .side-module:hover { text-decoration: none; border-color: #bdd3ea; box-shadow: var(--shadow); }
+    .side-module strong { font-size: 15px; }
+    .side-module span { color: var(--soft); font-size: 12px; line-height: 1.45; }
+    .side-module small { color: var(--blue); font-weight: 800; }
+    .module-content { min-width: 0; }
     .section-title {
       display: flex;
       align-items: end;
@@ -558,6 +587,82 @@
     }
     .rent-board-card h3 { margin: 0; font-size: 17px; }
     .rent-board-card p { margin: 0; color: var(--soft); }
+    .rent-builder {
+      display: grid;
+      gap: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .rent-builder-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .rent-url-preview {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+    }
+    .rent-url-preview code {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      color: var(--soft);
+      font-size: 12px;
+    }
+    .rental-result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 12px 0;
+    }
+    .rental-result-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    .rental-photo {
+      display: grid;
+      align-content: end;
+      min-height: 148px;
+      padding: 14px;
+      color: #fff;
+      background:
+        linear-gradient(180deg, rgba(17,24,39,0.05), rgba(17,24,39,0.78)),
+        linear-gradient(135deg, #8fb6d8, #d9e5ce 52%, #c7b49b);
+    }
+    .rental-photo:hover { text-decoration: none; }
+    .rental-photo span { font-weight: 900; }
+    .rental-photo small { color: rgba(255,255,255,0.86); }
+    .rental-result-body {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+    }
+    .rental-result-body header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .rental-result-body h3 { margin: 0; font-size: 17px; }
+    .rental-result-body p { margin: 0; color: var(--soft); }
+    .rental-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+    .rental-meta span {
+      border-radius: 999px;
+      background: var(--rail);
+      color: var(--soft);
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 800;
+    }
     .action-steps {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -705,6 +810,42 @@
     .area-card strong { display: block; margin-bottom: 10px; }
     .area-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; color: var(--soft); font-size: 12px; }
     .area-metrics b { display: block; color: var(--ink); font-size: 18px; }
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .chart-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      padding: 16px;
+    }
+    .chart-card h3 { margin: 0 0 12px; font-size: 17px; }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr) 42px;
+      gap: 10px;
+      align-items: center;
+      padding: 8px 0;
+      border-top: 1px solid var(--line);
+    }
+    .bar-row:first-of-type { border-top: 0; }
+    .bar-row span { font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .bar-row small { grid-column: 2 / 4; color: var(--soft); font-size: 12px; }
+    .bar-track {
+      height: 9px;
+      border-radius: 999px;
+      background: var(--rail);
+      overflow: hidden;
+    }
+    .bar-track i {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--blue);
+    }
     .notice {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -783,7 +924,10 @@
       padding: 24px 0 36px;
     }
     @media (max-width: 1100px) {
+      .app-layout { grid-template-columns: 1fr; }
+      .module-sidebar { position: static; grid-template-columns: repeat(2, minmax(0, 1fr)); max-height: none; }
       .hero-grid, .workflow, .notice, .personal-grid { grid-template-columns: 1fr; }
+      .rent-builder-grid, .rental-result-grid, .chart-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .module-item { grid-template-columns: 110px minmax(0, 1fr); }
       .module-status { grid-column: 2; justify-items: start; }
       .principles, .areas, .judgement-grid, .priority-grid, .action-steps, .logic-compact, .summary-strip, .profile-grid, .todo-board, .rent-board-grid, .route-grid, .candidate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -796,6 +940,7 @@
       .topbar .shell { align-items: flex-start; flex-direction: column; padding-top: 12px; padding-bottom: 12px; }
       .nav { overflow: auto; width: 100%; padding-bottom: 2px; }
       .hero-grid { padding: 38px 14px 34px; min-height: auto; }
+      .module-sidebar, .rent-builder-grid, .rental-result-grid, .chart-grid { grid-template-columns: 1fr; }
       .module-item { grid-template-columns: 1fr; }
       .module-status { grid-column: auto; justify-items: start; }
       .scoreboard { padding: 14px; }
@@ -849,7 +994,14 @@
     </div>
   </section>
 
-  <main class="shell">
+  <main class="shell app-layout">
+    <aside class="module-sidebar" aria-label="模块导航">
+      <a class="side-module" href="#decision"><strong>幼儿园选择策略</strong><span>家庭情况、短期/长期目标、三区择园策略、入园待办。</span><small>查看方案推荐</small></a>
+      <a class="side-module" href="#query"><strong>幼儿园数据查询</strong><span>查询基础数据源，按区、性质、等级、招生口径筛选。</span><small>查 930 条点位</small></a>
+      <a class="side-module" href="#rent"><strong>租房查询</strong><span>选择贝壳筛选参数，生成实时查询入口和看房方向。</span><small>生成房源链接</small></a>
+      <a class="side-module" href="#sources"><strong>数据来源参考</strong><span>查看数据集、采集来源、POI、贝壳参数和置信度说明。</span><small>追溯来源</small></a>
+    </aside>
+    <div class="module-content">
     <section id="mission">
       <div class="section-title">
         <h2>当前任务</h2>
@@ -1604,9 +1756,119 @@
         <h2>租房联动</h2>
         <p>租房入口基于贝壳结构化参数生成，不使用关键词搜索。默认条件固定为：整租 / 0-10000元 / 三居或四居+ / 100㎡以上 / 有电梯。</p>
       </div>
+      <div class="rent-builder">
+        <div class="rent-builder-grid">
+          <label>区域/商圈
+            <select id="rentArea">
+              <option value="xuhui" >徐汇全区</option><option value="changqiao" selected>徐汇 · 长桥</option><option value="huajing" >徐汇 · 华泾</option><option value="longhua" >徐汇 · 龙华</option><option value="kangjian" >徐汇 · 康健</option><option value="zhiwuyuan" >徐汇 · 植物园</option><option value="minhang" >闵行全区</option><option value="chunshen" >闵行 · 春申</option><option value="gumei" >闵行 · 古美</option><option value="meilong" >闵行 · 梅陇</option><option value="zhuanqiao" >闵行 · 颛桥</option><option value="pudong" >浦东全区</option><option value="zhangjiang" >浦东 · 张江</option><option value="huamu" >浦东 · 花木</option><option value="sanlin" >浦东 · 三林</option><option value="kangqiao" >浦东 · 康桥</option>
+            </select>
+          </label>
+          <label>租赁方式
+            <select id="rentType">
+              <option value="rt200600000001" selected>整租</option>
+              <option value="">不限</option>
+              <option value="rt200600000002">合租</option>
+            </select>
+          </label>
+          <label>租金
+            <select id="rentPrice">
+              <option value="brp0erp10000" selected>0-10000 元</option>
+              <option value="rp7">7000-20000 元</option>
+              <option value="">不限</option>
+            </select>
+          </label>
+          <label>户型
+            <select id="rentRooms">
+              <option value="l2l3" selected>三居 / 四居+</option>
+              <option value="l2">三居</option>
+              <option value="l3">四居+</option>
+              <option value="">不限</option>
+            </select>
+          </label>
+          <label>面积
+            <select id="rentSize">
+              <option value="ra4ra5" selected>100-120㎡ / 120㎡以上</option>
+              <option value="ra4">100-120㎡</option>
+              <option value="ra5">120㎡以上</option>
+              <option value="">不限</option>
+            </select>
+          </label>
+          <label>朝向
+            <select id="rentFace">
+              <option value="">不限</option>
+              <option value="f100500000003">朝南</option>
+              <option value="f100500000009">南北</option>
+            </select>
+          </label>
+          <label>租期
+            <select id="rentTerm">
+              <option value="">不限</option>
+              <option value="rmp2">年租</option>
+              <option value="rmp1">月租</option>
+            </select>
+          </label>
+          <label>电梯
+            <select id="rentElevator">
+              <option value="ie1" selected>有电梯</option>
+              <option value="">不限</option>
+              <option value="ie0">无电梯</option>
+            </select>
+          </label>
+        </div>
+        <div class="rent-url-preview">
+          <code id="rentUrlText">https://sh.zu.ke.com/zufang/changqiao/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1</code>
+          <a class="button primary" id="rentUrlLink" href="https://sh.zu.ke.com/zufang/changqiao/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">打开贝壳查询</a>
+        </div>
+      </div>
       <div class="rent-panel">
         <strong>统一筛选 token</strong>
         <p><code>rt200600000001brp0erp10000l2l3ra4ra5ie1</code>，含整租、0-10000 元、三居/四居+、100-120㎡/120㎡以上、有电梯。二级商圈只替换 URL 中的区域 slug。</p>
+        <p>房源图片和库存以贝壳实时页面为准；贝壳公开页面存在登录/风控限制，本静态页不缓存具体房源图片，避免展示过期或不可追溯图片。</p>
+      </div>
+      <div class="rental-result-grid">
+
+        <article class="rental-result-card">
+          <a class="rental-photo" href="https://sh.zu.ke.com/zufang/changqiao/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener" aria-label="打开徐汇南部看房入口贝壳房源">
+            <span>贝壳实时房源图</span>
+            <small>点击查看图片与库存</small>
+          </a>
+          <div class="rental-result-body">
+            <header><h3>徐汇南部看房入口</h3><span class="tag blue">长桥 / 植物园 / 华泾</span></header>
+            <p>三居 / 四居+，100㎡以上，有电梯</p>
+            <div class="rental-meta"><span>0-10000 元</span><span>整租</span><span>有电梯</span></div>
+            <p class="module-reason">优先匹配当前预算、面积、老人接送和幼儿园兜底需求。</p>
+            <a href="https://sh.zu.ke.com/zufang/changqiao/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">打开贝壳实时结果</a>
+          </div>
+        </article>
+
+        <article class="rental-result-card">
+          <a class="rental-photo" href="https://sh.zu.ke.com/zufang/chunshen/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener" aria-label="打开闵行生活平衡入口贝壳房源">
+            <span>贝壳实时房源图</span>
+            <small>点击查看图片与库存</small>
+          </a>
+          <div class="rental-result-body">
+            <header><h3>闵行生活平衡入口</h3><span class="tag blue">春申 / 古美 / 梅陇</span></header>
+            <p>三居 / 四居+，100㎡以上，有电梯</p>
+            <div class="rental-meta"><span>0-10000 元</span><span>整租</span><span>有电梯</span></div>
+            <p class="module-reason">当徐汇大户型压力过高时，用闵行改善居住体验和亲子社区。</p>
+            <a href="https://sh.zu.ke.com/zufang/chunshen/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">打开贝壳实时结果</a>
+          </div>
+        </article>
+
+        <article class="rental-result-card">
+          <a class="rental-photo" href="https://sh.zu.ke.com/zufang/zhangjiang/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener" aria-label="打开浦东成长空间入口贝壳房源">
+            <span>贝壳实时房源图</span>
+            <small>点击查看图片与库存</small>
+          </a>
+          <div class="rental-result-body">
+            <header><h3>浦东成长空间入口</h3><span class="tag blue">张江 / 花木 / 三林</span></header>
+            <p>三居 / 四居+，100㎡以上，有电梯</p>
+            <div class="rental-meta"><span>0-10000 元</span><span>整租</span><span>有电梯</span></div>
+            <p class="module-reason">只在通勤验证通过后进入主线，用于比较新社区和长期空间。</p>
+            <a href="https://sh.zu.ke.com/zufang/zhangjiang/rt200600000001brp0erp10000l2l3ra4ra5ie1/?showMore=1" target="_blank" rel="noopener">打开贝壳实时结果</a>
+          </div>
+        </article>
+
       </div>
       <div class="rent-board-grid">
 
@@ -26895,8 +27157,109 @@
 
     <section id="areas">
       <div class="section-title">
-        <h2>徐汇片区容量概览</h2>
-        <p>只展示前 12 个供给相对集中的片区，用于判断大方向；个人录取仍以居委、材料和当年政策为准。</p>
+        <h2>片区容量可视化</h2>
+        <p>用柱形图先看三区点位规模和徐汇片区容量；个人录取仍以居委、材料和当年政策为准。</p>
+      </div>
+      <div class="chart-grid">
+        <article class="chart-card">
+          <h3>三区点位规模</h3>
+
+        <div class="bar-row">
+          <span>徐汇</span>
+          <div class="bar-track"><i style="width:23%"></i></div>
+          <b>127</b>
+          <small>81 公办 / 46 民办</small>
+        </div>
+
+        <div class="bar-row">
+          <span>闵行</span>
+          <div class="bar-track"><i style="width:47%"></i></div>
+          <b>258</b>
+          <small>166 公办 / 91 民办</small>
+        </div>
+
+        <div class="bar-row">
+          <span>浦东</span>
+          <div class="bar-track"><i style="width:100%"></i></div>
+          <b>545</b>
+          <small>430 公办 / 114 民办</small>
+        </div>
+
+        </article>
+        <article class="chart-card">
+          <h3>徐汇重点片区点位</h3>
+
+        <div class="bar-row">
+          <span>华泾</span>
+          <div class="bar-track"><i style="width:60%"></i></div>
+          <b>6</b>
+          <small>5 主体 / 14 小班</small>
+        </div>
+
+        <div class="bar-row">
+          <span>衡复/湖南</span>
+          <div class="bar-track"><i style="width:100%"></i></div>
+          <b>10</b>
+          <small>3 主体 / 12 小班</small>
+        </div>
+
+        <div class="bar-row">
+          <span>徐家汇/田林</span>
+          <div class="bar-track"><i style="width:50%"></i></div>
+          <b>5</b>
+          <small>2 主体 / 12 小班</small>
+        </div>
+
+        <div class="bar-row">
+          <span>龙华/滨江</span>
+          <div class="bar-track"><i style="width:50%"></i></div>
+          <b>5</b>
+          <small>2 主体 / 9 小班</small>
+        </div>
+
+        <div class="bar-row">
+          <span>长桥/凌云</span>
+          <div class="bar-track"><i style="width:50%"></i></div>
+          <b>5</b>
+          <small>2 主体 / 9 小班</small>
+        </div>
+
+        <div class="bar-row">
+          <span>枫林/斜土</span>
+          <div class="bar-track"><i style="width:50%"></i></div>
+          <b>5</b>
+          <small>3 主体 / 8 小班</small>
+        </div>
+
+        <div class="bar-row">
+          <span>康健/南站</span>
+          <div class="bar-track"><i style="width:20%"></i></div>
+          <b>2</b>
+          <small>1 主体 / 8 小班</small>
+        </div>
+
+        <div class="bar-row">
+          <span>康健/桂林</span>
+          <div class="bar-track"><i style="width:40%"></i></div>
+          <b>4</b>
+          <small>3 主体 / 7 小班</small>
+        </div>
+
+        <div class="bar-row">
+          <span>长桥</span>
+          <div class="bar-track"><i style="width:30%"></i></div>
+          <b>3</b>
+          <small>2 主体 / 7 小班</small>
+        </div>
+
+        <div class="bar-row">
+          <span>凌云/梅陇</span>
+          <div class="bar-track"><i style="width:30%"></i></div>
+          <b>3</b>
+          <small>2 主体 / 7 小班</small>
+        </div>
+
+        </article>
       </div>
       <div class="areas">
         
@@ -27133,6 +27496,7 @@
         </article>
       </div>
     </section>
+    </div>
   </main>
 
   <footer>
@@ -27150,6 +27514,11 @@
     const resultCount = document.querySelector("#resultCount");
     const rows = Array.from(document.querySelectorAll("#rows tr"));
     const todoInputs = Array.from(document.querySelectorAll("[data-todo]"));
+    const rentControls = ["rentArea", "rentType", "rentPrice", "rentRooms", "rentSize", "rentFace", "rentTerm", "rentElevator"]
+      .map((id) => document.querySelector("#" + id))
+      .filter(Boolean);
+    const rentUrlText = document.querySelector("#rentUrlText");
+    const rentUrlLink = document.querySelector("#rentUrlLink");
 
     function applyFilters() {
       const q = search.value.trim().toLowerCase();
@@ -27181,6 +27550,28 @@
         localStorage.setItem(key, input.checked ? "1" : "0");
       });
     }
+
+    function updateRentUrl() {
+      if (!rentUrlText || !rentUrlLink) return;
+      const values = Object.fromEntries(rentControls.map((control) => [control.id, control.value]));
+      const tokens = [
+        values.rentType,
+        values.rentPrice,
+        values.rentRooms,
+        values.rentSize,
+        values.rentFace,
+        values.rentTerm,
+        values.rentElevator,
+      ].filter(Boolean).join("");
+      const url = "https://sh.zu.ke.com/zufang/" + (values.rentArea || "xuhui") + "/" + tokens + "/?showMore=1";
+      rentUrlText.textContent = url;
+      rentUrlLink.href = url;
+    }
+
+    for (const control of rentControls) {
+      control.addEventListener("change", updateRentUrl);
+    }
+    updateRentUrl();
   </script>
 </body>
 </html>
