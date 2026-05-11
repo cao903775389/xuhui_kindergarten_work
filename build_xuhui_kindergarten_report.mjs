@@ -2041,6 +2041,329 @@ const html = `<!doctype html>
       color: var(--soft);
       padding: 24px 0 36px;
     }
+    /* AIHOT-style visual pass: light channel nav + dense right-side information stream. */
+    body {
+      background: #fff;
+      color: #18181b;
+      font-size: 14px;
+      line-height: 1.68;
+    }
+    .shell { max-width: 1180px; padding: 0 18px; }
+    .topbar {
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid #eeeeee;
+      backdrop-filter: none;
+    }
+    .topbar .shell { min-height: 52px; }
+    .brand {
+      font-size: 18px;
+      font-weight: 900;
+      color: #111;
+    }
+    .nav { gap: 4px; font-size: 13px; color: #555; }
+    .nav a {
+      padding: 5px 9px;
+      border-radius: 6px;
+      color: #555;
+    }
+    .nav a:hover {
+      background: #f5f5f5;
+      color: #111;
+    }
+    .hero {
+      background: #fff;
+      border-bottom: 1px solid #f1f1f1;
+    }
+    .hero-grid {
+      grid-template-columns: minmax(0, 1fr) 260px;
+      min-height: auto;
+      padding: 26px 18px 22px;
+      gap: 28px;
+    }
+    h1 {
+      font-size: 30px;
+      line-height: 1.18;
+      max-width: 720px;
+    }
+    .lead {
+      max-width: 780px;
+      margin-top: 10px;
+      font-size: 14px;
+      line-height: 1.72;
+      color: #555;
+    }
+    .hero-actions { margin-top: 16px; gap: 8px; }
+    .button {
+      min-height: 34px;
+      border-radius: 6px;
+      border-color: #e8e8e8;
+      box-shadow: none;
+      font-size: 13px;
+      font-weight: 700;
+      background: #fff;
+    }
+    .button.primary {
+      background: #111;
+      border-color: #111;
+      color: #fff;
+    }
+    .scoreboard {
+      border: 0;
+      border-left: 1px solid #eeeeee;
+      border-radius: 0;
+      box-shadow: none;
+      padding: 0 0 0 18px;
+    }
+    .score-row {
+      padding: 8px 0;
+      border-bottom: 1px solid #f1f1f1;
+    }
+    .score-row span { color: #777; font-size: 12px; }
+    .score-row strong { font-size: 20px; }
+    main { padding: 18px 0 42px; }
+    .app-layout {
+      grid-template-columns: 210px minmax(0, 1fr);
+      gap: 32px;
+    }
+    .module-sidebar {
+      top: 68px;
+      gap: 2px;
+      padding: 0;
+      border-right: 1px solid #eeeeee;
+      padding-right: 14px;
+    }
+    .side-module {
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      padding: 10px 10px;
+      gap: 4px;
+    }
+    .side-module:hover {
+      background: #f7f7f7;
+      box-shadow: none;
+      border-color: transparent;
+    }
+    .side-module strong {
+      font-size: 14px;
+      line-height: 1.35;
+    }
+    .side-module span {
+      font-size: 12px;
+      color: #777;
+    }
+    .side-module small {
+      color: #111;
+      font-size: 12px;
+    }
+    .module-content > section {
+      padding: 18px 0 22px;
+      border-bottom: 1px solid #eeeeee;
+    }
+    .module-content > section:first-child { padding-top: 0; }
+    .section-title {
+      display: grid;
+      grid-template-columns: 112px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+      margin: 0 0 14px;
+    }
+    .section-title h2 {
+      grid-column: 2;
+      font-size: 20px;
+      line-height: 1.32;
+      font-weight: 850;
+    }
+    .section-title::before {
+      content: "模块";
+      grid-row: 1 / span 2;
+      color: #999;
+      font-size: 13px;
+      line-height: 1.4;
+      padding-top: 3px;
+    }
+    .section-title p {
+      grid-column: 2;
+      color: #555;
+      font-size: 13px;
+      max-width: 780px;
+    }
+    .profile-grid,
+    .summary-strip,
+    .route-grid,
+    .school-decision-layout,
+    .candidate-grid,
+    .judgement-grid,
+    .logic-compact,
+    .rent-board-grid,
+    .todo-board,
+    .source-list,
+    .areas,
+    .chart-grid,
+    .rental-result-grid {
+      gap: 0;
+      border-top: 1px solid #eeeeee;
+    }
+    .profile-card,
+    .summary-card,
+    .route-card,
+    .candidate-card,
+    .school-card,
+    .judgement-card,
+    .logic-card,
+    .rent-board-card,
+    .todo-column,
+    .source-card,
+    .area-card,
+    .chart-card,
+    .rental-result-card,
+    .module-item,
+    .rent-panel,
+    .rent-builder,
+    .filter-panel,
+    .notice-card {
+      border: 0;
+      border-bottom: 1px solid #eeeeee;
+      border-radius: 0;
+      box-shadow: none;
+      background: #fff;
+    }
+    .profile-card,
+    .summary-card,
+    .route-card,
+    .candidate-card,
+    .school-card,
+    .judgement-card,
+    .logic-card,
+    .rent-board-card,
+    .todo-column,
+    .source-card,
+    .area-card,
+    .chart-card {
+      padding: 16px 0;
+    }
+    .summary-card.urgent,
+    .notice-card,
+    .risk-box,
+    .verdict {
+      background: #fff;
+      color: #18181b;
+      border-color: #eeeeee;
+    }
+    .summary-card.urgent span,
+    .notice-card p,
+    .risk-box span { color: #555; }
+    .route-card header,
+    .candidate-card header,
+    .school-card header,
+    .rent-board-card header,
+    .rental-result-body header {
+      border: 0;
+      padding-bottom: 0;
+    }
+    .route-card h3,
+    .candidate-card h3,
+    .school-card h3,
+    .rent-board-card h3,
+    .rental-result-body h3 {
+      font-size: 17px;
+      font-weight: 850;
+    }
+    .route-card p,
+    .candidate-card p,
+    .school-card p,
+    .rent-board-card p,
+    .rental-result-body p,
+    .profile-card span,
+    .summary-card span,
+    .judgement-card p,
+    .logic-card span {
+      color: #555;
+      font-size: 13px;
+    }
+    .tag,
+    .chip,
+    .data-pill,
+    .rental-meta span {
+      min-height: 22px;
+      border-radius: 6px;
+      background: #f4f4f5;
+      color: #52525b;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .tag.green,
+    .tag.blue,
+    .tag.amber,
+    .tag.red {
+      background: #f4f4f5;
+      color: #52525b;
+    }
+    .route-metrics,
+    .card-meta div {
+      border: 0;
+      border-radius: 0;
+      background: #fafafa;
+    }
+    .route-metrics b { font-size: 18px; }
+    .rent-links a,
+    .rent-board-card a,
+    .rental-result-body a {
+      border: 0;
+      border-radius: 6px;
+      background: #f4f4f5;
+      color: #111;
+      min-height: 30px;
+      font-weight: 750;
+    }
+    .module-item {
+      grid-template-columns: 112px minmax(0, 1fr) 112px;
+      padding: 16px 0;
+      gap: 18px;
+    }
+    .module-time {
+      color: #888;
+      font-size: 13px;
+    }
+    .module-body h3 { font-size: 17px; }
+    .module-body p { color: #555; font-size: 13px; }
+    .module-body .module-reason {
+      border-top: 1px solid #eeeeee;
+      margin-top: 12px;
+      padding-top: 10px;
+      color: #333;
+    }
+    .rent-builder,
+    .filter-panel {
+      padding: 16px 0;
+      margin: 0;
+    }
+    input,
+    select {
+      border-color: #e5e5e5;
+      border-radius: 6px;
+      min-height: 36px;
+      background: #fff;
+    }
+    .table-box {
+      border-radius: 0;
+      border-color: #eeeeee;
+      box-shadow: none;
+    }
+    th { background: #fafafa; color: #555; }
+    .rental-photo {
+      border-radius: 0;
+      min-height: 132px;
+      background:
+        linear-gradient(180deg, rgba(24,24,27,0.05), rgba(24,24,27,0.78)),
+        linear-gradient(135deg, #d4d4d8, #a1a1aa);
+    }
+    .bar-track { background: #f4f4f5; height: 8px; }
+    .bar-track i { background: #18181b; }
+    footer {
+      background: #fff;
+      border-top: 1px solid #eeeeee;
+    }
     @media (max-width: 1100px) {
       .app-layout { grid-template-columns: 1fr; }
       .module-sidebar { position: static; grid-template-columns: repeat(2, minmax(0, 1fr)); max-height: none; }
