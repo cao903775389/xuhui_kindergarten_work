@@ -1332,6 +1332,9 @@
       --muted-strong: #52657d;
       --link-soft: #0e7490;
       --tag-text: #475569;
+      --action-link-bg: rgba(8, 145, 178, 0.11);
+      --action-link-text: #075985;
+      --action-link-border: rgba(8, 145, 178, 0.34);
       --font-display: "Noto Serif SC", "Songti SC", serif;
       --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
       --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -1381,6 +1384,9 @@
         --muted-strong: #9fb3ca;
         --link-soft: #7dd3fc;
         --tag-text: #b8c7db;
+        --action-link-bg: rgba(34, 211, 238, 0.10);
+        --action-link-text: #bff6ff;
+        --action-link-border: rgba(34, 211, 238, 0.28);
       }
     }
     :root[data-theme="dark"] {
@@ -1427,6 +1433,9 @@
       --muted-strong: #9fb3ca;
       --link-soft: #7dd3fc;
       --tag-text: #b8c7db;
+      --action-link-bg: rgba(34, 211, 238, 0.10);
+      --action-link-text: #bff6ff;
+      --action-link-border: rgba(34, 211, 238, 0.28);
     }
     html {
       background: var(--surface-0);
@@ -1518,19 +1527,27 @@
     .side-module small {
       display: none;
     }
-    .side-module::before {
-      content: "";
-      width: 16px;
-      height: 16px;
+    .module-icon {
+      width: 18px;
+      height: 18px;
       position: absolute;
       left: 12px;
-      top: 13px;
-      border: 1.5px solid currentColor;
-      border-radius: 5px;
-      opacity: .72;
+      top: 12px;
+      color: currentColor;
+      opacity: .82;
+    }
+    .module-icon svg {
+      display: block;
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
     .side-module strong {
-      padding-left: 26px;
+      padding-left: 28px;
     }
     .side-module:hover {
       background: rgba(34, 211, 238, 0.08);
@@ -1846,10 +1863,10 @@
     .rent-board-card a,
     .rental-result-body a,
     .button {
-      border: 1px solid rgba(34, 211, 238, 0.28);
+      border: 1px solid var(--action-link-border);
       border-radius: 9px;
-      background: rgba(34, 211, 238, 0.10);
-      color: #bff6ff;
+      background: var(--action-link-bg);
+      color: var(--action-link-text);
       min-height: 31px;
       box-shadow: none;
       font-weight: 750;
@@ -1994,10 +2011,10 @@
         <span class="brand-main">90D</span>
         <span class="brand-hot">上海落地</span>
       </a>
-      <a class="side-module" href="#strategy" data-module-link="strategy"><strong>幼儿园选择策略</strong><span>家庭情况、短期/长期目标、三区择园策略、入园待办。</span><small>查看方案推荐</small></a>
-      <a class="side-module" href="#data" data-module-link="data"><strong>幼儿园数据查询</strong><span>查询基础数据源，按区、性质、等级、招生口径筛选。</span><small>查 930 条点位</small></a>
-      <a class="side-module" href="#rent-page" data-module-link="rent"><strong>租房查询</strong><span>选择贝壳筛选参数，生成实时查询入口和看房方向。</span><small>生成房源链接</small></a>
-      <a class="side-module" href="#sources-page" data-module-link="sources"><strong>数据来源参考</strong><span>查看数据集、采集来源、POI、贝壳参数和置信度说明。</span><small>追溯来源</small></a>
+      <a class="side-module" href="#strategy" data-module-link="strategy"><span class="module-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"/><path d="M4 7h11l-2 4 2 4H4"/><path d="M18 19V9"/><path d="M16 9h4"/></svg></span><strong>幼儿园选择策略</strong><span>家庭情况、短期/长期目标、三区择园策略、入园待办。</span><small>查看方案推荐</small></a>
+      <a class="side-module" href="#data" data-module-link="data"><span class="module-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5"/><path d="M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg></span><strong>幼儿园数据查询</strong><span>查询基础数据源，按区、性质、等级、招生口径筛选。</span><small>查 930 条点位</small></a>
+      <a class="side-module" href="#rent-page" data-module-link="rent"><span class="module-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg></span><strong>租房查询</strong><span>选择贝壳筛选参数，生成实时查询入口和看房方向。</span><small>生成房源链接</small></a>
+      <a class="side-module" href="#sources-page" data-module-link="sources"><span class="module-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg></span><strong>数据来源参考</strong><span>查看数据集、采集来源、POI、贝壳参数和置信度说明。</span><small>追溯来源</small></a>
       <div class="sidebar-meta">
         <span>三区数据 930 条</span>
         <span>高德坐标 930 条</span>
@@ -28469,7 +28486,7 @@
         </article>
         <article class="source-card">
           <strong>闵行幼儿园基础数据</strong>
-          <span>来源：上海本地宝《上海市闵行区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200.shtm；上海本地宝《上海市闵行区民办幼儿园名单查询》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200_2.shtm</span>
+          <span>来源：上海本地宝《2026年闵行区幼儿园名单一览（附地址+电话）》，2026-04-16：https://sh.bendibao.com/edu/2026416/305343.shtm；上海本地宝《上海市闵行区民办幼儿园名单查询》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200_2.shtm</span>
           <span>用途：补充闵行 166 个公办点位、92 个民办/中外合作点位，用于徐汇南部以外的生活平衡路线比较；闵行民办名单存在年度口径差异，报名季必须电话确认。</span>
         </article>
         <article class="source-card">
@@ -28488,13 +28505,14 @@
           <span>用途：将徐汇、闵行、浦东统一成可扩展数据层，后续新增行政区或模块时不再改页面主结构。</span>
         </article>
         <article class="source-card">
-          <strong>高德地图 POI 与距离数据</strong>
-          <span>来源：高德地图 MCP/API 查询结果，落地在 <code>data/amap_enrichment.json</code>。</span>
+          <strong><a href="https://lbs.amap.com/api/mcp-server/summary" target="_blank" rel="noopener">高德地图 POI 与距离数据</a></strong>
+          <span>来源：高德地图 MCP Server 官方文档：https://lbs.amap.com/api/mcp-server/summary；查询结果落地在 <code>data/amap_enrichment.json</code>。</span>
           <span>用途：补充 POI/地址坐标、经纬度，以及到西岸网易研发中心的直线距离；当前覆盖 930/930，覆盖率 100%，地址地理编码 281 个。</span>
+          <span>采集脚本：<code>scripts/enrich_amap_kindergartens.mjs</code>、<code>scripts/enrich_amap_distances.mjs</code>；API Key 不提交到仓库。</span>
         </article>
         <article class="source-card">
           <strong><a href="https://sh.zu.ke.com/" target="_blank" rel="noopener">贝壳上海租房结构化筛选</a></strong>
-          <span>来源：贝壳租房页面参数解析，结构化数据保存在 <code>data/beike_rental_filter_schema.json</code>。</span>
+          <span>来源：贝壳上海租房：https://sh.zu.ke.com/；租房页面参数解析结果保存在 <code>data/beike_rental_filter_schema.json</code>。</span>
           <span>用途：生成整租、0-10000 元、三居/四居+、100㎡以上、有电梯的房源链接，固定 token 为 <code>rt200600000001brp0erp10000l2l3ra4ra5ie1</code>。</span>
         </article>
         <article class="source-card">

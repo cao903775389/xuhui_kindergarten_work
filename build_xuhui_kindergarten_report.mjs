@@ -8,7 +8,7 @@ const pdfSource = "本地PDF：/Users/caofengyang/Downloads/徐汇区幼儿园�
 const publicListSource = "上海本地宝《上海市徐汇区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://m.sh.bendibao.com/edu/284155.html";
 const privateListSource = "上海本地宝《上海市徐汇区民办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284155_2.shtm";
 const planSource = "上海本地宝《2026徐汇区幼儿园招生对口地段及招生计划班级数》，2026-04-15：https://m.sh.bendibao.com/edu/305291.html";
-const minhangPublicListSource = "上海本地宝《上海市闵行区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200.shtm";
+const minhangPublicListSource = "上海本地宝《2026年闵行区幼儿园名单一览（附地址+电话）》，2026-04-16：https://sh.bendibao.com/edu/2026416/305343.shtm";
 const minhangPrivateListSource = "上海本地宝《上海市闵行区民办幼儿园名单查询》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284200_2.shtm";
 const pudongPublicListSource = "上海本地宝《浦东新区幼儿园名单+电话查询》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284151.shtm";
 const pudongPrivateListSource = "上海本地宝《浦东新区民办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284151_2.shtm";
@@ -17,6 +17,8 @@ const xuhuiOfficial2026Source = "上海市人民政府/徐汇区教育局《2026
 const xuhuiOfficial2025Source = "上海市人民政府/徐汇区教育局《2025年徐汇区幼儿园招生工作方案》，2025-04-15：https://www.shanghai.gov.cn/xhqxqjy/20250417/85cd0238c43d49d5ae72cfbe65544a0b.html";
 const minhangAdmissionPolicySource = "上观新闻/今日闵行《2026年闵行区学前教育阶段适龄幼儿入园工作各类问题解答》，2026-04-15：https://www.shobserver.cn/sgh/detail?id=1735182";
 const pudongAdmissionPolicySource = "浦东新区人民政府《浦东新区教育局关于2026年本区学前教育阶段适龄幼儿入园工作的实施方案》，2026-04-15：https://www.pudong.gov.cn/zwgk/xqjy-jyjzdgz/2026/105/354450.html";
+const amapMcpSource = "高德地图 MCP Server 官方文档：https://lbs.amap.com/api/mcp-server/summary";
+const beikeRentalSource = "贝壳上海租房：https://sh.zu.ke.com/";
 
 const districtKindergartenSourceDir = path.join(process.cwd(), "data", "district_kindergarten_sources");
 const readJsonFile = async (filePath, fallback) => {
@@ -1099,6 +1101,13 @@ const renderAdmissionHistoryCards = () => admissionHistoryItems.map((item) => `
           <a href="${escapeHtml(item.source.match(/https?:\/\/\S+/)?.[0] || "#")}" target="_blank" rel="noopener">查看来源</a>
         </article>
 `).join("");
+
+const sidebarIcons = {
+  strategy: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"/><path d="M4 7h11l-2 4 2 4H4"/><path d="M18 19V9"/><path d="M16 9h4"/></svg>`,
+  data: `<svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5"/><path d="M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>`,
+  rent: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>`,
+  sources: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>`,
+};
 
 const renderExternalCandidateCards = (district) => externalCampusItems
   .filter((item) => item.district === district)
@@ -2450,6 +2459,9 @@ const html = `<!doctype html>
       --muted-strong: #52657d;
       --link-soft: #0e7490;
       --tag-text: #475569;
+      --action-link-bg: rgba(8, 145, 178, 0.11);
+      --action-link-text: #075985;
+      --action-link-border: rgba(8, 145, 178, 0.34);
       --font-display: "Noto Serif SC", "Songti SC", serif;
       --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
       --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -2499,6 +2511,9 @@ const html = `<!doctype html>
         --muted-strong: #9fb3ca;
         --link-soft: #7dd3fc;
         --tag-text: #b8c7db;
+        --action-link-bg: rgba(34, 211, 238, 0.10);
+        --action-link-text: #bff6ff;
+        --action-link-border: rgba(34, 211, 238, 0.28);
       }
     }
     :root[data-theme="dark"] {
@@ -2545,6 +2560,9 @@ const html = `<!doctype html>
       --muted-strong: #9fb3ca;
       --link-soft: #7dd3fc;
       --tag-text: #b8c7db;
+      --action-link-bg: rgba(34, 211, 238, 0.10);
+      --action-link-text: #bff6ff;
+      --action-link-border: rgba(34, 211, 238, 0.28);
     }
     html {
       background: var(--surface-0);
@@ -2636,19 +2654,27 @@ const html = `<!doctype html>
     .side-module small {
       display: none;
     }
-    .side-module::before {
-      content: "";
-      width: 16px;
-      height: 16px;
+    .module-icon {
+      width: 18px;
+      height: 18px;
       position: absolute;
       left: 12px;
-      top: 13px;
-      border: 1.5px solid currentColor;
-      border-radius: 5px;
-      opacity: .72;
+      top: 12px;
+      color: currentColor;
+      opacity: .82;
+    }
+    .module-icon svg {
+      display: block;
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
     .side-module strong {
-      padding-left: 26px;
+      padding-left: 28px;
     }
     .side-module:hover {
       background: rgba(34, 211, 238, 0.08);
@@ -2964,10 +2990,10 @@ const html = `<!doctype html>
     .rent-board-card a,
     .rental-result-body a,
     .button {
-      border: 1px solid rgba(34, 211, 238, 0.28);
+      border: 1px solid var(--action-link-border);
       border-radius: 9px;
-      background: rgba(34, 211, 238, 0.10);
-      color: #bff6ff;
+      background: var(--action-link-bg);
+      color: var(--action-link-text);
       min-height: 31px;
       box-shadow: none;
       font-weight: 750;
@@ -3112,10 +3138,10 @@ const html = `<!doctype html>
         <span class="brand-main">90D</span>
         <span class="brand-hot">上海落地</span>
       </a>
-      <a class="side-module" href="#strategy" data-module-link="strategy"><strong>幼儿园选择策略</strong><span>家庭情况、短期/长期目标、三区择园策略、入园待办。</span><small>查看方案推荐</small></a>
-      <a class="side-module" href="#data" data-module-link="data"><strong>幼儿园数据查询</strong><span>查询基础数据源，按区、性质、等级、招生口径筛选。</span><small>查 930 条点位</small></a>
-      <a class="side-module" href="#rent-page" data-module-link="rent"><strong>租房查询</strong><span>选择贝壳筛选参数，生成实时查询入口和看房方向。</span><small>生成房源链接</small></a>
-      <a class="side-module" href="#sources-page" data-module-link="sources"><strong>数据来源参考</strong><span>查看数据集、采集来源、POI、贝壳参数和置信度说明。</span><small>追溯来源</small></a>
+      <a class="side-module" href="#strategy" data-module-link="strategy"><span class="module-icon">${sidebarIcons.strategy}</span><strong>幼儿园选择策略</strong><span>家庭情况、短期/长期目标、三区择园策略、入园待办。</span><small>查看方案推荐</small></a>
+      <a class="side-module" href="#data" data-module-link="data"><span class="module-icon">${sidebarIcons.data}</span><strong>幼儿园数据查询</strong><span>查询基础数据源，按区、性质、等级、招生口径筛选。</span><small>查 930 条点位</small></a>
+      <a class="side-module" href="#rent-page" data-module-link="rent"><span class="module-icon">${sidebarIcons.rent}</span><strong>租房查询</strong><span>选择贝壳筛选参数，生成实时查询入口和看房方向。</span><small>生成房源链接</small></a>
+      <a class="side-module" href="#sources-page" data-module-link="sources"><span class="module-icon">${sidebarIcons.sources}</span><strong>数据来源参考</strong><span>查看数据集、采集来源、POI、贝壳参数和置信度说明。</span><small>追溯来源</small></a>
       <div class="sidebar-meta">
         <span>三区数据 ${campusItems.length} 条</span>
         <span>高德坐标 ${amapMatchedCount} 条</span>
@@ -3706,13 +3732,14 @@ ${renderBarChart(areaCapacityStats)}
           <span>用途：将徐汇、闵行、浦东统一成可扩展数据层，后续新增行政区或模块时不再改页面主结构。</span>
         </article>
         <article class="source-card">
-          <strong>高德地图 POI 与距离数据</strong>
-          <span>来源：高德地图 MCP/API 查询结果，落地在 <code>data/amap_enrichment.json</code>。</span>
+          <strong><a href="https://lbs.amap.com/api/mcp-server/summary" target="_blank" rel="noopener">高德地图 POI 与距离数据</a></strong>
+          <span>来源：${escapeHtml(amapMcpSource)}；查询结果落地在 <code>data/amap_enrichment.json</code>。</span>
           <span>用途：补充 POI/地址坐标、经纬度，以及到${escapeHtml(officeLocation.name)}的直线距离；当前覆盖 ${amapMatchedCount}/${campusItems.length}，覆盖率 ${amapMatchRate}，地址地理编码 ${amapAddressGeocodeCount} 个。</span>
+          <span>采集脚本：<code>scripts/enrich_amap_kindergartens.mjs</code>、<code>scripts/enrich_amap_distances.mjs</code>；API Key 不提交到仓库。</span>
         </article>
         <article class="source-card">
           <strong><a href="https://sh.zu.ke.com/" target="_blank" rel="noopener">贝壳上海租房结构化筛选</a></strong>
-          <span>来源：贝壳租房页面参数解析，结构化数据保存在 <code>data/beike_rental_filter_schema.json</code>。</span>
+          <span>来源：${escapeHtml(beikeRentalSource)}；租房页面参数解析结果保存在 <code>data/beike_rental_filter_schema.json</code>。</span>
           <span>用途：生成整租、0-10000 元、三居/四居+、100㎡以上、有电梯的房源链接，固定 token 为 <code>${beikeDefaultTokens.join("")}</code>。</span>
         </article>
         <article class="source-card">
