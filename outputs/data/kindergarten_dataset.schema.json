@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0",
+  "description": "上海家庭落地方案幼儿园基础数据标准。后续新增行政区或模块时，优先按此结构补充数据。",
+  "primaryKey": ["district", "name", "campus", "address"],
+  "fields": {
+    "datasetVersion": "数据集版本，使用生成日期或人工校验版本。",
+    "district": "行政区，例如徐汇、闵行、浦东。",
+    "area": "街镇、片区或租房联动板块。",
+    "name": "幼儿园名称。",
+    "campus": "园区、分园或本部名称。",
+    "nature": "办园性质，例如公办、民办、中外合作。",
+    "category": "细分类型，例如公办、普惠民办、民办、中外合作。",
+    "level": "办园等级或示范园/一级/二级/三级；缺失时写待核验。",
+    "address": "公开名单地址。",
+    "phone": "公开名单联系电话；多个号码保留原始文本。",
+    "admission": {
+      "type": "招生类型或策略口径，例如固定对口、区域自主、政策待核验、民办招生。",
+      "toddlerPlan": "托班计划；没有公开数据时写待电话确认。",
+      "smallClassPlan": "小班计划；没有公开数据时写待电话确认。",
+      "scope": "对口居委、招生范围或需电话确认的招生口径。",
+      "toddlerMode": "托班模式，例如明确托班、混龄式招生、待确认。"
+    },
+    "geo": {
+      "amapPoiName": "高德 POI 名称；地址编码时写高德地址坐标（非POI精确匹配）。",
+      "amapPoiAddress": "高德 POI 或地址编码返回地址。",
+      "amapLocation": "经纬度，lng,lat。",
+      "officeDistance": "到办公点的高德直线距离文本。",
+      "mapUrl": "高德搜索链接。"
+    },
+    "rental": {
+      "beikeBoardSlug": "贝壳一级区或二级商圈 slug，用于生成结构化租房入口。"
+    },
+    "quality": {
+      "confidence": "数据置信度，A/B/C。",
+      "needsConfirm": "是否必须电话或官方渠道复核。",
+      "note": "数据限制、年度差异或核验提醒。"
+    },
+    "source": "主要数据来源说明和链接。"
+  }
+}

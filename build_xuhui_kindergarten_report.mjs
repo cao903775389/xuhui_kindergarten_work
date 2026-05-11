@@ -18,134 +18,22 @@ const xuhuiOfficial2025Source = "上海市人民政府/徐汇区教育局《2025
 const minhangAdmissionPolicySource = "上观新闻/今日闵行《2026年闵行区学前教育阶段适龄幼儿入园工作各类问题解答》，2026-04-15：https://www.shobserver.cn/sgh/detail?id=1735182";
 const pudongAdmissionPolicySource = "浦东新区人民政府《浦东新区教育局关于2026年本区学前教育阶段适龄幼儿入园工作的实施方案》，2026-04-15：https://www.pudong.gov.cn/zwgk/xqjy-jyjzdgz/2026/105/354450.html";
 
-const schools = [
-  { id: 1, name: "襄阳南路第一幼儿园", area: "衡复/湖南", toddler: "3", small: 4, committee: "慎成里、肇嘉浜、陕西、建新、息村、桃源村、嘉善、永康、张家弄、复中" },
-  { id: 2, name: "五原路幼儿园", area: "衡复/湖南", toddler: "3", small: 4, committee: "上海新村、东湖、金波、延庆、陕新、新乐、复襄、淮海、安福、春华、淮中、建岳、太原、永太、永嘉新村、复永、兴武、华康、武康" },
-  { id: 3, name: "汇星幼儿园", area: "徐家汇/天平", toddler: "1", small: 3, committee: "天平、高安、康平、吴兴、宛平、余庆、广元、安亭、徐汇新村、张家浜肇谨、零陵、科汇、启明、沈马、王家堂、南赵巷、殷家角、汇翠、名园、德昌" },
-  { id: 4, name: "乐山幼儿园", area: "徐家汇/交大", toddler: "1", small: 3, committee: "乐山一村、乐山二三村、乐山四五村、乐山六七村、乐山八九村、文定、汇站、交大、豪庭" },
-  { id: 5, name: "汇家幼儿园", area: "徐家汇/虹桥路", toddler: "1", small: 3, committee: "番禺、南丹、柿子湾、潘家宅、陈家宅、虹二、虹交、西塘、东塘" },
-  { id: 6, name: "枫林幼儿园", area: "枫林/斜土", toddler: "1", small: 2, committee: "日新、日二、日五、日六第一、日六第二、大三、大四、康巨、茶陵、景泰、恒益、西木南、西木北、江南" },
-  { id: 7, name: "复旦大学附属徐汇实验幼儿园", area: "枫林/斜土", toddler: "1", small: 4, committee: "平江、肇一、上影、日七、大五、医清、四季园、肇清、医学院" },
-  { id: 8, name: "东安一村幼儿园", area: "枫林/斜土", toddler: "1", small: 2, committee: "东安一村北、东安一村南、安康、振兴、张东、爱华、汇园、东安二村、沈家里、东安四村、谨斜、东安苑、枫林新村、南康" },
-  { id: 9, name: "龙山幼儿园", area: "枫林/宛南", toddler: "1", small: 4, committee: "天一二、天三、天四、宛南一二、宛三、宛四、宛五、宛六、庄家宅、黄家宅、华容、龙山一、龙山二、徐汇苑" },
-  { id: 10, name: "龙华幼儿园", area: "龙华/西岸", toddler: "2", small: 5, committee: "上缝、强生、东蔡、狮城、佳友、华富、宏润花园、漕溪四村单号、丰谷、云锦、机场、尚海湾、盛大、民苑、丰谷三、俞一、俞二、俞三、龙华新村、周家湾、汇龙、红馨、百汇园" },
-  { id: 11, name: "汇霖幼儿园", area: "田林/虹桥", toddler: "1", small: 4, committee: "古宜、长春、吴中、桂林苑、虹南、虹星、怡桂苑、钦北、华悦家园、鑫耀" },
-  { id: 12, name: "阳光幼儿园", area: "龙华/滨江", toddler: "1", small: 3, committee: "龙南三四、龙南五、龙南六、龙南七、滨江、樟树苑、东泉、张家园" },
-  { id: 13, name: "漕溪新村幼儿园", area: "漕溪/龙漕", toddler: "1", small: 3, committee: "金谷园、南一村一、南一村二、漕溪四村双号、凯翔、龙漕、嘉萱苑、漕东" },
-  { id: 14, name: "望德幼儿园", area: "康健/南站", toddler: "4", small: 8, committee: "康健路、习勤、薛家宅、科苑、九弄、中海、梓树园、月河、宾阳、馨汇南苑、公园道" },
-  { id: 15, name: "瑞德幼儿园", area: "长桥/汇成", toddler: "2", small: 3, committee: "汇成一村、汇成二村、汇成三村、汇成四村、华东二、楼园、金牛、挹翠苑、罗城、光华、汇澜苑、金塘" },
-  { id: 16, name: "益思幼儿园", area: "田林/漕河泾", toddler: "1", small: 2, committee: "田林一二村、田林五六七村、田林八九十村、田林十三村、田林十一村、千鹤三、爱建园、万科华尔兹、新苑一二、新苑三四、新苑五六七、田林十四村第一、田林十四村第二" },
-  { id: 17, name: "樱花园幼儿园", area: "康健/桂林", toddler: "2", small: 3, committee: "月季百藤、樱花园、茶花桂花、丁香迎春、玉兰园、寿益坊（海上华庭）、紫鹃园、紫薇园（牡丹园、玫瑰园）、金桂苑、紫荆党校" },
-  { id: 18, name: "长海幼儿园", area: "康健/桂林", toddler: "混龄式招生", small: 2, committee: "长顺海、长虹坊、长青坊、长丰坊、长兴坊、师大新村、桂康" },
-  { id: 19, name: "康沁幼儿园", area: "康健/桂林", toddler: "混龄式招生", small: 2, committee: "寿昌山、寿祥坊、寿益坊（寿益坊、桂林西街101弄）、康乐、桂二、冠生园、康宁馨、康强海（康强坊）" },
-  { id: 20, name: "长桥第一幼儿园", area: "长桥", toddler: "混龄式招生", small: 2, committee: "长桥一村、长桥五村（书香逸居、长桥五村）、闵朱、舒城" },
-  { id: 21, name: "长桥第二幼儿园", area: "长桥/凌云", toddler: "2", small: 4, committee: "长桥新村一、长桥新二村、长桥七村、兴荣苑、和平、龙州、梅陇十一第一、梅陇十一第二、陇南、闵秀" },
-  { id: 22, name: "长桥第三幼儿园", area: "长桥", toddler: "2", small: 5, committee: "长桥三村一、长桥三村二（长桥三村东区）、长桥八村、平福、长桥四村" },
-  { id: 23, name: "园南幼儿园", area: "长桥/园南", toddler: "1", small: 3, committee: "园南一村、园南二村、园南三村、汇成五村、华东一" },
-  { id: 24, name: "梅陇幼儿园", area: "凌云/梅陇", toddler: "2", small: 5, committee: "梅三、梅六、梅苑一、梅苑二、凌云、梅四、理工一、理工二、华理苑、书香苑、家乐苑、阳光（阳光新景）" },
-  { id: 25, name: "梅陇第二幼儿园", area: "凌云/梅陇", toddler: "混龄式招生", small: 2, committee: "梅陇五村、梅陇七村、梅陇八村、梅陇十村、梅陇九村、阳光（阳光绿园）、长陇苑" },
-  { id: 26, name: "华建幼儿园", area: "华泾", toddler: "1", small: 3, committee: "华建、建华村、北杨村" },
-  { id: 27, name: "位育幼儿园", area: "华泾", toddler: "2", small: 2, committee: "华泾四村、华泾五村、漓江山水、联合居委" },
-  { id: 28, name: "果果幼儿园", area: "华泾", toddler: "1", small: 4, committee: "华欣家园、华发、馨宁、大桥、明丰新纪苑、名苑、华臻" },
-  { id: 29, name: "星辰幼儿园", area: "华泾/罗秀", toddler: "1", small: 2, committee: "徐汇新城、罗秀三村、华滨家园、华沁家园、罗秀、罗秀二村" },
-  { id: 30, name: "徐汇实验幼儿园", area: "华泾/罗秀", toddler: "1", small: 2, committee: "中海瀛台、百龙、港口" },
-  { id: 31, name: "印象幼儿园", area: "华泾", toddler: "1", small: 2, committee: "印象、华阳、沙家浜" },
-  { id: 32, name: "科技逸夫幼儿园", area: "南站/石龙", toddler: "1", small: 1, committee: "正南、东荡、南站居委（临）" },
-  { id: 33, name: "盛华幼儿园", area: "华泾", toddler: "1", small: 3, committee: "盛华、华泾绿苑、光华绿苑" },
-  { id: 34, name: "艺树幼儿园", area: "徐家汇/田林", toddler: "2", small: 3, committee: "锦馨苑、千鹤第六、小安桥、华鼎广场、千鹤五、尚汇豪庭、千鹤一、千鹤二；另向徐家汇街道、田林街道扩招" },
-  { id: 35, name: "桂平幼儿园", area: "漕河泾/虹梅", toddler: "2", small: 1, committee: "联莘、欣园" },
-  { id: 36, name: "田林第六幼儿园", area: "田林/虹梅", toddler: "3", small: 5, committee: "田林十二村、田林三四村、古一、古二、古三、古四、东兰、航天新苑、永兆、漕河泾开发园区（临）；另向田林街道、虹梅路街道扩招" },
-  { id: 37, name: "紫薇实验幼儿园", area: "康健/漕河泾", toddler: "5", small: 6, committee: "紫薇园（桂平路123弄）、康强海（海上名邸）；区域内自主招生" },
-  { id: 38, name: "上海幼儿园", area: "长桥/凌云", toddler: "2", small: 5, committee: "体育花苑、长桥五村（上中路100弄）、长桥三村二（尚海悦庭）；另向凌云路街道、长桥街道、华泾镇扩招" },
-  { id: 39, name: "乌鲁木齐南路幼儿园", area: "衡复/湖南", toddler: "3", small: 4, committee: "区域内自主招生" },
-  { id: 40, name: "科技幼儿园", area: "徐家汇/田林", toddler: "3", small: 9, committee: "区域内自主招生" },
-  { id: 41, name: "宛南实验幼儿园", area: "龙华/滨江", toddler: "6", small: 6, committee: "区域内自主招生" },
-  { id: 42, name: "机关建国幼儿园", area: "衡复/湖南/滨江", toddler: "2", small: 6, committee: "区域内自主招生" },
-];
+const districtKindergartenSourceDir = path.join(process.cwd(), "data", "district_kindergarten_sources");
+const readJsonFile = async (filePath, fallback) => {
+  try {
+    return JSON.parse(await fs.readFile(filePath, "utf8"));
+  } catch {
+    return fallback;
+  }
+};
+const xuhuiDistrictSource = await readJsonFile(path.join(districtKindergartenSourceDir, "xuhui.json"), { district: "徐汇", publicSchools: [], publicCampuses: [], publicCampusPhones: [], privateKindergartens: [] });
+const minhangDistrictSource = await readJsonFile(path.join(districtKindergartenSourceDir, "minhang.json"), { district: "闵行", publicCampuses: [], privateKindergartens: [] });
+const pudongDistrictSource = await readJsonFile(path.join(districtKindergartenSourceDir, "pudong.json"), { district: "浦东", publicCampuses: [], privateKindergartens: [] });
+const districtKindergartenSources = [xuhuiDistrictSource, minhangDistrictSource, pudongDistrictSource];
 
-const campusRows = [
-  [1, "复中园", "复兴中路1260弄2号", "A", ""],
-  [1, "南园", "襄阳南路317号", "A", ""],
-  [1, "陕南园", "陕西南路540号", "A", ""],
-  [1, "北园", "襄阳南路207号", "A", ""],
-  [2, "永嘉园", "永嘉路420号", "A", ""],
-  [2, "武康园", "五原路400号", "A", ""],
-  [2, "兴国园", "武康路280弄24号", "A", ""],
-  [3, "南园", "宛平南路19弄3号", "A", ""],
-  [3, "北园", "康平路200号", "B", "2024公办名单写康平路200号；2024招生简章/部分旧资料写华山路1815号，建议电话确认当前小班实际园区。"],
-  [4, "本部", "乐山路18号", "A", ""],
-  [5, "北园", "番禺路800弄24号", "A", ""],
-  [5, "南园", "番禺路1188号", "A", ""],
-  [6, "本部", "小木桥路440弄30号", "A", ""],
-  [7, "托小班部", "平江路17号", "B", "2024年7月由原平江路幼儿园与原复旦大学医学院幼儿园合并组建；2025/公开资料显示新小班启用平江路32号，需确认2026实际安排。"],
-  [7, "中大班部/新小班候选", "平江路32号", "B", "公开资料显示办学地址为平江路32号、17号；原复旦医学院幼儿园东安路50弄10号为历史/合并相关地址。"],
-  [8, "零陵园", "零陵路250弄33号", "A", ""],
-  [8, "东安园", "东安一村39号", "A", "公办名单列出东安一村39号及零陵路250弄33号。"],
-  [9, "一分园", "宛南四村16号", "A", ""],
-  [9, "二分园", "中山南二路999弄5号", "A", ""],
-  [9, "本部", "天钥新村90号", "A", ""],
-  [10, "丰谷园", "丰谷路205弄34号", "A", ""],
-  [10, "龙恒园", "龙华西路31弄15号", "A", ""],
-  [10, "龙华园", "龙华西路285弄14号", "A", ""],
-  [11, "吴中园", "吴中东路500弄67号", "A", ""],
-  [11, "钦州园", "钦州北路898号", "A", ""],
-  [12, "中大班部", "天钥桥南路1249弄11号", "A", ""],
-  [12, "小班部", "龙水南路龙南三村7号", "A", ""],
-  [13, "中大班部", "龙漕路139号", "A", ""],
-  [13, "小班部", "漕东路193号", "A", ""],
-  [14, "冠生园", "冠生园路28号", "A", ""],
-  [14, "南宁园", "南宁路636号", "A", ""],
-  [15, "楼园园", "老沪闵路706弄37号", "A", ""],
-  [15, "金塘园", "老沪闵路333弄70号", "A", ""],
-  [16, "东园", "田林九村6号", "A", ""],
-  [16, "西园", "宜山路701弄53号", "A", ""],
-  [17, "南园", "百花街398号", "A", ""],
-  [17, "北园", "虹漕南路杨家桥88号", "A", ""],
-  [18, "本部", "桂林西街15弄2号", "A", ""],
-  [19, "本部", "桂林西街151弄20号甲", "A", ""],
-  [20, "本部", "长桥一村56号", "A", ""],
-  [21, "凌云园", "梅陇十一村97号", "A", ""],
-  [21, "长桥园", "长桥二村34号", "A", ""],
-  [22, "长桥园", "长桥三村124号", "A", ""],
-  [22, "平福园", "上中路483弄32号", "A", ""],
-  [23, "本部", "龙川北路园南一村27号", "A", ""],
-  [24, "嘉川园", "梅陇四村56号甲", "A", ""],
-  [24, "梅陇园", "梅陇六村65号", "A", ""],
-  [25, "本部", "梅陇五村54号", "A", ""],
-  [26, "本部", "老沪闵路1300号", "A", ""],
-  [27, "本部", "建华路102号", "A", ""],
-  [28, "华欣园", "龙吴路2422号", "A", ""],
-  [28, "华发园", "华发路100弄22号", "A", ""],
-  [29, "本部", "罗秀路11号", "A", ""],
-  [30, "本部", "龙瑞路135号", "A", ""],
-  [31, "本部", "望月路882号", "A", ""],
-  [32, "本部", "石龙路818弄8号", "A", ""],
-  [33, "本部", "望月路401号", "A", ""],
-  [34, "本部", "古井路160号", "A", ""],
-  [35, "本部", "桂平路260弄14号", "A", ""],
-  [36, "本部", "田林十二村40号", "A", ""],
-  [36, "贝贝分园", "田林四村18号", "A", ""],
-  [36, "东兰分园", "古美路1107弄65号", "A", ""],
-  [37, "桂平园", "桂平路123弄23号", "A", ""],
-  [37, "浦北园", "浦北路173号", "A", ""],
-  [37, "全州园", "宜州路26号", "A", ""],
-  [38, "凌云园", "上中西路378号", "A", ""],
-  [38, "冠军园", "老沪闵路729弄41号乙", "A", ""],
-  [38, "上中园", "上中路402号", "A", ""],
-  [39, "本部", "乌鲁木齐南路14号", "A", ""],
-  [39, "境内部", "淮海路1788号", "A", ""],
-  [39, "境外部", "淮海中路1480号", "A", ""],
-  [40, "宜山园1部", "宜山路655弄1号", "A", ""],
-  [40, "嘉陵园", "嘉陵路28号", "A", ""],
-  [40, "文定园", "文定路476号", "A", ""],
-  [40, "宜山园10部", "宜山路655弄10号", "A", ""],
-  [41, "瑞宁部", "瑞宁路816号", "A", ""],
-  [41, "滨江部", "瑞宁路851号", "A", ""],
-  [41, "大木桥部", "大木桥路323号", "A", ""],
-  [42, "建国园", "建国西路570号", "A", ""],
-  [42, "安亭园", "安亭路112号", "A", ""],
-  [42, "滨江园", "云锦路183弄30号", "A", ""],
-];
+const schools = xuhuiDistrictSource.publicSchools || [];
+
+const campusRows = (xuhuiDistrictSource.publicCampuses || []).map((item) => [item.schoolId, item.campus, item.address, item.confidence, item.note]);
 
 const officeLocation = {
   name: "西岸网易研发中心",
@@ -176,14 +64,6 @@ try {
   districtLandingProfiles = JSON.parse(await fs.readFile(districtLandingProfilesPath, "utf8"));
 } catch {
   districtLandingProfiles = { profiles: [] };
-}
-
-const crossDistrictKindergartensPath = path.join(process.cwd(), "data", "cross_district_kindergartens.json");
-let crossDistrictKindergartens = { rows: [], counts: {} };
-try {
-  crossDistrictKindergartens = JSON.parse(await fs.readFile(crossDistrictKindergartensPath, "utf8"));
-} catch {
-  crossDistrictKindergartens = { rows: [], counts: {} };
 }
 
 const amapItemKey = ({ nature, name, campus, address }) => [nature, name, campus, address].join("|");
@@ -237,141 +117,22 @@ const publicSchoolLevelById = new Map([
   [42, "示范园"],
 ]);
 
-const publicCampusPhoneByKey = new Map([
-  ["1|复中园", "021-64335881"],
-  ["1|南园", "021-64335881"],
-  ["1|陕南园", "021-64335881"],
-  ["1|北园", "64335881"],
-  ["2|永嘉园", "64759122"],
-  ["2|武康园", "54035366"],
-  ["2|兴国园", "64360627"],
-  ["3|南园", "021-64689142"],
-  ["3|北园", "021-64689142"],
-  ["4|本部", "64072867"],
-  ["5|北园", "62837361"],
-  ["5|南园", "64860098"],
-  ["6|本部", "64035845"],
-  ["7|托小班部", "64034223"],
-  ["7|中大班部/新小班候选", "64034223"],
-  ["8|零陵园", "64041758"],
-  ["8|东安园", "64175625"],
-  ["9|一分园", "64383244"],
-  ["9|二分园", "64869504"],
-  ["9|本部", "64383295"],
-  ["10|丰谷园", "64280780"],
-  ["10|龙恒园", "64576761"],
-  ["10|龙华园", "64571589"],
-  ["11|吴中园", "62196848"],
-  ["11|钦州园", "64668657"],
-  ["12|中大班部", "54095768"],
-  ["12|小班部", "021-34604160"],
-  ["13|中大班部", "64823976"],
-  ["13|小班部", "34616320"],
-  ["14|冠生园", "64751426"],
-  ["14|南宁园", "64751426"],
-  ["15|楼园园", "021-64234155"],
-  ["15|金塘园", "54963078"],
-  ["16|东园", "64361935"],
-  ["16|西园", "64361935"],
-  ["17|南园", "021-54181491"],
-  ["17|北园", "54362050"],
-  ["18|本部", "54208285"],
-  ["19|本部", "54363105"],
-  ["20|本部", "64100149"],
-  ["21|凌云园", "34318987"],
-  ["21|长桥园", "64102557"],
-  ["22|长桥园", "64102397"],
-  ["22|平福园", "64102397"],
-  ["23|本部", "64763190"],
-  ["24|嘉川园", "64100015"],
-  ["24|梅陇园", "64100015"],
-  ["25|本部", "64775092"],
-  ["26|本部", "2164548743"],
-  ["27|本部", "64960505"],
-  ["28|华欣园", "54829893"],
-  ["28|华发园", "54829893"],
-  ["29|本部", "54010448"],
-  ["30|本部", "54045192"],
-  ["31|本部", "64960096"],
-  ["32|本部", "64400295"],
-  ["33|本部", "021-54852338"],
-  ["34|本部", "64388770"],
-  ["35|本部", "64031921"],
-  ["36|本部", "64366380"],
-  ["36|贝贝分园", "64367248"],
-  ["36|东兰分园", "64707260"],
-  ["37|桂平园", "54217515"],
-  ["37|浦北园", "64830788"],
-  ["37|全州园", "54500996"],
-  ["38|凌云园", "64106663 / 64100564 / 64250961"],
-  ["38|冠军园", "64250961"],
-  ["38|上中园", "64106663 / 64100564 / 64250961"],
-  ["39|本部", "64319939"],
-  ["39|境内部", "64319939"],
-  ["39|境外部", "64330160"],
-  ["40|宜山园1部", "64854450 / 64362975"],
-  ["40|嘉陵园", "54363003"],
-  ["40|文定园", "64221181"],
-  ["40|宜山园10部", "64854450 / 64362975"],
-  ["41|瑞宁部", "64363606"],
-  ["41|滨江部", "64161261"],
-  ["41|大木桥部", "64168714"],
-  ["42|建国园", "64372841"],
-  ["42|安亭园", "64333332"],
-  ["42|滨江园", "54252106"],
-]);
+const publicCampusPhoneByKey = new Map((xuhuiDistrictSource.publicCampusPhones || []).map((item) => [`${item.schoolId}|${item.campus}`, item.phone]));
 
-const privateCampusRows = [
-  { name: "杜鹃园幼稚园", level: "一级", category: "民办（类型待核验）", address: "桂林西街9弄57号", phone: "021-54202188", source: publicListSource },
-  { name: "胡姬港湾幼儿园", level: "一级", category: "民办（类型待核验）", address: "丰谷路205弄35号", phone: "64560614", source: publicListSource },
-  { name: "汇城苑幼稚园", level: "一级", category: "普惠民办", address: "百色路汇城五村75号", phone: "64235119", source: publicListSource },
-  { name: "维亚幼儿园", level: "二级", address: "华亭路71弄1号", phone: "54036901" },
-  { name: "四季方馨幼儿园", level: "二级", address: "五原路112号", phone: "021-54036603" },
-  { name: "滨江幼儿园", level: "二级", address: "云锦路80弄10号", phone: "64380700" },
-  { name: "汇宝幼儿园", level: "二级", address: "宛平南路592号", phone: "64690445" },
-  { name: "蒙世学堂幼儿园", level: "二级", address: "斜土路2421号", phone: "021-64686261*8103" },
-  { name: "樱花园幼稚园", level: "二级", address: "百花街380号", phone: "54185106" },
-  { name: "新宜幼稚园", level: "二级", address: "古宜路170弄7号", phone: "64684874" },
-  { name: "蓓蕾幼稚园", campus: "本部", level: "二级", address: "蒲江塘路50号玉兰花苑6幢", phone: "64647491" },
-  { name: "蓓蕾幼稚园", campus: "分园", level: "二级", address: "天钥桥路380弄11号", phone: "64647491" },
-  { name: "淇莲幼儿园", level: "二级", address: "浦北路50号", phone: "54669909" },
-  { name: "田林街道中心幼儿园", level: "二级", address: "田林六村10号", phone: "64705223" },
-  { name: "胡姬港湾新汇幼儿园", level: "二级", address: "浦北路21弄42号", phone: "54669810" },
-  { name: "小神童幼儿园", level: "二级", category: "普惠民办", address: "龙吴路988弄25号", phone: "021-54360296" },
-  { name: "安琪曈幼稚园", level: "二级", address: "衡山路9弄2号", phone: "64665309" },
-  { name: "鲁浦幼儿园", campus: "本部", level: "二级", address: "宛南一村23号", phone: "64384206" },
-  { name: "鲁浦幼儿园", campus: "分园", level: "二级", address: "宛南五村1号", phone: "64384206" },
-  { name: "康文云锦幼儿园", level: "二级", address: "龙兰路398号", phone: "64282682" },
-  { name: "爱文幼儿园", level: "二级", address: "古羊路160号1幢", phone: "021-62090135" },
-  { name: "童稻幼儿园", level: "二级", address: "淮海西路365弄2号楼、3号楼", phone: "52668270" },
-  { name: "嘉宝幼儿园", level: "二级", address: "吴兴路75号", phone: "64373773" },
-  { name: "金贝贝幼儿园", level: "二级", address: "龙吟路300号", phone: "54820000" },
-  { name: "世纪昂立幼儿园", level: "二级", address: "龙山新村115号（近零陵路）", phone: "54890979 / 64382277" },
-  { name: "爱菊幼儿园", level: "二级", address: "复兴西路70号", phone: "64043162" },
-  { name: "培蕾幼稚园", campus: "本部", level: "二级", address: "梅陇三村49号", phone: "64768480" },
-  { name: "培蕾幼稚园", campus: "分园", level: "二级", address: "梅陇六村41号", phone: "64767077" },
-  { name: "枫叶交响幼儿园", level: "二级", address: "太原路87号", phone: "64730053" },
-  { name: "泰宁田林幼儿园", level: "二级", address: "田林十一村36号", phone: "64755118-804" },
-  { name: "田林东方幼儿园", level: "二级", address: "宜山路田林十四村27号", phone: "021-64085912" },
-  { name: "澳宝幼儿园", level: "二级", address: "永嘉路356弄31号", phone: "64720200" },
-  { name: "吉的堡小蜻蜓幼儿园", level: "二级", address: "虹梅路1035弄30号", phone: "64368108" },
-  { name: "东泉大地幼儿园", level: "二级", address: "东泉路65弄9号", phone: "54084130" },
-  { name: "吉的堡新徐汇幼儿园", level: "二级", address: "小木桥路101弄20号", phone: "021-54245100" },
-  { name: "爱悠小红花幼儿园", level: "二级", address: "梅陇路130号1幢、2幢", phone: "021-54333289" },
-  { name: "中山幼儿园", level: "二级", address: "桃江路42号", phone: "021-33565515" },
-  { name: "创意幼儿园", level: "二级", address: "柳州路田林十村6号", phone: "64828813 / 64820881" },
-  { name: "牛牛幼稚园", level: "二级", address: "罗城路700弄95号", phone: "54115988" },
-  { name: "领幼幼儿园", level: "二级", address: "天钥桥路1057弄3号", phone: "64458520" },
-  { name: "漕河泾新汇幼儿园", level: "二级", address: "漕泾一村30号", phone: "64364348" },
-  { name: "凯琴数码幼儿园", level: "二级", category: "普惠民办", address: "华泾路995号", phone: "54822626" },
-  { name: "陇龙幼稚园", level: "二级", address: "梅陇十一村96号", phone: "64549910" },
-  { name: "世蒙幼儿园", level: "二级", address: "东湖路21号", phone: "021-54038979" },
-  { name: "蒂伊幼稚园", level: "二级", address: "永嘉路383号", phone: "64749388" },
-  { name: "吉的堡新汇幼儿园", level: "二级", address: "康健小区虹漕南路百花街18号、6号", phone: "54183331" },
-];
+const privateCampusRows = xuhuiDistrictSource.privateKindergartens || [];
 
-const externalCampusRows = crossDistrictKindergartens.rows || [];
-const externalCampusCounts = crossDistrictKindergartens.counts || {};
+
+
+const externalCampusRows = [minhangDistrictSource, pudongDistrictSource]
+  .flatMap((source) => [...(source.publicCampuses || []), ...(source.privateKindergartens || [])]
+    .map((item) => ({ ...item, district: item.district || source.district })));
+const externalCampusCounts = externalCampusRows.reduce((counts, item) => {
+  const prefix = item.district === "闵行" ? "minhang" : "pudong";
+  const suffix = item.nature === "公办" ? "Public" : item.nature === "民办" ? "Private" : "Other";
+  const key = `${prefix}${suffix}`;
+  counts[key] = (counts[key] || 0) + 1;
+  return counts;
+}, {});
 
 const beikeBoardSlugFromArea = (district, area = "") => {
   const text = `${area}`;
@@ -983,19 +744,19 @@ const rentalBoards = [
 const architectureReview = {
   updatedAt: "2026-05-09",
   title: "上海家庭第一阶段落地执行方案架构 Review",
-  summary: "当前项目已从单一区域择园页面升级为静态数据产品：以标准化幼儿园数据集为核心，串联政策来源、高德 POI/距离、贝壳租房参数、区域路线评分和网页/Excel 输出。",
+  summary: "当前项目已从单一区域择园页面升级为区级落地决策数据产品：以每区统一源数据为输入，串联标准化幼儿园数据集、政策来源、高德 POI/距离、贝壳租房参数、区域路线评分和网页/Excel 输出。",
   modules: [
     {
       name: "数据采集层",
       status: "已扩展",
-      input: "官方/公开名单、徐汇 2026 招生计划、闵行/浦东公开名单、贝壳参数、高德 API 查询结果",
+      input: "每区统一源数据文件、官方/公开名单、徐汇 2026 招生计划、闵行/浦东公开名单、贝壳参数、高德 API 查询结果",
       output: "标准化 JSON、CSV、Excel、HTML",
       risk: "部分公开名单年度口径不同，尤其闵行民办需报名季复核。",
     },
     {
       name: "标准数据层",
       status: "本次优化",
-      input: "徐汇脚本内原始数据 + 闵行/浦东 JSON",
+      input: "data/district_kindergarten_sources/xuhui.json、minhang.json、pudong.json",
       output: "data/kindergartens/kindergarten_dataset.json；data/kindergartens/xuhui_kindergartens.json",
       risk: "后续新增区域必须先补标准字段，不应直接写 UI 文案。",
     },
@@ -1017,7 +778,7 @@ const architectureReview = {
       name: "推荐策略层",
       status: "可解释",
       input: "家庭约束、区域画像、公办材料风险、民办兜底、租房可执行性、通勤距离",
-      output: "徐汇/闵行/浦东路线、徐汇公办争取线、民办兜底线、行动清单",
+      output: "徐汇/闵行/浦东区级择园策略、每区公办争取线、每区民办兜底线、行动清单",
       risk: "不承诺精确录取概率，只做政策顺位和执行可行性分层。",
     },
     {
@@ -1029,9 +790,9 @@ const architectureReview = {
     },
   ],
   optimizations: [
-    "把徐汇数据标准化为与闵行/浦东一致的 JSON 结构，减少脚本内隐式数据拼装。",
+    "把徐汇数据从生成脚本迁移到 data/district_kindergarten_sources/xuhui.json，与闵行/浦东保持同一源数据结构。",
     "新增数据集 schema，明确后续新增行政区和模块的字段边界。",
-    "新增网页端架构模块，用信息流式卡片展示核心模块、输入输出和风险。",
+    "新增网页端架构模块和三区择园策略模块，用信息流式卡片展示核心模块、输入输出和风险。",
     "新增架构评审文档和架构 JSON，方便后续迭代时先改数据层，再改策略层，最后改 UI。",
     "保留静态站发布路径，同时发布标准 JSON，外部工具可直接消费数据集。",
   ],
@@ -1039,7 +800,7 @@ const architectureReview = {
     "把看房记录、电话核验记录、报名材料状态拆成独立 JSON 模块。",
     "把推荐策略权重外置为配置文件，避免硬编码在页面生成脚本里。",
     "把高德增强脚本纳入固定 pipeline，记录 POI 匹配分数和地址编码比例。",
-    "后续扩展新区域时，先补标准数据、贝壳板块、政策来源，再进入推荐策略。",
+    "后续扩展新区域时，先补区级源数据、贝壳板块、政策来源，再进入标准数据和推荐策略。",
   ],
 };
 
@@ -1166,6 +927,53 @@ const renderDistrictRouteCards = () => districtProfiles.map((profile) => {
           <p><strong>放弃条件：</strong>${escapeHtml(profile.dropCondition)}</p>
           <div class="rent-links">
             ${profile.recommendedBoards.map((board) => `<a href="${escapeHtml(beikeRentalUrl(board.slug))}" target="_blank" rel="noopener">${escapeHtml(board.label)}房源</a>`).join("")}
+          </div>
+        </article>
+`;
+}).join("");
+
+const districtKindergartenStrategyItems = [
+  {
+    district: "徐汇",
+    tag: "通勤保守线",
+    boards: ["changqiao", "huajing", "longhua"],
+    publicStrategy: "公办按居委和材料顺位争取，优先验证南部板块、区域自主和扩招口径。",
+    privateStrategy: "民办/普惠民办作为同步兜底，重点联系长桥、龙华、华泾、康健方向。",
+    action: "看房前确认居委和房东材料配合；看房后用居委反查公办园，再电话确认目标园。",
+  },
+  {
+    district: "闵行",
+    tag: "生活平衡线",
+    boards: ["chunshen", "gumei", "meilong"],
+    publicStrategy: "公办先按租房地址所在街镇和当年梯队排序核验，不把近公司距离当作录取依据。",
+    privateStrategy: "民办和中外合作点位数量更适合做兜底池，但年度名单和收费必须电话确认。",
+    action: "优先比较春申、古美、梅陇、颛桥，筛 100㎡以上电梯房源，再按小区所属居委反查园所。",
+  },
+  {
+    district: "浦东",
+    tag: "成长空间线",
+    boards: ["zhangjiang", "huamu", "sanlin"],
+    publicStrategy: "浦东板块跨度大，先分清按地段招生和全区招生，再判断来沪人员材料是否可进入统筹。",
+    privateStrategy: "民办兜底可用，但必须叠加通勤实测，避免园所可行、上班不可行。",
+    action: "只在张江、花木、三林、周浦、康桥等板块通勤验证通过后进入主线。",
+  },
+];
+
+const renderDistrictKindergartenStrategyCards = () => districtKindergartenStrategyItems.map((item) => {
+  const counts = districtCounts.get(item.district) || { total: 0, public: 0, private: 0 };
+  return `
+        <article class="route-card">
+          <header><h3>${escapeHtml(item.district)}怎么选</h3><span class="tag ${item.district === "徐汇" ? "green" : item.district === "闵行" ? "blue" : "amber"}">${escapeHtml(item.tag)}</span></header>
+          <div class="route-metrics">
+            <span><b>${counts.total}</b>点位</span>
+            <span><b>${counts.public}</b>公办</span>
+            <span><b>${counts.private}</b>民办</span>
+          </div>
+          <p><strong>公办策略：</strong>${escapeHtml(item.publicStrategy)}</p>
+          <p><strong>民办策略：</strong>${escapeHtml(item.privateStrategy)}</p>
+          <p><strong>下一步：</strong>${escapeHtml(item.action)}</p>
+          <div class="rent-links">
+            ${item.boards.map((slug) => `<a href="${escapeHtml(beikeRentalUrl(slug))}" target="_blank" rel="noopener">${escapeHtml(beikeAreaLabel(slug))}房源</a>`).join("")}
           </div>
         </article>
 `;
@@ -2119,7 +1927,7 @@ const html = `<!doctype html>
               <span class="data-pill">浦东 ${standardizedDataset.counts.pudong}</span>
               <span class="data-pill">总计 ${standardizedDataset.rowCount}</span>
             </div>
-            <p class="module-reason">扩展规则：新增行政区时优先新增标准 JSON 行，再补高德增强和贝壳板块映射；页面模块只消费标准字段。</p>
+            <p class="module-reason">扩展规则：新增行政区时优先新增 <code>data/district_kindergarten_sources/{district}.json</code>，再补高德增强和贝壳板块映射；页面模块只消费标准字段。</p>
           </div>
           <div class="module-status"><span class="tag green">已标准化</span><a href="data/kindergartens/kindergarten_dataset.json" target="_blank" rel="noopener">查看 JSON</a></div>
         </article>
@@ -2187,7 +1995,7 @@ ${renderLandingScoreCards()}
     <section id="decision">
       <div class="section-title">
         <h2>幼儿园执行</h2>
-        <p>徐汇用于保守执行线；闵行、浦东纳入公开名单基础库，用于跨区路线比较、租房联动和电话核验。</p>
+        <p>策略主线调整为“每个区怎么选”：每区都拆成公办争取线、民办兜底线、租房板块和下一步核验动作。</p>
       </div>
       <div class="summary-strip">
         <article class="summary-card urgent">
@@ -2217,13 +2025,24 @@ ${renderLandingScoreCards()}
           <p>本页 ${amapMatchedCount}/${campusItems.length} 个点位已写入高德 POI 或地址坐标，覆盖率 ${amapMatchRate}；其中 ${amapAddressGeocodeCount} 个为地址地理编码而非 POI 精确匹配。距离均为到网易上海西岸研发中心的直线距离，实际通勤仍需复核。</p>
         </article>
       </div>
+      <div class="section-title">
+        <h2>三区择园策略</h2>
+        <p>先判断区域是否可执行，再在区内选择公办争取线和民办兜底线。</p>
+      </div>
+      <div class="route-grid">
+${renderDistrictKindergartenStrategyCards()}
+      </div>
+      <div class="section-title">
+        <h2>徐汇园所样例</h2>
+        <p>下面保留徐汇 5 所公办和 5 所民办样例，用作“区内如何落到园所”的示范；闵行、浦东完整点位在详细查询里按区筛选。</p>
+      </div>
       <div class="school-decision-layout">
         <div class="school-column">
-          <h3>徐汇公办争取线</h3>
+          <h3>徐汇公办争取样例</h3>
 ${renderSchoolDecisionCards("公办")}
         </div>
         <div class="school-column">
-          <h3>徐汇民办兜底线</h3>
+          <h3>徐汇民办兜底样例</h3>
 ${renderSchoolDecisionCards("民办")}
         </div>
       </div>
@@ -2322,7 +2141,7 @@ ${renderRentBoardCards()}
         </article>
         <article class="todo-column">
           <h3>招生季 3-5 月</h3>
-          <label class="todo-item"><input type="checkbox" data-todo="policy-read"><span>核对当年徐汇招生政策<small>报名条件、验证时间、录取批次每年可能调整。</small></span></label>
+          <label class="todo-item"><input type="checkbox" data-todo="policy-read"><span>核对目标区当年招生政策<small>报名条件、验证时间、录取批次每年可能调整。</small></span></label>
           <label class="todo-item"><input type="checkbox" data-todo="online-register"><span>完成信息登记和报名<small>按官方平台要求提交材料。</small></span></label>
           <label class="todo-item"><input type="checkbox" data-todo="private-deposit"><span>确认民办保位节点<small>问清保位费、退费期限和是否影响公办等待。</small></span></label>
           <label class="todo-item"><input type="checkbox" data-todo="verification"><span>准备现场/线上验证材料<small>居住证、租赁材料、户口本、出生证等。</small></span></label>
@@ -2558,6 +2377,11 @@ ${renderRentBoardCards()}
           <span>用途：补充浦东 ${externalCampusCounts.pudongPublic || 0} 个公办点位、${(externalCampusCounts.pudongPrivate || 0) + (externalCampusCounts.pudongOther || 0)} 个民办/中外合作点位，用于成长空间路线比较；板块跨度大，必须叠加通勤核验。</span>
         </article>
         <article class="source-card">
+          <strong>区级源数据</strong>
+          <span>来源：<code>data/district_kindergarten_sources/xuhui.json</code>、<code>minhang.json</code>、<code>pudong.json</code>。</span>
+          <span>用途：统一保存每个区的原始采集结果。徐汇不再作为脚本内特殊数据源维护，闵行/浦东也按同一结构进入加工链路。</span>
+        </article>
+        <article class="source-card">
           <strong>标准化幼儿园数据集</strong>
           <span>来源：<code>data/kindergartens/kindergarten_dataset.json</code> 与 <code>data/kindergartens/xuhui_kindergartens.json</code>，字段定义见 <code>data/kindergarten_dataset.schema.json</code>。</span>
           <span>用途：将徐汇、闵行、浦东统一成可扩展数据层，后续新增行政区或模块时不再改页面主结构。</span>
@@ -2646,6 +2470,7 @@ const toCsv = (rows) => rows.map((row) => row.map(csvEscape).join(",")).join("\n
 
 await fs.mkdir(outputDir, { recursive: true });
 await fs.mkdir(path.join(outputDir, "data", "kindergartens"), { recursive: true });
+await fs.mkdir(path.join(outputDir, "data", "district_kindergarten_sources"), { recursive: true });
 await fs.mkdir(path.join(outputDir, "docs"), { recursive: true });
 await fs.writeFile(path.join(outputDir, "徐汇区幼儿园园区位置表.csv"), toCsv([campusHeader, ...campusData]), "utf8");
 await fs.writeFile(path.join(outputDir, "徐汇区幼儿园择园参考.md"), markdown, "utf8");
@@ -2661,6 +2486,11 @@ await fs.writeFile(path.join(outputDir, "data", "project_architecture_review.jso
     beikeDefaultTokens: beikeDefaultTokens.join(""),
   },
 }, null, 2)}\n`, "utf8");
+for (const source of districtKindergartenSources) {
+  const slug = source.district === "徐汇" ? "xuhui" : source.district === "闵行" ? "minhang" : "pudong";
+  await fs.writeFile(path.join(outputDir, "data", "district_kindergarten_sources", `${slug}.json`), `${JSON.stringify(source, null, 2)}\n`, "utf8");
+}
+await fs.copyFile(path.join(process.cwd(), "data", "kindergarten_dataset.schema.json"), path.join(outputDir, "data", "kindergarten_dataset.schema.json"));
 await fs.writeFile(path.join(outputDir, "docs", "ARCHITECTURE_REVIEW.md"), architectureReviewMarkdown, "utf8");
 await fs.writeFile(path.join(outputDir, "data", "kindergartens", "kindergarten_dataset.json"), `${JSON.stringify(standardizedDataset, null, 2)}\n`, "utf8");
 await fs.writeFile(path.join(outputDir, "data", "kindergartens", "xuhui_kindergartens.json"), `${JSON.stringify({
@@ -2700,7 +2530,8 @@ const sourceRows = [
   ["闵行民办地址与电话来源", minhangPrivateListSource],
   ["浦东公办地址与电话来源", pudongPublicListSource],
   ["浦东民办地址与电话来源", pudongPrivateListSource],
-  ["闵行/浦东跨区基础数据", `data/cross_district_kindergartens.json；共${externalCampusItems.length}条，闵行${(externalCampusCounts.minhangPublic || 0) + (externalCampusCounts.minhangPrivate || 0) + (externalCampusCounts.minhangOther || 0)}条，浦东${(externalCampusCounts.pudongPublic || 0) + (externalCampusCounts.pudongPrivate || 0) + (externalCampusCounts.pudongOther || 0)}条。用于详细查询、租房联动和跨区路线比较。`],
+  ["区级源数据", `data/district_kindergarten_sources/；徐汇、闵行、浦东均按同一结构保存采集结果。当前共${campusItems.length}条，徐汇${publicCampusItems.length + privateCampusItems.length}条，闵行${(externalCampusCounts.minhangPublic || 0) + (externalCampusCounts.minhangPrivate || 0) + (externalCampusCounts.minhangOther || 0)}条，浦东${(externalCampusCounts.pudongPublic || 0) + (externalCampusCounts.pudongPrivate || 0) + (externalCampusCounts.pudongOther || 0)}条。`],
+  ["闵行/浦东历史合并数据", "data/cross_district_kindergartens.json；保留为迁移前的跨区合并源，当前生成链路优先使用 data/district_kindergarten_sources/minhang.json 和 pudong.json。"],
   ["标准化幼儿园数据集", `data/kindergartens/kindergarten_dataset.json；共${standardizedDataset.rowCount}条，徐汇${standardizedDataset.counts.xuhui}条、闵行${standardizedDataset.counts.minhang}条、浦东${standardizedDataset.counts.pudong}条；字段定义见data/kindergarten_dataset.schema.json。`],
   ["徐汇标准化数据", "data/kindergartens/xuhui_kindergartens.json；将徐汇公办计划、园区地址、等级、电话、民办兜底和来源统一为与闵行/浦东一致的字段结构。"],
   ["架构Review", "docs/ARCHITECTURE_REVIEW.md 与 data/project_architecture_review.json；说明数据采集、标准数据层、POI、租房、推荐策略和发布层的核心逻辑与优化边界。"],
