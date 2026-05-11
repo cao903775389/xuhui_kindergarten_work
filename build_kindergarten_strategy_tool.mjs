@@ -1027,25 +1027,12 @@ const renderSchoolDecisionCards = (district) => decisionRecommendations
       </article>
 `).join("");
 
-const renderDistrictDecisionTabs = () => `
-      <div class="district-tab-shell">
-${renderDistrictTabs("samples", "按区切换推荐样例")}
-        <div class="district-tab-panels">
-          ${kindergartenDistrictOrder.map((district) => {
-            const active = district === defaultActiveDistrict;
-            return `
-          <section class="district-tab-panel${active ? " active" : ""}" role="tabpanel" data-district-panel-scope="samples" data-district-panel="${escapeHtml(district)}"${active ? "" : " hidden"}>
+const renderDistrictDecisionContent = (district) => `
             <div class="school-decision-layout single">
               <section class="school-column">
-                <h3>${escapeHtml(district)}推荐样例</h3>
                 ${renderSchoolDecisionCards(district) || `<article class="school-card"><p>该区暂无推荐样例，先使用数据查询和租房入口做基础核验。</p></article>`}
               </section>
             </div>
-          </section>
-`;
-          }).join("")}
-        </div>
-      </div>
 `;
 
 const renderRentBoardCards = () => rentalBoards.map((board) => `
@@ -1459,9 +1446,9 @@ const renderDistrictKindergartenStrategyCard = (item) => {
 `;
 };
 
-const renderDistrictStrategyTabs = () => `
+const renderDistrictStrategyAndSamplesTabs = () => `
       <div class="district-tab-shell">
-${renderDistrictTabs("strategy", "按区切换推荐策略")}
+${renderDistrictTabs("strategy-samples", "按区切换推荐策略和样例")}
         <div class="district-tab-panels">
           ${kindergartenDistrictOrder.map((district) => {
             const active = district === defaultActiveDistrict;
@@ -1474,10 +1461,23 @@ ${renderDistrictTabs("strategy", "按区切换推荐策略")}
               .map(renderDistrictKindergartenStrategyCard)
               .join("");
             return `
-          <section class="district-tab-panel${active ? " active" : ""}" role="tabpanel" data-district-panel-scope="strategy" data-district-panel="${escapeHtml(district)}"${active ? "" : " hidden"}>
-            <div class="district-panel-grid">
+          <section class="district-tab-panel${active ? " active" : ""}" role="tabpanel" data-district-panel-scope="strategy-samples" data-district-panel="${escapeHtml(district)}"${active ? "" : " hidden"}>
+            <div class="district-panel-block">
+              <header>
+                <h3>${escapeHtml(district)}分区推荐策略</h3>
+                <span>评分模型当前区级画像</span>
+              </header>
+              <div class="district-panel-grid">
 ${profileCards || `<article class="route-card"><p>该区暂无路线画像，先补充区级落地画像数据。</p></article>`}
 ${strategyCards || `<article class="route-card"><p>该区暂无择园策略，先使用数据查询和租房入口做基础核验。</p></article>`}
+              </div>
+            </div>
+            <div class="district-panel-block">
+              <header>
+                <h3>${escapeHtml(district)}按区推荐样例</h3>
+                <span>园所、租房板块和核验动作示范</span>
+              </header>
+${renderDistrictDecisionContent(district)}
             </div>
           </section>
 `;
@@ -4221,6 +4221,31 @@ const html = `<!doctype html>
     .district-tab-panel[hidden] {
       display: none !important;
     }
+    .district-panel-block {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .district-panel-block:first-child {
+      margin-top: 0;
+    }
+    .district-panel-block > header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 2px 2px;
+    }
+    .district-panel-block > header h3 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 17px;
+      line-height: 1.3;
+    }
+    .district-panel-block > header span {
+      color: var(--soft);
+      font-size: 12px;
+    }
     .district-panel-grid {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -4323,6 +4348,9 @@ const html = `<!doctype html>
         margin-right: -14px;
         padding-right: 14px;
         border-radius: 10px 0 0 10px;
+      }
+      .district-panel-block > header {
+        display: grid;
       }
       .weight-row,
       .beike-filter-row {
@@ -4456,12 +4484,7 @@ ${renderArchitectureReviewCards()}
       <div class="section-title">
         <h2>二、基于评分模型的分区推荐策略</h2>
       </div>
-${renderDistrictStrategyTabs()}
-      <div class="section-title">
-        <h2>三、按区推荐样例</h2>
-        <p>推荐样例按区维护在 <code>data/strategy_model.json</code>，只作为电话核验和看房排序入口，不把任何单一区域当作固定答案。</p>
-      </div>
-${renderDistrictDecisionTabs()}
+${renderDistrictStrategyAndSamplesTabs()}
       <div class="rental-result-grid">
 ${renderRentalSnapshotCards()}
       </div>
@@ -4504,12 +4527,7 @@ ${renderRentalSnapshotCards()}
         <h2>三区择园策略</h2>
         <p>先判断区域是否可执行，再在区内选择公办争取线和民办兜底线。</p>
       </div>
-${renderDistrictStrategyTabs()}
-      <div class="section-title">
-        <h2>按区推荐样例</h2>
-        <p>每个区都维护推荐样例，用作“路线如何落到园所和租房板块”的示范；完整点位在详细查询里按区筛选。</p>
-      </div>
-${renderDistrictDecisionTabs()}
+${renderDistrictStrategyAndSamplesTabs()}
       <div class="section-title">
         <h2>闵行/浦东基础数据</h2>
         <p>完整点位在底部详细查询表中按区、性质和关键词筛选；这里每区只展示 6 个样例，便于先进入对应租房板块和高德核验。</p>
