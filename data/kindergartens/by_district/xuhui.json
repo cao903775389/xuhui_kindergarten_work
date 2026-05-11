@@ -3,12 +3,6 @@
   "updatedAt": "2026-05-09",
   "district": "徐汇",
   "rowCount": 127,
-  "sources": [
-    "本地PDF：/Users/caofengyang/Downloads/徐汇区幼儿园对口地区.pdf（2026年徐汇区公办幼儿园对口居委一览表及计划班级数）",
-    "上海本地宝《2026徐汇区幼儿园招生对口地段及招生计划班级数》，2026-04-15：https://m.sh.bendibao.com/edu/305291.html",
-    "上海本地宝《上海市徐汇区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://m.sh.bendibao.com/edu/284155.html",
-    "上海本地宝《上海市徐汇区民办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://sh.bendibao.com/edu/2024325/284155_2.shtm"
-  ],
   "rows": [
     {
       "datasetVersion": "2026.05.09",

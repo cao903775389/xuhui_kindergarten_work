@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0",
+  "updatedAt": "2026-05-11",
+  "description": "通勤与接送实测记录。直线距离只做预筛，最终用早高峰和接送链路复核。",
+  "records": [],
+  "recordFields": {
+    "checkedAt": "实测日期，YYYY-MM-DD。",
+    "from": "小区、园所或办公点。",
+    "to": "小区、园所或办公点。",
+    "mode": "步行/骑行/驾车/公共交通/混合。",
+    "timeWindow": "实测时段，例如工作日早高峰。",
+    "durationMinutes": "实测或地图路线耗时。",
+    "routeText": "路线描述。",
+    "caregiverFriendly": "是否适合老人接送：yes/no/unknown。",
+    "rainyDayRisk": "雨天风险说明。",
+    "parkingRisk": "停车或临停风险说明。",
+    "nextAction": "下一步动作。"
+  }
+}

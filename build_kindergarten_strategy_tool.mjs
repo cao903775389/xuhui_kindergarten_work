@@ -3,6 +3,13 @@ import path from "node:path";
 import { SpreadsheetFile, Workbook } from "@oai/artifact-tool";
 
 const outputDir = path.join(process.cwd(), "outputs");
+const reportBaseName = "上海幼儿园落地策略工具";
+const outputFiles = {
+  csv: `${reportBaseName}点位数据.csv`,
+  md: `${reportBaseName}说明.md`,
+  html: `${reportBaseName}.html`,
+  xlsx: `${reportBaseName}.xlsx`,
+};
 
 const pdfSource = "本地PDF：/Users/caofengyang/Downloads/徐汇区幼儿园对口地区.pdf（2026年徐汇区公办幼儿园对口居委一览表及计划班级数）";
 const publicListSource = "上海本地宝《上海市徐汇区公办幼儿园名单一览》，内容来源标注为上海学前教育网，2024-03-25：https://m.sh.bendibao.com/edu/284155.html";
@@ -67,6 +74,9 @@ try {
 } catch {
   districtLandingProfiles = { profiles: [] };
 }
+
+const strategyModelPath = path.join(process.cwd(), "data", "strategy_model.json");
+const strategyModel = await readJsonFile(strategyModelPath, { scoreDimensions: [], decisionRecommendations: [] });
 
 const amapItemKey = ({ nature, name, campus, address }) => [nature, name, campus, address].join("|");
 const getAmapEnrichment = (item) => {
@@ -362,7 +372,7 @@ const externalCampusItems = externalCampusRows.map((item) => {
     amapLocation: amap.location || pendingAmapValue,
     toddler: "待电话确认",
     small: "待电话确认",
-    committee: item.nature === "公办" ? "非徐汇区对口/招生范围需按所在区当年政策和居住地址核验。" : "民办招生范围、托班、小班名额、收费和材料要求需电话确认。",
+    committee: item.nature === "公办" ? "招生范围需按所在区当年政策、街镇和居住地址核验。" : "民办招生范围、托班、小班名额、收费和材料要求需电话确认。",
     confidence: "B",
     note: item.note || "跨区基础数据来自公开名单；距公司、实际招生条件、收费和名额需继续用高德与电话核验。",
     source: item.source,
@@ -377,7 +387,7 @@ const externalCampusItems = externalCampusRows.map((item) => {
 const campusItems = [...publicCampusItems, ...privateCampusItems, ...externalCampusItems];
 const standardizedDatasetDir = path.join(process.cwd(), "data", "kindergartens");
 const standardizedDatasetPath = path.join(standardizedDatasetDir, "kindergarten_dataset.json");
-const standardizedXuhuiPath = path.join(standardizedDatasetDir, "xuhui_kindergartens.json");
+const standardizedByDistrictDir = path.join(standardizedDatasetDir, "by_district");
 const standardizedKindergartenRows = campusItems.map((item) => ({
   datasetVersion: "2026.05.09",
   district: item.district,
@@ -429,22 +439,48 @@ const standardizedDataset = {
 };
 
 await fs.mkdir(standardizedDatasetDir, { recursive: true });
+await fs.mkdir(standardizedByDistrictDir, { recursive: true });
 await fs.writeFile(standardizedDatasetPath, `${JSON.stringify(standardizedDataset, null, 2)}\n`);
-await fs.writeFile(standardizedXuhuiPath, `${JSON.stringify({
-  schemaVersion: "1.0",
-  updatedAt: standardizedDataset.updatedAt,
-  district: "徐汇",
-  rowCount: standardizedDataset.counts.xuhui,
-  sources: [pdfSource, planSource, publicListSource, privateListSource],
-  rows: standardizedKindergartenRows.filter((item) => item.district === "徐汇"),
-}, null, 2)}\n`);
+for (const district of standardizedDataset.scope) {
+  const slug = district === "徐汇" ? "xuhui" : district === "闵行" ? "minhang" : "pudong";
+  const rows = standardizedKindergartenRows.filter((item) => item.district === district);
+  await fs.writeFile(path.join(standardizedByDistrictDir, `${slug}.json`), `${JSON.stringify({
+    schemaVersion: "1.0",
+    updatedAt: standardizedDataset.updatedAt,
+    district,
+    rowCount: rows.length,
+    rows,
+  }, null, 2)}\n`);
+}
 
 const amapMatchedCount = campusItems.filter((item) => item.officeDistance !== pendingAmapValue).length;
 const amapAddressGeocodeCount = campusItems.filter((item) => item.amapPoiName === "高德地址坐标（非POI精确匹配）").length;
 const amapUnmatchedItems = campusItems.filter((item) => item.officeDistance === pendingAmapValue);
 const amapMatchRate = `${Math.round((amapMatchedCount / campusItems.length) * 100)}%`;
+const amapPoiMatchedCount = amapMatchedCount - amapAddressGeocodeCount;
+const dataQualityStats = {
+  total: campusItems.length,
+  confidenceA: campusItems.filter((item) => item.confidence === "A").length,
+  confidenceB: campusItems.filter((item) => item.confidence === "B").length,
+  needsConfirm: campusItems.filter((item) => item.needsConfirm).length,
+  policyPending: campusItems.filter((item) => item.admissionType === "政策待核验").length,
+  amapPoiMatched: amapPoiMatchedCount,
+  amapAddressGeocode: amapAddressGeocodeCount,
+  amapUnmatched: amapUnmatchedItems.length,
+};
 
-const campusHeader = ["编号", "区", "性质", "办园类型", "办园等级", "幼儿园", "片区", "园区/分园", "地址", "高德POI名称", "高德POI地址", "高德经纬度", `距${officeLocation.name}`, "高德搜索链接", "联系电话", "托班计划", "小班计划", "对口居委/招生范围", "招生类型", "置信度", "备注", "主要来源"];
+const nextActionForItem = (item) => {
+  if (item.officeDistance === pendingAmapValue) return "先补地图定位，再判断通勤和接送。";
+  if (item.nature === "民办") return "电话确认名额、收费、材料口径和保位节点。";
+  if (item.district !== "徐汇") return "按所在区当年政策核验街镇、居委和报名排序。";
+  if (item.admissionType === "固定对口") return "先用候选小区居委反查对口范围。";
+  if (item.admissionType === "区域自主") return "电话确认区域自主简章、报名条件和园区安排。";
+  if (item.admissionType === "扩招") return "确认扩招口径、实际园区和当年班额。";
+  if (item.needsConfirm) return "结合当年简章和园所电话复核。";
+  return "可进入租房、地图路线和实地接送复核。";
+};
+
+const campusHeader = ["编号", "区", "性质", "办园类型", "办园等级", "幼儿园", "片区", "园区/分园", "地址", "高德POI名称", "高德POI地址", "高德经纬度", `距${officeLocation.name}`, "高德搜索链接", "联系电话", "托班计划", "小班计划", "对口居委/招生范围", "招生类型", "置信度", "下一步动作", "备注", "主要来源"];
 const campusData = campusItems.map((item) => [
   item.id,
   item.district,
@@ -466,6 +502,7 @@ const campusData = campusItems.map((item) => [
   item.committee,
   item.admissionType,
   item.confidence,
+  nextActionForItem(item),
   item.note,
   item.source,
 ]);
@@ -479,7 +516,7 @@ const schoolData = schools.map((school) => [
   school.small,
   campusRows.filter(([id]) => id === school.id).length,
   school.committee,
-  "优先用“上海市徐汇区 + 园区地址”，再用“幼儿园名 + 园区名”核验。",
+  "优先用“上海市 + 行政区 + 园区地址”，再用“幼儿园名 + 园区名”核验。",
   ["区域内自主招生", "扩招"].some((word) => school.committee.includes(word)) ? "招生不是普通固定居委一一对应，需结合当年简章和电话确认。" : "",
 ]);
 
@@ -503,22 +540,24 @@ const summaryRows = [
   ["民办/私立点位数", privateCampusItems.length, "来自徐汇区民办幼儿园名单公开资料；招生条件、收费和名额需电话确认。"],
   ["闵行/浦东基础点位数", externalCampusItems.length, `闵行${externalCampusCounts.minhangPublic || 0}个公办、${(externalCampusCounts.minhangPrivate || 0) + (externalCampusCounts.minhangOther || 0)}个民办/其他；浦东${externalCampusCounts.pudongPublic || 0}个公办、${(externalCampusCounts.pudongPrivate || 0) + (externalCampusCounts.pudongOther || 0)}个民办/其他。`],
   ["全部园区/点位数", campusData.length, "徐汇公办园区点位 + 徐汇民办/私立点位 + 闵行/浦东公开名单基础点位。"],
-  ["高德增强字段", `${amapMatchedCount}/${campusItems.length}`, `已批量补POI/地址坐标、经纬度和到网易上海西岸研发中心的高德直线距离；其中${amapAddressGeocodeCount}个为地址地理编码，非POI精确匹配。`],
+  ["高德增强字段", `${amapMatchedCount}/${campusItems.length}`, `已批量补POI/地址坐标、经纬度和到网易上海西岸研发中心的高德直线距离；其中${amapPoiMatchedCount}个为POI精确匹配，${amapAddressGeocodeCount}个为地址地理编码。`],
+  ["数据核验压力", `${dataQualityStats.needsConfirm}/${campusItems.length}`, `B级${dataQualityStats.confidenceB}条，政策待核验${dataQualityStats.policyPending}条；页面和Excel已新增“下一步动作”字段。`],
   ["小班计划合计", schools.reduce((sum, s) => sum + s.small, 0), "PDF计划班级数合计。"],
   ["托班明确班级数合计", schools.reduce((sum, s) => sum + (/^\d+$/.test(s.toddler) ? Number(s.toddler) : 0), 0), "不含混龄式招生。"],
   ["混龄式招生主体数", schools.filter((s) => `${s.toddler}`.includes("混龄")).length, "混龄式招生不直接等同托班班级数。"],
   ["重点核验", "汇星北园、复旦大学附属徐汇实验幼儿园", "公开资料出现地址/合并后的园部安排差异，择园前应电话确认。"],
 ];
 
-const markdown = `# 徐汇区幼儿园园区位置与择园参考
+const markdown = `# 上海幼儿园落地策略工具说明
 
 ## 结论摘要
 
-- 2026 PDF 共列出 ${schools.length} 个公办招生主体，拆分为 ${publicCampusItems.length} 个公办实际园区/分园点位。
-- 已补充 ${privateCampusItems.length} 个徐汇区民办/私立点位，包含级别、地址和联系电话；这些点位更适合作为当前暂无居住证情况下的兜底池。
+- 当前数据集覆盖徐汇、闵行、浦东三类候选路线，共 ${campusItems.length} 个园区/点位。
+- 徐汇 2026 PDF 共列出 ${schools.length} 个公办招生主体，拆分为 ${publicCampusItems.length} 个公办实际园区/分园点位；闵行和浦东当前以公开名单为基础，重点用于跨区比较和电话核验。
+- 已补充 ${privateCampusItems.length} 个徐汇区民办/私立点位，并接入闵行、浦东民办/中外合作点位；民办点位更适合作为当前暂无居住证情况下的兜底池。
 - 已通过高德服务批量增强 POI/地址坐标、经纬度和到${officeLocation.name}的直线距离；地址地理编码不等同于园所 POI 精确匹配，未可靠匹配项保留为待核验。
 - 小班计划合计 ${schools.reduce((sum, s) => sum + s.small, 0)} 个班；托班明确计划合计 ${schools.reduce((sum, s) => sum + (/^\d+$/.test(s.toddler) ? Number(s.toddler) : 0), 0)} 个班，另有 ${schools.filter((s) => `${s.toddler}`.includes("混龄")).length} 所为“混龄式招生”。
-- 园区数量与小班容量最集中的区域在田林/虹梅/康健/漕河泾、长桥/凌云/梅陇、龙华/滨江与衡复/湖南几条带状居住区。
+- 页面策略按区展示公办争取线、民办兜底线、租房板块和下一步动作，避免只以单一区域作为方案中心。
 - 多园区幼儿园不能只搜园名，必须按“园区/分园 + 地址”在高德地图核验；表格中已为每个园区生成高德搜索链接。
 - 需要重点电话确认：汇星幼儿园北园公开资料出现“康平路200号”和“华山路1815号”两种说法；复旦大学附属徐汇实验幼儿园为2024年合并组建，平江路17号/32号及原东安路50弄10号关系需要确认2026实际入读园区。
 
@@ -532,7 +571,7 @@ ${areaStats.map((row) => `| ${row[0]} | ${row[1]} | ${row[2]} | ${row[3]} | ${ro
 
 1. 先定位你家的居委，再反查对口幼儿园。公办园录取规则里，对口关系和人户一致通常比地图直线距离更关键。
 2. 对多园区幼儿园，优先问清楚“2026年小班在哪个园区”，不要只用总园名判断距离。
-3. 高德搜索时优先搜园区地址，例如“上海市徐汇区 五原路幼儿园 五原路400号”，再核验POI名称。
+3. 高德搜索时优先搜园区地址，例如“上海市 + 行政区 + 幼儿园名 + 园区地址”，再核验POI名称。
 4. 托班需求要单独看，“混龄式招生”和普通托班班级数不可直接比较。
 5. 接送便利性建议按步行/骑行实际路线判断，尤其关注雨天、老人接送、门口停车和跨主干道情况。
 
@@ -566,10 +605,10 @@ const beikeDistrictLabelBySlug = new Map([
   ["minhang", "闵行全区"],
   ["pudong", "浦东全区"],
 ]);
-const beikeAreaLabel = (slug) => beikeDistrictLabelBySlug.get(slug) || beikeBizcircleBySlug.get(slug)?.label || slug;
-const beikeRentalUrl = (slug = "xuhui") => {
-  const safeSlug = slug || "xuhui";
-  return `https://sh.zu.ke.com/zufang/${safeSlug}/${beikeDefaultTokens.join("")}/?showMore=1`;
+const beikeAreaLabel = (slug) => beikeDistrictLabelBySlug.get(slug) || beikeBizcircleBySlug.get(slug)?.label || slug || "上海全市";
+const beikeRentalUrl = (slug = "") => {
+  const slugPath = slug ? `${slug}/` : "";
+  return `https://sh.zu.ke.com/zufang/${slugPath}${beikeDefaultTokens.join("")}/?showMore=1`;
 };
 const beikeRentalConditionText = "整租 / 0-10000元 / 三居或四居+ / 100㎡以上 / 有电梯";
 const districtProfiles = districtLandingProfiles.profiles || [];
@@ -581,6 +620,67 @@ const districtCounts = campusItems.reduce((map, item) => {
   map.set(item.district, current);
   return map;
 }, new Map());
+const kindergartenDistrictOrder = ["徐汇", "闵行", "浦东"];
+const kindergartenDistrictLabels = {
+  "徐汇": "徐汇区",
+  "闵行": "闵行区",
+  "浦东": "浦东新区",
+};
+const areaFilterTerms = (area, district) => {
+  const districtNames = new Set([district, `${district}区`, `${district}新区`, "浦东新区"]);
+  return String(area || "片区待归类")
+    .split(/[\/／]/u)
+    .map((part) => part.trim())
+    .filter((part) => part && !districtNames.has(part));
+};
+const kindergartenAreaOptionsByDistrict = kindergartenDistrictOrder.reduce((result, district) => {
+  result[district] = [...new Set(campusItems
+    .filter((item) => item.district === district)
+    .flatMap((item) => areaFilterTerms(item.area, district))
+    .filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b, "zh-CN"));
+  return result;
+}, {});
+const districtAreaCapacityStats = kindergartenDistrictOrder.map((district) => {
+  const rows = campusItems.filter((item) => item.district === district);
+  const areas = [...rows.reduce((map, item) => {
+    const key = item.area || "片区待归类";
+    const current = map.get(key) || { label: key, value: 0, public: 0, private: 0 };
+    current.value += 1;
+    if (item.nature === "公办") current.public += 1;
+    if (item.nature === "民办") current.private += 1;
+    map.set(key, current);
+    return map;
+  }, new Map()).values()].sort((a, b) => b.value - a.value || a.label.localeCompare(b.label, "zh-CN"));
+  return {
+    district,
+    total: rows.length,
+    public: rows.filter((item) => item.nature === "公办").length,
+    private: rows.filter((item) => item.nature === "民办").length,
+    areas,
+  };
+});
+const beikeDistrictOptions = (beikeRentalSchema.filters?.district?.options || [])
+  .filter((option) => ["xuhui", "minhang", "pudong"].includes(option.slug));
+const beikeBizcircleOptionsByDistrict = ["xuhui", "minhang", "pudong"].reduce((result, slug) => {
+  result[slug] = beikeRentalSchema.filters?.bizcircle?.optionsByDistrict?.[slug] || [];
+  return result;
+}, {});
+const beikeFilterOptionList = (key) => beikeRentalSchema.filters?.[key]?.options || [];
+const beikeFilterGroups = [
+  { key: "rentType", label: "租赁方式", mode: "single", options: beikeFilterOptionList("rentType"), defaultTokens: ["rt200600000001"] },
+  { key: "price", label: "租金", mode: "price", options: beikeFilterOptionList("price"), defaultTokens: ["__custom"] },
+  { key: "rooms", label: "户型", mode: "multi", options: beikeFilterOptionList("rooms"), defaultTokens: ["l2", "l3"] },
+  { key: "area", label: "面积", mode: "multi", options: beikeFilterOptionList("area"), defaultTokens: ["ra4", "ra5"] },
+  { key: "orientation", label: "朝向", mode: "multi", options: beikeFilterOptionList("orientation"), defaultTokens: [] },
+  { key: "brand", label: "品牌", mode: "multi", options: beikeFilterOptionList("brand"), defaultTokens: [] },
+  { key: "features", label: "特色", mode: "multi", options: beikeFilterOptionList("features"), defaultTokens: [] },
+  { key: "leaseTerm", label: "租期", mode: "single", options: [{ label: "不限", token: "" }, ...beikeFilterOptionList("leaseTerm")], defaultTokens: [""] },
+  { key: "quality", label: "服务保障", mode: "multi", options: beikeFilterOptionList("quality"), defaultTokens: [] },
+  { key: "floor", label: "楼层", mode: "multi", options: beikeFilterOptionList("floor"), defaultTokens: [] },
+  { key: "elevator", label: "电梯", mode: "single", options: [{ label: "不限", token: "" }, ...beikeFilterOptionList("elevator")], defaultTokens: ["ie1"] },
+  { key: "sort", label: "排序", mode: "single", options: beikeFilterOptionList("sort"), defaultTokens: [""] },
+];
 const itemDistance = (item) => item?.officeDistance && item.officeDistance !== pendingAmapValue ? item.officeDistance : "高德未匹配，待电话/地图确认";
 const poiLine = (item) => item?.amapPoiName && item.amapPoiName !== pendingAmapValue
   ? `${item.amapPoiName}${item.amapPoiAddress && item.amapPoiAddress !== pendingAmapValue ? `；${item.amapPoiAddress}` : ""}`
@@ -601,7 +701,7 @@ const renderPhoneLinks = (value) => {
   }).join('<span class="phone-separator"> / </span>');
 };
 
-const decisionRecommendations = [
+const fallbackDecisionRecommendations = [
   {
     rank: "公办 1",
     tag: "首选争取",
@@ -733,6 +833,12 @@ const decisionRecommendations = [
     judgement: "一级民办，适合作为康健/田林方向的兜底备选。",
   },
 ];
+const decisionRecommendations = (strategyModel.decisionRecommendations?.length
+  ? strategyModel.decisionRecommendations.map((row) => ({
+      ...row,
+      item: campusRef(row.itemRef?.nature, row.itemRef?.name, row.itemRef?.campus, row.itemRef?.address),
+    }))
+  : fallbackDecisionRecommendations);
 
 const rentalBoards = [
   { slug: "changqiao", tag: "首选", title: "长桥", fit: "园南幼儿园、汇城苑、牛牛", note: "预算、面积和材料办理可行性最平衡。" },
@@ -745,7 +851,7 @@ const rentalBoards = [
 
 const architectureReview = {
   updatedAt: "2026-05-09",
-  title: "上海家庭第一阶段落地执行方案架构 Review",
+  title: "上海幼儿园落地策略工具架构 Review",
   summary: "当前项目已从单一区域择园页面升级为区级落地决策数据产品：以每区统一源数据为输入，串联标准化幼儿园数据集、政策来源、高德 POI/距离、贝壳租房参数、区域路线评分和网页/Excel 输出。",
   modules: [
     {
@@ -759,7 +865,7 @@ const architectureReview = {
       name: "标准数据层",
       status: "本次优化",
       input: "data/district_kindergarten_sources/xuhui.json、minhang.json、pudong.json",
-      output: "data/kindergartens/kindergarten_dataset.json；data/kindergartens/xuhui_kindergartens.json",
+      output: "data/kindergartens/kindergarten_dataset.json；data/kindergartens/by_district/{xuhui,minhang,pudong}.json",
       risk: "后续新增区域必须先补标准字段，不应直接写 UI 文案。",
     },
     {
@@ -797,11 +903,13 @@ const architectureReview = {
     "新增网页端架构模块和三区择园策略模块，用信息流式卡片展示核心模块、输入输出和风险。",
     "新增架构评审文档和架构 JSON，方便后续迭代时先改数据层，再改策略层，最后改 UI。",
     "保留静态站发布路径，同时发布标准 JSON，外部工具可直接消费数据集。",
+    "新增 data/strategy_model.json，把评分权重和按区推荐样例从页面代码中外置。",
+    "新增电话核验、看房候选和通勤实测记录模块，为后续人工复核留出结构化入口。",
   ],
   nextSteps: [
-    "把看房记录、电话核验记录、报名材料状态拆成独立 JSON 模块。",
-    "把推荐策略权重外置为配置文件，避免硬编码在页面生成脚本里。",
-    "把高德增强脚本纳入固定 pipeline，记录 POI 匹配分数和地址编码比例。",
+    "继续把 HTML/CSS/JS 渲染从 build_kindergarten_strategy_tool.mjs 拆出，降低单文件维护成本。",
+    "把高德增强脚本合并成固定 pipeline，记录 POI 匹配分数、地址编码比例和路线耗时。",
+    "把电话核验和看房候选记录接入页面，形成小区-居委-园所-材料闭环。",
     "后续扩展新区域时，先补区级源数据、贝壳板块、政策来源，再进入标准数据和推荐策略。",
   ],
 };
@@ -814,7 +922,7 @@ const architectureReviewMarkdown = `# ${architectureReview.title}
 
 ${architectureReview.summary}
 
-当前架构可以继续支撑“90 天落地执行方案”，但需要坚持一个原则：新增能力先进入标准数据层，再进入策略层，最后进入 UI。不要再把新数据直接写成页面文案或散落在推荐卡片里。
+当前架构可以继续支撑“多区幼儿园落地策略工具”，但需要坚持一个原则：新增能力先进入标准数据层，再进入策略层，最后进入 UI。不要再把新数据直接写成页面文案或散落在推荐卡片里。
 
 ## 当前核心逻辑
 
@@ -841,7 +949,9 @@ ${architectureReview.nextSteps.map((item) => `- ${item}`).join("\n")}
 - 闵行：${standardizedDataset.counts.minhang}
 - 浦东：${standardizedDataset.counts.pudong}
 - 高德覆盖：${amapMatchedCount}/${campusItems.length}
+- POI精确匹配：${amapPoiMatchedCount}
 - 地址地理编码：${amapAddressGeocodeCount}
+- B级/需电话核验：${dataQualityStats.confidenceB}/${dataQualityStats.needsConfirm}
 `;
 
 const architectureReviewPath = path.join(process.cwd(), "data", "project_architecture_review.json");
@@ -853,7 +963,9 @@ await fs.writeFile(architectureReviewPath, `${JSON.stringify({
     kindergartenRows: standardizedDataset.rowCount,
     districtCounts: standardizedDataset.counts,
     amapCoverage: `${amapMatchedCount}/${campusItems.length}`,
+    amapPoiMatchedCount,
     amapAddressGeocodeCount,
+    dataQualityStats,
     beikeDefaultTokens: beikeDefaultTokens.join(""),
   },
 }, null, 2)}\n`);
@@ -862,13 +974,13 @@ await fs.writeFile(architectureReviewDocPath, architectureReviewMarkdown);
 const renderRentalLinks = (row) => `
         <div class="rent-links">
           <a href="${escapeHtml(beikeRentalUrl(row.rentSlug))}" target="_blank" rel="noopener">推荐商圈：${escapeHtml(beikeAreaLabel(row.rentSlug))}</a>
-          ${row.backupRentSlug && row.backupRentSlug !== "xuhui" ? `<a href="${escapeHtml(beikeRentalUrl(row.backupRentSlug))}" target="_blank" rel="noopener">备选商圈：${escapeHtml(beikeAreaLabel(row.backupRentSlug))}</a>` : ""}
-          <a href="${escapeHtml(beikeRentalUrl("xuhui"))}" target="_blank" rel="noopener">徐汇全区放宽查找</a>
+          ${row.backupRentSlug ? `<a href="${escapeHtml(beikeRentalUrl(row.backupRentSlug))}" target="_blank" rel="noopener">备选商圈：${escapeHtml(beikeAreaLabel(row.backupRentSlug))}</a>` : ""}
+          <a href="${escapeHtml(beikeRentalUrl(beikeDistrictSlugByName.get(row.district) || "xuhui"))}" target="_blank" rel="noopener">${escapeHtml(row.district || "上海")}全区放宽查找</a>
         </div>
 `;
 
-const renderSchoolDecisionCards = (nature) => decisionRecommendations
-  .filter((row) => row.item?.nature === nature)
+const renderSchoolDecisionCards = (district) => decisionRecommendations
+  .filter((row) => row.district === district && row.item)
   .map((row) => `
       <article class="school-card">
         <header>
@@ -891,6 +1003,13 @@ const renderSchoolDecisionCards = (nature) => decisionRecommendations
       </article>
 `).join("");
 
+const renderDistrictDecisionSections = () => kindergartenDistrictOrder.map((district) => `
+      <section class="school-column">
+        <h3>${escapeHtml(district)}推荐样例</h3>
+        ${renderSchoolDecisionCards(district) || `<article class="school-card"><p>该区暂无推荐样例，先使用数据查询和租房入口做基础核验。</p></article>`}
+      </section>
+`).join("");
+
 const renderRentBoardCards = () => rentalBoards.map((board) => `
         <article class="rent-board-card">
           <header><h3>${escapeHtml(board.title)}</h3><span class="tag ${board.slug === "xuhui" ? "amber" : "blue"}">${escapeHtml(board.tag)}</span></header>
@@ -908,8 +1027,8 @@ const rentalAreaOptions = [
 
 const rentalSnapshotCards = [
   {
-    title: "徐汇南部看房入口",
-    area: "长桥 / 植物园 / 华泾",
+    title: "通勤保守看房入口",
+    area: "徐汇长桥 / 华泾 / 龙华",
     price: "0-10000 元",
     layout: "三居 / 四居+，100㎡以上，有电梯",
     reason: "优先匹配当前预算、面积、老人接送和幼儿园兜底需求。",
@@ -920,7 +1039,7 @@ const rentalSnapshotCards = [
     area: "春申 / 古美 / 梅陇",
     price: "0-10000 元",
     layout: "三居 / 四居+，100㎡以上，有电梯",
-    reason: "当徐汇大户型压力过高时，用闵行改善居住体验和亲子社区。",
+    reason: "当核心区大户型压力过高时，用闵行改善居住体验和亲子社区。",
     slug: "chunshen",
   },
   {
@@ -936,8 +1055,8 @@ const rentalSnapshotCards = [
 const renderRentalSnapshotCards = () => rentalSnapshotCards.map((item) => `
         <article class="rental-result-card">
           <a class="rental-photo" href="${escapeHtml(beikeRentalUrl(item.slug))}" target="_blank" rel="noopener" aria-label="打开${escapeHtml(item.title)}贝壳房源">
-            <span>贝壳实时房源图</span>
-            <small>点击查看图片与库存</small>
+            <span>贝壳实时入口</span>
+            <small>库存和图片以贝壳页面为准</small>
           </a>
           <div class="rental-result-body">
             <header><h3>${escapeHtml(item.title)}</h3><span class="tag blue">${escapeHtml(item.area)}</span></header>
@@ -970,6 +1089,102 @@ const renderBarChart = (items) => {
         </div>
 `).join("");
 };
+
+const renderDistrictCapacityOverview = () => districtAreaCapacityStats.map((district) => {
+  const topAreas = district.areas.slice(0, 14);
+  const max = Math.max(...topAreas.map((item) => item.value), 1);
+  return `
+        <article class="capacity-card">
+          <header>
+            <div><h3>${escapeHtml(district.district)}</h3><span>${district.public} 公办 / ${district.private} 民办</span></div>
+            <strong>${district.total}</strong>
+          </header>
+          <div class="vertical-bars" aria-label="${escapeHtml(district.district)}各片区点位柱状图">
+            ${topAreas.map((item) => `
+              <div class="vertical-bar">
+                <i style="height:${Math.max(12, Math.round((item.value / max) * 100))}%"><span>${item.value}</span></i>
+                <small title="${escapeHtml(item.label)}">${escapeHtml(item.label)}</small>
+              </div>
+            `).join("")}
+          </div>
+        </article>
+`;
+}).join("");
+
+const fallbackScoreDimensions = [
+  { key: "commute", label: "通勤距离", defaultWeight: 22, note: "到西岸网易研发中心的可验证通勤时间。", scores: { "徐汇": 95, "闵行": 78, "浦东": 58 } },
+  { key: "kindergarten", label: "幼儿园可落位", defaultWeight: 18, note: "公办等级、园所密度、民办兜底池和电话可核验性。", scores: { "徐汇": 88, "闵行": 82, "浦东": 76 } },
+  { key: "rental", label: "租房可执行", defaultWeight: 20, note: "100㎡以上、三居/四居+、1万元内、有电梯的可找房程度。", scores: { "徐汇": 68, "闵行": 88, "浦东": 82 } },
+  { key: "material", label: "材料可办理", defaultWeight: 18, note: "房东配合居住登记、租赁材料和地址一致性。", scores: { "徐汇": 74, "闵行": 84, "浦东": 78 } },
+  { key: "living", label: "居住体验", defaultWeight: 10, note: "小区环境、电梯、老人接送和收纳空间。", scores: { "徐汇": 66, "闵行": 88, "浦东": 86 } },
+  { key: "community", label: "亲子社区", defaultWeight: 6, note: "公园、遛娃空间、家庭密度和生活配套。", scores: { "徐汇": 72, "闵行": 86, "浦东": 84 } },
+  { key: "budget", label: "预算压力", defaultWeight: 4, note: "预算越稳，执行阻力越低。", scores: { "徐汇": 60, "闵行": 82, "浦东": 78 } },
+  { key: "flexibility", label: "后续迁移弹性", defaultWeight: 2, note: "第一阶段住址未来切换到长期方案的空间。", scores: { "徐汇": 70, "闵行": 82, "浦东": 86 } },
+];
+const scoreDimensions = strategyModel.scoreDimensions?.length ? strategyModel.scoreDimensions : fallbackScoreDimensions;
+
+const renderScoreModel = () => `
+        <div class="score-model" data-score-model>
+          <div class="weight-panel">
+            ${scoreDimensions.map((item) => `
+              <label class="weight-row">
+                <span><b>${escapeHtml(item.label)}</b><small>${escapeHtml(item.note)}</small></span>
+                <input type="range" min="0" max="40" step="1" value="${item.defaultWeight}" data-score-weight="${escapeHtml(item.key)}">
+                <em data-score-value="${escapeHtml(item.key)}">${item.defaultWeight}</em>
+              </label>
+            `).join("")}
+          </div>
+          <div class="score-results">
+            ${kindergartenDistrictOrder.map((district) => `
+              <article class="score-result-card" data-score-district="${escapeHtml(district)}">
+                <header><h3>${escapeHtml(district)}</h3><strong data-score-total="${escapeHtml(district)}">0</strong></header>
+                <div class="score-meter"><i data-score-meter="${escapeHtml(district)}"></i></div>
+                <p data-score-summary="${escapeHtml(district)}"></p>
+                <div class="score-breakdown" data-score-breakdown="${escapeHtml(district)}"></div>
+              </article>
+            `).join("")}
+          </div>
+        </div>
+`;
+
+const renderBeikeChipGroup = (group) => `
+        <div class="beike-filter-row" data-rent-group="${escapeHtml(group.key)}">
+          <div class="beike-filter-label">${escapeHtml(group.label)}</div>
+          <div class="beike-chip-list">
+            ${group.mode === "price" ? `
+              <label class="beike-chip"><input type="radio" name="rent-${escapeHtml(group.key)}" value="__custom" checked><span>自定义</span></label>
+              ${group.options.map((option) => `<label class="beike-chip"><input type="radio" name="rent-${escapeHtml(group.key)}" value="${escapeHtml(option.token)}"><span>${escapeHtml(option.label)}</span></label>`).join("")}
+              <span class="price-range"><input id="rentMinPrice" inputmode="numeric" value="0" aria-label="最低租金"> - <input id="rentMaxPrice" inputmode="numeric" value="10000" aria-label="最高租金"> 元</span>
+            ` : group.options.map((option) => {
+              const checked = group.defaultTokens.includes(option.token) ? " checked" : "";
+              const inputType = group.mode === "single" ? "radio" : "checkbox";
+              const name = group.mode === "single" ? ` name="rent-${escapeHtml(group.key)}"` : "";
+              const data = group.mode === "single" ? "" : ` data-rent-multi="${escapeHtml(group.key)}"`;
+              return `<label class="beike-chip"><input type="${inputType}"${name}${data} value="${escapeHtml(option.token)}"${checked}><span>${escapeHtml(option.label)}</span></label>`;
+            }).join("")}
+          </div>
+        </div>
+`;
+
+const renderRentFilterRows = () => `
+        <div class="beike-filter-row">
+          <div class="beike-filter-label">区域</div>
+          <div class="beike-chip-list compact">
+            <select id="rentDistrict">
+              <option value="" selected>上海全市</option>
+              ${beikeDistrictOptions.map((option) => `<option value="${escapeHtml(option.slug)}">${escapeHtml(option.label)}</option>`).join("")}
+            </select>
+            <select id="rentBizcircle" aria-label="二级商圈"></select>
+          </div>
+        </div>
+        <div class="beike-filter-row">
+          <div class="beike-filter-label">地铁线</div>
+          <div class="beike-chip-list">
+            ${(beikeFilterOptionList("metroLine")).map((option) => `<label class="beike-chip"><input type="radio" name="rent-metroLine" value="${escapeHtml(option.token)}" ${option.token ? "" : "checked"}><span>${escapeHtml(option.label)}</span></label>`).join("")}
+          </div>
+        </div>
+        ${beikeFilterGroups.map(renderBeikeChipGroup).join("")}
+`;
 
 const renderArchitectureReviewCards = () => architectureReview.modules.map((item) => `
         <article class="module-item">
@@ -1130,7 +1345,7 @@ const html = `<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>上海家庭第一阶段落地执行方案</title>
+  <title>${escapeHtml(reportBaseName)}</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23235c9f'/%3E%3Cpath d='M16 42h32M20 42V24l12-8 12 8v18M28 42V30h8v12' stroke='white' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <style>
     :root {
@@ -1336,7 +1551,7 @@ const html = `<!doctype html>
     .step span { color: var(--soft); font-size: 13px; }
     .matrix {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
     }
     .matrix-card {
@@ -3011,7 +3226,7 @@ const html = `<!doctype html>
       color: #64748b;
     }
     option {
-      background: #0b1020;
+      background: var(--control-bg);
       color: var(--ink);
     }
     .rent-builder,
@@ -3031,6 +3246,8 @@ const html = `<!doctype html>
     }
     .rent-url-preview code {
       color: var(--muted-strong);
+      overflow-wrap: anywhere;
+      word-break: break-all;
     }
     .table-box,
     .recommendation-table {
@@ -3064,12 +3281,237 @@ const html = `<!doctype html>
     .phone-link {
       color: var(--blue);
     }
+    .section-title::before,
+    .section-title p {
+      display: none !important;
+    }
+    .section-title h2 {
+      grid-column: 1 / -1 !important;
+    }
+    .section-title {
+      margin: 22px 0 14px;
+      align-items: center;
+    }
+    .module-content > section {
+      min-width: 0;
+      width: 100%;
+    }
+    .score-model {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .weight-panel,
+    .score-result-card,
+    .capacity-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--card-bg);
+      padding: 16px;
+    }
+    .weight-panel {
+      display: grid;
+      gap: 12px;
+    }
+    .weight-row {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) minmax(150px, 220px) 34px;
+      gap: 12px;
+      align-items: center;
+      color: var(--ink);
+    }
+    .weight-row span {
+      display: grid;
+      gap: 2px;
+    }
+    .weight-row b,
+    .capacity-card h3,
+    .score-result-card h3 {
+      color: var(--ink);
+    }
+    .weight-row small,
+    .capacity-card span,
+    .score-result-card p {
+      color: var(--soft);
+      font-size: 12px;
+    }
+    .weight-row em {
+      justify-self: end;
+      font-style: normal;
+      color: var(--blue);
+      font-weight: 800;
+    }
+    .weight-row input[type="range"] {
+      width: 100%;
+      min-height: auto;
+      accent-color: var(--blue);
+    }
+    .score-results {
+      display: grid;
+      gap: 12px;
+    }
+    .score-result-card header,
+    .capacity-card header {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .score-result-card strong,
+    .capacity-card strong {
+      color: var(--blue);
+      font-size: 28px;
+      line-height: 1;
+    }
+    .score-meter {
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.16);
+      overflow: hidden;
+    }
+    .score-meter i {
+      display: block;
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #22d3ee, #34d399);
+      transition: width 180ms ease;
+    }
+    .score-breakdown {
+      display: grid;
+      gap: 4px;
+      margin-top: 10px;
+      color: var(--soft);
+      font-size: 12px;
+    }
+    .score-breakdown span {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      border-top: 1px solid rgba(148, 163, 184, 0.18);
+      padding-top: 4px;
+    }
+    .capacity-overview {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .vertical-bars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(34px, 1fr));
+      align-items: end;
+      gap: 8px;
+      height: 250px;
+      padding-top: 20px;
+    }
+    .vertical-bar {
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) 42px;
+      align-items: end;
+      gap: 8px;
+      min-width: 0;
+      height: 100%;
+    }
+    .vertical-bar i {
+      position: relative;
+      display: block;
+      min-height: 12px;
+      border-radius: 8px 8px 4px 4px;
+      background: linear-gradient(180deg, #22d3ee, #34d399);
+    }
+    .vertical-bar i span {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .vertical-bar small {
+      display: block;
+      color: var(--soft);
+      font-size: 11px;
+      line-height: 1.15;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .beike-filter-row {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1fr);
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .beike-filter-row:last-of-type {
+      border-bottom: 0;
+    }
+    .beike-filter-label {
+      padding-top: 7px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+    .beike-chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      min-width: 0;
+    }
+    .beike-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      cursor: pointer;
+      position: relative;
+    }
+    .beike-chip input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .beike-chip span,
+    .price-range {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--rail);
+      color: var(--soft);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .beike-chip input:checked + span {
+      border-color: var(--cyan-border);
+      background: var(--cyan-soft);
+      color: var(--blue);
+    }
+    .price-range {
+      gap: 6px;
+      color: var(--ink);
+    }
+    .price-range input {
+      width: 72px;
+      min-height: 28px;
+      border-radius: 7px;
+      text-align: center;
+    }
+    .beike-chip-list.compact select {
+      min-width: 180px;
+    }
     footer {
       display: none;
     }
     @media (max-width: 900px) {
       .shell.app-layout {
         grid-template-columns: 1fr;
+        max-width: 100%;
+        padding: 0;
       }
       .module-sidebar {
         position: sticky;
@@ -3077,11 +3519,16 @@ const html = `<!doctype html>
         z-index: 10;
         height: auto;
         display: grid;
-        grid-template-columns: repeat(4, minmax(120px, 1fr));
+        grid-template-columns: repeat(4, minmax(80px, 1fr));
+        width: 100%;
+        max-width: 100%;
         overflow-x: auto;
         padding: 10px 12px;
         border-right: 0;
         border-bottom: 1px solid var(--line);
+      }
+      .side-module {
+        min-width: 0;
       }
       .sidebar-brand,
       .sidebar-meta {
@@ -3114,6 +3561,14 @@ const html = `<!doctype html>
       .module-status {
         justify-items: start;
       }
+      .score-model,
+      .capacity-overview {
+        grid-template-columns: 1fr;
+      }
+      .weight-row,
+      .beike-filter-row {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -3140,8 +3595,9 @@ const html = `<!doctype html>
       <a class="side-module" href="#sources-page" data-module-link="sources"><span class="module-icon">${sidebarIcons.sources}</span><strong>数据来源参考</strong><span>查看数据集、采集来源、POI、贝壳参数和置信度说明。</span><small>追溯来源</small></a>
       <div class="sidebar-meta">
         <span>三区数据 ${campusItems.length} 条</span>
-        <span>高德坐标 ${amapMatchedCount} 条</span>
-        <a href="徐汇区幼儿园园区位置与择园参考.xlsx">下载 Excel</a>
+        <span>POI精确 ${dataQualityStats.amapPoiMatched} 条</span>
+        <span>需核验 ${dataQualityStats.needsConfirm} 条</span>
+        <a href="${escapeHtml(outputFiles.xlsx)}">下载 Excel</a>
       </div>
       <div class="theme-switcher" aria-label="主题切换">
         <button class="theme-button" type="button" data-theme-choice="system" aria-label="跟随系统主题">系统</button>
@@ -3150,20 +3606,9 @@ const html = `<!doctype html>
       </div>
     </aside>
     <div class="module-content">
-    <div class="module-page-head" aria-live="polite">
-      <div>
-        <h1 id="modulePageTitle">幼儿园选择策略</h1>
-        <p id="modulePageSubtitle">家庭基本情况、短期长期目标、三区择园策略和入园待办。</p>
-      </div>
-      <div class="module-page-tools">
-        <span>上海家庭第一阶段</span>
-        <strong>90 天落地执行</strong>
-      </div>
-    </div>
     <section id="mission" data-module-section="strategy">
       <div class="section-title">
-        <h2>当前任务</h2>
-        <p>第一阶段目标是让家庭进入稳定运行，而不是追求一步到位的终局方案。</p>
+        <h2>一、家庭基本情况</h2>
       </div>
       <div class="profile-grid">
         <article class="profile-card"><strong>90 天目标</strong><span>幼儿园落位、租房签约、材料稳定、家具搬迁、通勤验证、家庭恢复正常运转。</span></article>
@@ -3189,6 +3634,12 @@ const html = `<!doctype html>
               <span class="data-pill">闵行 ${standardizedDataset.counts.minhang}</span>
               <span class="data-pill">浦东 ${standardizedDataset.counts.pudong}</span>
               <span class="data-pill">总计 ${standardizedDataset.rowCount}</span>
+            </div>
+            <div class="data-pills">
+              <span class="data-pill">POI精确 ${dataQualityStats.amapPoiMatched}</span>
+              <span class="data-pill">地址编码 ${dataQualityStats.amapAddressGeocode}</span>
+              <span class="data-pill">B级 ${dataQualityStats.confidenceB}</span>
+              <span class="data-pill">需核验 ${dataQualityStats.needsConfirm}</span>
             </div>
             <p class="module-reason">扩展规则：新增行政区时优先新增 <code>data/district_kindergarten_sources/{district}.json</code>，再补高德增强和贝壳板块映射；页面模块只消费标准字段。</p>
           </div>
@@ -3229,7 +3680,9 @@ ${renderArchitectureReviewCards()}
             <p>新增行政区、电话核验、看房记录、报名材料状态等能力，都应先进入独立数据文件，再由生成脚本消费；UI 只负责呈现和交互，不再承载原始数据维护。</p>
             <div class="data-pills">
               <span class="data-pill">标准数据 ${standardizedDataset.rowCount}</span>
-              <span class="data-pill">高德覆盖 ${amapMatchedCount}/${campusItems.length}</span>
+              <span class="data-pill">POI精确 ${dataQualityStats.amapPoiMatched}</span>
+              <span class="data-pill">地址编码 ${dataQualityStats.amapAddressGeocode}</span>
+              <span class="data-pill">政策待核验 ${dataQualityStats.policyPending}</span>
               <span class="data-pill">贝壳 token ${beikeDefaultTokens.join("")}</span>
             </div>
           </div>
@@ -3240,22 +3693,31 @@ ${renderArchitectureReviewCards()}
 
     <section id="routes" data-module-section="strategy">
       <div class="section-title">
-        <h2>区域路线</h2>
-        <p>数据级扩展覆盖徐汇、闵行、浦东。首页先判断哪条路线最可执行，再进入幼儿园和租房细节。</p>
+        <h2>二、幼儿园/租房评分模型</h2>
+      </div>
+${renderScoreModel()}
+      <div class="section-title">
+        <h2>三、基于评分模型的分区推荐策略</h2>
       </div>
       <div class="route-grid">
 ${renderDistrictRouteCards()}
       </div>
-      <div class="section-title">
-        <h2>落地评分模型</h2>
-        <p>权重服务于第一阶段执行，不服务于终身学区排序。</p>
+      <div class="route-grid">
+${renderDistrictKindergartenStrategyCards()}
       </div>
-      <div class="logic-compact">
-${renderLandingScoreCards()}
+      <div class="section-title">
+        <h2>四、按区推荐样例</h2>
+        <p>推荐样例按区维护在 <code>data/strategy_model.json</code>，只作为电话核验和看房排序入口，不把任何单一区域当作固定答案。</p>
+      </div>
+      <div class="school-decision-layout">
+${renderDistrictDecisionSections()}
+      </div>
+      <div class="rental-result-grid">
+${renderRentalSnapshotCards()}
       </div>
     </section>
 
-    <section id="decision" data-module-section="strategy">
+    <section id="decision" data-module-section="strategy-archive">
       <div class="section-title">
         <h2>幼儿园执行</h2>
         <p>策略主线调整为“每个区怎么选”：每区都拆成公办争取线、民办兜底线、租房板块和下一步核验动作。</p>
@@ -3267,7 +3729,7 @@ ${renderLandingScoreCards()}
         </article>
         <article class="summary-card">
           <strong>首选路线</strong>
-          <span>徐汇南部 + 闵行边界，兼顾通勤、材料和居住体验。</span>
+          <span>通勤保守线 + 生活平衡线并行，按房源、材料和接送可行性切换。</span>
         </article>
         <article class="summary-card">
           <strong>备选</strong>
@@ -3281,7 +3743,7 @@ ${renderLandingScoreCards()}
       <div class="notice">
         <article class="notice-card">
           <h3>最终建议</h3>
-          <p>先按“徐汇南部保守执行 + 闵行生活平衡”双线看房；若徐汇房源压抑或材料不配合，及时切到闵行春申/古美/梅陇。浦东只在通勤验证通过后进入主线。</p>
+          <p>先按通勤保守、生活平衡、成长空间三条路线并行核验；任何区域只要房源质量、材料配合或接送链路不成立，就从主线降级为备选。</p>
         </article>
         <article class="notice-card">
           <h3>高德数据口径</h3>
@@ -3296,18 +3758,11 @@ ${renderLandingScoreCards()}
 ${renderDistrictKindergartenStrategyCards()}
       </div>
       <div class="section-title">
-        <h2>徐汇园所样例</h2>
-        <p>下面保留徐汇 5 所公办和 5 所民办样例，用作“区内如何落到园所”的示范；闵行、浦东完整点位在详细查询里按区筛选。</p>
+        <h2>按区推荐样例</h2>
+        <p>每个区都维护推荐样例，用作“路线如何落到园所和租房板块”的示范；完整点位在详细查询里按区筛选。</p>
       </div>
       <div class="school-decision-layout">
-        <div class="school-column">
-          <h3>徐汇公办争取样例</h3>
-${renderSchoolDecisionCards("公办")}
-        </div>
-        <div class="school-column">
-          <h3>徐汇民办兜底样例</h3>
-${renderSchoolDecisionCards("民办")}
-        </div>
+${renderDistrictDecisionSections()}
       </div>
       <div class="section-title">
         <h2>闵行/浦东基础数据</h2>
@@ -3323,7 +3778,7 @@ ${renderExternalCandidateCards("浦东")}
       </div>
     </section>
 
-    <section id="judgement" data-module-section="strategy">
+    <section id="judgement" data-module-section="strategy-archive">
       <div class="section-title">
         <h2>公办/民办策略</h2>
         <p>当前最稳妥的结构是公办作为争取线，民办作为兜底线，两条线同步推进。</p>
@@ -3342,7 +3797,7 @@ ${renderExternalCandidateCards("浦东")}
       </div>
     </section>
 
-    <section id="admission-history" data-module-section="strategy">
+    <section id="admission-history" data-module-section="strategy-archive">
       <div class="section-title">
         <h2>招生概率与历年信息</h2>
         <p>公开渠道通常不发布逐园录取概率；本页只把可追溯信息转成概率分层，不伪造精确录取率。</p>
@@ -3368,72 +3823,17 @@ ${renderAdmissionHistoryCards()}
 
     <section id="rent" data-module-section="rent">
       <div class="section-title">
-        <h2>租房联动</h2>
-        <p>租房入口基于贝壳结构化参数生成，不使用关键词搜索。默认条件固定为：${escapeHtml(beikeRentalConditionText)}。</p>
+        <h2>一、租房筛选参数</h2>
       </div>
       <div class="rent-builder">
-        <div class="rent-builder-grid">
-          <label>区域/商圈
-            <select id="rentArea">
-              ${rentalAreaOptions.map(([slug, label]) => `<option value="${escapeHtml(slug)}" ${slug === "changqiao" ? "selected" : ""}>${escapeHtml(label)}</option>`).join("")}
-            </select>
-          </label>
-          <label>租赁方式
-            <select id="rentType">
-              <option value="rt200600000001" selected>整租</option>
-              <option value="">不限</option>
-              <option value="rt200600000002">合租</option>
-            </select>
-          </label>
-          <label>租金
-            <select id="rentPrice">
-              <option value="brp0erp10000" selected>0-10000 元</option>
-              <option value="rp7">7000-20000 元</option>
-              <option value="">不限</option>
-            </select>
-          </label>
-          <label>户型
-            <select id="rentRooms">
-              <option value="l2l3" selected>三居 / 四居+</option>
-              <option value="l2">三居</option>
-              <option value="l3">四居+</option>
-              <option value="">不限</option>
-            </select>
-          </label>
-          <label>面积
-            <select id="rentSize">
-              <option value="ra4ra5" selected>100-120㎡ / 120㎡以上</option>
-              <option value="ra4">100-120㎡</option>
-              <option value="ra5">120㎡以上</option>
-              <option value="">不限</option>
-            </select>
-          </label>
-          <label>朝向
-            <select id="rentFace">
-              <option value="">不限</option>
-              <option value="f100500000003">朝南</option>
-              <option value="f100500000009">南北</option>
-            </select>
-          </label>
-          <label>租期
-            <select id="rentTerm">
-              <option value="">不限</option>
-              <option value="rmp2">年租</option>
-              <option value="rmp1">月租</option>
-            </select>
-          </label>
-          <label>电梯
-            <select id="rentElevator">
-              <option value="ie1" selected>有电梯</option>
-              <option value="">不限</option>
-              <option value="ie0">无电梯</option>
-            </select>
-          </label>
-        </div>
+${renderRentFilterRows()}
         <div class="rent-url-preview">
-          <code id="rentUrlText">${escapeHtml(beikeRentalUrl("changqiao"))}</code>
-          <a class="button primary" id="rentUrlLink" href="${escapeHtml(beikeRentalUrl("changqiao"))}" target="_blank" rel="noopener">打开贝壳查询</a>
+          <code id="rentUrlText">${escapeHtml(beikeRentalUrl(""))}</code>
+          <a class="button primary" id="rentUrlLink" href="${escapeHtml(beikeRentalUrl(""))}" target="_blank" rel="noopener">打开贝壳查询</a>
         </div>
+      </div>
+      <div class="section-title">
+        <h2>二、默认看房入口</h2>
       </div>
       <div class="rent-panel">
         <strong>统一筛选 token</strong>
@@ -3450,8 +3850,7 @@ ${renderRentBoardCards()}
 
     <section id="todos" data-module-section="strategy">
       <div class="section-title">
-        <h2>入园待办清单</h2>
-        <p>按不同入园时间点拆成可勾选任务，勾选状态会保存在当前浏览器本地，方便持续同步进度。</p>
+        <h2>四、入园前待办清单</h2>
       </div>
       <div class="todo-board">
         <article class="todo-column">
@@ -3483,25 +3882,23 @@ ${renderRentBoardCards()}
 
     <section id="query" class="details-section" data-module-section="data">
       <div class="section-title">
-        <h2>详细查询</h2>
-        <p>需要细查时再用这里：输入居委、小区、幼儿园或地址关键词，再叠加片区、招生类型、托班和置信度条件。</p>
+        <h2>一、幼儿园信息查询</h2>
       </div>
       <div class="filter-panel">
         <div class="toolbar">
+          <label>一级区
+            <select id="district" required>
+              ${kindergartenDistrictOrder.map((district) => `<option value="${escapeHtml(district)}" ${district === "徐汇" ? "selected" : ""}>${escapeHtml(kindergartenDistrictLabels[district] || district)}</option>`).join("")}
+            </select>
+          </label>
+          <label>二级片区
+            <select id="area" required>
+              <option value="">全部片区</option>
+              ${(kindergartenAreaOptionsByDistrict["徐汇"] || []).map((area) => `<option value="${escapeHtml(area)}">${escapeHtml(area)}</option>`).join("")}
+            </select>
+          </label>
           <label>关键词
             <input id="search" placeholder="例：康平、龙南、五原路、托班">
-          </label>
-          <label>片区
-            <select id="area">
-              <option value="">全部片区</option>
-              ${[...new Set(campusItems.map((item) => item.area))].sort().map((area) => `<option>${escapeHtml(area)}</option>`).join("")}
-            </select>
-          </label>
-          <label>区
-            <select id="district">
-              <option value="">全部区</option>
-              ${[...new Set(campusItems.map((item) => item.district))].sort().map((district) => `<option>${escapeHtml(district)}</option>`).join("")}
-            </select>
           </label>
           <label>招生类型
             <select id="admission">
@@ -3537,7 +3934,7 @@ ${renderRentBoardCards()}
           </label>
         </div>
         <div class="result-bar">
-          <div class="result-count"><strong id="resultCount">${campusItems.length}</strong> 个园区匹配</div>
+          <div class="result-count"><strong id="resultCount">0</strong> 个园区匹配</div>
           <div class="chips">
             <span class="chip">先搜居委</span>
             <span class="chip">再看园区地址</span>
@@ -3564,6 +3961,7 @@ ${renderRentBoardCards()}
               <th>托班</th>
               <th>小班</th>
               <th>置信度</th>
+              <th>下一步动作</th>
               <th>对口居委/招生范围</th>
               <th>地图</th>
               <th>备注</th>
@@ -3573,6 +3971,7 @@ ${renderRentBoardCards()}
             ${campusItems.map((item) => `
               <tr
                 data-area="${escapeHtml(item.area)}"
+                data-area-terms="${escapeHtml(areaFilterTerms(item.area, item.district).join("|"))}"
                 data-district="${escapeHtml(item.district)}"
                 data-confidence="${escapeHtml(item.confidence)}"
                 data-admission="${escapeHtml(item.admissionType)}"
@@ -3593,6 +3992,7 @@ ${renderRentBoardCards()}
                 <td><span class="tag ${item.toddlerMode === "混龄式招生" ? "amber" : "blue"}">${escapeHtml(item.toddler)}</span></td>
                 <td>${Number.isFinite(Number(item.small)) ? escapeHtml(item.small) + " 班" : escapeHtml(item.small)}</td>
                 <td><span class="tag ${item.confidence === "B" ? "red" : "green"}">${escapeHtml(item.confidence)}</span></td>
+                <td>${escapeHtml(nextActionForItem(item))}</td>
                 <td>${escapeHtml(item.committee)}</td>
                 <td><a href="${escapeHtml(item.mapUrl)}" target="_blank" rel="noopener">打开高德</a></td>
                 <td>${escapeHtml(item.note) || (item.needsConfirm ? "建议结合当年简章或电话确认。" : '<span class="sub">-</span>')}</td>
@@ -3605,30 +4005,10 @@ ${renderRentBoardCards()}
 
     <section id="areas" data-module-section="data">
       <div class="section-title">
-        <h2>片区容量可视化</h2>
-        <p>用柱形图先看三区点位规模和徐汇片区容量；个人录取仍以居委、材料和当年政策为准。</p>
+        <h2>二、各区域幼儿园容量总览</h2>
       </div>
-      <div class="chart-grid">
-        <article class="chart-card">
-          <h3>三区点位规模</h3>
-${renderBarChart(districtCapacityStats)}
-        </article>
-        <article class="chart-card">
-          <h3>徐汇重点片区点位</h3>
-${renderBarChart(areaCapacityStats)}
-        </article>
-      </div>
-      <div class="areas">
-        ${areaStats.slice(0, 12).map((row) => `
-          <article class="area-card">
-            <strong>${escapeHtml(row[0])}</strong>
-            <div class="area-metrics">
-              <span><b>${row[1]}</b>主体</span>
-              <span><b>${row[2]}</b>点位</span>
-              <span><b>${row[3]}</b>小班</span>
-            </div>
-          </article>
-        `).join("")}
+      <div class="capacity-overview">
+${renderDistrictCapacityOverview()}
       </div>
     </section>
 
@@ -3710,7 +4090,7 @@ ${renderBarChart(areaCapacityStats)}
         <article class="source-card">
           <strong>闵行幼儿园基础数据</strong>
           <span>来源：${escapeHtml(minhangPublicListSource)}；${escapeHtml(minhangPrivateListSource)}</span>
-          <span>用途：补充闵行 ${externalCampusCounts.minhangPublic || 0} 个公办点位、${(externalCampusCounts.minhangPrivate || 0) + (externalCampusCounts.minhangOther || 0)} 个民办/中外合作点位，用于徐汇南部以外的生活平衡路线比较；闵行民办名单存在年度口径差异，报名季必须电话确认。</span>
+          <span>用途：补充闵行 ${externalCampusCounts.minhangPublic || 0} 个公办点位、${(externalCampusCounts.minhangPrivate || 0) + (externalCampusCounts.minhangOther || 0)} 个民办/中外合作点位，用于跨区生活平衡路线比较；闵行民办名单存在年度口径差异，报名季必须电话确认。</span>
         </article>
         <article class="source-card">
           <strong>浦东幼儿园基础数据</strong>
@@ -3724,7 +4104,7 @@ ${renderBarChart(areaCapacityStats)}
         </article>
         <article class="source-card">
           <strong>标准化幼儿园数据集</strong>
-          <span>来源：<code>data/kindergartens/kindergarten_dataset.json</code> 与 <code>data/kindergartens/xuhui_kindergartens.json</code>，字段定义见 <code>data/kindergarten_dataset.schema.json</code>。</span>
+          <span>来源：<code>data/kindergartens/kindergarten_dataset.json</code> 与 <code>data/kindergartens/by_district/</code>，字段定义见 <code>data/kindergarten_dataset.schema.json</code>。</span>
           <span>用途：将徐汇、闵行、浦东统一成可扩展数据层，后续新增行政区或模块时不再改页面主结构。</span>
         </article>
         <article class="source-card">
@@ -3773,9 +4153,15 @@ ${renderBarChart(areaCapacityStats)}
     const resultCount = document.querySelector("#resultCount");
     const rows = Array.from(document.querySelectorAll("#rows tr"));
     const todoInputs = Array.from(document.querySelectorAll("[data-todo]"));
-    const rentControls = ["rentArea", "rentType", "rentPrice", "rentRooms", "rentSize", "rentFace", "rentTerm", "rentElevator"]
-      .map((id) => document.querySelector("#" + id))
-      .filter(Boolean);
+    const kindergartenAreasByDistrict = ${JSON.stringify(kindergartenAreaOptionsByDistrict)};
+    const beikeBizcircleOptionsByDistrict = ${JSON.stringify(beikeBizcircleOptionsByDistrict)};
+    const scoreDimensions = ${JSON.stringify(scoreDimensions)};
+    const rentDistrict = document.querySelector("#rentDistrict");
+    const rentBizcircle = document.querySelector("#rentBizcircle");
+    const rentMinPrice = document.querySelector("#rentMinPrice");
+    const rentMaxPrice = document.querySelector("#rentMaxPrice");
+    const rentControls = Array.from(document.querySelectorAll(".rent-builder input, .rent-builder select"));
+    const scoreWeights = Array.from(document.querySelectorAll("[data-score-weight]"));
     const rentUrlText = document.querySelector("#rentUrlText");
     const rentUrlLink = document.querySelector("#rentUrlLink");
     const moduleLinks = Array.from(document.querySelectorAll("[data-module-link]"));
@@ -3866,13 +4252,20 @@ ${renderBarChart(areaCapacityStats)}
       });
     }
 
+    function populateKindergartenAreas() {
+      if (!district || !area) return;
+      const options = kindergartenAreasByDistrict[district.value] || [];
+      area.innerHTML = '<option value="">全部片区</option>' + options.map((option) => '<option value="' + option + '">' + option + '</option>').join("");
+      area.value = "";
+    }
+
     function applyFilters() {
       const q = search.value.trim().toLowerCase();
       let visible = 0;
       for (const row of rows) {
         const okText = !q || row.dataset.text.toLowerCase().includes(q);
-        const okArea = !area.value || row.dataset.area === area.value;
-        const okDistrict = !district.value || row.dataset.district === district.value;
+        const okArea = !area.value || (row.dataset.areaTerms || "").split("|").includes(area.value);
+        const okDistrict = row.dataset.district === district.value;
         const okAdmission = !admission.value || row.dataset.admission === admission.value;
         const okToddler = !toddler.value || row.dataset.toddler === toddler.value;
         const okConfidence = !confidence.value || row.dataset.confidence === confidence.value;
@@ -3884,39 +4277,122 @@ ${renderBarChart(areaCapacityStats)}
       resultCount.textContent = visible;
     }
 
-    for (const control of [search, area, district, admission, toddler, confidence, confirmSelect]) {
+    district.addEventListener("change", () => {
+      populateKindergartenAreas();
+      applyFilters();
+    });
+    for (const control of [search, area, admission, toddler, confidence, confirmSelect]) {
       control.addEventListener("input", applyFilters);
       control.addEventListener("change", applyFilters);
     }
 
     for (const input of todoInputs) {
-      const key = "xuhui-kindergarten-todo-" + input.dataset.todo;
+      const key = "kindergarten-strategy-todo-" + input.dataset.todo;
       input.checked = localStorage.getItem(key) === "1";
       input.addEventListener("change", () => {
         localStorage.setItem(key, input.checked ? "1" : "0");
       });
     }
 
+    function selectedRadioToken(name) {
+      return document.querySelector('input[name="' + name + '"]:checked')?.value || "";
+    }
+
+    function selectedMultiTokens(key) {
+      return Array.from(document.querySelectorAll('[data-rent-multi="' + key + '"]:checked')).map((input) => input.value).filter(Boolean);
+    }
+
+    function priceToken() {
+      const selected = selectedRadioToken("rent-price");
+      if (selected !== "__custom") return selected;
+      const min = (rentMinPrice?.value || "0").replace(/\\D/g, "") || "0";
+      const max = (rentMaxPrice?.value || "").replace(/\\D/g, "");
+      return max ? "brp" + min + "erp" + max : "brp" + min;
+    }
+
+    function populateRentBizcircles(preferred = "") {
+      if (!rentDistrict || !rentBizcircle) return;
+      const options = beikeBizcircleOptionsByDistrict[rentDistrict.value] || [];
+      rentBizcircle.innerHTML = '<option value="">全区</option>' + options.map((option) => '<option value="' + option.slug + '">' + option.label + '</option>').join("");
+      if (options.some((option) => option.slug === preferred)) {
+        rentBizcircle.value = preferred;
+      }
+    }
+
+    function updateScoreModel() {
+      if (!scoreWeights.length) return;
+      const weights = Object.fromEntries(scoreWeights.map((input) => [input.dataset.scoreWeight, Number(input.value) || 0]));
+      for (const input of scoreWeights) {
+        const valueLabel = document.querySelector('[data-score-value="' + input.dataset.scoreWeight + '"]');
+        if (valueLabel) valueLabel.textContent = input.value;
+      }
+      const totalWeight = Object.values(weights).reduce((sum, value) => sum + value, 0) || 1;
+      const districtScores = ["徐汇", "闵行", "浦东"].map((districtName) => {
+        const raw = scoreDimensions.reduce((sum, item) => sum + ((item.scores[districtName] || 0) * (weights[item.key] || 0)), 0);
+        return { districtName, score: Math.round(raw / totalWeight) };
+      }).sort((a, b) => b.score - a.score);
+      for (const row of districtScores) {
+        const total = document.querySelector('[data-score-total="' + row.districtName + '"]');
+        const meter = document.querySelector('[data-score-meter="' + row.districtName + '"]');
+        const summary = document.querySelector('[data-score-summary="' + row.districtName + '"]');
+        const breakdown = document.querySelector('[data-score-breakdown="' + row.districtName + '"]');
+        if (total) total.textContent = row.score;
+        if (meter) meter.style.width = Math.max(5, Math.min(100, row.score)) + "%";
+        if (summary) summary.textContent = row.score >= 85 ? "当前权重下优先级最高。" : row.score >= 78 ? "可作为强备选路线。" : "需要通勤或预算条件放宽后再进入主线。";
+        if (breakdown) {
+          const contributions = scoreDimensions
+            .map((item) => ({
+              label: item.label,
+              value: ((item.scores[row.districtName] || 0) * (weights[item.key] || 0)) / totalWeight,
+            }))
+            .sort((a, b) => b.value - a.value)
+            .slice(0, 3);
+          breakdown.innerHTML = contributions.map((item) => '<span><b>' + item.label + '</b><em>+' + item.value.toFixed(1) + '</em></span>').join("");
+        }
+      }
+    }
+
     function updateRentUrl() {
       if (!rentUrlText || !rentUrlLink) return;
-      const values = Object.fromEntries(rentControls.map((control) => [control.id, control.value]));
+      const metroLine = selectedRadioToken("rent-metroLine");
       const tokens = [
-        values.rentType,
-        values.rentPrice,
-        values.rentRooms,
-        values.rentSize,
-        values.rentFace,
-        values.rentTerm,
-        values.rentElevator,
+        selectedRadioToken("rent-rentType"),
+        priceToken(),
+        ...selectedMultiTokens("rooms"),
+        ...selectedMultiTokens("area"),
+        ...selectedMultiTokens("orientation"),
+        ...selectedMultiTokens("brand"),
+        ...selectedMultiTokens("features"),
+        selectedRadioToken("rent-leaseTerm"),
+        ...selectedMultiTokens("quality"),
+        ...selectedMultiTokens("floor"),
+        selectedRadioToken("rent-elevator"),
+        selectedRadioToken("rent-sort"),
       ].filter(Boolean).join("");
-      const url = "https://sh.zu.ke.com/zufang/" + (values.rentArea || "xuhui") + "/" + tokens + "/?showMore=1";
+      const areaSlug = rentBizcircle?.value || rentDistrict?.value || "";
+      const path = metroLine ? "ditiezufang/" + metroLine + "/" : "zufang/" + (areaSlug ? areaSlug + "/" : "");
+      const url = "https://sh.zu.ke.com/" + path + tokens + "/?showMore=1";
       rentUrlText.textContent = url;
       rentUrlLink.href = url;
     }
 
+    if (rentDistrict) {
+      rentDistrict.addEventListener("change", () => {
+        populateRentBizcircles("");
+        updateRentUrl();
+      });
+      populateRentBizcircles("");
+    }
     for (const control of rentControls) {
+      control.addEventListener("input", updateRentUrl);
       control.addEventListener("change", updateRentUrl);
     }
+    for (const input of scoreWeights) {
+      input.addEventListener("input", updateScoreModel);
+    }
+    populateKindergartenAreas();
+    updateScoreModel();
+    applyFilters();
     updateRentUrl();
     setActiveModule(moduleFromHash(), false);
   </script>
@@ -3928,11 +4404,12 @@ const toCsv = (rows) => rows.map((row) => row.map(csvEscape).join(",")).join("\n
 
 await fs.mkdir(outputDir, { recursive: true });
 await fs.mkdir(path.join(outputDir, "data", "kindergartens"), { recursive: true });
+await fs.mkdir(path.join(outputDir, "data", "kindergartens", "by_district"), { recursive: true });
 await fs.mkdir(path.join(outputDir, "data", "district_kindergarten_sources"), { recursive: true });
 await fs.mkdir(path.join(outputDir, "docs"), { recursive: true });
-await fs.writeFile(path.join(outputDir, "徐汇区幼儿园园区位置表.csv"), toCsv([campusHeader, ...campusData]), "utf8");
-await fs.writeFile(path.join(outputDir, "徐汇区幼儿园择园参考.md"), markdown, "utf8");
-await fs.writeFile(path.join(outputDir, "徐汇区幼儿园园区位置与择园参考.html"), html, "utf8");
+await fs.writeFile(path.join(outputDir, outputFiles.csv), toCsv([campusHeader, ...campusData]), "utf8");
+await fs.writeFile(path.join(outputDir, outputFiles.md), markdown, "utf8");
+await fs.writeFile(path.join(outputDir, outputFiles.html), html, "utf8");
 await fs.writeFile(path.join(outputDir, "index.html"), html, "utf8");
 await fs.writeFile(path.join(outputDir, "data", "project_architecture_review.json"), `${JSON.stringify({
   ...architectureReview,
@@ -3940,7 +4417,9 @@ await fs.writeFile(path.join(outputDir, "data", "project_architecture_review.jso
     kindergartenRows: standardizedDataset.rowCount,
     districtCounts: standardizedDataset.counts,
     amapCoverage: `${amapMatchedCount}/${campusItems.length}`,
+    amapPoiMatchedCount,
     amapAddressGeocodeCount,
+    dataQualityStats,
     beikeDefaultTokens: beikeDefaultTokens.join(""),
   },
 }, null, 2)}\n`, "utf8");
@@ -3949,16 +4428,23 @@ for (const source of districtKindergartenSources) {
   await fs.writeFile(path.join(outputDir, "data", "district_kindergarten_sources", `${slug}.json`), `${JSON.stringify(source, null, 2)}\n`, "utf8");
 }
 await fs.copyFile(path.join(process.cwd(), "data", "kindergarten_dataset.schema.json"), path.join(outputDir, "data", "kindergarten_dataset.schema.json"));
+await fs.copyFile(strategyModelPath, path.join(outputDir, "data", "strategy_model.json"));
+await fs.copyFile(path.join(process.cwd(), "data", "private_call_checks.json"), path.join(outputDir, "data", "private_call_checks.json"));
+await fs.copyFile(path.join(process.cwd(), "data", "housing_candidates.json"), path.join(outputDir, "data", "housing_candidates.json"));
+await fs.copyFile(path.join(process.cwd(), "data", "commute_checks.json"), path.join(outputDir, "data", "commute_checks.json"));
 await fs.writeFile(path.join(outputDir, "docs", "ARCHITECTURE_REVIEW.md"), architectureReviewMarkdown, "utf8");
 await fs.writeFile(path.join(outputDir, "data", "kindergartens", "kindergarten_dataset.json"), `${JSON.stringify(standardizedDataset, null, 2)}\n`, "utf8");
-await fs.writeFile(path.join(outputDir, "data", "kindergartens", "xuhui_kindergartens.json"), `${JSON.stringify({
-  schemaVersion: "1.0",
-  updatedAt: standardizedDataset.updatedAt,
-  district: "徐汇",
-  rowCount: standardizedDataset.counts.xuhui,
-  sources: [pdfSource, planSource, publicListSource, privateListSource],
-  rows: standardizedKindergartenRows.filter((item) => item.district === "徐汇"),
-}, null, 2)}\n`, "utf8");
+for (const district of standardizedDataset.scope) {
+  const slug = district === "徐汇" ? "xuhui" : district === "闵行" ? "minhang" : "pudong";
+  const rows = standardizedKindergartenRows.filter((item) => item.district === district);
+  await fs.writeFile(path.join(outputDir, "data", "kindergartens", "by_district", `${slug}.json`), `${JSON.stringify({
+    schemaVersion: "1.0",
+    updatedAt: standardizedDataset.updatedAt,
+    district,
+    rowCount: rows.length,
+    rows,
+  }, null, 2)}\n`, "utf8");
+}
 
 const workbook = Workbook.create();
 const summary = workbook.worksheets.add("摘要");
@@ -3969,7 +4455,7 @@ const sourceSheet = workbook.worksheets.add("来源与核验规则");
 
 summary.getRange(`A1:C${summaryRows.length}`).values = summaryRows;
 schoolSheet.getRange(`A1:I${schoolData.length + 1}`).values = [schoolHeader, ...schoolData];
-campusSheet.getRange(`A1:V${campusData.length + 1}`).values = [campusHeader, ...campusData];
+campusSheet.getRange(`A1:W${campusData.length + 1}`).values = [campusHeader, ...campusData];
 areaSheet.getRange(`A1:F${areaStats.length + 1}`).values = [["片区", "招生主体数", "园区点位数", "小班计划数", "明确托班班级数", "混龄招生主体数"], ...areaStats];
 const sourceRows = [
   ["项目", "说明"],
@@ -3990,14 +4476,17 @@ const sourceRows = [
   ["浦东民办地址与电话来源", pudongPrivateListSource],
   ["区级源数据", `data/district_kindergarten_sources/；徐汇、闵行、浦东均按同一结构保存采集结果。当前共${campusItems.length}条，徐汇${publicCampusItems.length + privateCampusItems.length}条，闵行${(externalCampusCounts.minhangPublic || 0) + (externalCampusCounts.minhangPrivate || 0) + (externalCampusCounts.minhangOther || 0)}条，浦东${(externalCampusCounts.pudongPublic || 0) + (externalCampusCounts.pudongPrivate || 0) + (externalCampusCounts.pudongOther || 0)}条。`],
   ["闵行/浦东历史合并数据", "data/cross_district_kindergartens.json；保留为迁移前的跨区合并源，当前生成链路优先使用 data/district_kindergarten_sources/minhang.json 和 pudong.json。"],
-  ["标准化幼儿园数据集", `data/kindergartens/kindergarten_dataset.json；共${standardizedDataset.rowCount}条，徐汇${standardizedDataset.counts.xuhui}条、闵行${standardizedDataset.counts.minhang}条、浦东${standardizedDataset.counts.pudong}条；字段定义见data/kindergarten_dataset.schema.json。`],
-  ["徐汇标准化数据", "data/kindergartens/xuhui_kindergartens.json；将徐汇公办计划、园区地址、等级、电话、民办兜底和来源统一为与闵行/浦东一致的字段结构。"],
+  ["标准化幼儿园数据集", `data/kindergartens/kindergarten_dataset.json；共${standardizedDataset.rowCount}条，徐汇${standardizedDataset.counts.xuhui}条、闵行${standardizedDataset.counts.minhang}条、浦东${standardizedDataset.counts.pudong}条；字段定义见data/kindergarten_dataset.schema.json，按区拆分文件见data/kindergartens/by_district/。`],
   ["架构Review", "docs/ARCHITECTURE_REVIEW.md 与 data/project_architecture_review.json；说明数据采集、标准数据层、POI、租房、推荐策略和发布层的核心逻辑与优化边界。"],
   ["区域落地画像", "data/district_landing_profiles.json；用于维护徐汇、闵行、浦东三条第一阶段落地路线。"],
+  ["评分与推荐策略", "data/strategy_model.json；用于维护评分权重、区级分数和按区推荐样例，生成脚本优先读取该配置。"],
+  ["电话核验记录", "data/private_call_checks.json；用于记录民办名额、收费、保位节点和材料接受度。"],
+  ["看房候选记录", "data/housing_candidates.json；用于把小区、房东材料、所属居委和对口园所串起来。"],
+  ["通勤实测记录", "data/commute_checks.json；用于替代单纯直线距离判断，记录早高峰、雨天和老人接送风险。"],
   ["高德MCP/API接入口径", `目标办公点：${officeLocation.name}；高德匹配为“网易上海西岸研发中心”。用关键词搜索、地址地理编码和距离测量补齐高德POI/地址坐标、经纬度和距离。`],
-  ["高德增强落地数据", `data/amap_enrichment.json；用于补充POI名称/地址坐标、POI地址、经纬度、距公司直线距离。当前覆盖${amapMatchedCount}/${campusItems.length}，其中地址地理编码${amapAddressGeocodeCount}个。`],
-  ["高德检索口径", "表格中的高德链接使用“上海市徐汇区 + 幼儿园名 + 园区名 + 地址”生成，用于逐点打开核验。"],
-  ["贝壳租房参数", `data/beike_rental_filter_schema.json；用于生成徐汇及二级商圈结构化租房链接，固定token：${beikeDefaultTokens.join("")}。`],
+  ["高德增强落地数据", `data/amap_enrichment.json；用于补充POI名称/地址坐标、POI地址、经纬度、距公司直线距离。当前覆盖${amapMatchedCount}/${campusItems.length}，其中POI精确匹配${amapPoiMatchedCount}个，地址地理编码${amapAddressGeocodeCount}个。`],
+  ["高德检索口径", "表格中的高德链接使用“上海市 + 行政区 + 幼儿园名 + 园区名 + 地址”生成，用于逐点打开核验。"],
+  ["贝壳租房参数", `data/beike_rental_filter_schema.json；用于生成三区及二级商圈结构化租房链接，固定token：${beikeDefaultTokens.join("")}。`],
   ["贝壳租房口径", "https://sh.zu.ke.com/；房源价格和库存实时变化，本页只保存查询条件和入口，不固化具体房源。"],
   ["办公点参考", "https://www.chooffice.com/1357.html；用于确认西岸网易研发中心靠近龙耀路、徐汇滨江一带。"],
   ["第三方园所资料", "上哪学、021school、园所公开页面等；用于交叉核对部分民办园电话、收费、托幼一体和地址差异，最终以园所电话确认为准。"],
@@ -4040,7 +4529,7 @@ campusSheet.getRange("P:Q").format.columnWidthPx = 88;
 campusSheet.getRange("R:R").format.columnWidthPx = 520;
 campusSheet.getRange("S:T").format.columnWidthPx = 90;
 campusSheet.getRange("U:V").format.columnWidthPx = 360;
-campusSheet.getRange(`A1:V${campusData.length + 1}`).format.wrapText = true;
+campusSheet.getRange(`A1:W${campusData.length + 1}`).format.wrapText = true;
 campusSheet.freezePanes.freezeColumns(4);
 
 areaSheet.getRange("A:A").format.columnWidthPx = 160;
@@ -4051,7 +4540,7 @@ sourceSheet.getRange("B:B").format.columnWidthPx = 760;
 sourceSheet.getRange(`A1:B${sourceRows.length}`).format.wrapText = true;
 
 const output = await SpreadsheetFile.exportXlsx(workbook);
-await output.save(path.join(outputDir, "徐汇区幼儿园园区位置与择园参考.xlsx"));
+await output.save(path.join(outputDir, outputFiles.xlsx));
 
 console.log(JSON.stringify({
   outputDir,
@@ -4059,9 +4548,9 @@ console.log(JSON.stringify({
   schools: schools.length,
   publicCampuses: publicCampusItems.length,
   privateCampuses: privateCampusItems.length,
-  xlsx: path.join(outputDir, "徐汇区幼儿园园区位置与择园参考.xlsx"),
-  csv: path.join(outputDir, "徐汇区幼儿园园区位置表.csv"),
-  md: path.join(outputDir, "徐汇区幼儿园择园参考.md"),
-  html: path.join(outputDir, "徐汇区幼儿园园区位置与择园参考.html"),
+  xlsx: path.join(outputDir, outputFiles.xlsx),
+  csv: path.join(outputDir, outputFiles.csv),
+  md: path.join(outputDir, outputFiles.md),
+  html: path.join(outputDir, outputFiles.html),
   index: path.join(outputDir, "index.html"),
 }, null, 2));

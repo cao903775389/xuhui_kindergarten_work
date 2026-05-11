@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0",
+  "updatedAt": "2026-05-11",
+  "description": "看房候选记录。用于把小区、居委、租房材料和幼儿园对口关系闭环，而不是只保存贝壳商圈链接。",
+  "records": [],
+  "recordFields": {
+    "createdAt": "记录日期，YYYY-MM-DD。",
+    "district": "行政区。",
+    "boardSlug": "贝壳商圈 slug。",
+    "compound": "小区名称。",
+    "address": "房源地址或小区地址。",
+    "rentPrice": "月租金。",
+    "layout": "户型。",
+    "areaSqm": "面积。",
+    "hasElevator": "是否电梯：yes/no/unknown。",
+    "landlordSupportsMaterials": "房东是否配合居住登记、租赁合同/备案等材料：yes/no/unknown。",
+    "committee": "所属居委。",
+    "matchedKindergarten": "用居委反查到的目标公办园。",
+    "commuteText": "到办公点和园所的实测或高德路线描述。",
+    "nextAction": "下一步动作。",
+    "note": "看房备注。"
+  }
+}

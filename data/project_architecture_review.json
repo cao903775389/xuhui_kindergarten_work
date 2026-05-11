@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-05-09",
-  "title": "上海家庭第一阶段落地执行方案架构 Review",
+  "title": "上海幼儿园落地策略工具架构 Review",
   "summary": "当前项目已从单一区域择园页面升级为区级落地决策数据产品：以每区统一源数据为输入，串联标准化幼儿园数据集、政策来源、高德 POI/距离、贝壳租房参数、区域路线评分和网页/Excel 输出。",
   "modules": [
     {
@@ -14,7 +14,7 @@
       "name": "标准数据层",
       "status": "本次优化",
       "input": "data/district_kindergarten_sources/xuhui.json、minhang.json、pudong.json",
-      "output": "data/kindergartens/kindergarten_dataset.json；data/kindergartens/xuhui_kindergartens.json",
+      "output": "data/kindergartens/kindergarten_dataset.json；data/kindergartens/by_district/{xuhui,minhang,pudong}.json",
       "risk": "后续新增区域必须先补标准字段，不应直接写 UI 文案。"
     },
     {
@@ -51,12 +51,14 @@
     "新增数据集 schema，明确后续新增行政区和模块的字段边界。",
     "新增网页端架构模块和三区择园策略模块，用信息流式卡片展示核心模块、输入输出和风险。",
     "新增架构评审文档和架构 JSON，方便后续迭代时先改数据层，再改策略层，最后改 UI。",
-    "保留静态站发布路径，同时发布标准 JSON，外部工具可直接消费数据集。"
+    "保留静态站发布路径，同时发布标准 JSON，外部工具可直接消费数据集。",
+    "新增 data/strategy_model.json，把评分权重和按区推荐样例从页面代码中外置。",
+    "新增电话核验、看房候选和通勤实测记录模块，为后续人工复核留出结构化入口。"
   ],
   "nextSteps": [
-    "把看房记录、电话核验记录、报名材料状态拆成独立 JSON 模块。",
-    "把推荐策略权重外置为配置文件，避免硬编码在页面生成脚本里。",
-    "把高德增强脚本纳入固定 pipeline，记录 POI 匹配分数和地址编码比例。",
+    "继续把 HTML/CSS/JS 渲染从 build_kindergarten_strategy_tool.mjs 拆出，降低单文件维护成本。",
+    "把高德增强脚本合并成固定 pipeline，记录 POI 匹配分数、地址编码比例和路线耗时。",
+    "把电话核验和看房候选记录接入页面，形成小区-居委-园所-材料闭环。",
     "后续扩展新区域时，先补区级源数据、贝壳板块、政策来源，再进入标准数据和推荐策略。"
   ],
   "metrics": {
@@ -67,7 +69,18 @@
       "pudong": 545
     },
     "amapCoverage": "930/930",
+    "amapPoiMatchedCount": 649,
     "amapAddressGeocodeCount": 281,
+    "dataQualityStats": {
+      "total": 930,
+      "confidenceA": 124,
+      "confidenceB": 806,
+      "needsConfirm": 876,
+      "policyPending": 596,
+      "amapPoiMatched": 649,
+      "amapAddressGeocode": 281,
+      "amapUnmatched": 0
+    },
     "beikeDefaultTokens": "rt200600000001brp0erp10000l2l3ra4ra5ie1"
   }
 }

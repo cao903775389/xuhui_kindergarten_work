@@ -8,7 +8,7 @@ if (!key) {
 }
 
 const root = process.cwd();
-const csvPath = path.join(root, "outputs", "徐汇区幼儿园园区位置表.csv");
+const csvPath = process.env.KINDERGARTEN_CSV_PATH || path.join(root, "outputs", "上海幼儿园落地策略工具点位数据.csv");
 const outputPath = path.join(root, "data", "amap_enrichment.json");
 const city = "上海";
 const officeKeyword = "上海市徐汇区西岸网易研发中心";
@@ -90,17 +90,18 @@ const distance = async (origin, destination) => requestAmap("https://restapi.ama
 });
 
 const scorePoi = (row, poi) => {
-  if (poi.adname && !`${poi.adname}`.includes("徐汇")) return -100;
+  const expectedDistrict = `${row["区"] || ""}`;
+  if (expectedDistrict && poi.adname && !`${poi.adname}`.includes(expectedDistrict)) return -100;
   const name = `${poi.name || ""}`;
   const address = `${poi.address || ""}`;
   let score = 0;
   if (name.includes(row["幼儿园"])) score += 8;
-  for (const word of row["幼儿园"].replaceAll("上海市徐汇区", "").replaceAll("民办", "").split(/[（）() /]/).filter(Boolean)) {
+  for (const word of row["幼儿园"].replaceAll(/^上海市[^区]+区/, "").replaceAll("民办", "").split(/[（）() /]/).filter(Boolean)) {
     if (word.length >= 2 && name.includes(word)) score += 2;
   }
   if (row["园区/分园"] !== "本部" && name.includes(row["园区/分园"].replaceAll("/", ""))) score += 2;
   if (address.includes(row["地址"].slice(0, 4))) score += 3;
-  if (address.includes("徐汇")) score += 1;
+  if (expectedDistrict && address.includes(expectedDistrict)) score += 1;
   if (`${poi.type || ""}`.includes("科教文化")) score += 1;
   return score;
 };
@@ -135,7 +136,8 @@ let failed = 0;
 
 for (const row of rows) {
   const keyForRow = campusKey(row);
-  const searchKeywords = `上海市徐汇区 ${row["幼儿园"]} ${row["园区/分园"]} ${row["地址"]}`;
+  const district = row["区"] === "浦东" ? "浦东新区" : `${row["区"]}区`;
+  const searchKeywords = `上海市${district} ${row["幼儿园"]} ${row["园区/分园"]} ${row["地址"]}`;
   try {
     const search = await textSearch(searchKeywords);
     const picked = pickPoi(row, search.pois);

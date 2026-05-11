@@ -9,7 +9,7 @@ if (!apiKey) {
   throw new Error("AMAP_API_KEY is required");
 }
 
-const csvPath = path.join(process.cwd(), "outputs", "徐汇区幼儿园园区位置表.csv");
+const csvPath = process.env.KINDERGARTEN_CSV_PATH || path.join(process.cwd(), "outputs", "上海幼儿园落地策略工具点位数据.csv");
 const outputPath = path.join(process.cwd(), "data", "amap_enrichment.json");
 const officeName = "网易上海西岸研发中心";
 const officeLocation = "121.459000,31.156370";

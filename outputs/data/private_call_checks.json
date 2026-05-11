@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "updatedAt": "2026-05-11",
+  "description": "民办/普惠民办电话核验记录。每次电话后追加一条记录，不直接改页面文案。",
+  "records": [],
+  "recordFields": {
+    "checkedAt": "核验日期，YYYY-MM-DD。",
+    "district": "行政区。",
+    "name": "幼儿园名称。",
+    "campus": "园区或本部。",
+    "phone": "拨打号码。",
+    "hasVacancy": "是否有名额：yes/no/unknown。",
+    "acceptsCurrentMaterial": "是否接受当前材料状态：yes/no/unknown。",
+    "feeText": "收费口径原文。",
+    "depositText": "保位费、退费期限和节点原文。",
+    "contactPerson": "对方称呼或岗位，可为空。",
+    "nextAction": "下一步动作。",
+    "note": "其他限制和不确定性。"
+  }
+}

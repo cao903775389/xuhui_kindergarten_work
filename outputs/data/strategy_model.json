@@ -1,0 +1,363 @@
+{
+  "schemaVersion": "1.0",
+  "updatedAt": "2026-05-11",
+  "description": "家庭落地方案的评分维度和按区推荐配置。生成脚本优先读取本文件，避免策略权重和推荐项只存在于页面代码中。",
+  "scoreDimensions": [
+    {
+      "key": "commute",
+      "label": "通勤距离",
+      "defaultWeight": 22,
+      "note": "到西岸网易研发中心的可验证通勤时间。",
+      "scores": {
+        "徐汇": 95,
+        "闵行": 78,
+        "浦东": 58
+      }
+    },
+    {
+      "key": "kindergarten",
+      "label": "幼儿园可落位",
+      "defaultWeight": 18,
+      "note": "公办等级、园所密度、民办兜底池和电话可核验性。",
+      "scores": {
+        "徐汇": 88,
+        "闵行": 82,
+        "浦东": 76
+      }
+    },
+    {
+      "key": "rental",
+      "label": "租房可执行",
+      "defaultWeight": 20,
+      "note": "100㎡以上、三居/四居+、1万元内、有电梯的可找房程度。",
+      "scores": {
+        "徐汇": 68,
+        "闵行": 88,
+        "浦东": 82
+      }
+    },
+    {
+      "key": "material",
+      "label": "材料可办理",
+      "defaultWeight": 18,
+      "note": "房东配合居住登记、租赁材料和地址一致性。",
+      "scores": {
+        "徐汇": 74,
+        "闵行": 84,
+        "浦东": 78
+      }
+    },
+    {
+      "key": "living",
+      "label": "居住体验",
+      "defaultWeight": 10,
+      "note": "小区环境、电梯、老人接送和收纳空间。",
+      "scores": {
+        "徐汇": 66,
+        "闵行": 88,
+        "浦东": 86
+      }
+    },
+    {
+      "key": "community",
+      "label": "亲子社区",
+      "defaultWeight": 6,
+      "note": "公园、遛娃空间、家庭密度和生活配套。",
+      "scores": {
+        "徐汇": 72,
+        "闵行": 86,
+        "浦东": 84
+      }
+    },
+    {
+      "key": "budget",
+      "label": "预算压力",
+      "defaultWeight": 4,
+      "note": "预算越稳，执行阻力越低。",
+      "scores": {
+        "徐汇": 60,
+        "闵行": 82,
+        "浦东": 78
+      }
+    },
+    {
+      "key": "flexibility",
+      "label": "后续迁移弹性",
+      "defaultWeight": 2,
+      "note": "第一阶段住址未来切换到长期方案的空间。",
+      "scores": {
+        "徐汇": 70,
+        "闵行": 82,
+        "浦东": 86
+      }
+    }
+  ],
+  "decisionRecommendations": [
+    {
+      "rank": "公办 1",
+      "tag": "首选争取",
+      "tagClass": "green",
+      "type": "公办 / 一级",
+      "itemRef": {
+        "nature": "公办",
+        "name": "园南幼儿园",
+        "campus": "本部",
+        "address": "龙川北路园南一村27号"
+      },
+      "rentArea": "园南一村 / 汇成五村 / 上中路",
+      "rentSlug": "changqiao",
+      "backupRentSlug": "zhiwuyuan",
+      "strategy": "公办争取线",
+      "risk": "暂无居住证时需严格匹配居委、租赁材料和当年招生顺位。",
+      "judgement": "租房预算、居住环境和公办争取的平衡最好，是当前主线。",
+      "district": "徐汇"
+    },
+    {
+      "rank": "公办 2",
+      "tag": "备选争取",
+      "tagClass": "blue",
+      "type": "公办 / 一级",
+      "itemRef": {
+        "nature": "公办",
+        "name": "徐汇实验幼儿园",
+        "campus": "本部",
+        "address": "龙瑞路135号"
+      },
+      "rentArea": "华沁家园 / 华滨家园 / 龙瑞路",
+      "rentSlug": "huajing",
+      "backupRentSlug": "xuhui",
+      "strategy": "公办争取线",
+      "risk": "华泾/罗秀具体居委边界要反查，不能只按地图距离判断。",
+      "judgement": "距离公司近于长桥，面积更容易做大，但需严格反查居委。",
+      "district": "徐汇"
+    },
+    {
+      "rank": "公办 3",
+      "tag": "近公司",
+      "tagClass": "amber",
+      "type": "公办 / 二级",
+      "itemRef": {
+        "nature": "公办",
+        "name": "阳光幼儿园",
+        "campus": "小班部",
+        "address": "龙水南路龙南三村7号"
+      },
+      "rentArea": "龙南三四村 / 樟树苑 / 龙水南路",
+      "rentSlug": "longhua",
+      "backupRentSlug": "xuhuibinjiang",
+      "strategy": "近公司机会项",
+      "risk": "龙华/滨江满足 100㎡以上、1 万内、电梯的房源更少。",
+      "judgement": "高德距离最近，适合捡漏；不要作为唯一租房主线。",
+      "district": "徐汇"
+    },
+    {
+      "rank": "公办 4",
+      "tag": "容量好",
+      "tagClass": "blue",
+      "type": "公办 / 示范园",
+      "itemRef": {
+        "nature": "公办",
+        "name": "上海幼儿园",
+        "campus": "上中园",
+        "address": "上中路402号"
+      },
+      "rentArea": "上中路 / 长桥 / 植物园",
+      "rentSlug": "zhiwuyuan",
+      "backupRentSlug": "changqiao",
+      "strategy": "公办争取线",
+      "risk": "示范园关注度高，扩招和自主口径需以当年简章为准。",
+      "judgement": "示范园且片区与租房需求匹配，但公办竞争和材料门槛仍高。",
+      "district": "徐汇"
+    },
+    {
+      "rank": "公办 5",
+      "tag": "通勤好",
+      "tagClass": "amber",
+      "type": "公办 / 一级",
+      "itemRef": {
+        "nature": "公办",
+        "name": "龙华幼儿园",
+        "campus": "龙恒园",
+        "address": "龙华西路31弄15号"
+      },
+      "rentArea": "龙华西路 / 龙恒路 / 云锦路",
+      "rentSlug": "longhua",
+      "backupRentSlug": "xuhuibinjiang",
+      "strategy": "近公司机会项",
+      "risk": "预算、房源面积、公办顺位三项压力同时偏高。",
+      "judgement": "距离公司好，但租金和公办顺位压力都更大，作为机会项。",
+      "district": "徐汇"
+    },
+    {
+      "rank": "民办 1",
+      "tag": "主兜底",
+      "tagClass": "green",
+      "type": "普惠民办 / 一级",
+      "itemRef": {
+        "nature": "民办",
+        "name": "汇城苑幼稚园",
+        "campus": "本部",
+        "address": "百色路汇城五村75号"
+      },
+      "rentArea": "汇成五村 / 园南 / 百色路",
+      "rentSlug": "changqiao",
+      "backupRentSlug": "zhiwuyuan",
+      "strategy": "民办兜底线",
+      "risk": "需电话确认剩余名额、收费、是否接受当前材料状态。",
+      "judgement": "最适合和园南/长桥公办争取线并行，优先电话确认名额。",
+      "district": "徐汇"
+    },
+    {
+      "rank": "民办 2",
+      "tag": "近公司",
+      "tagClass": "green",
+      "type": "民办 / 一级",
+      "itemRef": {
+        "nature": "民办",
+        "name": "胡姬港湾幼儿园",
+        "campus": "本部",
+        "address": "丰谷路205弄35号"
+      },
+      "rentArea": "龙华 / 云锦路 / 丰谷路",
+      "rentSlug": "longhua",
+      "backupRentSlug": "xuhuibinjiang",
+      "strategy": "近公司兜底线",
+      "risk": "名单地址与高德 POI 地址有差异，必须电话确认实际园区。",
+      "judgement": "高德距离近；名单地址与高德POI地址有差异，必须电话确认实际园区。",
+      "district": "徐汇"
+    },
+    {
+      "rank": "民办 3",
+      "tag": "长桥兜底",
+      "tagClass": "blue",
+      "type": "民办 / 二级",
+      "itemRef": {
+        "nature": "民办",
+        "name": "牛牛幼稚园",
+        "campus": "本部",
+        "address": "罗城路700弄95号"
+      },
+      "rentArea": "罗城路 / 长桥 / 上中西路",
+      "rentSlug": "changqiao",
+      "backupRentSlug": "zhiwuyuan",
+      "strategy": "长桥兜底线",
+      "risk": "二级民办，需实地看园并确认班额、师资和收费。",
+      "judgement": "和长桥租房主线兼容，适合作为第二民办兜底。",
+      "district": "徐汇"
+    },
+    {
+      "rank": "民办 4",
+      "tag": "华泾兜底",
+      "tagClass": "blue",
+      "type": "普惠民办 / 二级",
+      "itemRef": {
+        "nature": "民办",
+        "name": "凯琴数码幼儿园",
+        "campus": "本部",
+        "address": "华泾路995号"
+      },
+      "rentArea": "华泾 / 华沁 / 华滨 / 罗秀",
+      "rentSlug": "huajing",
+      "backupRentSlug": "xuhui",
+      "strategy": "华泾兜底线",
+      "risk": "需确认普惠口径、招生名额、收费和可入园时间。",
+      "judgement": "适合华泾北/罗秀租房线，距离公司中等，需确认名额和收费。",
+      "district": "徐汇"
+    },
+    {
+      "rank": "民办 5",
+      "tag": "康健备选",
+      "tagClass": "amber",
+      "type": "民办 / 一级",
+      "itemRef": {
+        "nature": "民办",
+        "name": "杜鹃园幼稚园",
+        "campus": "本部",
+        "address": "桂林西街9弄57号"
+      },
+      "rentArea": "桂林西街 / 康健 / 田林南",
+      "rentSlug": "kangjian",
+      "backupRentSlug": "tianlin",
+      "strategy": "康健备选线",
+      "risk": "生活成熟但通勤略远，建议作为备选而不是第一主线。",
+      "judgement": "一级民办，适合作为康健/田林方向的兜底备选。",
+      "district": "徐汇"
+    },
+    {
+      "district": "闵行",
+      "rank": "闵行 公办 1",
+      "tag": "生活平衡",
+      "tagClass": "blue",
+      "type": "公办 / 待核验",
+      "itemRef": {
+        "nature": "公办",
+        "name": "闵行区闵行第一幼儿园",
+        "campus": "本部",
+        "address": "上海市闵行区鹤庆路136弄138号"
+      },
+      "rentArea": "江川路 / 老闵行",
+      "rentSlug": "laominhang",
+      "backupRentSlug": "minhang",
+      "strategy": "闵行公办核验线",
+      "risk": "公办需按租住地址所属街镇、居委和当年排序核验。",
+      "judgement": "用于建立闵行生活平衡线的公办核验样例，不直接承诺录取。"
+    },
+    {
+      "district": "闵行",
+      "rank": "闵行 民办 1",
+      "tag": "民办兜底",
+      "tagClass": "green",
+      "type": "民办 / 一级",
+      "itemRef": {
+        "nature": "民办",
+        "name": "上海市协和实验幼儿园",
+        "campus": "上海市协和实验幼儿园",
+        "address": "上海市闵行区虹桥镇莲花路2151弄62-1号"
+      },
+      "rentArea": "虹桥 / 龙柏 / 金汇",
+      "rentSlug": "longbai",
+      "backupRentSlug": "minhang",
+      "strategy": "闵行民办兜底线",
+      "risk": "需电话确认名额、收费、材料接受度和通勤接送。",
+      "judgement": "闵行民办一级样例，适合和闵行租房扩展线同步核验。"
+    },
+    {
+      "district": "浦东",
+      "rank": "浦东 公办 1",
+      "tag": "示范园核验",
+      "tagClass": "amber",
+      "type": "公办 / 示范园",
+      "itemRef": {
+        "nature": "公办",
+        "name": "上海市浦东新区东方幼儿园",
+        "campus": "上海市浦东新区东方幼儿园联洋部",
+        "address": "上海市浦东新区紫槐路30号"
+      },
+      "rentArea": "联洋 / 花木",
+      "rentSlug": "lianyang",
+      "backupRentSlug": "huamu",
+      "strategy": "浦东公办比较线",
+      "risk": "浦东板块跨度大，需先确认招生类别、地段范围和跨江通勤。",
+      "judgement": "用于浦东成长空间线的公办样例，必须叠加通勤实测。"
+    },
+    {
+      "district": "浦东",
+      "rank": "浦东 民办 1",
+      "tag": "民办兜底",
+      "tagClass": "blue",
+      "type": "民办 / 一级",
+      "itemRef": {
+        "nature": "民办",
+        "name": "上海浦东胡姬港湾松林幼儿园有限公司",
+        "campus": "上海浦东胡姬港湾松林幼儿园有限公司",
+        "address": "上海市浦东新区春晓路100号"
+      },
+      "rentArea": "张江 / 碧云 / 金桥扩展",
+      "rentSlug": "pudong",
+      "backupRentSlug": "jinqiao",
+      "strategy": "浦东民办兜底线",
+      "risk": "需确认收费、名额、接送和到西岸通勤是否可承受。",
+      "judgement": "浦东民办一级样例，适合在通勤通过后作为兜底池。"
+    }
+  ]
+}
